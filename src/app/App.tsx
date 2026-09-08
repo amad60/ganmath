@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, Header, Keypad, ProgressBar, Sheet, StarRow } from '../components/ui';
+import { CounterObjects, NumberBond, NumberLine, TenFrame } from '../components/manipulatives';
 
 /**
  * Mesin state layar — bukan router (docs/tech/architecture.md §3).
@@ -9,6 +10,10 @@ export function App() {
   const [theme, setTheme] = useState<'system' | 'light' | 'dark'>('system');
   const [typed, setTyped] = useState('');
   const [sheet, setSheet] = useState(false);
+  const [frame, setFrame] = useState(7);
+  const [counted, setCounted] = useState(3);
+  const [onLine, setOnLine] = useState<number>(4);
+  const [onNeg, setOnNeg] = useState<number>(-3);
 
   const applyTheme = (t: 'system' | 'light' | 'dark') => {
     setTheme(t);
@@ -21,7 +26,7 @@ export function App() {
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
       <Header
         center={<span className="text-2xl font-black">GanMath</span>}
-        right={<span className="text-ink-soft text-[15px] font-bold">S3 · UI kit</span>}
+        right={<span className="text-ink-soft text-[15px] font-bold">S4 · kit</span>}
       />
 
       <main className="safe-bottom flex flex-col gap-6 p-5">
@@ -65,6 +70,32 @@ export function App() {
         <section className="flex flex-col gap-3">
           <p className="text-ink-soft text-[15px] font-bold">Keypad · typed: {typed || '—'}</p>
           <Keypad value={typed} onChange={setTyped} onSubmit={() => setTyped('')} />
+        </section>
+
+        <section className="flex flex-col items-center gap-3">
+          <p className="text-ink-soft self-start text-[15px] font-bold">Ten frame · {frame}</p>
+          <TenFrame value={frame} onChange={setFrame} split={5} />
+        </section>
+
+        <section className="flex flex-col items-center gap-3">
+          <p className="text-ink-soft self-start text-[15px] font-bold">Number bond</p>
+          <NumberBond whole={10} parts={[frame, null]} ask="part1" />
+        </section>
+
+        <section className="flex flex-col gap-3">
+          <p className="text-ink-soft text-[15px] font-bold">Counter objects · {counted} counted</p>
+          <CounterObjects count={8} counted={counted} onTap={(i) => setCounted(i + 1)} />
+        </section>
+
+        <section className="flex flex-col gap-3">
+          <p className="text-ink-soft text-[15px] font-bold">Number line 0–10 · {onLine}</p>
+          <NumberLine min={0} max={10} value={onLine} onChange={setOnLine} marks={[0]} />
+          <p className="text-ink-soft text-[15px] font-bold">
+            Siap Grade 6 sejak awal: −10…10 · {onNeg}
+          </p>
+          <NumberLine min={-10} max={10} value={onNeg} onChange={setOnNeg} />
+          <p className="text-ink-soft text-[15px] font-bold">Siap pecahan: 0–2 langkah ¼</p>
+          <NumberLine min={0} max={2} step={0.25} value={1.25} denominator={4} />
         </section>
 
         <section className="flex flex-col gap-3">

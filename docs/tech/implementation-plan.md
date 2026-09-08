@@ -12,7 +12,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S1** ✅ | Engine murni: `rng`, `generator`, `mastery`, `review`, `unlock` + test Vitest | ✅ **56 test hijau**; aturan "nol impor React di `src/engine/`" ditegakkan oleh `architecture.test.ts` |
 | **S2** ✅ | Store Zustand + persist + `migrations` + export/import file | ✅ tutup-buka app progress tetap; export→import menghasilkan state identik; **+ `resilientStorage`**: Safari mode privat tidak lagi menjatuhkan app |
 | **S3** ✅ | UI kit: `Button` (gaya tebal 3D), `ProgressBar`, `Keypad`, `StarRow`, `Header`, `Sheet` | ✅ halaman demo dengan pengalih tema system/light/dark; semua tombol jawaban 64px |
-| **S4** | Manipulatif gelombang 1: `counter-objects`, `ten-frame`, `number-bond`, `number-line` | interaktif, animasi sesuai `../design/animation.md`, hormati `prefers-reduced-motion`, jalan 60fps di Poco F3 |
+| **S4** ✅ | Manipulatif gelombang 1: `counter-objects`, `ten-frame`, `number-bond`, `number-line` | ✅ keempatnya interaktif di halaman demo; `number-line` sudah menangani domain negatif & langkah pecahan; matematika penempatan diuji terpisah (12 test) |
 | **S5** | Layar: `map` → `learn` → `practice` → `quiz` → `result` | satu modul dummy bisa ditempuh dari peta sampai layar hasil, ujung ke ujung |
 | **S6** | Gamifikasi: XP, bintang, badge, streak, perayaan | perayaan ≤3 detik & bisa di-tap lewat; badge tersimpan; streak berganti hari dengan benar (uji ganti tanggal HP) |
 | **S7** | Konten **U1** (6 modul) + `scripts/lint-content.ts` | linter menegakkan 6 aturan; 6 modul bisa diselesaikan betulan |
@@ -46,6 +46,13 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
   lintas sesi. `storageIsAvailable()` dipakai Parent Area untuk memperingatkan orang tua.
 - **XP, streak, dan badge sengaja belum disentuh** di store — itu S6. Field-nya sudah ada di
   skema supaya tidak perlu migrasi nanti.
+- **S4:** matematika penempatan dipisah ke `scale.ts` (fungsi murni) supaya bisa diuji tanpa DOM
+  dan dipakai ulang oleh bar-model & array-grid nanti. `number-line` sengaja langsung mendukung
+  domain negatif dan langkah pecahan meski Grade 1 tidak memakainya — menambahkannya belakangan
+  berarti menulis ulang komponen yang sudah dipakai ratusan modul.
+- **Aturan animasi materi ditegakkan lewat `teachingDuration()`**: saat `prefers-reduced-motion`
+  aktif, animasi manipulatif dipercepat 50%, bukan dimatikan — blok yang bergabung jadi puluhan
+  itu materi, bukan dekorasi.
 
 ## Anggaran & batas
 

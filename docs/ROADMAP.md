@@ -1,7 +1,7 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 5a sedang berjalan — S0–S3 selesai (4/13 langkah).**
-Berikutnya: **S4 (komponen manipulatif: ten-frame, number bond, number line, counter objects)** — checklist di [`docs/tech/implementation-plan.md`](tech/implementation-plan.md).
+Status keseluruhan: **Fase 5a sedang berjalan — S0–S4 selesai (5/13 langkah).**
+Berikutnya: **S5 (layar: map → learn → practice → quiz → result)** — checklist di [`docs/tech/implementation-plan.md`](tech/implementation-plan.md).
 Baca `../CLAUDE.md` dulu untuk arahan produk.
 
 | Fase | Isi | Output | Status |
@@ -11,7 +11,7 @@ Baca `../CLAUDE.md` dulu untuk arahan produk.
 | 2 | Rancang kurikulum | Peta lengkap Grade→Unit→Module, prasyarat, tipe soal, flag kecepatan, path order | ✅ selesai → [`docs/curriculum/`](curriculum/README.md) |
 | 3 | Desain | Sistem desain, maskot, wireframe 8 layar, spesifikasi animasi | ✅ selesai → [`docs/design/`](design/README.md) |
 | 4 | Desain teknis + plan | Arsitektur, storage & migrasi, engine + rencana test, 13 langkah implementasi | ✅ selesai → [`docs/tech/`](tech/README.md) |
-| 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, siap deploy ke Netlify | 🔨 berjalan — S0–S3 ✅, lanjut S4 |
+| 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, siap deploy ke Netlify | 🔨 berjalan — S0–S4 ✅, lanjut S5 |
 | 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | ⬜ belum |
 | 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ⬜ belum |
 | 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | ⬜ belum |
