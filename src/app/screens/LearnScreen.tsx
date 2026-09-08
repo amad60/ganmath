@@ -74,7 +74,7 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
         ) : null}
       </main>
 
-      <div className="safe-bottom px-6 pt-2 pb-5">
+      <div className="safe-bottom px-6 pt-2">
         <Button full disabled={!reached} onClick={advance}>
           {last ? en.learn.start : en.learn.next}
         </Button>

@@ -62,12 +62,16 @@ body {
   overscroll-behavior: none;
 }
 
-/* area aman: Dynamic Island iPhone 17 & gesture bar Android */
+/* Area aman: Dynamic Island iPhone 17 & gesture bar Android.
+   Nilainya MENAMBAH jarak dasar, bukan menggantikannya. Versi sebelumnya menulis
+   `padding-bottom` sendiri sehingga menimpa `p-5` milik modal — 20px berubah jadi
+   12px, dan isinya justru menempel ke tepi. Elemen yang memakai kelas ini TIDAK
+   boleh lagi menyetel padding di sisi yang sama lewat utility. */
 .safe-top {
-  padding-top: env(safe-area-inset-top);
+  padding-top: calc(16px + env(safe-area-inset-top));
 }
 .safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
 @media (prefers-reduced-motion: reduce) {

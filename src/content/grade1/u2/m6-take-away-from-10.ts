@@ -5,7 +5,7 @@ export const takeAwayFrom10: ContentModule = {
   unitId: 'g1-u2',
   grade: 1,
   title: 'Take Away from 10',
-  icon: '🔻',
+  icon: '🍂',
   prereq: ['g1-u2-m5', 'g1-u2-m3'],
   skills: ['sub-within-10'],
   kind: 'fact',

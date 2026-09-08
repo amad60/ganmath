@@ -5,7 +5,7 @@ export const countTo50: ContentModule = {
   unitId: 'g1-u5',
   grade: 1,
   title: 'Count to 50',
-  icon: '🔢',
+  icon: '🐾',
   prereq: ['g1-u3-m4'],
   skills: ['count-to-50'],
   kind: 'concept',

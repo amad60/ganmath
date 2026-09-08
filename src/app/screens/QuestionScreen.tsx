@@ -281,7 +281,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         ) : null}
       </main>
 
-      <div className="safe-bottom shrink-0 px-6 pt-2 pb-6">
+      <div className="safe-bottom shrink-0 px-6 pt-2">
         {isLine ? (
           <div className="flex flex-col gap-3">
             <NumberLine

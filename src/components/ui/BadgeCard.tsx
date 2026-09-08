@@ -1,4 +1,5 @@
 import { BADGES, type BadgeId } from '../../engine/gamification';
+import { Icon } from './Icon';
 
 export type BadgeCardProps = { id: BadgeId; owned: boolean; size?: 'sm' | 'lg' };
 
@@ -17,10 +18,15 @@ export function BadgeCard({ id, owned, size = 'sm' }: BadgeCardProps) {
         }}
         aria-label={owned ? badge.title : 'Locked badge'}
       >
-        {owned ? badge.icon : '❓'}
+        {owned ? badge.icon : <Icon name="lock" size={size === 'lg' ? 30 : 22} color="var(--c-locked)" />}
       </div>
-      <span className="text-center text-[13px] leading-tight font-bold">
-        {owned ? badge.title : '???'}
+      {/* Tinggi label dikunci dua baris supaya kartu badge tidak naik-turun
+          hanya karena judulnya lebih panjang. */}
+      <span
+        className="flex items-start justify-center text-center text-[13px] leading-tight font-bold"
+        style={{ height: 30 }}
+      >
+        {owned ? badge.title : 'Locked'}
       </span>
     </div>
   );

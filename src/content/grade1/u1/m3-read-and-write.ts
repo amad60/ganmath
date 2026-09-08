@@ -7,7 +7,7 @@ export const readAndWrite: ContentModule = {
   unitId: 'g1-u1',
   grade: 1,
   title: 'Read and Write',
-  icon: '🔤',
+  icon: '✏️',
   prereq: ['g1-u1-m2'],
   skills: ['numeral-word'],
   kind: 'concept',

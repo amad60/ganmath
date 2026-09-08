@@ -28,7 +28,19 @@ export function ParentGate({ open, onPass, onClose }: ParentGateProps) {
       <p className="mb-3 text-2xl font-black" style={{ color: 'var(--c-ink)' }}>
         {a} × {b} = ?
       </p>
-      <p className="mb-3 text-[18px]">{typed || '—'}</p>
+      {/* Kotak jawaban, bukan teks telanjang: sebelumnya menampilkan em-dash yang
+          terbaca sebagai garis nyasar di bawah soal. */}
+      <div
+        className="mb-3 flex h-12 w-28 items-center justify-center rounded-[var(--r-sm)] text-2xl font-black"
+        style={{
+          background: 'var(--c-surface)',
+          border: '2px solid var(--c-line)',
+          color: typed ? 'var(--c-ink)' : 'var(--c-locked)',
+        }}
+        aria-live="polite"
+      >
+        {typed || '?'}
+      </div>
       {wrong ? (
         <p className="mb-3 text-[18px] font-bold" style={{ color: 'var(--c-retry)' }}>
           Not quite.

@@ -5,7 +5,7 @@ export const teenNumbers: ContentModule = {
   unitId: 'g1-u3',
   grade: 1,
   title: 'Teen Numbers',
-  icon: '1️⃣',
+  icon: '🧮',
   prereq: ['g1-u2-m5'],
   skills: ['teen-numbers'],
   kind: 'concept',

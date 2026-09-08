@@ -5,7 +5,7 @@ export const missingNumber: ContentModule = {
   unitId: 'g1-u2',
   grade: 1,
   title: 'Missing Number',
-  icon: '❓',
+  icon: '🔍',
   prereq: ['g1-u2-m7'],
   skills: ['missing-addend'],
   kind: 'concept',

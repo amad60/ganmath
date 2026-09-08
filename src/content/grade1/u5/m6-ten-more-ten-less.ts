@@ -5,7 +5,7 @@ export const tenMoreTenLess: ContentModule = {
   unitId: 'g1-u5',
   grade: 1,
   title: 'Ten More, Ten Less',
-  icon: '↕️',
+  icon: '🎈',
   prereq: ['g1-u5-m4'],
   skills: ['ten-more-less'],
   kind: 'fact',

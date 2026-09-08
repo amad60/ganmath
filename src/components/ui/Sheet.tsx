@@ -23,7 +23,7 @@ export function Sheet({ open, title, onClose, children, footer }: SheetProps) {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="bg-surface safe-bottom relative w-full max-w-[430px] rounded-t-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]"
+        className="bg-surface safe-bottom relative w-full max-w-[430px] rounded-t-[var(--r-lg)] px-5 pt-5 shadow-[var(--shadow-card)]"
       >
         <h2 className="mb-3 text-2xl font-black">{title}</h2>
         <div className="text-ink-soft text-[18px]">{children}</div>

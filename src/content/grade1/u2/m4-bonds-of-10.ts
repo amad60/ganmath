@@ -10,7 +10,7 @@ export const bondsOf10: ContentModule = {
   unitId: 'g1-u2',
   grade: 1,
   title: 'Bonds of 10',
-  icon: '🔟',
+  icon: '🤝',
   prereq: ['g1-u2-m2'],
   skills: ['bonds-of-10'],
   kind: 'fact',

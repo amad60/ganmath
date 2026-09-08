@@ -185,7 +185,7 @@ export function App() {
             <button
               type="button"
               onClick={pwa.applyUpdate}
-              className="safe-top sticky top-0 z-30 w-full px-5 py-2 text-[15px] font-black"
+              className="safe-top sticky top-0 z-30 w-full px-6 pb-2 text-[15px] font-black"
               style={{ background: 'var(--c-primary)', color: 'var(--c-primary-ink)' }}
             >
               New version ready — tap to update

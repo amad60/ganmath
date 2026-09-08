@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Icon } from './Icon';
 
 export type HeaderProps = {
   onBack?: () => void;
@@ -13,7 +14,11 @@ export function Header({ onBack, backLabel = 'Close', center, right, tone = 'pla
   return (
     <header
       className="safe-top sticky top-0 z-10"
-      style={{ background: tone === 'mastery' ? 'var(--c-star)' : 'var(--c-bg)' }}
+      style={{
+        background: tone === 'mastery' ? 'var(--c-star)' : 'var(--c-bg)',
+        // Garis rambut: memisahkan header dari konten saat digulir, tanpa kotak berat.
+        boxShadow: tone === 'mastery' ? 'none' : 'inset 0 -1px 0 var(--c-line)',
+      }}
     >
       <div className="flex h-14 items-center gap-3 px-4">
         {onBack ? (
@@ -21,9 +26,9 @@ export function Header({ onBack, backLabel = 'Close', center, right, tone = 'pla
             type="button"
             onClick={onBack}
             aria-label={backLabel}
-            className="text-ink -ml-2 flex h-11 w-11 items-center justify-center rounded-[var(--r-pill)] text-2xl"
+            className="-ml-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--r-pill)]"
           >
-            ✕
+            <Icon name="close" size={22} color={tone === 'mastery' ? '#3a2c00' : 'var(--c-ink)'} />
           </button>
         ) : null}
         <div className="min-w-0 flex-1">{center}</div>

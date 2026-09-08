@@ -63,7 +63,7 @@ export function BadgesScreen({
         right={<Mascot mood="happy" size={40} />}
       />
 
-      <main className="safe-bottom flex flex-col gap-6 px-6 py-5">
+      <main className="safe-bottom flex flex-col gap-6 px-6 pt-5">
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Grade {grade}</h2>
           <ProgressBar value={done} max={pathOrder.length} label={`${done}/${pathOrder.length}`} />

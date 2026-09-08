@@ -164,6 +164,29 @@ describe('Onboarding', () => {
   });
 });
 
+describe('area aman', () => {
+  it('safe-top/safe-bottom tidak pernah dipasangkan dengan padding di sisi yang sama', async () => {
+    const { readFileSync, readdirSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const walk = (dir: string): string[] =>
+      readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
+      );
+
+    const offenders: string[] = [];
+    for (const f of walk('src').filter((f) => f.endsWith('.tsx'))) {
+      for (const m of readFileSync(f, 'utf8').matchAll(/className=\{?"([^"]*)"/g)) {
+        const cls = m[1] ?? '';
+        // safe-* menulis padding sisi itu sendiri; utility di sisi yang sama akan
+        // saling menimpa dan pemenangnya ditentukan urutan file CSS.
+        if (/\bsafe-top\b/.test(cls) && /\b(pt-|py-|p-)\d/.test(cls)) offenders.push(`${f}: ${cls}`);
+        if (/\bsafe-bottom\b/.test(cls) && /\b(pb-|py-|p-)\d/.test(cls)) offenders.push(`${f}: ${cls}`);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+});
+
 describe('pindah kelas', () => {
   it('hanya kelas yang punya konten yang bisa dipilih', async () => {
     const { availableGrades, pathOrderFor } = await import('../../content');

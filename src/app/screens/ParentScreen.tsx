@@ -68,7 +68,7 @@ export function ParentScreen({
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
       <Header onBack={onBack} backLabel="Back" center={<span className="text-2xl font-black">Parent Area</span>} />
 
-      <main className="safe-bottom flex flex-col gap-6 px-6 py-5">
+      <main className="safe-bottom flex flex-col gap-6 px-6 pt-5">
         <section className="bg-surface rounded-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]">
           <Row label="Mastered" value={plural(mastered, 'module')} />
           <Row label="Needs review" value={plural(needsReview, 'module')} />
@@ -137,9 +137,9 @@ export function ParentScreen({
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Jump to level</h2>
           <p className="text-ink-soft text-[15px]">
-            Pick the grade your child is in. Within a grade, tap <b>⏩ I already know this</b> on
-            the map to skip a module by passing a short check instead of learning it first.
-            Failing costs nothing.
+            Pick the grade your child is in. Within a grade, tap <b>I already know this</b> on the
+            map to skip a module by passing a short check instead of learning it first. Failing
+            costs nothing.
           </p>
           <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3, 4, 5, 6].map((g) => {

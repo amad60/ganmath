@@ -5,7 +5,7 @@ export const nearDoubles: ContentModule = {
   unitId: 'g1-u4',
   grade: 1,
   title: 'Near Doubles',
-  icon: '➕',
+  icon: '🎯',
   prereq: ['g1-u4-m2'],
   skills: ['near-doubles'],
   kind: 'fact',

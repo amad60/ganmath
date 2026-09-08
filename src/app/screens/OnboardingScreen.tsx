@@ -27,7 +27,7 @@ export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
   const [avatar, setAvatar] = useState<Avatar>('cat');
 
   return (
-    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col gap-5 px-6 py-6">
+    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col gap-5 px-6">
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Mascot mood="happy" size={120} />
         <h1 className="text-2xl font-black">Hi! I am Gan.</h1>

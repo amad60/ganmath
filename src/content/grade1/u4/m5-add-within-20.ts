@@ -5,7 +5,7 @@ export const addWithin20: ContentModule = {
   unitId: 'g1-u4',
   grade: 1,
   title: 'Add within 20',
-  icon: '✳️',
+  icon: '🍀',
   prereq: ['g1-u4-m4', 'g1-u4-m3'],
   skills: ['add-within-20'],
   kind: 'fact',

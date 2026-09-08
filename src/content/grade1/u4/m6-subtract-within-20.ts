@@ -5,7 +5,7 @@ export const subtractWithin20: ContentModule = {
   unitId: 'g1-u4',
   grade: 1,
   title: 'Subtract within 20',
-  icon: '➖',
+  icon: '🍁',
   prereq: ['g1-u4-m5', 'g1-u2-m6'],
   skills: ['sub-within-20'],
   kind: 'fact',

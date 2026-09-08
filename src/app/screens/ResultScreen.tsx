@@ -56,7 +56,7 @@ export function ResultScreen({
         : en.result.keepPractising;
 
   return (
-    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col items-center gap-4 px-6 py-6">
+    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col items-center gap-4 px-6">
       <Mascot mood={mastered ? 'celebrate' : 'encourage'} size={110} />
 
       <StarRow stars={next.stars} size={48} animate />

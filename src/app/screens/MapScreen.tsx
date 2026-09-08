@@ -1,7 +1,7 @@
 import type { ModuleState } from '../../engine/types';
 import { isUnlocked } from '../../engine/unlock';
 import { moduleById, registryFor, unitTitles } from '../../content';
-import { Button, ProgressBar, StarRow } from '../../components/ui';
+import { Button, Icon, ProgressBar, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
 
@@ -22,6 +22,36 @@ export type MapScreenProps = {
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
+
+function Stat({ icon, value, color }: { icon: string; value: number; color: string }) {
+  return (
+    <span className="flex items-center gap-1" style={{ color }}>
+      <span style={{ fontSize: 15 }}>{icon}</span>
+      {value}
+    </span>
+  );
+}
+
+function IconButton({
+  label,
+  onClick,
+  name,
+}: {
+  label: string;
+  onClick: () => void;
+  name: 'trophy' | 'parent';
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="flex h-11 w-11 items-center justify-center rounded-full"
+    >
+      <Icon name={name} size={23} color="var(--c-ink-soft)" />
+    </button>
+  );
+}
 
 export function MapScreen({
   states,
@@ -44,30 +74,19 @@ export function MapScreen({
 
   return (
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
-      <header className="safe-top bg-bg sticky top-0 z-20 px-5 pt-2 pb-3">
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-[15px] font-black">
-            <span style={{ color: 'var(--c-streak)' }}>🔥 {streak}</span>
-            <span style={{ color: 'var(--c-star)' }}>⭐ {xp}</span>
+      <header
+        className="safe-top bg-bg sticky top-0 z-20 px-6 pb-3"
+        style={{ boxShadow: 'inset 0 -1px 0 var(--c-line)' }}
+      >
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-3 text-[15px] font-black tabular-nums">
+            <Stat icon="🔥" value={streak} color="var(--c-streak)" />
+            <Stat icon="⭐" value={xp} color="var(--c-star)" />
             <span className="text-ink-soft">Lv.{level}</span>
           </div>
-          <div className="flex items-center">
-            <button
-              type="button"
-              onClick={onBadges}
-              aria-label="My badges"
-              className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
-            >
-              🏅
-            </button>
-            <button
-              type="button"
-              onClick={onParent}
-              aria-label="Parent area"
-              className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
-            >
-              👤
-            </button>
+          <div className="-mr-2 flex items-center gap-1">
+            <IconButton label="My badges" onClick={onBadges} name="trophy" />
+            <IconButton label="Parent area" onClick={onParent} name="parent" />
           </div>
         </div>
         <ProgressBar
@@ -127,7 +146,7 @@ export function MapScreen({
                 // Geser kecil untuk kesan berkelok, tapi elemen di dalamnya tidak
                 // pernah selebar container — inilah yang dulu membuat tombol Start
                 // menembus tepi kanan layar.
-                style={{ transform: `translateX(${i % 2 === 0 ? -22 : 22}px)` }}
+                style={{ transform: `translateX(${i % 2 === 0 ? -32 : 32}px)` }}
               >
                 <button
                   type="button"
@@ -152,7 +171,13 @@ export function MapScreen({
                     animation: isNext ? 'node-pulse 1.8s ease-in-out infinite' : undefined,
                   }}
                 >
-                  {cleared ? '⭐' : unlocked ? def.icon : '🔒'}
+                  {cleared ? (
+                    '⭐'
+                  ) : unlocked ? (
+                    def.icon
+                  ) : (
+                    <Icon name="lock" size={26} color="var(--c-locked)" />
+                  )}
                 </button>
 
                 <span
@@ -213,7 +238,7 @@ export function MapScreen({
           ikut tergeser oleh tata letak jalur. */}
       {nextDef ? (
         <div
-          className="safe-bottom sticky bottom-0 z-20 flex flex-col gap-2 px-5 pt-3 pb-3"
+          className="safe-bottom sticky bottom-0 z-20 flex flex-col gap-2 px-6 pt-3"
           style={{
             background:
               'linear-gradient(to top, var(--c-bg) 72%, color-mix(in srgb, var(--c-bg) 0%, transparent))',
@@ -223,7 +248,8 @@ export function MapScreen({
             {en.map.startNext}: {nextDef.title}
           </Button>
           <Button variant="ghost" full onClick={() => onTestOut(nextDef.id)}>
-            ⏩ {en.map.skipAhead}
+            <Icon name="skip" size={18} color="var(--c-ink-soft)" />
+            {en.map.skipAhead}
           </Button>
         </div>
       ) : null}

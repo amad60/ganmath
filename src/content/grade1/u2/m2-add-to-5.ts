@@ -5,7 +5,7 @@ export const addTo5: ContentModule = {
   unitId: 'g1-u2',
   grade: 1,
   title: 'Add to 5',
-  icon: '➕',
+  icon: '🍏',
   prereq: ['g1-u2-m1'],
   skills: ['add-within-5'],
   kind: 'fact',

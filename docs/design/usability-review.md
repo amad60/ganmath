@@ -95,6 +95,33 @@ ditemukan dan dibaca lebih dulu, dan isinya bukan hal yang dibutuhkan anak setia
 Pindah kelas adalah keputusan orang tua yang jarang, jadi tempatnya di Parent Area.
 Navigasi anak tetap dua ikon di header: 🏅 progress dan 👤 area orang tua.
 
+## Ronde 4 — pass desain menyeluruh
+
+Dipicu satu laporan: header peta tidak punya jarak atas sama sekali. Penyebabnya bug
+kelas: helper area aman ditulis `padding-top: env(safe-area-inset-top)`, dan
+**`env()` bernilai 0** di browser desktop maupun di Android yang belum dipasang ke home
+screen. Jadi jaraknya hilang total.
+
+Perbaikan itu justru membuka masalah yang lebih besar: `.safe-bottom` **menimpa**
+`p-5` milik modal (20px → 12px), jadi helper yang dimaksudkan menambah jarak malah
+menguranginya. Sekarang nilainya aditif (`calc(20px + env(...))`), dan ada
+**test yang gagal** kalau ada elemen memakai `safe-*` bersama utility padding di sisi
+yang sama.
+
+Pass desain lainnya:
+- **Ikon antarmuka jadi SVG** (piala, orang, gembok, tutup, lewati). Emoji dirender
+  berbeda di tiap sistem, ukurannya tidak presisi, dan warnanya tidak ikut tema — di
+  sebelah maskot SVG, emoji terlihat seperti tempelan. Emoji tetap dipakai untuk ISI
+  pelajaran, di mana keragamannya tidak masalah.
+- **17 ikon modul diganti**: emoji keycap (🔟 1️⃣ 💯 🔢) terbaca sebagai chip antarmuka
+  di dalam lingkaran node, bukan sebagai gambar.
+- Header dapat garis rambut pemisah; angka statistik memakai *tabular numerals*
+  sehingga tidak bergoyang saat berubah.
+- Label progress diberi lebar tetap supaya bar tidak bergeser saat 9 → 10.
+- Tinggi label badge dikunci dua baris supaya kartu tidak naik-turun.
+- Belokan jalur peta diperbesar supaya terbaca sebagai jalur, bukan daftar.
+- Kotak jawaban di gerbang orang tua menggantikan em-dash yang terbaca sebagai garis nyasar.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

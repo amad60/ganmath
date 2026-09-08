@@ -12,7 +12,7 @@ export function ProgressBar({ value, max, label, tone = 'primary' }: ProgressBar
   return (
     <div className="flex items-center gap-3">
       <div
-        className="bg-sunk h-4 flex-1 overflow-hidden rounded-[var(--r-pill)]"
+        className="bg-sunk h-3.5 flex-1 overflow-hidden rounded-[var(--r-pill)]"
         role="progressbar"
         aria-valuenow={value}
         aria-valuemin={0}
@@ -24,7 +24,13 @@ export function ProgressBar({ value, max, label, tone = 'primary' }: ProgressBar
           style={{ transform: `scaleX(${pct})`, background: color, width: '100%' }}
         />
       </div>
-      {label ? <span className="text-ink-soft text-[15px] font-bold">{label}</span> : null}
+      {label ? (
+        // Lebar minimum + angka tabular: labelnya tidak menggeser bar saat angkanya
+        // berubah dari 9 ke 10.
+        <span className="text-ink-soft shrink-0 text-right text-[14px] font-black tabular-nums">
+          {label}
+        </span>
+      ) : null}
     </div>
   );
 }
