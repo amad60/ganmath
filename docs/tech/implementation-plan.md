@@ -10,8 +10,8 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 |---|---|---|
 | **S0** ✅ | Setup proyek: Vite + React + TS + Tailwind + Zustand + Motion, `tokens.css`, font Nunito self-hosted, `netlify.toml` | ✅ `npm run build` bersih; smoke-test token tampil; **64.5KB gzip** (60.6 JS + 3.9 CSS) |
 | **S1** ✅ | Engine murni: `rng`, `generator`, `mastery`, `review`, `unlock` + test Vitest | ✅ **56 test hijau**; aturan "nol impor React di `src/engine/`" ditegakkan oleh `architecture.test.ts` |
-| **S2** | Store Zustand + persist + `migrations` + export/import file | tutup-buka app progress tetap; file export bisa diimpor balik dan menghasilkan state identik |
-| **S3** | UI kit: `Button` (gaya tebal 3D), `ProgressBar`, `Keypad`, `StarRow`, `Header`, `Sheet` | halaman demo internal menampilkan semua komponen di light & dark, target tap ≥56px terverifikasi |
+| **S2** ✅ | Store Zustand + persist + `migrations` + export/import file | ✅ tutup-buka app progress tetap; export→import menghasilkan state identik; **+ `resilientStorage`**: Safari mode privat tidak lagi menjatuhkan app |
+| **S3** ✅ | UI kit: `Button` (gaya tebal 3D), `ProgressBar`, `Keypad`, `StarRow`, `Header`, `Sheet` | ✅ halaman demo dengan pengalih tema system/light/dark; semua tombol jawaban 64px |
 | **S4** | Manipulatif gelombang 1: `counter-objects`, `ten-frame`, `number-bond`, `number-line` | interaktif, animasi sesuai `../design/animation.md`, hormati `prefers-reduced-motion`, jalan 60fps di Poco F3 |
 | **S5** | Layar: `map` → `learn` → `practice` → `quiz` → `result` | satu modul dummy bisa ditempuh dari peta sampai layar hasil, ujung ke ujung |
 | **S6** | Gamifikasi: XP, bintang, badge, streak, perayaan | perayaan ≤3 detik & bisa di-tap lewat; badge tersimpan; streak berganti hari dengan benar (uji ganti tanggal HP) |
@@ -40,6 +40,12 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 - Versi yang benar-benar terpasang: Vite 8, React 19, **TypeScript 7** (tsc versi Go — `baseUrl`
   sudah dihapus, `paths` harus relatif), Tailwind 4, Vitest 5, Zustand 5, Motion 13.
 - `vite-plugin-pwa` **belum** dipasang, sesuai rencana (S10).
+- **Temuan S2:** test mengungkap bahwa `zustand/persist` melempar error kalau `localStorage`
+  diblokir (Safari mode privat) — app langsung jatuh. Ditambahkan `resilientStorage()` yang
+  jatuh ke memori saat gagal: app tetap jalan penuh dalam sesi itu, hanya tidak tersimpan
+  lintas sesi. `storageIsAvailable()` dipakai Parent Area untuk memperingatkan orang tua.
+- **XP, streak, dan badge sengaja belum disentuh** di store — itu S6. Field-nya sudah ada di
+  skema supaya tidak perlu migrasi nanti.
 
 ## Anggaran & batas
 
