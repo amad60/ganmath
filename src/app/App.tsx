@@ -11,6 +11,8 @@ import { OnboardingScreen } from './screens/OnboardingScreen';
 import { BadgesScreen } from './screens/BadgesScreen';
 import { ParentScreen } from './screens/ParentScreen';
 import { ParentGate } from './screens/ParentGate';
+import { usePwa } from './usePwa';
+import { Button } from '../components/ui';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
@@ -46,6 +48,7 @@ export function App() {
   const [gateOpen, setGateOpen] = useState(false);
 
   const next = useMemo(() => nextModule(data.modules, registry), [data.modules]);
+  const pwa = usePwa(Object.keys(data.modules).length > 0);
   const today = toDateString(new Date());
 
   const startSession = (moduleId: string, kind: SessionKind) => {
@@ -178,6 +181,21 @@ export function App() {
               setScreen({ name: 'parent' });
             }}
           />
+
+          {/* Tawaran, bukan paksaan: tidak pernah reload otomatis di tengah sesi anak. */}
+          {pwa.needRefresh ? (
+            <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 mx-auto max-w-[430px] p-4">
+              <Button full onClick={pwa.applyUpdate}>
+                New version ready — tap to update
+              </Button>
+            </div>
+          ) : pwa.canInstall ? (
+            <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 mx-auto max-w-[430px] p-4">
+              <Button full onClick={pwa.promptInstall}>
+                Add GanMath to your home screen
+              </Button>
+            </div>
+          ) : null}
         </div>
       );
   }

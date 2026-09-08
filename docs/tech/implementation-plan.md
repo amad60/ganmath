@@ -18,7 +18,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S7** ✅ | Konten **U1** (6 modul) + linter konten | ✅ Unit 1 lengkap; linter menegakkan 8 aturan dan langsung menemukan 8 pelanggaran kosakata di konten yang baru ditulis |
 | **S8** ✅ | Konten **U6-m1, U6-m2, U2** (10 modul) → total 16 | ✅ path order #1–16 lengkap dan lolos linter; tipe soal `choose-text` ditambahkan agar modul bentuk bisa ditulis |
 | **S9** ✅ | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | ✅ onboarding 2 input; Parent Area menampilkan 3 topik dengan akurasi terendah, setelan, save/load file dengan konfirmasi perbandingan, dan peringatan kalau browser tidak menyimpan data |
-| **S10** | PWA: manifest, ikon, precache, prompt Add to Home Screen, `navigator.storage.persist()` | mode pesawat: app tetap jalan penuh; terpasang di home screen kedua HP |
+| **S10** ✅ | PWA: manifest, ikon, precache, prompt Add to Home Screen, `navigator.storage.persist()` | ✅ 14 entri di-precache (319KB) termasuk font & seluruh konten; update ditawarkan, tidak pernah reload otomatis. **Verifikasi mode pesawat di HP sungguhan menyusul di S11** |
 | **S11** | Uji perangkat + performa: Poco F3 & iPhone 17 | tidak ada scroll horizontal, safe-area benar di Dynamic Island, bundle <200KB gzip, tidak ada frame drop terlihat |
 | **S12** | Deploy | user menjalankan deploy Netlify; link terbuka di HP anak |
 
@@ -69,6 +69,8 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 - **S8 menemukan bug generator lewat linter:** dedupe soal memakai kunci `tipe+parameter`,
   sehingga dua aturan berbeda dengan parameter sama ("How many sides?" vs "How many corners?")
   saling membuang. Sekarang dedupe memakai **apa yang dilihat anak** (tipe + teks soal).
+- **S10:** ikon PWA dibuat sendiri lewat encoder PNG kecil di Python (tanpa dependensi grafis):
+  tanda plus putih di atas indigo, plus varian *maskable* dengan area aman lebih longgar.
 - **Aturan animasi materi ditegakkan lewat `teachingDuration()`**: saat `prefers-reduced-motion`
   aktif, animasi manipulatif dipercepat 50%, bukan dimatikan — blok yang bergabung jadi puluhan
   itu materi, bukan dekorasi.
