@@ -93,10 +93,12 @@ export function generateSet(
       const params = pool.combos[cursor[poolIndex] as number] as Record<string, number>;
       cursor[poolIndex] = (cursor[poolIndex] as number) + 1;
       const text = pool.rule.text(params);
-      // Dedupe berdasarkan APA YANG DILIHAT ANAK, bukan tipe+parameter. Dua aturan
-      // bisa memakai parameter yang sama untuk soal yang berbeda ("How many sides?"
-      // vs "How many corners?") — versi sebelumnya membuang yang kedua.
-      const key = `${pool.rule.type}:${text}`;
+      const visual = pool.rule.visual?.(params);
+      // Dedupe berdasarkan APA YANG DILIHAT ANAK: teks DAN gambarnya. Memakai
+      // tipe+parameter membuang soal berbeda yang kebetulan berparameter sama;
+      // memakai teks saja membuang soal yang variasinya ada di gambar
+      // ("How many sides?" dengan bangun yang berbeda-beda).
+      const key = `${pool.rule.type}:${text}:${visual ? JSON.stringify(visual) : ''}`;
       if (seen.has(key)) continue;
       seen.add(key);
       const answer = pool.rule.answer(params);
@@ -108,6 +110,7 @@ export function generateSet(
         answer,
         params,
         ...(pool.rule.range ? { range: pool.rule.range } : {}),
+        ...(visual ? { visual } : {}),
       };
       if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];

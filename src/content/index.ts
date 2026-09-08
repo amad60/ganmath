@@ -16,6 +16,13 @@ import { addTo10 } from './grade1/u2/m5-add-to-10';
 import { takeAwayFrom10 } from './grade1/u2/m6-take-away-from-10';
 import { factFamily } from './grade1/u2/m7-fact-family';
 import { missingNumber } from './grade1/u2/m8-missing-number';
+import { whatComesNext } from './grade1/u8/m1-what-comes-next';
+import { teenNumbers } from './grade1/u3/m1-teen-numbers';
+import { tensAndOnes } from './grade1/u3/m2-tens-and-ones';
+import { compareTo20 } from './grade1/u3/m3-compare-to-20';
+import { orderTo20 } from './grade1/u3/m4-order-to-20';
+import { longerOrShorter } from './grade1/u7/m1-longer-or-shorter';
+import { measureWithUnits } from './grade1/u7/m2-measure-with-units';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -49,6 +56,16 @@ export const all: ContentModule[] = [
   takeAwayFrom10,
   factFamily,
   missingNumber,
+  // jeda pola (#17)
+  whatComesNext,
+  // Unit 3 — Numbers to 20 (#18–21)
+  teenNumbers,
+  tensAndOnes,
+  compareTo20,
+  orderTo20,
+  // jeda ukur (#22–23)
+  longerOrShorter,
+  measureWithUnits,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -68,5 +85,8 @@ export function moduleById(id: string): ContentModule {
 export const unitTitles: Record<string, { title: string; color: string }> = {
   'g1-u1': { title: 'Unit 1 · Numbers to 10', color: 'var(--c-unit-1)' },
   'g1-u2': { title: 'Unit 2 · Add and Subtract', color: 'var(--c-unit-2)' },
+  'g1-u3': { title: 'Unit 3 · Numbers to 20', color: 'var(--c-unit-3)' },
   'g1-u6': { title: 'Unit 6 · Shapes', color: 'var(--c-unit-6)' },
+  'g1-u7': { title: 'Unit 7 · Measure & Time', color: 'var(--c-unit-7)' },
+  'g1-u8': { title: 'Unit 8 · Patterns & Data', color: 'var(--c-unit-8)' },
 };

@@ -1,11 +1,14 @@
+import type { ShapeName } from '../../../engine/types';
 import type { ContentModule } from '../../types';
 
-const SHAPES = [
-  { name: 'circle', icon: '⚪', sides: 0 },
-  { name: 'triangle', icon: '🔺', sides: 3 },
-  { name: 'square', icon: '🟦', sides: 4 },
-  { name: 'rectangle', icon: '▭', sides: 4 },
+const SHAPES: { name: ShapeName; sides: number }[] = [
+  { name: 'circle', sides: 0 },
+  { name: 'triangle', sides: 3 },
+  { name: 'square', sides: 4 },
+  { name: 'rectangle', sides: 4 },
 ];
+
+const NAMES = SHAPES.map((s) => s.name);
 
 export const flatShapes: ContentModule = {
   id: 'g1-u6-m1',
@@ -19,56 +22,79 @@ export const flatShapes: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'choose-number'],
   visuals: ['shape-2d', 'counter-objects'],
-  vocab: ['shape', 'shapes', 'flat', 'circle', 'triangle', 'square', 'rectangle', 'side', 'sides', 'corner', 'corners', 'round'],
+  vocab: [
+    'shape',
+    'shapes',
+    'flat',
+    'circle',
+    'triangle',
+    'square',
+    'rectangle',
+    'side',
+    'sides',
+    'corner',
+    'corners',
+    'round',
+  ],
 
   learn: [
     {
       stage: 'concrete',
+      // Bangun digambar SVG dengan titik sudut, bukan emoji: emoji berbeda bentuk
+      // di tiap HP dan tidak bisa dipakai menunjukkan sisi atau sudut.
       prompt: 'Tap the three corners.',
-      visual: { kind: 'counter-objects', count: 3, icon: '🔺' },
+      visual: { kind: 'shape2d', name: 'triangle', showCorners: true },
       action: 'tap-count',
       target: 3,
       hint: 'A triangle has three corners.',
     },
     {
       stage: 'pictorial',
-      prompt: 'Count the sides. Three sides.',
-      visual: { kind: 'ten-frame', value: 3 },
+      prompt: 'Three corners, three sides.',
+      visual: { kind: 'shape2d', name: 'triangle', showCorners: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Three sides make a triangle.',
-      visual: { kind: 'ten-frame', value: 3 },
+      prompt: 'A square has four sides.',
+      visual: { kind: 'shape2d', name: 'square', showCorners: true },
       action: 'watch',
     },
   ],
 
   rules: [
     {
+      // Gambar yang ditampilkan, NAMA yang dipilih.
+      // Bentuk sebaliknya ("Which one is a rectangle?" dengan pilihan berupa kata)
+      // memberi jawabannya gratis — anak cukup mencocokkan tulisan.
       type: 'choose-text',
       skill: 'shape-2d',
       params: { i: [0, 3] },
       answer: (p) => p.i as number,
-      text: (p) => `Which one is a ${SHAPES[p.i as number]?.name}?`,
-      options: () => SHAPES.map((s) => s.icon),
+      text: () => 'What shape is this?',
+      visual: (p) => ({ kind: 'shape2d', name: NAMES[p.i as number] as ShapeName }),
+      options: () => NAMES,
     },
     {
       type: 'choose-number',
       skill: 'shape-2d',
       params: { i: [1, 3] },
       answer: (p) => SHAPES[p.i as number]?.sides ?? 0,
-      text: (p) => `How many sides? ${SHAPES[p.i as number]?.icon}`,
+      text: () => 'How many sides?',
+      visual: (p) => ({ kind: 'shape2d', name: NAMES[p.i as number] as ShapeName }),
       distractors: 'near',
     },
     {
-      // Sudut = jumlah sisi untuk bangun ini; pertanyaan terpisah supaya anak
-      // menghubungkan dua kata itu, dan supaya ruang soal cukup untuk satu sesi.
       type: 'choose-number',
       skill: 'shape-2d',
       params: { i: [1, 3] },
       answer: (p) => SHAPES[p.i as number]?.sides ?? 0,
-      text: (p) => `How many corners? ${SHAPES[p.i as number]?.icon}`,
+      text: () => 'How many corners?',
+      visual: (p) => ({
+        kind: 'shape2d',
+        name: NAMES[p.i as number] as ShapeName,
+        showCorners: true,
+      }),
       distractors: 'near',
     },
   ],

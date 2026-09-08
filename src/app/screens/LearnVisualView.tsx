@@ -1,4 +1,12 @@
-import { CounterObjects, NumberBond, NumberLine, TenFrame } from '../../components/manipulatives';
+import {
+  Bars,
+  Base10Blocks,
+  CounterObjects,
+  NumberBond,
+  NumberLine,
+  Shape2D,
+  TenFrame,
+} from '../../components/manipulatives';
 import type { LearnVisual } from '../../content/types';
 
 export type LearnVisualViewProps = {
@@ -41,5 +49,11 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       );
     case 'number-bond':
       return <NumberBond whole={visual.whole} parts={visual.parts} ask={visual.ask} />;
+    case 'base10':
+      return <Base10Blocks tens={visual.tens} ones={visual.ones} />;
+    case 'shape2d':
+      return <Shape2D name={visual.name} size={120} showCorners={visual.showCorners} />;
+    case 'bars':
+      return <Bars lengths={visual.lengths} labels={visual.labels} />;
   }
 }

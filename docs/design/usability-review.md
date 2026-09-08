@@ -80,7 +80,7 @@ Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".
 | Prioritas | Masalah |
 |---|---|
 | **1** | **Belum pernah diuji di HP fisik.** Screenshot memakai Chrome desktop pada viewport HP — itu menangkap tata letak, tapi bukan sentuhan, kelincahan, atau perilaku Safari iOS |
-| **2** | **Modul bentuk memakai emoji, bukan bangun sungguhan.** `shape-2d`/`shape-3d` masih ada di daftar komponen tapi belum dibuat. Emoji 🔺🟦 terlihat murah dan tidak bisa dipakai mengajar sisi/sudut |
+| ~~2~~ | ~~Modul bentuk memakai emoji~~ — **selesai.** `Shape2D` (SVG, bisa menandai sudut), `Base10Blocks`, dan `Bars` dibuat, dan soal kini bisa membawa gambarnya sendiri. Bangun ruang masih emoji |
 | **3** | **Hint di Practice masih kasar** — cuma mengisi ten-frame. Rancangannya hint berjenjang: arah → tunjukkan alat → demo langkah |
 | **4** | **Tidak ada transisi antar soal.** Rancangan meminta geser keluar/masuk 300ms; sekarang soal berganti mendadak |
 | **5** | **Layar Learn masih terasa datar** untuk langkah `watch` — tidak ada gerak yang menjelaskan, cuma gambar diam |

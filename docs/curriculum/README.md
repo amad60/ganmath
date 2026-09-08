@@ -61,6 +61,10 @@ sekaligus berisiko: engine belum teruji tapi konten sudah terlanjur banyak.
 | **5b — Uji dengan anak** | Perbaiki berdasarkan pemakaian nyata | Sebelum menulis 29 modul sisanya dengan pola yang mungkin salah |
 | **5c — Lengkapi Grade 1** | 27 modul sisanya (#17–43) | Pola sudah terbukti, tinggal isi konten |
 
+**Kemajuan 5c: 7 dari 27 modul selesai** (#17–23) — pola, Unit 3 lengkap, dan dua modul
+pengukuran. Tersisa #24–43: Add & Subtract within 20, Numbers to 100, sisa bentuk,
+waktu & uang, dan data.
+
 Ini menggeser Fase 6 (uji dengan anak) jadi **di tengah** Fase 5, bukan sesudahnya. Perubahan
 ini sudah dimasukkan ke `../ROADMAP.md`.
 

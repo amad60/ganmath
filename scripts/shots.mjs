@@ -16,6 +16,9 @@ const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const BASE = process.env.SHOT_BASE ?? 'http://localhost:4173';
 const OUT = process.env.SHOT_DIR ?? 'shots';
 const DARK = process.argv.includes('--dark');
+/** --from=<moduleId>: anggap semua modul sebelumnya sudah dikuasai, supaya layar
+ *  soal modul mana pun bisa diperiksa tanpa memainkan seluruh jalur. */
+const FROM = process.argv.find((a) => a.startsWith('--from='))?.split('=')[1] ?? null;
 
 mkdirSync(OUT, { recursive: true });
 
@@ -68,6 +71,25 @@ const seeded = {
   version: 1,
 };
 
+if (FROM) {
+  const { pathOrder } = await import('../src/content/pathOrder.json', { with: { type: 'json' } })
+    .then((m) => m.default)
+    .catch(() => ({ pathOrder: [] }));
+  for (const id of pathOrder) {
+    if (id === FROM) break;
+    seeded.state.data.modules[id] = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      consecutiveFails: 0,
+      masteredAt: '2026-09-05',
+      learnCompletedAt: '2026-09-04',
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 19 },
+    };
+  }
+}
+
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: 'new',
@@ -112,6 +134,17 @@ const clickText = async (page, text) => {
   await node.click();
   await new Promise((r) => setTimeout(r, 400));
 };
+
+if (FROM) {
+  // Mode pemeriksaan satu modul: langsung ke layar soalnya.
+  const page = await newPage({ seed: true });
+  await clickText(page, 'already know this');
+  await new Promise((r) => setTimeout(r, 600));
+  await shot(page, `module-${FROM}`);
+  await page.close();
+  await browser.close();
+  process.exit(0);
+}
 
 try {
   // 1. Onboarding (tanpa data)

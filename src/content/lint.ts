@@ -34,7 +34,7 @@ export const BASE_VOCAB = new Set(
    count number numbers box boxes line dot dots one two three four five six seven
    eight nine ten at once fast see say comes grow to the right can as more less same
    than it as we write jumps not five four here now
-   each every them by full all has with`
+   each every them by full all has with next row again`
     .split(/\s+/)
     .filter(Boolean),
 );
@@ -134,6 +134,7 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       for (const q of questions) {
         if (!Number.isFinite(q.answer)) add(m.id, 'generator', `jawaban tidak sah: ${q.text}`);
         if (q.type === 'choose-text' && (q.options ?? []).length < 3) {
+          // Dua pilihan = 50% benar hanya dengan menebak; tidak cukup untuk menilai.
           add(m.id, 'generator', `choose-text butuh minimal 3 pilihan: ${q.text}`);
         }
         if (q.type !== 'compare-symbol' && q.answer < 0) {

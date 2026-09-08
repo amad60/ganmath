@@ -58,6 +58,22 @@ export type VisualId =
 
 export type DistractorKind = 'near' | 'digit-swap' | 'random';
 
+export type ShapeName = 'circle' | 'triangle' | 'square' | 'rectangle' | 'pentagon' | 'hexagon';
+
+/**
+ * Gambar yang MERUPAKAN bagian dari soal (bukan bantuan).
+ *
+ * Bedanya penting: ten-frame yang muncul setelah menekan Hint adalah bantuan dan
+ * disembunyikan saat ujian; sedangkan bangun datar yang harus dinamai anak adalah
+ * soal itu sendiri, jadi selalu tampil.
+ */
+export type QuestionVisual =
+  | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
+  | { kind: 'base10'; tens: number; ones: number }
+  | { kind: 'shape2d'; name: ShapeName; showCorners?: boolean }
+  | { kind: 'bars'; lengths: number[]; labels?: string[] }
+  | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] };
+
 /** Aturan pembuat soal. Soal dibuat dari aturan, bukan daftar tetap (anti-hafal). */
 export type QuestionRule = {
   type: QType;
@@ -75,6 +91,8 @@ export type QuestionRule = {
   range?: [number, number];
   /** Label pilihan untuk `choose-text`; jawabannya adalah INDEKS label yang benar. */
   options?: (p: Record<string, number>) => string[];
+  /** Gambar yang merupakan bagian dari soal — selalu tampil, termasuk saat ujian. */
+  visual?: (p: Record<string, number>) => QuestionVisual;
   /** Pengecoh yang mencerminkan miskonsepsi khas modul ini. Wajib untuk modul `fact`. */
   misconception?: (p: Record<string, number>) => number | null;
 };
@@ -89,6 +107,7 @@ export type Question = {
   range?: [number, number];
   /** Label untuk `choose-text` — layar merender options[choice], bukan angkanya. */
   options?: string[];
+  visual?: QuestionVisual;
   params: Record<string, number>;
 };
 

@@ -1,6 +1,6 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 5a SELESAI — 13/13 langkah, sudah live.**
+Status keseluruhan: **Fase 5a selesai; Fase 5c berjalan — 23 dari 43 modul Grade 1 sudah ada.**
 
 - Live: **https://ganmath.netlify.app**
 - Repo: **https://github.com/amad60/ganmath** (private)

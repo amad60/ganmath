@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { SessionKind } from '../../engine/types';
+import type { Question, SessionKind } from '../../engine/types';
 import {
   currentQuestion,
   isFinished,
@@ -9,7 +9,13 @@ import {
 } from '../../engine/session';
 import { Button, Header, Keypad, SessionDots, type Feedback } from '../../components/ui';
 import type { DotState } from '../../components/ui/SessionDots';
-import { NumberLine, TenFrame } from '../../components/manipulatives';
+import {
+  Bars,
+  Base10Blocks,
+  NumberLine,
+  Shape2D,
+  TenFrame,
+} from '../../components/manipulatives';
 import { Mascot, type MascotMood } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
 import { sfx, unlockAudio } from '../sfx';
@@ -80,6 +86,28 @@ function QuestionText({ text }: { text: string }) {
       ) : null}
     </div>
   );
+}
+
+function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']> }) {
+  switch (visual.kind) {
+    case 'ten-frame':
+      return <TenFrame value={visual.value} capacity={visual.capacity ?? 10} split={visual.split} />;
+    case 'base10':
+      return <Base10Blocks tens={visual.tens} ones={visual.ones} />;
+    case 'shape2d':
+      return <Shape2D name={visual.name} size={110} showCorners={visual.showCorners} />;
+    case 'bars':
+      return <Bars lengths={visual.lengths} labels={visual.labels} />;
+    case 'number-line':
+      return (
+        <NumberLine
+          min={visual.min}
+          max={visual.max}
+          value={visual.value ?? null}
+          marks={visual.marks ?? []}
+        />
+      );
+  }
 }
 
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
@@ -189,6 +217,8 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         // (tempat yang tidak dipakai) alih-alih memisahkan soal dari jawabannya.
         className="flex min-h-0 flex-1 flex-col items-center justify-end gap-4 overflow-y-auto px-6 pt-6 pb-2"
       >
+        {question.visual ? <QuestionVisualView visual={question.visual} /> : null}
+
         <QuestionText text={question.text} />
 
         {/* Ten-frame hanya muncul SETELAH hint ditekan. Sebelumnya layar menampilkan
