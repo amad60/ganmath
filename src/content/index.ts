@@ -98,6 +98,17 @@ import { timesSeven } from './grade3/u2/m5-times-seven';
 import { timesEight } from './grade3/u2/m6-times-eight';
 import { timesNine } from './grade3/u2/m7-times-nine';
 import { timesTableCheck } from './grade3/u2/m8-times-table-check';
+import { shareEqually } from './grade3/u3/m1-share-equally';
+import { makeGroups } from './grade3/u3/m2-make-groups';
+import { divideBy2510 } from './grade3/u3/m3-divide-by-2-5-10';
+import { divideBy34 } from './grade3/u3/m4-divide-by-3-4';
+import { timesAndDivide } from './grade3/u3/m5-times-and-divide';
+import { leftOver } from './grade3/u3/m6-left-over';
+import { addHundreds } from './grade3/u4/m1-add-hundreds';
+import { add3Digit } from './grade3/u4/m2-add-3-digit';
+import { addAndRegroup } from './grade3/u4/m3-add-and-regroup';
+import { subtract3Digit } from './grade3/u4/m4-subtract-3-digit';
+import { subtractAndRegroup } from './grade3/u4/m5-subtract-and-regroup';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -231,6 +242,19 @@ export const all: ContentModule[] = [
   timesEight,
   timesNine,
   timesTableCheck,
+  // Unit 3 — Division
+  shareEqually,
+  makeGroups,
+  divideBy2510,
+  divideBy34,
+  timesAndDivide,
+  leftOver,
+  // Unit 4 — Add & Subtract to 1000
+  addHundreds,
+  add3Digit,
+  addAndRegroup,
+  subtract3Digit,
+  subtractAndRegroup,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -319,4 +343,6 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g2-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
   'g3-u1': { title: 'Unit 1 · Numbers to 10.000', color: 'var(--c-unit-1)' },
   'g3-u2': { title: 'Unit 2 · Times Tables', color: 'var(--c-unit-2)' },
+  'g3-u3': { title: 'Unit 3 · Division', color: 'var(--c-unit-3)' },
+  'g3-u4': { title: 'Unit 4 · Add & Subtract to 1000', color: 'var(--c-unit-4)' },
 };

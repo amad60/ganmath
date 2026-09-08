@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { generateSet } from './generator';
 import { mulberry32 } from './rng';
 import { addModule } from './fixtures';
+import type { ModuleDef } from './types';
 
 describe('generator', () => {
   it('tidak pernah mengulang soal identik dalam satu sesi', () => {
@@ -85,7 +86,7 @@ describe('skala pengecoh', () => {
   // Anak yang tahu artinya "pembulatan" bisa mencoret keduanya tanpa berhitung,
   // jadi soalnya menilai hal yang salah.
   it('distractorUnit membuat semua pilihan sekelipatan jawaban', () => {
-    const def = {
+    const def: ModuleDef = {
       ...addModule(),
       rules: [
         {
@@ -109,7 +110,7 @@ describe('skala pengecoh', () => {
   });
 
   it('tanpa distractorUnit pengecoh tetap rapat di sekitar jawaban', () => {
-    const def = {
+    const def: ModuleDef = {
       ...addModule(),
       rules: [
         {
