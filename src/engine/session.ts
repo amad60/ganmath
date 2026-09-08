@@ -11,6 +11,7 @@ export const SESSION_LIMITS: Record<SessionKind, SessionLimits> = {
   review: { min: 5, max: 5, minSeconds: 0 },
   master: { min: 10, max: 10, minSeconds: 0 },
   speed: { min: 8, max: 8, minSeconds: 0 },
+  testout: { min: 10, max: 10, minSeconds: 0 },
 };
 
 /** Median thinkMs di bawah ini + semua benar = anak sudah jelas bisa; jangan dipanjang-panjangkan. */
@@ -38,7 +39,7 @@ export function createSession(
 ): SessionState {
   const limits = SESSION_LIMITS[kind];
   const { questions } = generateSet(def, limits.max, mulberry32(seed), {
-    requireCoverage: kind === 'quiz' || kind === 'master',
+    requireCoverage: kind === 'quiz' || kind === 'master' || kind === 'testout',
   });
   return {
     sessionId: `${def.id}-${kind}-${seed}`,
@@ -129,9 +130,15 @@ export function isFinished(state: SessionState, nowMs: number): boolean {
   return nowMs - state.startedAtMs >= limits.minSeconds * 1000;
 }
 
+/**
+ * Berapa soal yang sudah dikerjakan dan berapa targetnya. Target dipakai untuk
+ * memberi tahu anak "sisa berapa lagi" — pertanyaan pertama anak dalam sesi apa pun.
+ */
 export function progressOf(state: SessionState): { done: number; total: number } {
   const limits = SESSION_LIMITS[state.kind];
-  return { done: state.results.length, total: Math.max(limits.min, state.results.length + state.pending.length > limits.max ? limits.max : state.results.length + state.pending.length) };
+  const done = state.results.length;
+  const available = done + state.pending.length;
+  return { done, total: Math.min(limits.max, Math.max(limits.min, available)) };
 }
 
 export function toSessionResult(state: SessionState, date: string): SessionResult {

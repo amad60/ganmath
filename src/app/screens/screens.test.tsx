@@ -1,0 +1,194 @@
+import { describe, expect, it, vi } from 'vitest';
+import { render, screen, fireEvent, within } from '@testing-library/react';
+import { QuestionScreen } from './QuestionScreen';
+import { ResultScreen } from './ResultScreen';
+import { OnboardingScreen } from './OnboardingScreen';
+import { MapScreen } from './MapScreen';
+import { Button } from '../../components/ui';
+import { createSession } from '../../engine/session';
+import { evaluate } from '../../engine/mastery';
+import { emptyModuleState } from '../../engine/types';
+import { moduleById, pathOrder } from '../../content';
+import { session as fakeSession } from '../../engine/fixtures';
+
+/**
+ * Test-test ini ada karena bug nyata yang lolos ke tangan anak: warna benar/salah
+ * tidak pernah muncul, karena dua utility background Tailwind saling bertabrakan.
+ * Tidak ada satu pun test yang merender komponen waktu itu.
+ */
+describe('Button — umpan balik harus benar-benar terlihat', () => {
+  it('warna berubah sesuai feedback, bukan bergantung urutan CSS', () => {
+    const { rerender } = render(<Button feedback="idle">10</Button>);
+    const idle = screen.getByRole('button').style.background;
+
+    rerender(<Button feedback="correct">10</Button>);
+    const correct = screen.getByRole('button').style.background;
+
+    rerender(<Button feedback="retry">10</Button>);
+    const retry = screen.getByRole('button').style.background;
+
+    expect(correct).toContain('--c-correct');
+    expect(retry).toContain('--c-retry');
+    expect(new Set([idle, correct, retry]).size).toBe(3);
+  });
+
+  it('jawaban yang ditunjukkan setelah salah memakai warna lembut, bukan perayaan', () => {
+    render(<Button feedback="reveal">10</Button>);
+    expect(screen.getByRole('button').style.background).toContain('--c-correct-soft');
+  });
+});
+
+describe('QuestionScreen — anak harus tahu sisa berapa lagi', () => {
+  // Quick Look: aturan pertamanya bertipe choose-number, jadi layar merender
+  // tombol pilihan (bukan keypad) — itu yang ingin diuji di sini.
+  const def = moduleById('g1-u1-m4');
+
+  const setup = () =>
+    render(
+      <QuestionScreen
+        session={createSession(def, 'quiz', 7, 0)}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+
+  it('menampilkan hitungan soal secara eksplisit', () => {
+    setup();
+    expect(screen.getByText(/^\d+ \/ \d+$/)).toBeInTheDocument();
+  });
+
+  it('menampilkan satu titik per soal sebagai tolok ukur', () => {
+    const { container } = setup();
+    const dots = container.querySelectorAll('[aria-hidden] > span');
+    expect(dots.length).toBeGreaterThanOrEqual(8);
+  });
+
+  it('menekan jawaban langsung memberi warna pada tombol yang dipilih', () => {
+    vi.useFakeTimers();
+    const s = createSession(def, 'quiz', 7, 0);
+    render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    const q = s.pending[0]!.question;
+    const wrong = (q.choices ?? []).find((c) => c !== q.answer)!;
+
+    fireEvent.click(screen.getByRole('button', { name: String(wrong) }));
+
+    expect(screen.getByRole('button', { name: String(wrong) })).toHaveAttribute(
+      'data-feedback',
+      'retry',
+    );
+    // jawaban benar ikut ditunjukkan — layar mengajar, bukan sekadar menilai
+    expect(screen.getByRole('button', { name: String(q.answer) })).toHaveAttribute(
+      'data-feedback',
+      'reveal',
+    );
+    vi.useRealTimers();
+  });
+
+  it('jawaban benar memberi warna benar', () => {
+    vi.useFakeTimers();
+    const s = createSession(def, 'quiz', 7, 0);
+    render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    const q = s.pending[0]!.question;
+    fireEvent.click(screen.getByRole('button', { name: String(q.answer) }));
+    expect(screen.getByRole('button', { name: String(q.answer) })).toHaveAttribute(
+      'data-feedback',
+      'correct',
+    );
+    vi.useRealTimers();
+  });
+
+  it('Mastery Check tidak menampilkan tombol Hint', () => {
+    setup();
+    expect(screen.queryByText(/Hint/)).not.toBeInTheDocument();
+  });
+});
+
+describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => {
+  const def = moduleById('g1-u1-m1');
+  const failing = evaluate(def, emptyModuleState(), fakeSession({ correct: 4 }));
+
+  it('bintang tetap berwarna emas meski belum didapat', () => {
+    const { container } = render(
+      <ResultScreen
+        module={def}
+        evaluation={failing}
+        xpGained={20}
+        earnedBadges={[]}
+        sessionsNeeded={2}
+        onContinue={() => {}}
+        onRetry={() => {}}
+      />,
+    );
+    const stars = within(container).getByLabelText(/of 3 stars/);
+    const spans = stars.querySelectorAll('span');
+    expect(spans.length).toBe(3);
+    for (const s of spans) expect((s as HTMLElement).style.color).toContain('--c-star');
+  });
+
+  it('tidak pernah menulis Failed', () => {
+    render(
+      <ResultScreen
+        module={def}
+        evaluation={failing}
+        xpGained={0}
+        earnedBadges={[]}
+        sessionsNeeded={2}
+        onContinue={() => {}}
+        onRetry={() => {}}
+      />,
+    );
+    expect(screen.queryByText(/fail/i)).not.toBeInTheDocument();
+  });
+});
+
+describe('Onboarding', () => {
+  it('memakai maskot rubah, bukan robot, dan menyediakan avatar kucing', () => {
+    render(<OnboardingScreen onDone={() => {}} />);
+    expect(screen.getByLabelText(/Gan the fox/)).toBeInTheDocument();
+    expect(screen.getByLabelText('cat')).toBeInTheDocument();
+    expect(screen.queryByText('🤖')).not.toBeInTheDocument();
+  });
+});
+
+describe('MapScreen — pintu jump level', () => {
+  it('menawarkan lewati modul untuk anak yang sudah bisa', () => {
+    const onTestOut = vi.fn();
+    render(
+      <MapScreen
+        states={{}}
+        nextId={pathOrder[0] as string}
+        xp={0}
+        level={1}
+        streak={0}
+        onOpen={() => {}}
+        onTestOut={onTestOut}
+        onParent={() => {}}
+        onBadges={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /already know this/i }));
+    expect(onTestOut).toHaveBeenCalledWith(pathOrder[0]);
+  });
+
+  it('modul terkunci tidak bisa ditekan', () => {
+    render(
+      <MapScreen
+        states={{}}
+        nextId={pathOrder[0] as string}
+        xp={0}
+        level={1}
+        streak={0}
+        onOpen={() => {}}
+        onTestOut={() => {}}
+        onParent={() => {}}
+        onBadges={() => {}}
+      />,
+    );
+    expect(screen.getByRole('button', { name: /Count to 10, locked/ })).toBeDisabled();
+  });
+});

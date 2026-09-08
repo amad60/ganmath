@@ -47,7 +47,10 @@ export default defineConfig({
     cssCodeSplit: false,
   },
   test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts'],
+    // Sebagian test butuh DOM sungguhan: bug umpan balik jawaban lolos justru karena
+    // dulu tidak ada satu pun test yang merender komponen.
+    environment: 'jsdom',
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    setupFiles: ['src/test-setup.ts'],
   },
 });

@@ -3,6 +3,8 @@ import type { ContentModule } from '../../content/types';
 import { Button, Header, ProgressBar } from '../../components/ui';
 import { en } from '../../i18n/en';
 import { LearnVisualView } from './LearnVisualView';
+import { Mascot } from '../../components/mascot/Mascot';
+import { sfx, unlockAudio } from '../sfx';
 
 export type LearnScreenProps = {
   module: ContentModule;
@@ -26,6 +28,8 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
   const last = step === module.learn.length - 1;
 
   const advance = () => {
+    unlockAudio();
+    sfx.tap();
     if (last) return onDone();
     setStep(step + 1);
     setValue(0);
@@ -44,8 +48,12 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
         }
       />
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-5 py-6">
-        <p className="text-center text-xl font-bold">{current.prompt}</p>
+      <main className="flex flex-1 flex-col items-center justify-center gap-5 px-5 py-6">
+        {/* Gan ikut menjelaskan: dia menunjuk saat ada aksi, dan bersorak saat tercapai. */}
+        <div className="flex items-center gap-3">
+          <Mascot mood={reached ? 'happy' : interactive ? 'thinking' : 'idle'} size={64} />
+          <p className="flex-1 text-xl font-bold">{current.prompt}</p>
+        </div>
 
         <LearnVisualView
           visual={current.visual}
@@ -54,9 +62,14 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
           interactive={interactive}
         />
 
-        {current.hint ? (
-          <p className="text-ink-soft text-center text-[18px]">
-            {reached ? '' : current.hint}
+        {current.hint && !reached ? (
+          <p className="text-ink-soft text-center text-[18px]">{current.hint}</p>
+        ) : null}
+
+        {/* Umpan balik saat target tercapai — anak tahu dia sudah benar sebelum menekan Next. */}
+        {interactive && reached ? (
+          <p className="text-xl font-black" style={{ color: 'var(--c-correct)' }}>
+            ✓ {current.target}
           </p>
         ) : null}
       </main>

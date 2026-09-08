@@ -1,9 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import type { SessionKind } from '../../engine/types';
-import { currentQuestion, isFinished, progressOf, submitAnswer, type SessionState } from '../../engine/session';
-import { Button, Header, Keypad, ProgressBar } from '../../components/ui';
+import {
+  currentQuestion,
+  isFinished,
+  progressOf,
+  submitAnswer,
+  type SessionState,
+} from '../../engine/session';
+import { Button, Header, Keypad, SessionDots, type Feedback } from '../../components/ui';
+import type { DotState } from '../../components/ui/SessionDots';
 import { NumberLine, TenFrame } from '../../components/manipulatives';
+import { Mascot, type MascotMood } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
+import { sfx, unlockAudio } from '../sfx';
 
 export type QuestionScreenProps = {
   session: SessionState;
@@ -20,31 +29,31 @@ const TITLES: Record<SessionKind, string> = {
   review: en.question.review,
   master: en.question.master,
   speed: en.question.speed,
+  testout: en.question.testout,
 };
 
 /**
  * Mastery Check sengaja terlihat BEDA dari Practice: header emas, tanpa visual
- * pendamping, tanpa tombol Hint. Anak harus tahu kapan dia sedang diuji.
- * Waktu diukur diam-diam — tidak ada timer yang terlihat.
+ * pendamping, tanpa tombol Hint. Waktu diukur diam-diam — tidak ada timer terlihat.
  */
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
   const question = currentQuestion(session);
   const [typed, setTyped] = useState('');
+  const [linePick, setLinePick] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<{ value: number; correct: boolean } | null>(null);
   const [hintUsed, setHintUsed] = useState(false);
 
   const shownAt = useRef(0);
   const firstInputAt = useRef<number | null>(null);
 
-  const isQuiz = session.kind === 'quiz' || session.kind === 'master';
+  // Tes-lewat diperlakukan seperti ujian: tanpa hint, tanpa visual pendamping.
+  const isQuiz =
+    session.kind === 'quiz' || session.kind === 'master' || session.kind === 'testout';
   const isCompare = question?.type === 'compare-symbol';
   const isText = question?.type === 'choose-text';
   const isLine = question?.type === 'number-line-drop';
 
-  const [linePick, setLinePick] = useState<number | null>(null);
-
   useEffect(() => {
-    // Timer mulai setelah frame soal benar-benar tergambar, bukan saat state berubah.
     const id = requestAnimationFrame(() => {
       shownAt.current = performance.now();
       firstInputAt.current = null;
@@ -59,6 +68,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   if (!question) return null;
 
   const touch = () => {
+    unlockAudio();
     if (firstInputAt.current == null) firstInputAt.current = performance.now();
   };
 
@@ -68,6 +78,8 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     const now = performance.now();
     const correct = value === question.answer;
     setFeedback({ value, correct });
+    if (correct) sfx.correct();
+    else sfx.retry();
 
     const next = submitAnswer(session, {
       correct,
@@ -77,31 +89,57 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       nowMs: Date.now(),
     });
 
-    window.setTimeout(() => {
-      if (isFinished(next, Date.now())) onFinish(next);
-      else onSession(next);
-    }, correct ? 550 : 1400);
+    window.setTimeout(
+      () => {
+        if (isFinished(next, Date.now())) onFinish(next);
+        else onSession(next);
+      },
+      correct ? 700 : 1600,
+    );
   };
 
   const { done, total } = progressOf(session);
+  const dots: DotState[] = Array.from({ length: total }, (_, i) => {
+    const r = session.results[i];
+    if (r) return r.correct ? 'correct' : 'wrong';
+    return i === done ? 'current' : 'todo';
+  });
+
+  const mood: MascotMood = feedback ? (feedback.correct ? 'happy' : 'encourage') : 'idle';
+
+  const choiceFeedback = (c: number): Feedback => {
+    if (!feedback) return 'idle';
+    if (c === feedback.value) return feedback.correct ? 'correct' : 'retry';
+    if (c === question.answer) return 'reveal';
+    return 'idle';
+  };
+
+  const label = (c: number) =>
+    isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : c;
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
       <Header
         onBack={onExit}
         tone={isQuiz ? 'mastery' : 'plain'}
         center={
-          <div className="flex items-center gap-3">
-            {isQuiz ? <span className="text-[15px] font-black">⭐ {TITLES[session.kind]}</span> : null}
-            <ProgressBar value={done} max={total} />
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2 text-[15px] font-black">
+              {isQuiz ? <span>⭐ {TITLES[session.kind]}</span> : null}
+              {/* Angka eksplisit: anak tahu persis sisa berapa lagi. */}
+              <span className={isQuiz ? '' : 'text-ink-soft'}>
+                {Math.min(done + 1, total)} / {total}
+              </span>
+            </div>
+            <SessionDots states={dots} />
           </div>
         }
+        right={<Mascot mood={mood} size={40} />}
       />
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-5 py-6">
+      <main className="flex flex-1 flex-col items-center justify-center gap-5 px-5 py-4">
         <p className="text-center text-[44px] leading-tight font-black">{question.text}</p>
 
-        {/* Visual pendamping hanya di Practice/Review — Mastery Check tidak dibantu. */}
         {!isQuiz && question.params.n != null ? (
           <TenFrame value={hintUsed ? (question.params.n as number) : 0} animate={hintUsed} />
         ) : null}
@@ -120,6 +158,21 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         ) : null}
 
         {hintUsed ? <p className="text-ink-soft text-[18px]">{en.question.showMe}</p> : null}
+
+        {/* Jawaban yang sedang diketik selalu terlihat besar, bukan hanya di keypad. */}
+        {!question.choices && !isLine ? (
+          <div
+            className="flex h-16 w-32 items-center justify-center rounded-[var(--r-md)] text-[40px] font-black"
+            style={{
+              background: 'var(--c-surface)',
+              border: '3px solid var(--c-line)',
+              color: typed ? 'var(--c-ink)' : 'var(--c-locked)',
+            }}
+            aria-live="polite"
+          >
+            {typed || '?'}
+          </div>
+        ) : null}
       </main>
 
       <div className="safe-bottom px-5 pb-4">
@@ -131,40 +184,31 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               value={linePick}
               onChange={(v) => {
                 touch();
+                sfx.tap();
                 setLinePick(v);
               }}
             />
             <Button
               full
+              feedback={feedback ? (feedback.correct ? 'correct' : 'retry') : 'idle'}
               disabled={linePick == null || feedback != null}
               onClick={() => answer(linePick as number)}
             >
-              {en.question.check}
+              {linePick == null ? en.question.pickOnLine : `${en.question.check} · ${linePick}`}
             </Button>
           </div>
         ) : question.choices ? (
           <div className={`grid gap-3 ${isCompare ? 'grid-cols-3' : 'grid-cols-2'}`}>
-            {question.choices?.map((c) => (
+            {question.choices.map((c) => (
               <Button
                 key={c}
                 variant="answer"
+                disabled={feedback != null}
                 onPointerDown={touch}
                 onClick={() => answer(c)}
-                // yang dipilih anak jadi hijau/oranye; kalau salah, jawaban benar
-                // ikut menyala hijau — layar mengajarkan, bukan sekadar menilai
-                feedback={
-                  feedback == null
-                    ? 'idle'
-                    : c === feedback.value
-                      ? feedback.correct
-                        ? 'correct'
-                        : 'retry'
-                      : c === question.answer
-                        ? 'correct'
-                        : 'idle'
-                }
+                feedback={choiceFeedback(c)}
               >
-                {isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : c}
+                {label(c)}
               </Button>
             ))}
           </div>
@@ -173,6 +217,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             value={typed}
             onChange={(v) => {
               touch();
+              sfx.tap();
               setTyped(v);
             }}
             onSubmit={() => answer(Number(typed))}
@@ -184,16 +229,11 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           <p
             className="mt-3 text-center text-xl font-black"
             style={{ color: feedback.correct ? 'var(--c-correct)' : 'var(--c-retry)' }}
+            role="status"
           >
             {feedback.correct
               ? en.question.correct
-              : `${en.question.retry} · ${
-                  isText
-                    ? (question.options?.[question.answer] ?? '')
-                    : isCompare
-                      ? COMPARE_LABEL[question.answer as -1 | 0 | 1]
-                      : question.answer
-                }`}
+              : `${en.question.retry} · ${label(question.answer)}`}
           </p>
         ) : null}
       </div>

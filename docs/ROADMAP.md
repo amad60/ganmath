@@ -5,8 +5,15 @@ Status keseluruhan: **Fase 5a SELESAI — 13/13 langkah, sudah live.**
 - Live: **https://ganmath.netlify.app**
 - Repo: **https://github.com/amad60/ganmath** (private)
 
-Berikutnya: **Fase 5b — uji dengan anak.** Bukan lagi pekerjaan kode; 12 poin yang harus
-dicek di HP sungguhan ada di [`docs/tech/device-checklist.md`](tech/device-checklist.md).
+**Ronde perbaikan usability (2026-09-08)** setelah user menilai app "asal jadi":
+7 keluhan diperbaiki, termasuk satu bug nyata (warna umpan balik jawaban tidak pernah muncul)
+dan satu fitur baru (**pintu jump-level**). Rinciannya di
+[`docs/design/usability-review.md`](design/usability-review.md), termasuk daftar jujur
+**yang masih lemah**.
+
+Berikutnya: **uji di HP sungguhan** — 12 poin di
+[`docs/tech/device-checklist.md`](tech/device-checklist.md) — lalu ronde perbaikan #2
+(bangun komponen bentuk sungguhan, hint berjenjang, transisi antar soal).
 Baca `../CLAUDE.md` dulu untuk arahan produk.
 
 | Fase | Isi | Output | Status |

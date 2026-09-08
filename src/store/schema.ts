@@ -7,7 +7,9 @@ export const SESSION_KEY = 'ganmath.v1.session';
 /** Sengaja TIDAK pernah dimigrasi — dipakai untuk mendeteksi data yang terhapus browser. */
 export const META_KEY = 'ganmath.meta';
 
-export type Avatar = 'fox' | 'panda' | 'tiger' | 'koala';
+// 'fox' dipertahankan supaya profil lama tetap sah, meski tidak lagi ditawarkan
+// (rubah kini dipakai maskot).
+export type Avatar = 'cat' | 'panda' | 'tiger' | 'koala' | 'bunny' | 'fox';
 
 export type Settings = {
   sound: boolean;
@@ -46,7 +48,7 @@ export function createInitialState(now = new Date().toISOString()): ProgressStat
     schemaVersion: CURRENT_SCHEMA_VERSION,
     createdAt: now,
     updatedAt: now,
-    profile: { name: '', avatar: 'fox' },
+    profile: { name: '', avatar: 'cat' },
     xp: 0,
     level: 1,
     badges: [],

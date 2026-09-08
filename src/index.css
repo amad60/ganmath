@@ -124,3 +124,15 @@ body {
     transform: scale(1.06);
   }
 }
+
+@keyframes mascot-bounce {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-12px) scale(1.04);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}

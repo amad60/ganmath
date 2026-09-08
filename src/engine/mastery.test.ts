@@ -150,6 +150,34 @@ describe('speed round & master round', () => {
   });
 });
 
+describe('tes-lewat (jump level)', () => {
+  const def = addModule();
+
+  it('anak yang sudah bisa langsung menguasai modul tanpa dua sesi', () => {
+    const e = evaluate(def, state(), session({ kind: 'testout', n: 10, correct: 10, thinkMs: 1800 }));
+    expect(e.next.status).toBe('mastered');
+    expect(e.events.map((x) => x.type)).toContain('tested-out');
+  });
+
+  it('ambangnya lebih tinggi daripada lulus biasa — 80% tidak cukup untuk melompat', () => {
+    const e = evaluate(def, state(), session({ kind: 'testout', n: 10, correct: 8, thinkMs: 1800 }));
+    expect(e.next.status).not.toBe('mastered');
+    expect(e.events.map((x) => x.type)).toContain('testout-failed');
+  });
+
+  it('gagal melompat tidak menghukum apa pun', () => {
+    const before = state({ consecutiveFails: 1 });
+    const e = evaluate(def, before, session({ kind: 'testout', correct: 3 }));
+    expect(e.next.consecutiveFails).toBe(1);
+    expect(e.next.status).toBe('available');
+  });
+
+  it('melompat sambil lambat tidak diizinkan untuk modul hafalan', () => {
+    const e = evaluate(def, state(), session({ kind: 'testout', correct: 10, thinkMs: 12_000 }));
+    expect(e.next.status).not.toBe('mastered');
+  });
+});
+
 describe('review', () => {
   const def = addModule();
 

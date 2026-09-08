@@ -119,6 +119,37 @@ export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: Pa
           </div>
         </section>
 
+        {/* Pintu jump-level. Dengan konten yang ada sekarang, melompat dilakukan
+            per modul lewat tombol ⏩ di peta; pemilihan grade disiapkan untuk konten
+            berikutnya dan ditandai jujur mana yang belum ada. */}
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-black">Jump to level</h2>
+          <p className="text-ink-soft text-[15px]">
+            Already ahead? On the map, tap <b>⏩ I already know this</b> to skip a module by
+            passing a short check instead of learning it first. Failing costs nothing.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3, 4, 5, 6].map((g) => {
+              const available = g === 1;
+              return (
+                <button
+                  key={g}
+                  type="button"
+                  disabled={!available}
+                  className="rounded-[var(--r-md)] px-4 py-3 text-[18px] font-black disabled:opacity-45"
+                  style={{
+                    background: available ? 'var(--c-primary-soft)' : 'var(--c-surface-sunk)',
+                    border: '2px solid var(--c-line)',
+                  }}
+                >
+                  Grade {g}
+                  {available ? '' : ' · soon'}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Progress backup</h2>
           {!storageIsAvailable() ? (

@@ -110,7 +110,14 @@ export type ModuleDef = {
   masteryOverride?: { accuracy?: number; sessions?: number };
 };
 
-export type SessionKind = 'practice' | 'quiz' | 'review' | 'master' | 'speed';
+export type SessionKind = 'practice' | 'quiz' | 'review' | 'master' | 'speed' | 'testout';
+
+/**
+ * Ambang tes-lewat sengaja LEBIH TINGGI daripada ambang lulus biasa. Melewati modul
+ * tanpa mempelajarinya hanya boleh kalau anak benar-benar sudah bisa — kalau tidak,
+ * dia akan tersandung di modul yang bergantung padanya.
+ */
+export const TESTOUT_ACCURACY = 0.9;
 
 export type QuestionResult = {
   questionId: string;

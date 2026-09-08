@@ -2,6 +2,7 @@ import {
   AUTOMATIC_THINK_MS,
   GRADE_THRESHOLDS,
   SPEED_OUTLIER_MS,
+  TESTOUT_ACCURACY,
   type Attempt,
   type ModuleDef,
   type ModuleState,
@@ -12,6 +13,8 @@ import { median } from './rng';
 
 export type MasteryEvent =
   | { type: 'mastered'; moduleId: string }
+  | { type: 'tested-out'; moduleId: string }
+  | { type: 'testout-failed'; moduleId: string }
   | { type: 'star'; moduleId: string; stars: 1 | 2 | 3 }
   | { type: 'speed-round-offered'; moduleId: string }
   | { type: 'needs-reteach'; moduleId: string }
@@ -89,9 +92,10 @@ export function evaluate(
   const { thinkMs, totalMs } = speedOf(result);
 
   const accuracyPass = accuracy >= th.accuracy;
-  const coveragePass = result.kind === 'quiz' || result.kind === 'master'
-    ? coverageOf(def, result)
-    : true;
+  const coveragePass =
+    result.kind === 'quiz' || result.kind === 'master' || result.kind === 'testout'
+      ? coverageOf(def, result)
+      : true;
   const speedPass = !def.fluencyTracked || thinkMs <= th.speedMs;
   const sessionPassed = accuracyPass && coveragePass;
 
@@ -131,6 +135,27 @@ export function evaluate(
     medianTotalMs: totalMs,
     passingSessions,
   };
+
+  // --- Tes-lewat: pintu "aku sudah bisa ini", untuk anak yang levelnya di atas modul.
+  //     Lulus = langsung mastered tanpa harus dua sesi. Gagal TIDAK menghukum apa pun:
+  //     anak cuma kembali ke jalur normal dan mempelajarinya.
+  if (result.kind === 'testout') {
+    const strongEnough = accuracy >= TESTOUT_ACCURACY && coveragePass && speedPass;
+    if (strongEnough) {
+      next.status = 'mastered';
+      next.masteredAt = result.date;
+      next.reviewStage = 1;
+      next.stars = accuracy === 1 ? 2 : 1;
+      next.consecutiveFails = 0;
+      events.push({ type: 'tested-out', moduleId: def.id });
+      events.push({ type: 'mastered', moduleId: def.id });
+    } else {
+      next.status = state.status === 'available' ? 'available' : state.status;
+      next.consecutiveFails = state.consecutiveFails; // tidak dihitung sebagai kegagalan
+      events.push({ type: 'testout-failed', moduleId: def.id });
+    }
+    return { next, events, detail };
+  }
 
   // --- Sesi review: jalur terpisah, tidak pernah mengunci ulang modul berikutnya.
   if (result.kind === 'review') {

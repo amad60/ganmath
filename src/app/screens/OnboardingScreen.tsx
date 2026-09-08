@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import type { Avatar } from '../../store/schema';
 import { Button } from '../../components/ui';
+import { Mascot } from '../../components/mascot/Mascot';
+import { unlockAudio } from '../sfx';
 
 export type OnboardingScreenProps = {
   onDone: (name: string, avatar: Avatar) => void;
 };
 
+// Rubah tidak ada di sini: itu Gan, si maskot. Avatar adalah anaknya, bukan Gan.
 const AVATARS: { id: Avatar; icon: string }[] = [
-  { id: 'fox', icon: '🦊' },
+  { id: 'cat', icon: '🐱' },
   { id: 'panda', icon: '🐼' },
   { id: 'tiger', icon: '🐯' },
   { id: 'koala', icon: '🐨' },
+  { id: 'bunny', icon: '🐰' },
 ];
 
 /**
@@ -20,12 +24,12 @@ const AVATARS: { id: Avatar; icon: string }[] = [
  */
 export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
   const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState<Avatar>('fox');
+  const [avatar, setAvatar] = useState<Avatar>('cat');
 
   return (
     <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col gap-6 p-5">
       <div className="flex flex-1 flex-col items-center justify-center gap-6">
-        <div className="text-[80px] leading-none">🤖</div>
+        <Mascot mood="happy" size={120} />
         <h1 className="text-2xl font-black">Hi! I am Gan.</h1>
         <p className="text-xl font-bold">What is your name?</p>
 
@@ -38,7 +42,7 @@ export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
         />
 
         <p className="text-ink-soft text-[18px] font-bold">Pick your look</p>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap justify-center gap-3">
           {AVATARS.map((a) => (
             <button
               key={a.id}
@@ -57,7 +61,14 @@ export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
         </div>
       </div>
 
-      <Button full disabled={name.trim().length === 0} onClick={() => onDone(name.trim(), avatar)}>
+      <Button
+        full
+        disabled={name.trim().length === 0}
+        onClick={() => {
+          unlockAudio(); // iOS: audio harus dibuka oleh gestur pertama pengguna
+          onDone(name.trim(), avatar);
+        }}
+      >
         Let&apos;s go!
       </Button>
     </div>

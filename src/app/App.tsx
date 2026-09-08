@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Evaluation } from '../engine/mastery';
 import { createSession, toSessionResult, type SessionState } from '../engine/session';
 import { nextModule } from '../engine/unlock';
+import { GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, registry } from '../content';
 import { useProgress } from '../store/progress';
@@ -12,6 +13,7 @@ import { BadgesScreen } from './screens/BadgesScreen';
 import { ParentScreen } from './screens/ParentScreen';
 import { ParentGate } from './screens/ParentGate';
 import { usePwa } from './usePwa';
+import { setSoundEnabled } from './sfx';
 import { Button } from '../components/ui';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
@@ -49,6 +51,10 @@ export function App() {
 
   const next = useMemo(() => nextModule(data.modules, registry), [data.modules]);
   const pwa = usePwa(Object.keys(data.modules).length > 0);
+
+  useEffect(() => {
+    setSoundEnabled(data.settings.sound);
+  }, [data.settings.sound]);
   const today = toDateString(new Date());
 
   const startSession = (moduleId: string, kind: SessionKind) => {
@@ -126,6 +132,10 @@ export function App() {
           evaluation={screen.evaluation}
           xpGained={screen.xpGained}
           earnedBadges={screen.earnedBadges}
+          sessionsNeeded={
+            moduleById(screen.moduleId).masteryOverride?.sessions ??
+            GRADE_THRESHOLDS[moduleById(screen.moduleId).grade].sessions
+          }
           onContinue={() => setScreen({ name: 'map' })}
           onRetry={() => startSession(screen.moduleId, retryKind)}
         />
@@ -139,6 +149,7 @@ export function App() {
           states={data.modules}
           streakBest={data.streak.best}
           streakCurrent={data.streak.current}
+          nextId={next}
           onBack={() => setScreen({ name: 'map' })}
         />
       );
@@ -170,6 +181,7 @@ export function App() {
             level={data.level}
             streak={data.streak.current}
             onOpen={openModule}
+            onTestOut={(id) => startSession(id, 'testout')}
             onBadges={() => setScreen({ name: 'badges' })}
             onParent={() => setGateOpen(true)}
           />

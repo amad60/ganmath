@@ -8,6 +8,9 @@ export const en = {
 
   map: {
     startNext: 'Start',
+    skipAhead: 'I already know this',
+    nextUp: 'Next up',
+    lockedHint: 'Finish the one before to open this',
     locked: 'Locked',
     review: 'Review',
     allDone: 'All done for now!',
@@ -29,9 +32,11 @@ export const en = {
     masteryCheck: 'Mastery Check',
     practice: 'Practice',
     review: 'Quick Review',
+    testout: 'Skip Check',
     speed: 'Speed Round',
     master: 'Master Round',
     showMe: 'Look at the picture.',
+    pickOnLine: 'Tap the line first',
   },
 
   result: {
@@ -43,8 +48,13 @@ export const en = {
     continue: 'Continue',
     tryAgain: 'Try again',
     mastered: 'Module mastered!',
-    almost: 'Almost! One more good round.',
+    almost: 'Almost! Just be a bit quicker.',
+    oneMore: 'One more good round to master this.',
+    keepPractising: 'Practise this one more time.',
+    newBadge: 'New badge!',
     speedRound: 'Try a Speed Round',
+    testedOut: 'Skipped — you already knew it!',
+    testoutFailed: 'Let us learn this one properly.',
     moduleProgress: 'Module',
   },
 

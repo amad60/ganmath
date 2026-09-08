@@ -1,28 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Evaluation } from '../../engine/mastery';
 import type { ContentModule } from '../../content/types';
 import type { BadgeId } from '../../engine/gamification';
 import { BadgeCard, Button, Celebration, ProgressBar, StarRow } from '../../components/ui';
+import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
+import { sfx } from '../sfx';
 
 export type ResultScreenProps = {
   module: ContentModule;
   evaluation: Evaluation;
   xpGained: number;
   earnedBadges: string[];
+  sessionsNeeded: number;
   onContinue: () => void;
   onRetry: () => void;
 };
 
 /**
- * Layar ini tidak pernah menulis "Failed". Yang ditulis adalah JARAK MENUJU LULUS
- * (docs/design/README.md keputusan #5).
+ * Tidak pernah menulis "Failed". Yang ditulis adalah JARAK MENUJU LULUS, dalam
+ * kalimat yang bisa ditindaklanjuti anak.
  */
 export function ResultScreen({
   module,
   evaluation,
   xpGained,
   earnedBadges,
+  sessionsNeeded,
   onContinue,
   onRetry,
 }: ResultScreenProps) {
@@ -31,17 +35,29 @@ export function ResultScreen({
   const practiced = next.status === 'practiced';
   const [celebrating, setCelebrating] = useState(mastered || earnedBadges.length > 0);
 
-  const message = mastered
+  useEffect(() => {
+    if (earnedBadges.length > 0) sfx.badge();
+    else if (mastered) sfx.star();
+  }, [earnedBadges.length, mastered]);
+
+  const testedOut = evaluation.events.some((e) => e.type === 'tested-out');
+  const testoutFailed = evaluation.events.some((e) => e.type === 'testout-failed');
+
+  const message = testedOut
+    ? en.result.testedOut
+    : testoutFailed
+      ? en.result.testoutFailed
+      : mastered
     ? en.result.mastered
     : practiced
       ? en.result.almost
       : detail.accuracyPass
-        ? en.result.almost
-        : en.result.keepGoing;
+        ? en.result.oneMore
+        : en.result.keepPractising;
 
   return (
-    <div className="safe-top safe-bottom flex min-h-full flex-col items-center justify-center gap-6 px-5 py-8">
-      <div className="text-[72px] leading-none">{mastered ? '🎉' : '💪'}</div>
+    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col items-center gap-5 px-5 py-6">
+      <Mascot mood={mastered ? 'celebrate' : 'encourage'} size={110} />
 
       <StarRow stars={next.stars} size={48} animate />
 
@@ -56,18 +72,24 @@ export function ResultScreen({
       </div>
 
       {earnedBadges.length > 0 ? (
-        <div className="flex flex-wrap justify-center gap-3">
-          {earnedBadges.map((id) => (
-            <BadgeCard key={id} id={id as BadgeId} owned size="lg" />
-          ))}
+        <div className="flex w-full flex-col items-center gap-2">
+          <p className="text-[18px] font-black" style={{ color: 'var(--c-badge)' }}>
+            {en.result.newBadge}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {earnedBadges.map((id) => (
+              <BadgeCard key={id} id={id as BadgeId} owned size="lg" />
+            ))}
+          </div>
         </div>
       ) : null}
 
+      {/* Jarak menuju lulus, bukan vonis. */}
       <div className="w-full">
         <ProgressBar
-          value={detail.passingSessions}
-          max={Math.max(detail.passingSessions, mastered ? detail.passingSessions : 2)}
-          label={en.result.moduleProgress}
+          value={Math.min(detail.passingSessions, sessionsNeeded)}
+          max={sessionsNeeded}
+          label={`${Math.min(detail.passingSessions, sessionsNeeded)}/${sessionsNeeded}`}
           tone="star"
         />
         <p className="text-ink-soft mt-2 text-center text-[18px]">{message}</p>

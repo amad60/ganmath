@@ -6,3 +6,5 @@ export { Header } from './Header';
 export { Sheet } from './Sheet';
 export { Celebration } from './Celebration';
 export { BadgeCard } from './BadgeCard';
+export { SessionDots } from './SessionDots';
+export type { Feedback } from './Button';
