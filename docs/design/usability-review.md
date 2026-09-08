@@ -258,6 +258,34 @@ Sekarang ikonnya **wajah Gan**, dibuat dari SVG maskot yang sama lewat
 *maskable* memakai maskot lebih kecil di dalam zona aman, karena Android boleh memotong
 ikonnya sampai bentuk lingkaran.
 
+## Ronde 11 — urutan unit di peta
+
+User bertanya: "unit emang sengaja ga berurutan ya?" Jawabannya dua-duanya.
+
+**Sengaja:** unit bentuk, ukur, dan pola memang **disisipkan sebagai jeda** di antara blok
+aritmetika, supaya anak tidak mengerjakan 14 modul hitungan berturut-turut. Ini keputusan
+Fase 2 dan berdasar riset (latihan berselang lebih baik untuk retensi). Urutan sebenarnya:
+
+```
+#1  Unit 1 ×6 → #7  Unit 6 ×2 → #9  Unit 2 ×8 → #17 Unit 8 ×1 → #18 Unit 3 ×4
+#22 Unit 7 ×2 → #24 Unit 4 ×6 → #30 Unit 6 ×2 → #32 Unit 5 ×6 → #38 Unit 6 ×1
+#39 Unit 7 ×3 → #42 Unit 8 ×2
+```
+
+**Bug:** peta mengelompokkan per unit berdasarkan **kemunculan pertama**, sehingga SELURUH
+modul Unit 6 ditarik ke posisi ketujuh — padahal tiga di antaranya baru terbuka di #30, #31,
+dan #38. Urutan yang dilihat anak jadi tidak sama dengan urutan yang benar-benar dia tempuh,
+dan modul terkunci menumpuk jauh sebelum waktunya.
+
+Perbaikan:
+- Peta dikelompokkan per **potongan berurutan**, bukan per unit unik. Unit yang kembali muncul
+  sebagai bagian tersendiri dengan penanda "· more".
+- Angka kemajuan tetap menghitung **seluruh unit** (2/5), bukan potongannya saja — kalau tidak,
+  "1/2" di dua tempat untuk unit yang sama justru membingungkan.
+- **Test regresi**: urutan node yang dirender harus persis sama dengan path order.
+- My Progress (yang mengurutkan unit secara numerik) menjelaskan kenapa peta mencampurnya,
+  supaya orang tua tidak mengira urutannya kacau.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

@@ -287,6 +287,20 @@ describe('MapScreen — pintu jump level', () => {
     expect(screen.getAllByText(/Unit 1 · Numbers to 10/).length).toBeGreaterThan(0);
   });
 
+  it('urutan node di peta SAMA dengan urutan yang benar-benar ditempuh anak', () => {
+    render(<MapScreen {...mapProps()} />);
+    const titles = pathOrder.map((id) => moduleById(id).title);
+    const rendered = screen
+      .getAllByRole('button')
+      .map((b) => b.getAttribute('aria-label') ?? '')
+      .map((l) => l.replace(', locked', ''))
+      .filter((l) => titles.includes(l));
+
+    // Unit bentuk/ukur/pola sengaja disisipkan sebagai jeda, jadi satu unit bisa
+    // muncul beberapa kali. Yang tidak boleh: modul ditarik keluar dari urutannya.
+    expect(rendered).toEqual(titles);
+  });
+
   it('setiap node menjelaskan apa yang terjadi kalau ditekan', () => {
     render(<MapScreen {...mapProps()} />);
     expect(screen.getAllByText(/Tap to start/).length).toBeGreaterThan(0);

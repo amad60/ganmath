@@ -67,6 +67,12 @@ export function BadgesScreen({
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Grade {grade}</h2>
           <ProgressBar value={done} max={pathOrder.length} label={`${done}/${pathOrder.length}`} />
+          {/* Daftar ini urut per unit; PETA sengaja mencampurnya. Tanpa kalimat ini
+              orang tua wajar mengira urutannya kacau. */}
+          <p className="text-ink-soft text-[14px]">
+            On the map, shapes and measuring are mixed between the number units on purpose —
+            switching topics helps things stick.
+          </p>
           {units.map((unitId) => {
             const ids = all.filter((m) => m.unitId === unitId).map((m) => m.id);
             const cleared = ids.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;

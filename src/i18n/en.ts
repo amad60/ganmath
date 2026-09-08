@@ -37,6 +37,7 @@ export const en = {
     locked: 'Locked',
     review: 'Review',
     reviewDue: 'Time to remember',
+    unitAgain: 'more',
     allDone: 'All done for now!',
     gradeProgress: (done: number, total: number) => `${done}/${total}`,
   },

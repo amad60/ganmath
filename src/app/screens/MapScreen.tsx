@@ -57,12 +57,29 @@ export function MapScreen(props: MapScreenProps) {
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
   const nextDef = nextId ? moduleById(nextId) : null;
 
-  // Peta dikelompokkan per UNIT. Tanpa ini 43 modul tampil sebagai satu daftar
-  // panjang tanpa struktur, dan anak tidak bisa melihat "aku ada di bagian apa".
-  const unitsInOrder: string[] = [];
+  /**
+   * Peta dikelompokkan per UNIT, tapi mengikuti **potongan berurutan** di path order —
+   * bukan per unit yang unik.
+   *
+   * Unit bentuk, ukur, dan pola sengaja DISISIPKAN sebagai jeda di antara blok
+   * aritmetika, jadi satu unit bisa muncul beberapa kali di sepanjang jalur.
+   * Versi sebelumnya mengelompokkan per kemunculan pertama, sehingga SELURUH modul
+   * Unit 6 ditarik ke posisi ketujuh — padahal tiga di antaranya baru terbuka jauh
+   * di belakang. Urutan yang dilihat anak jadi tidak sama dengan urutan yang
+   * sebenarnya dia tempuh.
+   */
+  const sections: { unitId: string; ids: string[]; repeat: number }[] = [];
+  const seenUnits = new Map<string, number>();
   for (const id of pathOrder) {
     const u = moduleById(id).unitId;
-    if (!unitsInOrder.includes(u)) unitsInOrder.push(u);
+    const last = sections.at(-1);
+    if (last && last.unitId === u) {
+      last.ids.push(id);
+      continue;
+    }
+    const repeat = (seenUnits.get(u) ?? 0) + 1;
+    seenUnits.set(u, repeat);
+    sections.push({ unitId: u, ids: [id], repeat });
   }
 
   const chosenState = chosen ? states[chosen] : undefined;
@@ -137,24 +154,33 @@ export function MapScreen(props: MapScreenProps) {
           </button>
         ) : null}
 
-        {unitsInOrder.map((unitId) => {
-          const ids = pathOrder.filter((id) => moduleById(id).unitId === unitId);
-          const cleared = ids.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
+        {sections.map((section, sectionIndex) => {
+          const { unitId, ids, repeat } = section;
+          // Kemajuan yang ditampilkan adalah kemajuan SELURUH unit, bukan potongan ini
+          // saja — kalau tidak, "1/2" di dua tempat berbeda untuk unit yang sama akan
+          // membingungkan.
+          const unitIds = pathOrder.filter((id) => moduleById(id).unitId === unitId);
+          const cleared = unitIds.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
           const unit = unitTitles[unitId];
           const accent = unit?.color ?? 'var(--c-primary)';
-          const unitDone = cleared === ids.length;
+          const unitDone = cleared === unitIds.length;
 
           return (
-            <section key={unitId} className="flex w-full flex-col items-center">
+            <section key={`${unitId}-${sectionIndex}`} className="flex w-full flex-col items-center">
               {/* Judul unit: anak bisa melihat "aku ada di bagian apa", dan berapa sisanya. */}
               <div className="mt-2 mb-3 flex w-full items-center gap-3">
                 <span
                   className="h-2.5 w-2.5 shrink-0 rounded-full"
                   style={{ background: unitDone ? 'var(--c-star)' : accent }}
                 />
-                <span className="text-[15px] font-black">{unit?.title ?? unitId}</span>
+                <span className="text-[15px] font-black">
+                  {unit?.title ?? unitId}
+                  {repeat > 1 ? (
+                    <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
+                  ) : null}
+                </span>
                 <span className="text-ink-soft ml-auto text-[13px] font-black tabular-nums">
-                  {cleared}/{ids.length}
+                  {cleared}/{unitIds.length}
                 </span>
               </div>
 
