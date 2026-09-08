@@ -36,7 +36,8 @@ export const BASE_VOCAB = new Set(
    than it as we write jumps not five four here now
    each every them by full all has with next row again
    from into then only first small almost adding change
-   across counting faster going jump keep us where show tell picture`
+   across counting faster going jump keep us where show tell picture
+   become between no up goes gives`
     .split(/\s+/)
     .filter(Boolean),
 );

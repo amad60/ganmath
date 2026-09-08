@@ -44,6 +44,21 @@ import { money } from './grade1/u7/m5-money';
 import { tallyMarks } from './grade1/u8/m2-tally-marks';
 import { pictureGraph } from './grade1/u8/m3-picture-graph';
 
+// ---- Grade 2
+import { hundreds } from './grade2/u1/m1-hundreds';
+import { countTo1000 } from './grade2/u1/m2-count-to-1000';
+import { hundredsTensOnes } from './grade2/u1/m3-hundreds-tens-ones';
+import { readAndWrite1000 } from './grade2/u1/m4-read-and-write-1000';
+import { compareTo1000 } from './grade2/u1/m5-compare-to-1000';
+import { nearestTen } from './grade2/u1/m6-nearest-ten';
+import { addTens } from './grade2/u2/m1-add-tens';
+import { addNoRegroup } from './grade2/u2/m2-add-no-regroup';
+import { bridgeToTen } from './grade2/u2/m3-bridge-to-ten';
+import { addWithRegrouping } from './grade2/u2/m4-add-with-regrouping';
+import { subtractNoRegroup } from './grade2/u2/m5-subtract-no-regroup';
+import { subtractWithRegrouping } from './grade2/u2/m6-subtract-with-regrouping';
+import { checkYourAnswer } from './grade2/u2/m7-check-your-answer';
+
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
  * tidak ada migrasi data yang diperlukan, karena status `locked` tidak pernah disimpan.
@@ -112,6 +127,23 @@ export const all: ContentModule[] = [
   // data (#42–43) — Grade 1 selesai
   tallyMarks,
   pictureGraph,
+
+  // ===== Grade 2 =====
+  // Unit 1 — Numbers to 1000
+  hundreds,
+  countTo1000,
+  hundredsTensOnes,
+  readAndWrite1000,
+  compareTo1000,
+  nearestTen,
+  // Unit 2 — Add & Subtract 2-Digit
+  addTens,
+  addNoRegroup,
+  bridgeToTen,
+  addWithRegrouping,
+  subtractNoRegroup,
+  subtractWithRegrouping,
+  checkYourAnswer,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -191,4 +223,6 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g1-u6': { title: 'Unit 6 · Shapes', color: 'var(--c-unit-6)' },
   'g1-u7': { title: 'Unit 7 · Measure & Time', color: 'var(--c-unit-7)' },
   'g1-u8': { title: 'Unit 8 · Patterns & Data', color: 'var(--c-unit-8)' },
+  'g2-u1': { title: 'Unit 1 · Numbers to 1000', color: 'var(--c-unit-1)' },
+  'g2-u2': { title: 'Unit 2 · Add & Subtract', color: 'var(--c-unit-2)' },
 };

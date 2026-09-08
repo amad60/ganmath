@@ -1,6 +1,6 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 5a selesai; **Grade 1 LENGKAP — 43 dari 43 modul.** Berikutnya: uji dengan anak, lalu Grade 2.**
+Status keseluruhan: **Fase 5a selesai; **Grade 1 lengkap (43 modul). Grade 2 sedang ditulis — 13 dari ±38.****
 
 - Live: **https://ganmath.netlify.app**
 - Repo: **https://github.com/amad60/ganmath** (private)

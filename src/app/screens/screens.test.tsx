@@ -260,9 +260,12 @@ describe('badge di My Progress', () => {
 describe('pindah kelas', () => {
   it('hanya kelas yang punya konten yang bisa dipilih', async () => {
     const { availableGrades, pathOrderFor } = await import('../../content');
-    expect(availableGrades).toEqual([1]);
-    expect(pathOrderFor(1).length).toBeGreaterThan(0);
-    expect(pathOrderFor(2)).toEqual([]);
+    // Kelas bertambah seiring konten ditulis; yang dijaga adalah aturannya, bukan angkanya.
+    for (const g of availableGrades) expect(pathOrderFor(g).length).toBeGreaterThan(0);
+    for (const g of [1, 2, 3, 4, 5, 6]) {
+      if (!availableGrades.includes(g)) expect(pathOrderFor(g)).toEqual([]);
+    }
+    expect(availableGrades).toContain(1);
   });
 
   it('gating dihitung di dalam kelas aktif, bukan lintas kelas', async () => {
@@ -338,9 +341,11 @@ describe('MapScreen — pintu jump level', () => {
     expect(screen.getAllByText(/Unit 1 · Numbers to 10/).length).toBeGreaterThan(0);
   });
 
-  it('urutan node di peta SAMA dengan urutan yang benar-benar ditempuh anak', () => {
+  it('urutan node di peta SAMA dengan urutan yang benar-benar ditempuh anak', async () => {
+    const { pathOrderFor } = await import('../../content');
     render(<MapScreen {...mapProps()} />);
-    const titles = pathOrder.map((id) => moduleById(id).title);
+    // Peta hanya menampilkan kelas aktif.
+    const titles = pathOrderFor(1).map((id) => moduleById(id).title);
     const rendered = screen
       .getAllByRole('button')
       .map((b) => b.getAttribute('aria-label') ?? '')

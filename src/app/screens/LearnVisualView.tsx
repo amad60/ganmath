@@ -56,7 +56,9 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
     case 'number-bond':
       return <NumberBond whole={visual.whole} parts={visual.parts} ask={visual.ask} />;
     case 'base10':
-      return <Base10Blocks tens={visual.tens} ones={visual.ones} />;
+      return (
+        <Base10Blocks hundreds={visual.hundreds ?? 0} tens={visual.tens} ones={visual.ones} />
+      );
     case 'shape2d':
       return <Shape2D name={visual.name} size={120} showCorners={visual.showCorners} />;
     case 'bars':

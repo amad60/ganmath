@@ -98,7 +98,9 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
     case 'ten-frame':
       return <TenFrame value={visual.value} capacity={visual.capacity ?? 10} split={visual.split} />;
     case 'base10':
-      return <Base10Blocks tens={visual.tens} ones={visual.ones} />;
+      return (
+        <Base10Blocks hundreds={visual.hundreds ?? 0} tens={visual.tens} ones={visual.ones} />
+      );
     case 'shape2d':
       return <Shape2D name={visual.name} size={110} showCorners={visual.showCorners} />;
     case 'bars':

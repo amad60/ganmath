@@ -24,7 +24,7 @@ ID lama dipertahankan sebagai alias di layer migrasi supaya progress anak tidak 
 | Grade | Unit | Modul | Fokus utama | Acuan |
 |---|---|---|---|---|
 | 1 | 8 | 43 | Bilangan s/d 100, +/− dalam 20, bangun datar & ruang, ukuran tak baku, pola, data turus | Fase A + CC G1 |
-| 2 | 7 | ±38 | Nilai tempat s/d 1.000, +/− dengan menyimpan/meminjam, pengenalan ×, waktu & uang | Fase A akhir + CC G2 |
+| 2 | 7 | ±38 | Nilai tempat s/d 1.000, +/− dengan menyimpan/meminjam, pengenalan ×, waktu & uang | Fase A akhir + CC G2 · **13/38 ditulis** |
 | 3 | 7 | ±40 | Perkalian & pembagian, pecahan sederhana, satuan baku, keliling | Fase B + CC G3 |
 | 4 | 7 | ±40 | Bilangan s/d 10.000, faktor & kelipatan, pecahan senilai, sudut, luas | Fase B + CC G4 |
 | 5 | 7 | ±40 | Operasi pecahan, desimal, persen, volume, KPK/FPB | Fase C + CC G5 |

@@ -6,7 +6,7 @@ import type { ModuleDef } from '../engine/types';
  * concrete → pictorial → abstract, dan `prompt` maksimal 8 kata.
  */
 export type LearnVisual =
-  | { kind: 'base10'; tens: number; ones: number }
+  | { kind: 'base10'; hundreds?: number; tens: number; ones: number }
   | { kind: 'shape2d'; name: import('../engine/types').ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }

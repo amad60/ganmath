@@ -69,7 +69,7 @@ export type ShapeName = 'circle' | 'triangle' | 'square' | 'rectangle' | 'pentag
  */
 export type QuestionVisual =
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
-  | { kind: 'base10'; tens: number; ones: number }
+  | { kind: 'base10'; hundreds?: number; tens: number; ones: number }
   | { kind: 'shape2d'; name: ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
