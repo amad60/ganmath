@@ -141,6 +141,41 @@ export function registryFor(grade: number): Registry {
   };
 }
 
+export function unitModules(unitId: string): ContentModule[] {
+  return all.filter((m) => m.unitId === unitId);
+}
+
+/**
+ * Modul semu yang menggabungkan seluruh aturan soal satu unit, dipakai untuk
+ * "lompati satu unit". Dibuat sebagai ModuleDef biasa supaya seluruh mesin yang
+ * sudah ada — generator, sesi, evaluator — bisa dipakai apa adanya.
+ *
+ * Kecepatan sengaja tidak dinilai: yang diuji adalah apakah anak menguasai isi
+ * unitnya, bukan seberapa cepat dia.
+ */
+export function unitTestDef(unitId: string): ContentModule {
+  const mods = unitModules(unitId);
+  const first = mods[0];
+  if (!first) throw new Error(`Unit tidak ada: ${unitId}`);
+  return {
+    ...first,
+    id: `unit:${unitId}`,
+    title: unitTitles[unitId]?.title.split('·')[1]?.trim() ?? unitId,
+    prereq: [],
+    kind: 'application',
+    fluencyTracked: false,
+    masteryOverride: undefined,
+    skills: [...new Set(mods.flatMap((m) => m.skills))],
+    questionTypes: [...new Set(mods.flatMap((m) => m.questionTypes))],
+    visuals: [...new Set(mods.flatMap((m) => m.visuals))],
+    vocab: [],
+    learn: [],
+    // Satu aturan pertama dari tiap modul: cakupannya merata ke seluruh unit,
+    // bukan menumpuk di modul yang aturannya paling banyak.
+    rules: mods.flatMap((m) => m.rules.slice(0, 1)),
+  };
+}
+
 export function moduleById(id: string): ContentModule {
   const m = modules[id];
   if (!m) throw new Error(`Modul tidak terdaftar: ${id}`);

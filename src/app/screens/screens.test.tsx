@@ -255,14 +255,40 @@ describe('MapScreen — pintu jump level', () => {
         nextStepLabel="Learn"
         reviews={[]}
         onReview={() => {}}
+        onSkipUnit={() => {}}
         onOpen={() => {}}
         onTestOut={onTestOut}
         onParent={() => {}}
         onBadges={() => {}}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /already know this/i }));
+    fireEvent.click(screen.getByRole('button', { name: /skip this one/i }));
     expect(onTestOut).toHaveBeenCalledWith(pathOrder[0]);
+  });
+
+  it('menawarkan lompat satu unit penuh kalau unitnya cukup besar', () => {
+    const onSkipUnit = vi.fn();
+    render(
+      <MapScreen
+        states={{}}
+        nextId={pathOrder[0] as string}
+        xp={0}
+        level={1}
+        streak={0}
+        grade={1}
+        nextStepLabel="Learn"
+        reviews={[]}
+        onReview={() => {}}
+        skippableUnit={{ unitId: 'g1-u1', title: 'Unit 1' }}
+        onSkipUnit={onSkipUnit}
+        onOpen={() => {}}
+        onTestOut={() => {}}
+        onParent={() => {}}
+        onBadges={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /skip whole unit/i }));
+    expect(onSkipUnit).toHaveBeenCalledWith('g1-u1');
   });
 
   it('modul terkunci tidak bisa ditekan', () => {
@@ -277,6 +303,7 @@ describe('MapScreen — pintu jump level', () => {
         nextStepLabel="Learn"
         reviews={[]}
         onReview={() => {}}
+        onSkipUnit={() => {}}
         onOpen={() => {}}
         onTestOut={() => {}}
         onParent={() => {}}

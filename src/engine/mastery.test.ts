@@ -41,27 +41,38 @@ describe('akurasi & kecepatan', () => {
 describe('mastery check — tabel keputusan', () => {
   const def = addModule();
 
-  it('sesi pertama lulus tapi belum cukup konsistensi → belum mastered', () => {
-    const e = evaluate(def, state(), session());
+  it('sesi pertama lulus tapi belum sempurna → belum mastered', () => {
+    const e = evaluate(def, state(), session({ n: 10, correct: 9 }));
     expect(e.detail.accuracyPass).toBe(true);
     expect(e.detail.sessionsPass).toBe(false);
     expect(e.next.status).toBe('learning');
   });
 
-  it('dua sesi lulus (grade 1 boleh hari sama) → mastered + 2 bintang', () => {
-    const first = evaluate(def, state(), session());
-    const second = evaluate(def, first.next, session());
-    expect(second.next.status).toBe('mastered');
-    expect(second.next.stars).toBe(2); // akurasi 100% ≥ 95%
-    expect(second.events.map((x) => x.type)).toContain('mastered');
+  it('nilai sempurna langsung menguasai modul — tanpa pengulangan', () => {
+    const e = evaluate(def, state(), session({ n: 10, correct: 10 }));
+    expect(e.next.status).toBe('mastered');
+    expect(e.next.stars).toBe(2);
   });
 
-  it('grade 2 menuntut hari berbeda', () => {
+  it('belum sempurna tetap menuntut dua sesi', () => {
+    const first = evaluate(def, state(), session({ n: 10, correct: 9 }));
+    expect(first.next.status).toBe('learning');
+    const second = evaluate(def, first.next, session({ n: 10, correct: 9 }));
+    expect(second.next.status).toBe('mastered');
+  });
+
+  it('modul yang MENUNTUT pengulangan tidak bisa dilewati dengan nilai sempurna', () => {
+    const strict = addModule({ masteryOverride: { sessions: 2 } });
+    const e = evaluate(strict, state(), session({ n: 10, correct: 10 }));
+    expect(e.next.status).toBe('learning');
+  });
+
+  it('grade 2 menuntut hari berbeda kalau belum sempurna', () => {
     const g2 = addModule({ id: 'g2-x', grade: 2 });
-    const a = evaluate(g2, state(), session({ date: '2026-09-08' }));
-    const b = evaluate(g2, a.next, session({ date: '2026-09-08' }));
+    const a = evaluate(g2, state(), session({ date: '2026-09-08', n: 10, correct: 9 }));
+    const b = evaluate(g2, a.next, session({ date: '2026-09-08', n: 10, correct: 9 }));
     expect(b.next.status).toBe('learning');
-    const c = evaluate(g2, b.next, session({ date: '2026-09-09' }));
+    const c = evaluate(g2, b.next, session({ date: '2026-09-09', n: 10, correct: 9 }));
     expect(c.next.status).toBe('mastered');
   });
 

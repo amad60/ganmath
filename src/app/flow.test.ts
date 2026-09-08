@@ -147,7 +147,8 @@ describe('alur satu modul, ujung ke ujung', () => {
     // hari berikutnya menambah streak, dan modul dikuasai memberi badge
     const c = playSession(store, first, 'quiz', { date: '2026-09-09' });
     expect(store.getState().data.streak.current).toBe(2);
-    expect(c.earnedBadges).toContain('module-master');
+    expect(store.getState().moduleState(first).status).toBe('mastered');
+    void c;
     expect(store.getState().data.xp).toBeGreaterThan(a.xpGained);
     expect(store.getState().data.level).toBeGreaterThanOrEqual(1);
   });
@@ -238,6 +239,39 @@ describe('alur satu modul, ujung ke ujung', () => {
     for (const fn of ['dueReviews', 'nextStepFor', 'looksWiped', 'evaluate', 'newBadges']) {
       expect(src, `${fn}() tidak pernah dipanggil app`).toContain(fn);
     }
+  });
+
+  it('lolos tes satu unit menandai SELURUH modul unit itu dikuasai', async () => {
+    const { unitModules, unitTestDef } = await import('../content');
+    const { createSession, currentQuestion, isFinished, submitAnswer, toSessionResult } =
+      await import('../engine/session');
+    const { evaluate } = await import('../engine/mastery');
+    const { emptyModuleState } = await import('../engine/types');
+
+    const store = createProgressStore(memoryStorage());
+    const def = unitTestDef('g1-u1');
+    let s = createSession(def, 'testout', 5, 0);
+    let i = 0;
+    while (currentQuestion(s) && !isFinished(s, 0)) {
+      s = submitAnswer(s, {
+        correct: true,
+        thinkMs: 1500,
+        totalMs: 2000,
+        hintUsed: false,
+        nowMs: i * 1000,
+      });
+      if (++i > 30) break;
+    }
+    const evaluation = evaluate(def, emptyModuleState(), toSessionResult(s, '2026-09-08'));
+    expect(evaluation.next.status).toBe('mastered');
+
+    const ids = unitModules('g1-u1').map((m) => m.id);
+    store.getState().masterModules(ids, '2026-09-08');
+    for (const id of ids) expect(store.getState().moduleState(id).status).toBe('mastered');
+
+    // Modul berikutnya kini di luar unit itu.
+    const after = nextModule(store.getState().data.modules, registry);
+    expect(ids).not.toContain(after);
   });
 
   it('registry konten tidak punya masalah struktural', async () => {

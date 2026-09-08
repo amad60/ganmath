@@ -24,6 +24,9 @@ export type MapScreenProps = {
   /** Modul yang jatuh tempo diulang hari ini. */
   reviews: { moduleId: string; title: string }[];
   onReview: (moduleId: string) => void;
+  /** Unit yang sedang ditempuh, kalau cukup besar untuk ditawarkan dilompati. */
+  skippableUnit?: { unitId: string; title: string } | null;
+  onSkipUnit: (unitId: string) => void;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
@@ -73,6 +76,8 @@ export function MapScreen({
   nextStepLabel,
   reviews,
   onReview,
+  skippableUnit,
+  onSkipUnit,
 }: MapScreenProps) {
   const registry = registryFor(grade);
   const pathOrder = registry.pathOrder;
@@ -283,10 +288,30 @@ export function MapScreen({
           <Button full onClick={() => onOpen(nextDef.id)}>
             {nextStepLabel}: {nextDef.title}
           </Button>
-          <Button variant="ghost" full onClick={() => onTestOut(nextDef.id)}>
-            <Icon name="skip" size={18} color="var(--c-ink-soft)" />
-            {en.map.skipAhead}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              className="flex-1"
+              textSize={15}
+              onClick={() => onTestOut(nextDef.id)}
+            >
+              <Icon name="skip" size={16} color="var(--c-ink-soft)" />
+              {en.map.skipAhead}
+            </Button>
+            {/* Lompati satu unit sekaligus — untuk anak yang levelnya jauh di atas
+                modul ini, mengulang tes per modul terasa seperti hukuman. */}
+            {skippableUnit ? (
+              <Button
+                variant="ghost"
+                className="flex-1"
+                textSize={15}
+                onClick={() => onSkipUnit(skippableUnit.unitId)}
+              >
+                <Icon name="skip" size={16} color="var(--c-ink-soft)" />
+                {en.map.skipUnit}
+              </Button>
+            ) : null}
+          </div>
         </div>
       ) : null}
     </div>

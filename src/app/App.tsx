@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { Evaluation } from '../engine/mastery';
+import { evaluate, type Evaluation } from '../engine/mastery';
 import { createSession, toSessionResult, type SessionState } from '../engine/session';
 import { nextModule } from '../engine/unlock';
 import { nextStepFor, type ModuleStep } from '../engine/steps';
 import { dueReviews } from '../engine/review';
-import { GRADE_THRESHOLDS } from '../engine/types';
+import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
-import { all, moduleById, registryFor } from '../content';
+import { all, moduleById, registryFor, unitModules, unitTestDef, unitTitles } from '../content';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
 import { toDateString } from '../engine/review';
@@ -48,6 +48,7 @@ export function App() {
   const updateSettings = useProgress((s) => s.updateSettings);
   const replaceAll = useProgress((s) => s.replaceAll);
   const setGrade = useProgress((s) => s.setGrade);
+  const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
 
   const [screen, setScreen] = useState<Screen>({ name: 'map' });
@@ -97,6 +98,13 @@ export function App() {
     setScreen({ name: 'session', moduleId });
   };
 
+  /** Lompati SATU UNIT sekaligus: satu tes yang menjangkau seluruh modulnya. */
+  const startUnitTest = (unitId: string) => {
+    const def = unitTestDef(unitId);
+    setSession(createSession(def, 'testout', Date.now(), Date.now()));
+    setScreen({ name: 'session', moduleId: def.id });
+  };
+
   /**
    * Membuka modul = mengerjakan LANGKAH BERIKUTNYA-nya. Versi pertama menebak
    * sendiri (`status === 'learning' ? 'practice' : 'quiz'`), dan karena sesi latihan
@@ -120,6 +128,14 @@ export function App() {
 
   /** Kalimat untuk tombol utama: selalu menyebut apa yang terjadi berikutnya. */
   const nextActionFor = (moduleId: string): { label: string; run: () => void } => {
+    if (moduleId.startsWith('unit:')) {
+      const after = nextModule(data.modules, registry);
+      if (!after) return { label: en.result.allDone, run: () => setScreen({ name: 'map' }) };
+      return {
+        label: en.result.nextModule(moduleById(after).title),
+        run: () => openModule(after),
+      };
+    }
     const step = stepFor(moduleId);
     if (step !== 'done') {
       return {
@@ -136,6 +152,29 @@ export function App() {
   };
 
   const finishSession = (final: SessionState) => {
+    // Tes satu unit: kalau lolos, seluruh modul unit itu ditandai dikuasai sekaligus.
+    if (final.moduleId.startsWith('unit:')) {
+      const unitId = final.moduleId.slice('unit:'.length);
+      const virtualDef = unitTestDef(unitId);
+      const result = toSessionResult(final, today);
+      const evaluation = evaluate(virtualDef, emptyModuleState(), result);
+      if (evaluation.next.status === 'mastered') {
+        masterModules(
+          unitModules(unitId).map((m) => m.id),
+          today,
+        );
+      }
+      setSession(null);
+      setScreen({
+        name: 'result',
+        moduleId: final.moduleId,
+        evaluation,
+        xpGained: 0,
+        earnedBadges: [],
+      });
+      return;
+    }
+
     const def = moduleById(final.moduleId);
     const unitModuleIds = all.filter((m) => m.unitId === def.unitId).map((m) => m.id);
     const outcome = recordSession(def, toSessionResult(final, today), { unitModuleIds });
@@ -203,21 +242,28 @@ export function App() {
       ) : null;
 
     case 'result': {
+      const isUnitTest = screen.moduleId.startsWith('unit:');
       const action = nextActionFor(screen.moduleId);
       const st = moduleState(screen.moduleId);
       // Master Round adalah satu-satunya jalan ke bintang ke-3. Tanpa tawaran ini
       // bintang ketiga dan badge Gold Brain mustahil didapat.
       const canMaster =
-        (st.status === 'mastered' || st.status === 'retained') && st.stars < 3;
+        !isUnitTest && (st.status === 'mastered' || st.status === 'retained') && st.stars < 3;
       return (
         <ResultScreen
-          module={moduleById(screen.moduleId)}
+          module={
+            isUnitTest
+              ? unitTestDef(screen.moduleId.slice('unit:'.length))
+              : moduleById(screen.moduleId)
+          }
           evaluation={screen.evaluation}
           xpGained={screen.xpGained}
           earnedBadges={screen.earnedBadges}
           sessionsNeeded={
-            moduleById(screen.moduleId).masteryOverride?.sessions ??
-            GRADE_THRESHOLDS[moduleById(screen.moduleId).grade].sessions
+            isUnitTest
+              ? 1
+              : (moduleById(screen.moduleId).masteryOverride?.sessions ??
+                GRADE_THRESHOLDS[moduleById(screen.moduleId).grade].sessions)
           }
           nextLabel={action.label}
           onNext={action.run}
@@ -288,6 +334,15 @@ export function App() {
             streak={data.streak.current}
             onOpen={openModule}
             onTestOut={(id) => startSession(id, 'testout')}
+            onSkipUnit={startUnitTest}
+            skippableUnit={
+              next && unitModules(moduleById(next).unitId).length >= 3
+                ? {
+                    unitId: moduleById(next).unitId,
+                    title: unitTitles[moduleById(next).unitId]?.title ?? '',
+                  }
+                : null
+            }
             grade={grade}
             nextStepLabel={next ? en.step[stepFor(next)] : en.step.done}
             reviews={reviews}

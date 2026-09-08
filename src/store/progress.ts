@@ -20,6 +20,7 @@ export type ProgressStore = {
   moduleState: (id: string) => ModuleState;
   setProfile: (name: string, avatar: Avatar) => void;
   setGrade: (grade: number) => void;
+  masterModules: (ids: string[], date: string) => void;
   markLearnComplete: (moduleId: string, date: string) => void;
   recordSession: (
     def: ModuleDef,
@@ -131,6 +132,26 @@ export function createProgressStore(
 
         setGrade: (grade) =>
           set((s) => ({ data: touch({ ...s.data, profile: { ...s.data.profile, grade } }) })),
+
+        /** Dipakai saat anak lolos tes satu unit: seluruh modulnya ditandai dikuasai. */
+        masterModules: (ids, date) =>
+          set((s) => {
+            const modules = { ...s.data.modules };
+            for (const id of ids) {
+              const prev = modules[id] ?? emptyModuleState();
+              if (prev.status === 'mastered' || prev.status === 'retained') continue;
+              modules[id] = {
+                ...prev,
+                status: 'mastered',
+                stars: prev.stars || 1,
+                masteredAt: date,
+                learnCompletedAt: prev.learnCompletedAt ?? date,
+                reviewStage: Math.max(1, prev.reviewStage) as typeof prev.reviewStage,
+                consecutiveFails: 0,
+              };
+            }
+            return { data: touch({ ...s.data, modules }) };
+          }),
 
         markLearnComplete: (moduleId, date) =>
           set((s) => {

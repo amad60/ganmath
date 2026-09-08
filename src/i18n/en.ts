@@ -17,7 +17,8 @@ export const en = {
 
   map: {
     startNext: 'Start',
-    skipAhead: 'I already know this',
+    skipAhead: 'Skip this one',
+    skipUnit: 'Skip whole unit',
     nextUp: 'Next up',
     lockedHint: 'Finish the one before to open this',
     installYes: 'Add to home screen',

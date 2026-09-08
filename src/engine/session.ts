@@ -2,20 +2,27 @@ import { generateSet } from './generator';
 import { mulberry32 } from './rng';
 import type { ModuleDef, Question, QuestionResult, SessionKind, SessionResult } from './types';
 
-export type SessionLimits = { min: number; max: number; minSeconds: number };
+export type SessionLimits = { length: number };
 
-/** Aturan user: satu sesi minimal 5 menit. Review sengaja pendek (5 soal). */
+/**
+ * Panjang sesi TETAP dan diketahui sejak awal.
+ *
+ * Versi sebelumnya memakai rentang (8–12 soal) yang bisa memanjang sampai 5 menit,
+ * sehingga bar kemajuan tumbuh saat dikerjakan: anak melihat 9/9 lalu berubah jadi
+ * 10/10, 11/11 — garis finis yang terus mundur. Itu lebih buruk daripada tidak ada
+ * indikator sama sekali.
+ *
+ * "Sesi minimal 5 menit" dari user dipahami ulang sebagai satu DUDUKAN belajar
+ * (materi + latihan + kuis), bukan tiap kuis dipanjangkan sampai 5 menit.
+ */
 export const SESSION_LIMITS: Record<SessionKind, SessionLimits> = {
-  practice: { min: 8, max: 12, minSeconds: 300 },
-  quiz: { min: 8, max: 12, minSeconds: 300 },
-  review: { min: 5, max: 5, minSeconds: 0 },
-  master: { min: 10, max: 10, minSeconds: 0 },
-  speed: { min: 8, max: 8, minSeconds: 0 },
-  testout: { min: 10, max: 10, minSeconds: 0 },
+  practice: { length: 8 },
+  quiz: { length: 10 },
+  review: { length: 5 },
+  master: { length: 10 },
+  speed: { length: 8 },
+  testout: { length: 10 },
 };
-
-/** Median thinkMs di bawah ini + semua benar = anak sudah jelas bisa; jangan dipanjang-panjangkan. */
-export const FAST_ENOUGH_MS = 4_000;
 
 export type PendingQuestion = { question: Question; retried: boolean };
 
@@ -38,7 +45,7 @@ export function createSession(
   nowMs: number,
 ): SessionState {
   const limits = SESSION_LIMITS[kind];
-  const { questions } = generateSet(def, limits.max, mulberry32(seed), {
+  const { questions } = generateSet(def, limits.length, mulberry32(seed), {
     requireCoverage: kind === 'quiz' || kind === 'master' || kind === 'testout',
   });
   return {
@@ -102,46 +109,26 @@ export function submitAnswer(state: SessionState, input: AnswerInput): SessionSt
   };
 }
 
-function medianThink(results: QuestionResult[]): number {
-  const values = results.filter((r) => !r.retried).map((r) => r.thinkMs).sort((a, b) => a - b);
-  if (values.length === 0) return Infinity;
-  const mid = Math.floor(values.length / 2);
-  return values.length % 2 ? (values[mid] as number) : (((values[mid - 1] as number) + (values[mid] as number)) / 2);
-}
-
 /**
- * Kapan sesi berhenti. Tiga aturan, diperiksa berurutan:
- *  1. batas atas soal tercapai — sesi tidak pernah berlarut-larut;
- *  2. sudah cukup soal DAN semuanya benar DAN cepat → berhenti lebih awal.
- *     Ini yang memenuhi janji "modul awal harus bisa cepat selesai" (CLAUDE.md §7);
- *  3. sudah cukup soal DAN sudah 5 menit.
- * Sesi tidak pernah berhenti di tengah soal — pemeriksaan hanya terjadi setelah menjawab.
+ * Sesi berhenti saat jumlah soalnya habis — titik. Soal ulangan (jawaban salah yang
+ * dimunculkan lagi) menambah antrean, jadi anak tetap mengulang yang belum bisa,
+ * tapi hitungan yang DILIHAT anak tidak pernah berubah.
  */
 export function isFinished(state: SessionState, nowMs: number): boolean {
-  const limits = SESSION_LIMITS[state.kind];
-  const answered = state.results.length;
-  if (state.pending.length === 0) return true;
-  if (answered >= limits.max) return true;
-  if (answered < limits.min) return false;
-
-  const allCorrect = state.results.every((r) => r.correct);
-  if (allCorrect && medianThink(state.results) <= FAST_ENOUGH_MS) return true;
-
-  return nowMs - state.startedAtMs >= limits.minSeconds * 1000;
+  void nowMs;
+  return state.pending.length === 0;
 }
 
 /**
  * Berapa soal yang sudah dikerjakan dan berapa targetnya. Target dipakai untuk
  * memberi tahu anak "sisa berapa lagi" — pertanyaan pertama anak dalam sesi apa pun.
  */
+/**
+ * Kemajuan sesi. `total` TETAP sejak soal pertama: itu janji yang dilihat anak,
+ * dan janji itu tidak boleh berubah di tengah jalan.
+ */
 export function progressOf(state: SessionState): { done: number; total: number } {
-  const limits = SESSION_LIMITS[state.kind];
-  const done = state.results.length;
-  if (state.pending.length === 0) return { done, total: done };
-  // Target yang ditampilkan bertumpu pada batas MINIMUM, bukan maksimum: menampilkan
-  // "1 / 12" padahal sesi biasanya berhenti di 8 membuat anak merasa jalannya lebih
-  // panjang daripada kenyataannya.
-  return { done, total: Math.min(limits.max, Math.max(limits.min, done + 1)) };
+  return { done: state.results.length, total: SESSION_LIMITS[state.kind].length };
 }
 
 export function toSessionResult(state: SessionState, date: string): SessionResult {

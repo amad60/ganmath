@@ -203,6 +203,23 @@ export function evaluate(
   }
 
   // --- Mastery Check.
+  //
+  // Nilai sempurna melewati aturan konsistensi. Menyuruh anak mengulang kuis yang
+  // baru saja dia jawab 100% benar tidak mengajarkan apa pun — itu cuma membosankan,
+  // dan kebosanan adalah cara tercepat kehilangan dia. Modul yang memang menuntut
+  // lebih dari satu sesi harus menyatakannya lewat `masteryOverride.sessions`.
+  const perfect = accuracy === 1 && coveragePass && speedPass;
+  const requiresRepeats = def.masteryOverride?.sessions != null;
+  if (perfect && !requiresRepeats) {
+    next.status = 'mastered';
+    next.masteredAt = result.date;
+    next.reviewStage = Math.max(1, state.reviewStage) as ModuleState['reviewStage'];
+    next.stars = 2;
+    events.push({ type: 'mastered', moduleId: def.id });
+    events.push({ type: 'star', moduleId: def.id, stars: 2 });
+    return { next, events, detail };
+  }
+
   if (!sessionPassed || !sessionsPass) {
     next.status = 'learning';
     if (next.consecutiveFails >= 3) events.push({ type: 'needs-reteach', moduleId: def.id });

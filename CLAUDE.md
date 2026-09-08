@@ -59,8 +59,9 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
    konsistensi**, bukan cuma benar/salah. Detail di §6.
 4. **Reward loop yang bikin balik lagi.** Setiap sesi selesai harus terasa memuaskan.
 5. **Minim guidance.** Anak bisa buka app dan tahu harus ngapain tanpa dijelaskan orang tua.
-6. **Sesi pendek.** Satu sesi **minimal 5 menit**, ideal 5–10 menit. Jangan ada layar lama
-   tanpa interaksi.
+6. **Sesi pendek dan panjangnya PASTI.** Satu dudukan belajar 5–10 menit (materi + latihan
+   + kuis). Panjang tiap sesi soal tetap dan diketahui sejak awal — latihan 8 soal, kuis 10,
+   ulangan 5 — supaya bar kemajuan tidak pernah memundurkan garis finisnya sendiri.
 7. **Gagal itu aman.** Tidak ada skor merah. Salah = coba lagi dengan petunjuk visual.
 8. **Offline-first.** Harus jalan tanpa internet setelah dibuka sekali.
 
@@ -111,6 +112,12 @@ makin tinggi grade makin ketat menuju benar-benar otomatis.
 | 5 | ≥ 90% | 2 sesi lulus, beda hari | ≤ 5 detik/soal |
 | 6 | ≥ 90% | 3 sesi lulus, beda hari | ≤ 4 detik/soal |
 
+**Nilai sempurna melewati aturan konsistensi.** Kuis 100% benar (dengan cakupan dan
+kecepatan terpenuhi) langsung menguasai modul, tanpa perlu sesi kedua. Menyuruh anak
+mengulang kuis yang baru saja dia jawab sempurna tidak mengajarkan apa pun — itu hanya
+membosankan, dan kebosanan adalah cara tercepat kehilangan dia. Modul yang memang
+menuntut lebih dari satu sesi menyatakannya lewat `masteryOverride.sessions`.
+
 Berlaku di semua grade:
 - **Cakupan:** semua sub-tipe soal dalam modul pernah muncul dan pernah dijawab benar.
 - Ambang kecepatan hanya untuk modul bertipe **fakta hafalan** (mis. 7+5, 6×8). Modul bertipe
@@ -151,6 +158,10 @@ Berlaku di semua grade:
 
 - **Keputusan user: gating ketat.** Kalau anak belum menguasai sebuah modul, dia **ditahan di
   modul itu** — tidak ada jalur alternatif untuk melompatinya.
+- **Dua pintu melompat**, untuk anak yang levelnya sudah di atas: **lompati satu modul**
+  (kuis singkat, ambang 90%) dan **lompati satu unit penuh** (satu tes yang menjangkau
+  seluruh modul unit itu; lulus = seluruh unit ditandai dikuasai). Gagal tidak menghukum
+  apa pun.
 - **Tidak ada tes penempatan.** Anak mulai dari modul pertama Grade 1 meski sudah bisa berhitung
   sampai 100.
 - Karena dua hal di atas, dua hal ini jadi wajib supaya tidak membosankan / tidak frustrasi:

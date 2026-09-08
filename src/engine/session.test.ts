@@ -3,6 +3,7 @@ import {
   createSession,
   currentQuestion,
   isFinished,
+  progressOf,
   submitAnswer,
   toSessionResult,
   type SessionState,
@@ -40,24 +41,27 @@ describe('session runner', () => {
     for (const t of def.questionTypes) expect(types.has(t)).toBe(true);
   });
 
-  it('anak yang benar semua dan cepat berhenti di soal minimum, tidak dipanjang-panjangkan', () => {
-    const s = answerAll(createSession(def, 'quiz', 2, T0), { correct: true, thinkMs: 1500 });
-    expect(s.results).toHaveLength(8);
+  it('panjang sesi tetap dan diketahui sejak soal pertama', () => {
+    const s = createSession(def, 'quiz', 2, T0);
+    expect(progressOf(s).total).toBe(10);
+    // Jumlah yang dilihat anak tidak berubah setelah beberapa jawaban.
+    const after = answerAll(s, { correct: true, thinkMs: 1500 });
+    expect(progressOf(after).total).toBe(10);
   });
 
-  it('anak yang benar semua tapi lambat tetap dilanjutkan sampai 5 menit / batas atas', () => {
-    const s = answerAll(createSession(def, 'quiz', 3, T0), {
+  it('cepat atau lambat, jumlah soalnya sama — garis finis tidak bergerak', () => {
+    const cepat = answerAll(createSession(def, 'quiz', 3, T0), { correct: true, thinkMs: 1200 });
+    const lambat = answerAll(createSession(def, 'quiz', 3, T0), {
       correct: true,
       thinkMs: 9000,
       elapsedPer: 10_000,
     });
-    expect(s.results.length).toBeGreaterThan(8);
-    expect(s.results.length).toBeLessThanOrEqual(12);
+    expect(cepat.results.length).toBe(lambat.results.length);
   });
 
-  it('sesi tidak pernah melewati batas atas soal', () => {
+  it('jawaban salah menambah pengulangan tapi TIDAK menambah hitungan yang dilihat anak', () => {
     const s = answerAll(createSession(def, 'quiz', 4, T0), { correct: false, elapsedPer: 100 });
-    expect(s.results.length).toBeLessThanOrEqual(12);
+    expect(progressOf(s).total).toBe(10);
   });
 
   it('soal yang salah dimunculkan lagi, ditandai retried, dengan jarak ≥2 soal', () => {
@@ -91,6 +95,7 @@ describe('session runner', () => {
   it('review hanya 5 soal', () => {
     const s = createSession(def, 'review', 8, T0);
     expect(s.pending).toHaveLength(5);
+    expect(progressOf(s).total).toBe(5);
   });
 
   it('hasil sesi siap diberikan ke evaluator penguasaan', () => {
