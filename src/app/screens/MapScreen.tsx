@@ -21,6 +21,9 @@ export type MapScreenProps = {
   grade: number;
   /** Label langkah berikutnya, mis. "Learn" / "Practice" / "Mastery Check". */
   nextStepLabel: string;
+  /** Modul yang jatuh tempo diulang hari ini. */
+  reviews: { moduleId: string; title: string }[];
+  onReview: (moduleId: string) => void;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
@@ -68,6 +71,8 @@ export function MapScreen({
   install,
   grade,
   nextStepLabel,
+  reviews,
+  onReview,
 }: MapScreenProps) {
   const registry = registryFor(grade);
   const pathOrder = registry.pathOrder;
@@ -100,6 +105,31 @@ export function MapScreen({
       </header>
 
       <main className="flex flex-1 flex-col items-center gap-0 px-6 pt-4 pb-[168px]">
+        {/* Ulangan berjarak: tanpa kartu ini, modul yang sudah dikuasai tidak pernah
+            muncul lagi di peta, dan seluruh jadwal 3/7/30/60 hari tidak pernah terjadi. */}
+        {reviews.length > 0 ? (
+          <div
+            className="mb-3 flex w-full flex-col gap-2 rounded-[var(--r-lg)] p-4"
+            style={{ background: 'var(--c-surface)', borderLeft: '6px solid var(--c-review)' }}
+          >
+            <p className="text-ink-soft text-[12px] font-black tracking-wide uppercase">
+              {en.map.reviewDue}
+            </p>
+            {reviews.map((r) => (
+              <Button
+                key={r.moduleId}
+                variant="answer"
+                textSize={17}
+                full
+                className="h-12"
+                onClick={() => onReview(r.moduleId)}
+              >
+                ⟲ {r.title}
+              </Button>
+            ))}
+          </div>
+        ) : null}
+
         {nextDef ? (
           <div
             className="mb-2 flex w-full items-center gap-3 rounded-[var(--r-lg)] p-3 shadow-[var(--shadow-card)]"
@@ -124,7 +154,8 @@ export function MapScreen({
           const unlocked = isUnlocked(id, states, registry);
           const cleared = CLEARED.includes(st?.status ?? '');
           const isNext = id === nextId;
-          const needsReview = st?.status === 'needs_review';
+          const needsReview =
+            st?.status === 'needs_review' || reviews.some((r) => r.moduleId === id);
           const unit = unitTitles[def.unitId];
           const accent = unit?.color ?? 'var(--c-primary)';
 

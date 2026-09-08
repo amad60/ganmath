@@ -6,6 +6,12 @@ import { unlockAudio } from '../sfx';
 
 export type OnboardingScreenProps = {
   onDone: (name: string, avatar: Avatar) => void;
+  /**
+   * Muncul hanya kalau app pernah dipakai tapi progressnya hilang — iOS Safari
+   * menghapus data situs yang tidak dibuka ±7 hari. Tanpa jalan ini, anak yang
+   * kehilangan progress hanya melihat layar "anak baru" dan mulai dari nol.
+   */
+  onRestore?: (() => void) | null;
 };
 
 // Rubah tidak ada di sini: itu Gan, si maskot. Avatar adalah anaknya, bukan Gan.
@@ -22,7 +28,7 @@ const AVATARS: { id: Avatar; icon: string }[] = [
  * Setelah ini anak langsung masuk modul pertama — bukan ke peta — supaya dia
  * segera mengerjakan sesuatu (docs/design/wireframes.md §1).
  */
-export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
+export function OnboardingScreen({ onDone, onRestore }: OnboardingScreenProps) {
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState<Avatar>('cat');
 
@@ -61,6 +67,18 @@ export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
           ))}
         </div>
       </div>
+
+      {onRestore ? (
+        <div
+          className="rounded-[var(--r-md)] p-3 text-center"
+          style={{ background: 'var(--c-retry-soft)' }}
+        >
+          <p className="text-[16px] font-bold">Welcome back! Your progress is missing.</p>
+          <Button variant="ghost" full onClick={onRestore}>
+            Load progress from a file
+          </Button>
+        </div>
+      ) : null}
 
       <Button
         full

@@ -154,6 +154,27 @@ Perbaikan:
   modul benar-benar bisa dituntaskan, serta anak yang selalu gagal tidak diulang-ulang
   di langkah yang sama.
 
+## Ronde 6 — audit fitur mati
+
+Diminta user setelah bug alur: "audit lagi flow lainnya, takut ada yang mati juga".
+Wajar dicurigai, dan benar: **empat fitur lagi selesai di engine, lengkap dengan
+testnya, tapi tidak pernah bisa dijangkau anak.**
+
+| Fitur | Kenapa mati | Perbaikan |
+|---|---|---|
+| **Ulangan berjarak (3/7/30/60 hari)** | `dueReviews()` tidak pernah dipanggil app. Modul yang sudah dikuasai dilewati `nextModule`, jadi tidak pernah muncul lagi di peta. Seluruh jadwal retensi — inti janji "di luar kepala" — tidak pernah terjadi | Kartu **"Time to remember"** di peta, maksimal 2 modul/hari, node ikut ditandai ⟲ |
+| **Master Round (bintang ke-3)** | Tidak ada satu pun tempat memulai sesi `master`. Bintang ketiga dan badge Gold Brain mustahil didapat | Ditawarkan di layar hasil begitu modul dikuasai dengan <3 bintang |
+| **Toggle "Reduce motion"** | Tersimpan di setelan, tapi `useReducedMotion` hanya membaca `prefers-reduced-motion`. Togglenya tidak melakukan apa pun | Setelan ditulis ke atribut `<html>`, hook mengamatinya, berlaku seketika |
+| **Pemulihan data terhapus** | `looksWiped()` tidak pernah dipanggil. Anak yang kehilangan progress hanya melihat layar "anak baru" | Onboarding menawarkan **"Load progress from a file"** kalau app terdeteksi pernah dipakai |
+
+**Penjaga baru**: satu test memastikan setiap jenis sesi punya jalan dari app —
+lewat literal di kode app, atau lewat `nextStepFor` yang dibuktikan mengembalikannya.
+Penjaga ini langsung menemukan satu positif palsu (Speed Round dijangkau lewat step
+machine, bukan literal), yang justru membuat aturannya jadi presisi.
+
+Pola yang sama muncul lima kali di proyek ini: **selesai di engine ≠ sampai ke anak.**
+Test unit membuktikan fungsinya benar; tidak ada yang membuktikan fungsinya dipakai.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

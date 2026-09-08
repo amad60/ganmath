@@ -253,6 +253,8 @@ describe('MapScreen — pintu jump level', () => {
         streak={0}
         grade={1}
         nextStepLabel="Learn"
+        reviews={[]}
+        onReview={() => {}}
         onOpen={() => {}}
         onTestOut={onTestOut}
         onParent={() => {}}
@@ -273,6 +275,8 @@ describe('MapScreen — pintu jump level', () => {
         streak={0}
         grade={1}
         nextStepLabel="Learn"
+        reviews={[]}
+        onReview={() => {}}
         onOpen={() => {}}
         onTestOut={() => {}}
         onParent={() => {}}

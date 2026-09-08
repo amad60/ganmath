@@ -7,14 +7,27 @@ import { useEffect, useState } from 'react';
  */
 export function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false);
+
   useEffect(() => {
-    if (typeof matchMedia !== 'function') return;
-    const mq = matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    const root = typeof document === 'undefined' ? null : document.documentElement;
+    const fromSetting = () => root?.dataset.reduceMotion === 'true';
+    const mq = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+
+    const sync = () => setReduced(Boolean(mq?.matches) || fromSetting());
+    sync();
+
+    mq?.addEventListener('change', sync);
+    // Setelan orang tua diterapkan lewat atribut pada <html>; diamati supaya
+    // togglenya berlaku seketika, bukan setelah app dibuka ulang.
+    const observer = root ? new MutationObserver(sync) : null;
+    observer?.observe(root as HTMLElement, { attributes: true, attributeFilter: ['data-reduce-motion'] });
+
+    return () => {
+      mq?.removeEventListener('change', sync);
+      observer?.disconnect();
+    };
   }, []);
+
   return reduced;
 }
 

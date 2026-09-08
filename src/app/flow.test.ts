@@ -162,6 +162,84 @@ describe('alur satu modul, ujung ke ujung', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it('ulangan berjarak benar-benar muncul setelah jatuh tempo', async () => {
+    const { dueReviews } = await import('../engine/review');
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+
+    store.getState().markLearnComplete(first, '2026-09-01');
+    playSession(store, first, 'practice', { date: '2026-09-01' });
+    playSession(store, first, 'quiz', { date: '2026-09-01' });
+    playSession(store, first, 'quiz', { date: '2026-09-01' });
+    expect(store.getState().moduleState(first).status).toBe('mastered');
+
+    // Belum jatuh tempo
+    expect(dueReviews(store.getState().data.modules, '2026-09-02')).toHaveLength(0);
+    // R1 jatuh tempo 3 hari kemudian
+    expect(dueReviews(store.getState().data.modules, '2026-09-05')[0]?.moduleId).toBe(first);
+  });
+
+  it('Master Round bisa memberi bintang ketiga', () => {
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+    store.getState().markLearnComplete(first, '2026-09-01');
+    playSession(store, first, 'practice', { date: '2026-09-01' });
+    playSession(store, first, 'quiz', { date: '2026-09-01' });
+    playSession(store, first, 'quiz', { date: '2026-09-01' });
+    expect(store.getState().moduleState(first).stars).toBeLessThan(3);
+
+    playSession(store, first, 'master', { date: '2026-09-02', thinkMs: 1500 });
+    expect(store.getState().moduleState(first).stars).toBe(3);
+  });
+
+  /**
+   * Penjaga untuk KELAS bug yang berulang di proyek ini: kemampuan yang ada di
+   * engine tapi tidak punya jalan dari app. Ulangan berjarak, Master Round, dan
+   * pemulihan data yang terhapus semuanya pernah selesai di engine dan lengkap
+   * dengan testnya, tapi tidak pernah bisa dijangkau anak.
+   */
+  it('setiap kemampuan engine punya jalan dari app', async () => {
+    const { readFileSync, readdirSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const walk = (dir: string): string[] =>
+      readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
+      );
+    const src = walk('src/app')
+      .concat(walk('src/store'))
+      .filter((f) => /\.tsx?$/.test(f) && !f.includes('.test.'))
+      .map((f) => readFileSync(f, 'utf8'))
+      .join('\n');
+
+    // Sesi yang dijangkau lewat step machine dibuktikan oleh nextStepFor;
+    // sisanya harus dipanggil eksplisit dari suatu tempat di app.
+    const { nextStepFor } = await import('../engine/steps');
+    const { addModule, state } = await import('../engine/fixtures');
+    const def = addModule();
+    const viaSteps = new Set([
+      nextStepFor(def, state({ learnCompletedAt: '2026-09-08' })),
+      nextStepFor(def, state({ status: 'practiced' })),
+      nextStepFor(def, state({ status: 'needs_review' })),
+      nextStepFor(
+        def,
+        state({ status: 'mastered', masteredAt: '2026-09-01', reviewStage: 1 }),
+        '2026-09-20',
+      ),
+    ]);
+    expect(viaSteps).toContain('practice');
+    expect(viaSteps).toContain('speed');
+    expect(viaSteps).toContain('review');
+
+    for (const kind of ['quiz', 'master', 'testout']) {
+      expect(src, `sesi "${kind}" tidak pernah dimulai app`).toContain(`'${kind}'`);
+    }
+
+    // Fungsi engine yang menjadi fitur bagi anak, bukan sekadar helper internal.
+    for (const fn of ['dueReviews', 'nextStepFor', 'looksWiped', 'evaluate', 'newBadges']) {
+      expect(src, `${fn}() tidak pernah dipanggil app`).toContain(fn);
+    }
+  });
+
   it('registry konten tidak punya masalah struktural', async () => {
     const { validateRegistry } = await import('../engine/unlock');
     expect(validateRegistry(registry)).toEqual([]);

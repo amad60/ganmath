@@ -17,6 +17,8 @@ export type ResultScreenProps = {
   nextLabel: string;
   onNext: () => void;
   onBackToMap: () => void;
+  /** Tawaran opsional, mis. Master Round untuk bintang ke-3. */
+  extra?: { label: string; run: () => void } | null;
 };
 
 /**
@@ -32,6 +34,7 @@ export function ResultScreen({
   nextLabel,
   onNext,
   onBackToMap,
+  extra,
 }: ResultScreenProps) {
   const { next, detail } = evaluation;
   const mastered = next.status === 'mastered' || next.status === 'retained';
@@ -106,6 +109,11 @@ export function ResultScreen({
         <Button full onClick={onNext}>
           {nextLabel}
         </Button>
+        {extra ? (
+          <Button variant="ghost" full onClick={extra.run}>
+            {extra.label}
+          </Button>
+        ) : null}
         <Button variant="ghost" full onClick={onBackToMap}>
           {en.result.backToMap}
         </Button>

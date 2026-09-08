@@ -3,6 +3,7 @@ import type { Evaluation } from '../engine/mastery';
 import { createSession, toSessionResult, type SessionState } from '../engine/session';
 import { nextModule } from '../engine/unlock';
 import { nextStepFor, type ModuleStep } from '../engine/steps';
+import { dueReviews } from '../engine/review';
 import { GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, registryFor } from '../content';
@@ -16,6 +17,8 @@ import { ParentScreen } from './screens/ParentScreen';
 import { ParentGate } from './screens/ParentGate';
 import { usePwa } from './usePwa';
 import { setSoundEnabled } from './sfx';
+import { looksWiped, readMeta } from '../store/meta';
+import { readProgressFile } from './backupFile';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
@@ -52,15 +55,37 @@ export function App() {
   const [session, setSession] = useState<SessionState | null>(null);
   const [gateOpen, setGateOpen] = useState(false);
 
+  const today = toDateString(new Date());
   const grade = data.profile.grade ?? 1;
   const registry = useMemo(() => registryFor(grade), [grade]);
   const next = useMemo(() => nextModule(data.modules, registry), [data.modules, registry]);
   const pwa = usePwa(Object.keys(data.modules).length > 0);
 
+  /**
+   * Modul yang jatuh tempo diulang. Tanpa ini seluruh jadwal ulangan berjarak
+   * (3 / 7 / 30 / 60 hari) tidak pernah terjadi: modul yang sudah dikuasai
+   * dilewati oleh nextModule, jadi tidak akan pernah muncul lagi di peta.
+   */
+  const reviews = useMemo(
+    () =>
+      dueReviews(data.modules, today)
+        .filter((r) => registry.modules[r.moduleId])
+        .map((r) => ({ moduleId: r.moduleId, title: moduleById(r.moduleId).title })),
+    [data.modules, today, registry],
+  );
+
   useEffect(() => {
     setSoundEnabled(data.settings.sound);
   }, [data.settings.sound]);
-  const today = toDateString(new Date());
+
+  useEffect(() => {
+    // Setelan orang tua ditulis ke atribut root; komponen manipulatif membacanya
+    // di samping prefers-reduced-motion. Sebelumnya togglenya tersimpan tapi tidak
+    // pernah dibaca siapa pun.
+    const root = document.documentElement;
+    if (data.settings.reducedMotion === true) root.dataset.reduceMotion = 'true';
+    else delete root.dataset.reduceMotion;
+  }, [data.settings.reducedMotion]);
 
   /** Langkah yang harus dikerjakan anak untuk sebuah modul, satu sumber kebenaran. */
   const stepFor = (moduleId: string): ModuleStep =>
@@ -126,8 +151,23 @@ export function App() {
 
   // Onboarding muncul sekali seumur hidup, sebelum apa pun yang lain.
   if (!data.profile.name) {
+    const wiped = looksWiped(Object.keys(data.modules).length > 0, readMeta());
+    const restore = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json,.json';
+      input.onchange = () => {
+        const file = input.files?.[0];
+        if (!file) return;
+        void readProgressFile(file).then((r) => {
+          if (r.ok) replaceAll(r.state);
+        });
+      };
+      input.click();
+    };
     return (
       <OnboardingScreen
+        onRestore={wiped ? restore : null}
         onDone={(name, avatar) => {
           setProfile(name, avatar);
           if (next) openModule(next);
@@ -164,6 +204,11 @@ export function App() {
 
     case 'result': {
       const action = nextActionFor(screen.moduleId);
+      const st = moduleState(screen.moduleId);
+      // Master Round adalah satu-satunya jalan ke bintang ke-3. Tanpa tawaran ini
+      // bintang ketiga dan badge Gold Brain mustahil didapat.
+      const canMaster =
+        (st.status === 'mastered' || st.status === 'retained') && st.stars < 3;
       return (
         <ResultScreen
           module={moduleById(screen.moduleId)}
@@ -177,6 +222,14 @@ export function App() {
           nextLabel={action.label}
           onNext={action.run}
           onBackToMap={() => setScreen({ name: 'map' })}
+          extra={
+            canMaster
+              ? {
+                  label: en.result.masterRound,
+                  run: () => startSession(screen.moduleId, 'master'),
+                }
+              : null
+          }
         />
       );
     }
@@ -237,6 +290,8 @@ export function App() {
             onTestOut={(id) => startSession(id, 'testout')}
             grade={grade}
             nextStepLabel={next ? en.step[stepFor(next)] : en.step.done}
+            reviews={reviews}
+            onReview={(id) => startSession(id, 'review')}
             onBadges={() => setScreen({ name: 'badges' })}
             onParent={() => setGateOpen(true)}
             install={
