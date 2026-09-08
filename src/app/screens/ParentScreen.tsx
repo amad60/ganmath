@@ -46,6 +46,7 @@ export function ParentScreen({
 
   // Diagnosis, bukan sekadar angka: topik dengan akurasi terendah lebih dulu.
   const struggling = all
+    .filter((m) => m.grade === activeGrade)
     .map((m) => ({ id: m.id, title: m.title, acc: accuracyOf(data.modules[m.id]) }))
     .filter((x): x is { id: string; title: string; acc: number } => x.acc != null && x.acc < 0.8)
     .sort((a, b) => a.acc - b.acc)
@@ -137,9 +138,9 @@ export function ParentScreen({
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Jump to level</h2>
           <p className="text-ink-soft text-[15px]">
-            Pick the grade your child is in. Within a grade, tap <b>I already know this</b> on the
-            map to skip a module by passing a short check instead of learning it first. Failing
-            costs nothing.
+            Pick the grade your child is in. On the map, <b>Skip ahead</b> lets a child pass a
+            short check instead of learning a module first — one module, or a whole unit.
+            Failing costs nothing.
           </p>
           <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3, 4, 5, 6].map((g) => {

@@ -89,6 +89,24 @@ tempat peringatan memang diperlukan.
 | Modul dikuasai | `--c-star` | ⭐ | fanfare pendek | pola 3 ketuk |
 | Badge baru | `--c-badge` | 🏅 | fanfare | pola 3 ketuk |
 
+## 3b. Warna teks menyatakan JENISNYA
+
+Teks kecil di app ini punya empat peran, dan warnanya membedakannya. Sebelum aturan ini,
+semua keterangan memakai abu-abu yang sama — "Tap to start" (ajakan), "Done" (status), dan
+"Finish the one before" (syarat) terlihat identik, jadi anak harus membacanya satu per satu
+untuk tahu mana yang bisa ditekan.
+
+| Peran | Warna | Contoh |
+|---|---|---|
+| **Bisa dikerjakan sekarang** | `--c-primary` | "Tap to start", seluruh tombol hantu |
+| **Sudah selesai** | `--c-correct` | "Done · tap to practise again", "Module mastered!" |
+| **Minta perhatian, tidak mendesak** | `--c-review` | "Time to remember · tap" |
+| **Terkunci / tidak aktif** | `--c-locked` | "Finish the one before to open this" |
+| Keterangan netral | `--c-ink-soft` | nama unit, label statistik |
+
+Aturan: **warna hanya dipakai untuk makna, tidak pernah untuk hiasan.** Kalau sebuah teks
+tidak masuk salah satu peran di atas, dia netral.
+
 ## 4. Tipografi
 
 - **Satu keluarga: Nunito** (400 / 700 / 900). Rounded, terbaca, angka jelas.

@@ -1,7 +1,7 @@
 import { BADGES, type BadgeId } from '../../engine/gamification';
 import type { ModuleState } from '../../engine/types';
 import { all, pathOrderFor, unitTitles, moduleById } from '../../content';
-import { BadgeCard, Header, ProgressBar, StarRow } from '../../components/ui';
+import { BadgeCard, Header, Icon, ProgressBar, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 
 export type BadgesScreenProps = {
@@ -104,7 +104,13 @@ export function BadgesScreen({
                     border: '2px solid var(--c-line)',
                   }}
                 >
-                  <span className="text-[26px]">{i === 0 ? def.icon : '🔒'}</span>
+                  <span className="flex w-8 justify-center text-[26px]">
+                    {i === 0 ? (
+                      def.icon
+                    ) : (
+                      <Icon name="lock" size={22} color="var(--c-locked)" />
+                    )}
+                  </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[18px] font-black">{def.title}</p>
                     <p className="text-ink-soft text-[13px]">
@@ -132,8 +138,9 @@ export function BadgesScreen({
           {lockedBadges.length > 0 ? (
             <div className="flex flex-col gap-1">
               {lockedBadges.map((id) => (
-                <p key={id} className="text-ink-soft text-[15px]">
-                  🔒 {BADGES[id].hint}
+                <p key={id} className="text-ink-soft flex items-center gap-2 text-[15px]">
+                  <Icon name="lock" size={15} color="var(--c-locked)" />
+                  {BADGES[id].hint}
                 </p>
               ))}
             </div>

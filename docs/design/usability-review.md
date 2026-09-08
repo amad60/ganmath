@@ -286,6 +286,33 @@ Perbaikan:
 - My Progress (yang mengurutkan unit secara numerik) menjelaskan kenapa peta mencampurnya,
   supaya orang tua tidak mengira urutannya kacau.
 
+## Ronde 12 — audit lanjutan + warna teks yang bermakna
+
+Temuan audit:
+
+| Temuan | Kenapa penting |
+|---|---|
+| **Teks usang di Parent Area** — masih menyebut tombol dengan nama lamanya ("tap I already know this") | Petunjuk yang menyuruh orang tua mencari tombol yang sudah tidak ada namanya |
+| **"Struggling with" menghitung SELURUH kurikulum**, bukan kelas aktif | Kalau nanti Grade 2 ada, orang tua melihat modul dari kelas yang tidak ditempuh anaknya |
+| **Gembok emoji di My Progress** sementara peta memakai ikon SVG | Dua bahasa visual untuk arti yang sama |
+| **String `startNext` sudah tidak dipakai** sejak CTA menyebut langkah sebenarnya | Sisa yang menyesatkan pembaca kode |
+| **Tombol hantu berwarna abu-abu** | Tombol hantu tetap sebuah AKSI; abu-abu membuatnya terbaca sebagai keterangan |
+
+**Ide user: warna teks membedakan jenisnya.** Diterapkan dan dijadikan aturan di
+`design-system.md §3b` — empat peran, empat warna:
+
+| Peran | Warna |
+|---|---|
+| Bisa dikerjakan sekarang | `--c-primary` |
+| Sudah selesai | `--c-correct` |
+| Minta perhatian, tidak mendesak | `--c-review` |
+| Terkunci / tidak aktif | `--c-locked` |
+
+Sebelumnya semua keterangan memakai abu-abu yang sama, jadi "Tap to start" (ajakan),
+"Done" (status), dan "Finish the one before" (syarat) terlihat identik — anak harus
+membaca satu per satu untuk tahu mana yang bisa ditekan. Aturannya ditulis eksplisit:
+**warna hanya untuk makna, tidak pernah untuk hiasan.**
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

@@ -61,7 +61,9 @@ function colorsFor(variant: Variant, feedback: Feedback): CSSProperties {
     case 'danger':
       return { background: 'var(--c-danger)', color: '#fff', borderColor: 'transparent' };
     case 'ghost':
-      return { background: 'transparent', color: 'var(--c-ink-soft)', borderColor: 'transparent' };
+      // Tombol hantu tetap sebuah AKSI. Warna abu-abu membuatnya terbaca sebagai
+      // keterangan, bukan sesuatu yang bisa ditekan.
+      return { background: 'transparent', color: 'var(--c-primary)', borderColor: 'transparent' };
     default:
       return { background: 'var(--c-surface)', color: 'var(--c-ink)', borderColor: 'var(--c-line)' };
   }

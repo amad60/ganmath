@@ -179,7 +179,10 @@ export function MapScreen(props: MapScreenProps) {
                     <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
                   ) : null}
                 </span>
-                <span className="text-ink-soft ml-auto text-[13px] font-black tabular-nums">
+                <span
+                  className="ml-auto text-[13px] font-black tabular-nums"
+                  style={{ color: unitDone ? 'var(--c-star)' : 'var(--c-ink-soft)' }}
+                >
                   {cleared}/{unitIds.length}
                 </span>
               </div>
@@ -251,17 +254,31 @@ export function MapScreen(props: MapScreenProps) {
 
                       {st && st.stars > 0 ? <StarRow stars={st.stars} size={15} /> : null}
 
-                      {/* Setiap node menjelaskan apa yang terjadi kalau ditekan. */}
-                      <span className="text-ink-soft mt-0.5 text-center text-[12px]">
+                      {/*
+                        Setiap node menjelaskan apa yang terjadi kalau ditekan, DAN
+                        warnanya menyatakan jenisnya. Empat arti, empat warna:
+                        biru = bisa dikerjakan sekarang, hijau = sudah selesai,
+                        biru muda = minta diulang, abu = terkunci.
+                      */}
+                      <span
+                        className="mt-0.5 text-center text-[12px] font-bold"
+                        style={{
+                          color: needsReview
+                            ? 'var(--c-review)'
+                            : isCleared
+                              ? 'var(--c-correct)'
+                              : unlocked
+                                ? 'var(--c-primary)'
+                                : 'var(--c-locked)',
+                        }}
+                      >
                         {needsReview
                           ? en.map.tapReview
                           : isCleared
                             ? en.map.tapDone
-                            : isNext
+                            : unlocked
                               ? en.map.tapStart
-                              : unlocked
-                                ? en.map.tapStart
-                                : en.map.lockedHint}
+                              : en.map.lockedHint}
                       </span>
                     </div>
                   </div>

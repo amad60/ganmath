@@ -111,7 +111,12 @@ export function ResultScreen({
             tone="star"
           />
         ) : null}
-        <p className="text-ink-soft mt-2 text-center text-[18px]">{message}</p>
+        <p
+          className="mt-2 text-center text-[18px] font-bold"
+          style={{ color: mastered ? 'var(--c-correct)' : 'var(--c-ink-soft)' }}
+        >
+          {message}
+        </p>
         {mastered && nextTitle ? (
           <p className="mt-1 text-center text-[16px] font-bold">
             {en.result.nextUpIs(nextTitle)}

@@ -16,7 +16,6 @@ export const en = {
   },
 
   map: {
-    startNext: 'Start',
     skipAhead: 'Already know this? Skip ahead',
     skipTitle: 'Skip ahead',
     skipExplain: 'Pass a short check instead of learning it first. If it goes wrong, nothing is lost.',
