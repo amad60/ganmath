@@ -247,6 +247,17 @@ Prinsip yang dipakai: **satu aksi hanya punya satu rumah**, dan setiap layar pun
 Alurnya sekarang selalu sama: **peta → satu tombol → sesi → hasil → kembali ke peta**,
 dan peta selalu menunjukkan langkah berikutnya.
 
+## Ronde 10 — ikon PWA
+
+Ikon lama cuma tanda plus putih di atas indigo: benar secara teknis, tapi tidak ada
+hubungannya dengan app yang dilihat anak. Ikon di home screen adalah hal **pertama** yang
+dia lihat setiap hari.
+
+Sekarang ikonnya **wajah Gan**, dibuat dari SVG maskot yang sama lewat
+`npm run icons` (Chrome yang sudah terpasang, tanpa dependensi grafis). Varian
+*maskable* memakai maskot lebih kecil di dalam zona aman, karena Android boleh memotong
+ikonnya sampai bentuk lingkaran.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

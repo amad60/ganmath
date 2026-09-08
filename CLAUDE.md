@@ -5,10 +5,11 @@ Semua kode, materi, aset, dan dokumen proyek **wajib** disimpan di dalam folder 
 Baca file ini lebih dulu sebelum mengerjakan task apa pun di proyek ini.
 
 **Nama app: GanMath.**
-Status: **Fase 5a SELESAI — app sudah live.**
+Status: **Grade 1 LENGKAP (43/43 modul) — app live dan sudah beberapa ronde perbaikan UX.**
 - Live: https://ganmath.netlify.app · Repo: https://github.com/amad60/ganmath (private)
-- 16 modul Grade 1, 125 test, PWA offline penuh.
-- Berikutnya **Fase 5b: uji dengan anak** — checklist di `docs/tech/device-checklist.md`.
+- 173 test, PWA offline penuh, bundle ±95KB gzip.
+- Berikutnya **uji dengan anak** — checklist di `docs/tech/device-checklist.md`.
+  Riwayat temuan & perbaikan UX: `docs/design/usability-review.md`.
 Terakhir diperbarui: 2026-09-08
 
 ---
@@ -165,8 +166,9 @@ Berlaku di semua grade:
 - **Tidak ada tes penempatan.** Anak mulai dari modul pertama Grade 1 meski sudah bisa berhitung
   sampai 100.
 - Karena dua hal di atas, dua hal ini jadi wajib supaya tidak membosankan / tidak frustrasi:
-  1. **Modul awal harus bisa cepat selesai.** Kalau anak langsung benar semua dengan cepat,
-     sesi selesai lebih pendek dan bintangnya penuh — jangan paksa jumlah soal tetap.
+  1. **Modul awal harus bisa cepat selesai** — lewat nilai sempurna yang langsung menguasai
+     modul (§6), bukan lewat memendekkan sesi. Panjang sesi tetap supaya bar kemajuan tidak
+     memundurkan garis finisnya sendiri.
   2. **Setelah 2–3 kali gagal berturut-turut di modul yang sama**, app mengubah pendekatan:
      kembali ke materi dengan penjelasan alternatif, soal dipermudah dulu (scaffolding), dan
      nada maskot berubah jadi menyemangati. Menahan ≠ mengulang hal yang sama persis.
@@ -246,8 +248,8 @@ Berlaku di semua grade:
 - **Vite + React + TypeScript** — konten 6 grade akan besar; tipe & komponen menahan kekacauan
   jangka panjang jauh lebih baik daripada vanilla JS.
 - **Tailwind CSS** untuk styling cepat dan konsisten.
-- **Motion (framer-motion)** untuk animasi deklaratif; fallback ke CSS transition untuk yang
-  sederhana.
+- **Animasi ditulis dengan CSS**, tanpa pustaka. `motion` sempat dipasang lalu dihapus karena
+  nol impor — dependensi yang menyiratkan fitur yang tidak ada.
 - **Zustand** untuk state + persist ke localStorage (kecil, tanpa boilerplate).
 - **vite-plugin-pwa** untuk service worker & offline.
 - Aturan: setiap dependensi baru harus dibenarkan; target bundle awal < 200KB gzip.
@@ -286,8 +288,12 @@ learn math/
 │   ├── curriculum/        ← ✅ Fase 2: skema modul, Grade 1 lengkap, peta Grade 2–6
 │   ├── design/            ← ✅ Fase 3: sistem desain, maskot, wireframe, animasi
 │   └── tech/              ← ✅ Fase 4: arsitektur, storage, engine, rencana 5a
-├── src/                   ← kode aplikasi (Fase 5)
-└── content/               ← data materi & bank soal per modul
+├── scripts/               ← shots.mjs (screenshot layar), icons.mjs (ikon PWA dari maskot)
+└── src/
+    ├── engine/            ← fungsi murni: penguasaan, generator soal, langkah, review
+    ├── content/           ← data 43 modul + linter konten
+    ├── components/        ← UI kit, manipulatif, maskot
+    └── app/               ← layar & mesin state
 ```
 
 Aturan: **tidak ada file proyek ini yang ditaruh di luar folder `learn math`.**
