@@ -6,7 +6,7 @@
   "description": "GanMath — mastery-based math learning app for primary school kids",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run test && tsc --noEmit && vite build",
     "preview": "vite preview --host",
     "test": "vitest run",
     "test:watch": "vitest"

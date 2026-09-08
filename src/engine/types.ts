@@ -70,6 +70,8 @@ export type QuestionRule = {
   /** Buang kombinasi yang tidak diinginkan (soal sepele, di luar cakupan). */
   exclude?: (p: Record<string, number>) => boolean;
   distractors?: DistractorKind;
+  /** Domain garis bilangan untuk soal `number-line-drop`. */
+  range?: [number, number];
   /** Pengecoh yang mencerminkan miskonsepsi khas modul ini. Wajib untuk modul `fact`. */
   misconception?: (p: Record<string, number>) => number | null;
 };
@@ -81,6 +83,7 @@ export type Question = {
   text: string;
   answer: number;
   choices?: number[];
+  range?: [number, number];
   params: Record<string, number>;
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { SessionKind } from '../../engine/types';
 import { currentQuestion, isFinished, progressOf, submitAnswer, type SessionState } from '../../engine/session';
 import { Button, Header, Keypad, ProgressBar } from '../../components/ui';
-import { TenFrame } from '../../components/manipulatives';
+import { NumberLine, TenFrame } from '../../components/manipulatives';
 import { en } from '../../i18n/en';
 
 export type QuestionScreenProps = {
@@ -11,6 +11,8 @@ export type QuestionScreenProps = {
   onFinish: (final: SessionState) => void;
   onExit: () => void;
 };
+
+const COMPARE_LABEL: Record<-1 | 0 | 1, string> = { [-1]: '<', 0: '=', 1: '>' };
 
 const TITLES: Record<SessionKind, string> = {
   practice: en.question.practice,
@@ -35,7 +37,10 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const firstInputAt = useRef<number | null>(null);
 
   const isQuiz = session.kind === 'quiz' || session.kind === 'master';
-  const supported = question?.choices != null;
+  const isCompare = question?.type === 'compare-symbol';
+  const isLine = question?.type === 'number-line-drop';
+
+  const [linePick, setLinePick] = useState<number | null>(null);
 
   useEffect(() => {
     // Timer mulai setelah frame soal benar-benar tergambar, bukan saat state berubah.
@@ -44,6 +49,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       firstInputAt.current = null;
     });
     setTyped('');
+    setLinePick(null);
     setHintUsed(false);
     setFeedback(null);
     return () => cancelAnimationFrame(id);
@@ -116,8 +122,27 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       </main>
 
       <div className="safe-bottom px-5 pb-4">
-        {supported ? (
-          <div className="grid grid-cols-2 gap-3">
+        {isLine ? (
+          <div className="flex flex-col gap-3">
+            <NumberLine
+              min={question.range?.[0] ?? 0}
+              max={question.range?.[1] ?? 10}
+              value={linePick}
+              onChange={(v) => {
+                touch();
+                setLinePick(v);
+              }}
+            />
+            <Button
+              full
+              disabled={linePick == null || feedback != null}
+              onClick={() => answer(linePick as number)}
+            >
+              {en.question.check}
+            </Button>
+          </div>
+        ) : question.choices ? (
+          <div className={`grid gap-3 ${isCompare ? 'grid-cols-3' : 'grid-cols-2'}`}>
             {question.choices?.map((c) => (
               <Button
                 key={c}
@@ -138,7 +163,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                         : 'idle'
                 }
               >
-                {c}
+                {isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : c}
               </Button>
             ))}
           </div>
@@ -159,7 +184,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             className="mt-3 text-center text-xl font-black"
             style={{ color: feedback.correct ? 'var(--c-correct)' : 'var(--c-retry)' }}
           >
-            {feedback.correct ? en.question.correct : `${en.question.retry} · ${question.answer}`}
+            {feedback.correct
+              ? en.question.correct
+              : `${en.question.retry} · ${isCompare ? COMPARE_LABEL[question.answer as -1 | 0 | 1] : question.answer}`}
           </p>
         ) : null}
       </div>

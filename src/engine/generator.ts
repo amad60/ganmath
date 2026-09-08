@@ -103,8 +103,13 @@ export function generateSet(
         text: pool.rule.text(params),
         answer,
         params,
+        ...(pool.rule.range ? { range: pool.rule.range } : {}),
       };
-      if (pool.rule.type === 'choose-number' || pool.rule.type === 'compare-symbol') {
+      if (pool.rule.type === 'compare-symbol') {
+        // Jawaban dikodekan -1 / 0 / 1 dan dirender sebagai < = > oleh layar soal.
+        // Pengecoh "di sekitar jawaban" tidak berlaku di sini — pilihannya memang cuma tiga.
+        q.choices = [-1, 0, 1];
+      } else if (pool.rule.type === 'choose-number') {
         q.choices = buildChoices(pool.rule, params, answer, rng);
       }
       return q;

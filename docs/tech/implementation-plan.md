@@ -15,7 +15,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S4** ✅ | Manipulatif gelombang 1: `counter-objects`, `ten-frame`, `number-bond`, `number-line` | ✅ keempatnya interaktif di halaman demo; `number-line` sudah menangani domain negatif & langkah pecahan; matematika penempatan diuji terpisah (12 test) |
 | **S5** ✅ | Session runner + layar `map` → `learn` → `practice` → `quiz` → `result` | ✅ alur ujung-ke-ujung diuji di `src/app/flow.test.ts` (peta → learn → practice → quiz → mastered → modul berikutnya terbuka). Verifikasi visual di HP menyusul di S11 |
 | **S6** ✅ | Gamifikasi: XP, bintang, badge, streak, perayaan | ✅ perayaan canvas 60 partikel, 3 detik, bisa di-tap lewat; 11 badge; streak diuji lintas hari, freeze, dan jam HP yang dimundurkan |
-| **S7** | Konten **U1** (6 modul) + `scripts/lint-content.ts` | linter menegakkan 6 aturan; 6 modul bisa diselesaikan betulan |
+| **S7** ✅ | Konten **U1** (6 modul) + linter konten | ✅ Unit 1 lengkap; linter menegakkan 8 aturan dan langsung menemukan 8 pelanggaran kosakata di konten yang baru ditulis |
 | **S8** | Konten **U6-m1, U6-m2, U2** (10 modul) → total 16 | path order #1–16 tembus dari awal sampai akhir |
 | **S9** | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | orang tua bisa melihat topik yang sering salah dan menyimpan file backup |
 | **S10** | PWA: manifest, ikon, precache, prompt Add to Home Screen, `navigator.storage.persist()` | mode pesawat: app tetap jalan penuh; terpasang di home screen kedua HP |
@@ -60,6 +60,12 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
   rasa takut kehilangan, dan itu salah sasaran untuk anak yang tidak mengendalikan jadwalnya.
 - **S6:** field `streak.freezesWeek` ditambahkan tanpa migrasi — state lama yang tidak punya
   field itu diisi default saat merge. Ini contoh kenapa aturan "migrasi hanya menambah" murah.
+- **S7 — linter jadi `src/content/lint.ts` + test, bukan `scripts/lint-content.ts`.** Menjalankan
+  skrip TypeScript butuh `tsx` (satu dependensi lagi) padahal Vitest sudah ada. `npm run build`
+  sekarang menjalankan test lebih dulu, jadi konten yang melanggar aturan tidak bisa di-build.
+- **S7 menambah aturan yang tidak ada di rencana awal: `renderable`.** Layar soal hanya bisa
+  merender sebagian tipe soal; menulis konten dengan tipe di luar itu menghasilkan layar rusak
+  yang baru ketahuan saat anak memakainya. Sekarang ditolak saat build.
 - **Aturan animasi materi ditegakkan lewat `teachingDuration()`**: saat `prefers-reduced-motion`
   aktif, animasi manipulatif dipercepat 50%, bukan dimatikan — blok yang bergabung jadi puluhan
   itu materi, bukan dekorasi.

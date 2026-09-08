@@ -12,7 +12,7 @@ export const countTo10: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'count-tap'],
   visuals: ['ten-frame', 'number-line'],
-  vocab: ['ten'],
+  vocab: ['ten', 'frame'],
 
   learn: [
     {
