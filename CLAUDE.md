@@ -5,7 +5,8 @@ Semua kode, materi, aset, dan dokumen proyek **wajib** disimpan di dalam folder 
 Baca file ini lebih dulu sebelum mengerjakan task apa pun di proyek ini.
 
 **Nama app: GanMath.**
-Status: **Fase 1 (Riset) selesai** — hasil di `docs/research/`. Berikutnya Fase 2 (rancang kurikulum).
+Status: **Fase 2 (Rancang kurikulum) selesai** — hasil di `docs/research/` & `docs/curriculum/`.
+Berikutnya Fase 3 (desain).
 Terakhir diperbarui: 2026-09-08
 
 ---
@@ -244,9 +245,9 @@ learn math/
 ├── docs/
 │   ├── ROADMAP.md         ← tahapan kerja & status
 │   ├── OPEN-QUESTIONS.md  ← keputusan user (terjawab & belum)
-│   ├── research/          ← hasil riset kurikulum & app sejenis
-│   ├── design/            ← sistem desain, wireframe, maskot
-│   └── curriculum/        ← rancangan kurikulum per grade
+│   ├── research/          ← ✅ Fase 1: riset kurikulum, pedagogi, mastery, app sejenis
+│   ├── curriculum/        ← ✅ Fase 2: skema modul, Grade 1 lengkap, peta Grade 2–6
+│   └── design/            ← Fase 3: sistem desain, wireframe, maskot
 ├── src/                   ← kode aplikasi (Fase 5)
 └── content/               ← data materi & bank soal per modul
 ```

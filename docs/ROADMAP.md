@@ -1,24 +1,27 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 1 selesai.** Berikutnya: **Fase 2 — Rancang kurikulum**.
+Status keseluruhan: **Fase 2 selesai.** Berikutnya: **Fase 3 — Desain**.
 Baca `../CLAUDE.md` dulu untuk arahan produk.
 
 | Fase | Isi | Output | Status |
 |---|---|---|---|
 | 0 | Menangkap arahan produk | `CLAUDE.md`, roadmap, open questions | ✅ selesai |
 | 1 | Riset | Kurikulum Merdeka + acuan internasional untuk SD 1–6, cara mengajar konsep ke anak 6 th, bongkar mekanik Duolingo/Khan Kids/Prodigy, ambang mastery & spaced repetition, kosakata English yang aman untuk pembaca pemula | ✅ selesai → [`docs/research/`](research/README.md) |
-| 2 | Rancang kurikulum | Peta lengkap Grade→Unit→Module, prasyarat antar modul, tipe soal per modul, tanda modul mana yang dinilai kecepatannya | 🔜 berikutnya |
-| 3 | Desain | Sistem desain (warna, tipografi, ikon), maskot, wireframe layar utama, spesifikasi animasi | ⬜ belum |
-| 4 | Desain teknis + plan | Pilih stack, arsitektur, skema localStorage final, engine soal, rencana implementasi bertahap | ⬜ belum |
-| 5 | Build v1 | Kerangka app + engine + **Grade 1 lengkap** sebagai vertical slice, siap deploy ke Netlify | ⬜ belum |
-| 6 | Uji dengan anak | Pakai betulan, catat titik bingung, perbaiki | ⬜ belum |
-| 7 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi | ⬜ belum |
+| 2 | Rancang kurikulum | Peta lengkap Grade→Unit→Module, prasyarat, tipe soal, flag kecepatan, path order | ✅ selesai → [`docs/curriculum/`](curriculum/README.md) |
+| 3 | Desain | Sistem desain (warna, tipografi, ikon), maskot, wireframe 8 layar, spesifikasi animasi | 🔜 berikutnya |
+| 4 | Desain teknis + plan | Arsitektur, skema localStorage final, engine soal & generator, komponen visual reusable, linter konten, rencana implementasi | ⬜ belum |
+| 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, siap deploy ke Netlify | ⬜ belum |
+| 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | ⬜ belum |
+| 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ⬜ belum |
+| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | ⬜ belum |
 
 ## Catatan urutan
 - Fase 5 sengaja hanya Grade 1: lebih baik satu kelas yang benar-benar enak dipakai daripada
   enam grade setengah jadi. Anak baru butuh Grade 1.
-- Fase 6 (uji dengan anak sungguhan) harus terjadi sebelum menulis konten Grade 2–6.
-- Fase 6 juga menjawab pertanyaan terbuka #17 (bahasa Inggris terbaca lancar atau tidak).
+- **Fase 5 dipecah jadi 5a/5b/5c** (keputusan Fase 2): 43 modul Grade 1 terlalu banyak untuk
+  ditulis sebelum engine teruji dengan anak sungguhan. Uji pemakaian kini berada **di tengah**
+  Fase 5, bukan sesudahnya.
+- Fase 5b juga menjawab pertanyaan terbuka #17 (bahasa Inggris terbaca lancar atau tidak).
 
 ## Layar yang harus ada di v1 (dipakai sebagai checklist desain & build)
 1. Beranda / peta jalur belajar (dengan node terkunci & terbuka)
