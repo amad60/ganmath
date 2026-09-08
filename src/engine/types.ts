@@ -73,6 +73,10 @@ export type QuestionVisual =
   | { kind: 'shape2d'; name: ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
+  | { kind: 'clock'; hour: number; minute: 0 | 30 }
+  | { kind: 'money'; items: number[] }
+  | { kind: 'tally'; count: number }
+  | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] };
 
 /** Aturan pembuat soal. Soal dibuat dari aturan, bukan daftar tetap (anti-hafal). */

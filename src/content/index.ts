@@ -31,6 +31,18 @@ import { addWithin20 } from './grade1/u4/m5-add-within-20';
 import { subtractWithin20 } from './grade1/u4/m6-subtract-within-20';
 import { makeNewShapes } from './grade1/u6/m3-make-new-shapes';
 import { halvesAndFourths } from './grade1/u6/m4-halves-and-fourths';
+import { countTo50 } from './grade1/u5/m1-count-to-50';
+import { countTo100 } from './grade1/u5/m2-count-to-100';
+import { skipCount } from './grade1/u5/m3-skip-count';
+import { tensAndOnesTo100 } from './grade1/u5/m4-tens-and-ones-to-100';
+import { compareTwoDigit } from './grade1/u5/m5-compare-two-digit';
+import { tenMoreTenLess } from './grade1/u5/m6-ten-more-ten-less';
+import { whereIsIt } from './grade1/u6/m5-where-is-it';
+import { heavyAndLight } from './grade1/u7/m3-heavy-and-light';
+import { tellTheTime } from './grade1/u7/m4-tell-the-time';
+import { money } from './grade1/u7/m5-money';
+import { tallyMarks } from './grade1/u8/m2-tally-marks';
+import { pictureGraph } from './grade1/u8/m3-picture-graph';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -84,6 +96,22 @@ export const all: ContentModule[] = [
   // jeda bentuk & pecahan (#30–31)
   makeNewShapes,
   halvesAndFourths,
+  // Unit 5 — Numbers to 100 (#32–37)
+  countTo50,
+  countTo100,
+  skipCount,
+  tensAndOnesTo100,
+  compareTwoDigit,
+  tenMoreTenLess,
+  // posisi & berat (#38–39)
+  whereIsIt,
+  heavyAndLight,
+  // waktu & uang (#40–41)
+  tellTheTime,
+  money,
+  // data (#42–43) — Grade 1 selesai
+  tallyMarks,
+  pictureGraph,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -124,6 +152,7 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g1-u2': { title: 'Unit 2 · Add and Subtract', color: 'var(--c-unit-2)' },
   'g1-u3': { title: 'Unit 3 · Numbers to 20', color: 'var(--c-unit-3)' },
   'g1-u4': { title: 'Unit 4 · Add & Subtract to 20', color: 'var(--c-unit-4)' },
+  'g1-u5': { title: 'Unit 5 · Numbers to 100', color: 'var(--c-unit-5)' },
   'g1-u6': { title: 'Unit 6 · Shapes', color: 'var(--c-unit-6)' },
   'g1-u7': { title: 'Unit 7 · Measure & Time', color: 'var(--c-unit-7)' },
   'g1-u8': { title: 'Unit 8 · Patterns & Data', color: 'var(--c-unit-8)' },

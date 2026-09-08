@@ -35,7 +35,8 @@ export const BASE_VOCAB = new Set(
    eight nine ten at once fast see say comes grow to the right can as more less same
    than it as we write jumps not five four here now
    each every them by full all has with next row again
-   from into then only first small almost adding change`
+   from into then only first small almost adding change
+   across counting faster going jump keep us where show tell picture`
     .split(/\s+/)
     .filter(Boolean),
 );

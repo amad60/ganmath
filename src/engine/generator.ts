@@ -19,7 +19,10 @@ function enumerate(rule: QuestionRule): Record<string, number>[] {
 }
 
 function nearDistractors(answer: number, rng: Rng): number[] {
-  const cands = [answer + 1, answer - 1, answer + 2, answer - 2, answer + 10].filter(
+  // Hanya di sekitar jawaban. Versi sebelumnya menyertakan `answer + 10`, yang untuk
+  // jawaban kecil menghasilkan pilihan mustahil (18 untuk jawaban 8) — itu memberi
+  // anak eliminasi gratis dan membuat soalnya lebih mudah dari yang dimaksud.
+  const cands = [answer + 1, answer - 1, answer + 2, answer - 2, answer + 3, answer - 3].filter(
     (n) => n >= 0 && n !== answer,
   );
   return shuffle(rng, cands);

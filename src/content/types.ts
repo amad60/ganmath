@@ -10,9 +10,13 @@ export type LearnVisual =
   | { kind: 'shape2d'; name: import('../engine/types').ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
+  | { kind: 'clock'; hour: number; minute: 0 | 30 }
+  | { kind: 'money'; items: number[] }
+  | { kind: 'tally'; count: number }
+  | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | { kind: 'counter-objects'; count: number; icon?: string }
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
-  | { kind: 'number-line'; min: number; max: number; value?: number | null }
+  | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] }
   | {
       kind: 'number-bond';
       whole: number | null;

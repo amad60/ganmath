@@ -1,11 +1,15 @@
 import {
   Bars,
   Base10Blocks,
+  Clock,
   CounterObjects,
   FractionShape,
+  Money,
   NumberBond,
   NumberLine,
+  Pictogram,
   Shape2D,
+  TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
 import type { LearnVisual } from '../../content/types';
@@ -45,6 +49,7 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
           min={visual.min}
           max={visual.max}
           value={interactive ? (value > visual.min - 1 ? value : null) : (visual.value ?? null)}
+          marks={visual.marks ?? []}
           onChange={interactive ? onValue : undefined}
         />
       );
@@ -66,5 +71,13 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
           size={140}
         />
       );
+    case 'clock':
+      return <Clock hour={visual.hour} minute={visual.minute} />;
+    case 'money':
+      return <Money items={visual.items} />;
+    case 'tally':
+      return <TallyChart count={visual.count} />;
+    case 'pictogram':
+      return <Pictogram rows={visual.rows} />;
   }
 }

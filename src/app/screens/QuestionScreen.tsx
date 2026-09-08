@@ -12,9 +12,13 @@ import type { DotState } from '../../components/ui/SessionDots';
 import {
   Bars,
   Base10Blocks,
+  Clock,
   FractionShape,
+  Money,
   NumberLine,
+  Pictogram,
   Shape2D,
+  TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
 import { Mascot, type MascotMood } from '../../components/mascot/Mascot';
@@ -118,6 +122,14 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
           marks={visual.marks ?? []}
         />
       );
+    case 'clock':
+      return <Clock hour={visual.hour} minute={visual.minute} />;
+    case 'money':
+      return <Money items={visual.items} />;
+    case 'tally':
+      return <TallyChart count={visual.count} />;
+    case 'pictogram':
+      return <Pictogram rows={visual.rows} />;
   }
 }
 
