@@ -1,7 +1,7 @@
 export type ClockProps = {
   hour: number;
-  /** Grade 1 hanya mengenal 0 dan 30 (o'clock dan half past). */
-  minute: 0 | 30;
+  /** Grade 1 memakai 0 dan 30; Grade 2 memakai kelipatan lima. */
+  minute: number;
   size?: number;
 };
 

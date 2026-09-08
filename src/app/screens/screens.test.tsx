@@ -9,6 +9,7 @@ import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
 import { emptyModuleState } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
+import type { ModuleState } from '../../engine/types';
 import { session as fakeSession } from '../../engine/fixtures';
 
 /**
@@ -355,6 +356,42 @@ describe('MapScreen — pintu jump level', () => {
     // Unit bentuk/ukur/pola sengaja disisipkan sebagai jeda, jadi satu unit bisa
     // muncul beberapa kali. Yang tidak boleh: modul ditarik keluar dari urutannya.
     expect(rendered).toEqual(titles);
+  });
+
+  it('unit yang sudah tuntas dilipat supaya yang penting tidak tenggelam', async () => {
+    const { pathOrderFor } = await import('../../content');
+    const ids = pathOrderFor(1).slice(0, 6);
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states: Record<string, ModuleState> = Object.fromEntries(
+      ids.map((id) => [id, done]),
+    );
+    render(<MapScreen {...mapProps({ states, nextId: pathOrderFor(1)[6] as string })} />);
+
+    // Unit 1 tuntas → dilipat jadi satu baris ringkasan, nodenya tidak lagi dirender.
+    expect(screen.getByText(/All 6 done/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Count to 5' })).not.toBeInTheDocument();
+
+    // Tapi bisa dibuka lagi.
+    fireEvent.click(screen.getByText(/Unit 1 · Numbers to 10/));
+    expect(screen.getByRole('button', { name: 'Count to 5' })).toBeInTheDocument();
+  });
+
+  it('bagian tempat anak berada tidak pernah dilipat', async () => {
+    const { pathOrderFor } = await import('../../content');
+    render(<MapScreen {...mapProps({ nextId: pathOrderFor(1)[0] as string })} />);
+    expect(screen.queryByText(/All 6 done/)).not.toBeInTheDocument();
+  });
+
+  it('kelas aktif terlihat di layar utama', () => {
+    render(<MapScreen {...mapProps({ grade: 2 })} />);
+    expect(screen.getByText('G2')).toBeInTheDocument();
   });
 
   it('setiap node menjelaskan apa yang terjadi kalau ditekan', () => {

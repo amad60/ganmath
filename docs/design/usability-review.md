@@ -343,6 +343,18 @@ Kalau waktu itu kami "menambah hadiah", masalahnya tidak akan tersentuh.
 | Sebelas badge sekaligus membanjiri layar | Ability | Enam dulu, sisanya lewat **"See all 11 badges"**; yang sudah didapat tampil lebih dulu |
 | Badge tidak bisa ditekan — hadiah yang tidak bisa dilihat lebih dekat | Motivation + Trigger | Setiap badge membuka lembar: ikon besar, cara mendapatkannya, status. **Badge terkunci pun bisa dibuka** — justru di situ pemicunya |
 
+## Ronde 14 — audit kurikulum setelah Grade 2 lengkap
+
+Dengan 38–43 modul per kelas, panjang konten sendiri jadi masalah usability yang
+belum pernah ada saat modulnya baru enam belas.
+
+| Temuan | Sumbu B=MAT | Perbaikan |
+|---|---|---|
+| **Membuka peta mendarat di bagian yang sudah selesai.** Anak harus menggulir jauh untuk menemukan dirinya | Ability | Peta **selalu terbuka pada posisi anak berada** (`scrollIntoView` pada node berikutnya) |
+| **Empat puluh node dalam satu gulungan** membuat yang penting tenggelam | Ability | **Unit yang sudah tuntas dilipat** jadi satu baris "All 6 done"; bisa dibuka lagi. Bagian tempat anak berada tidak pernah dilipat |
+| **Kelas aktif tidak terlihat di layar utama** — hanya di Parent Area, di balik gerbang | Trigger | Lencana **G1 / G2** di header peta |
+| Navigasi antar kelas hanya lewat Parent Area | — | Dipertahankan: pindah kelas adalah keputusan orang tua yang jarang, dan gerbangnya mencegah anak mengubahnya tidak sengaja. Yang kurang cuma *kejelasan kelas aktif*, dan itu sudah diperbaiki |
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

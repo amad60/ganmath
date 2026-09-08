@@ -51,7 +51,7 @@ export const tellTheTime: ContentModule = {
       visual: (p) => ({
         kind: 'clock',
         hour: p.h as number,
-        minute: ((p.m as number) === 0 ? 0 : 30) as 0 | 30,
+        minute: (p.m as number) === 0 ? 0 : 30,
       }),
       // Pengecoh memuat jam berikutnya: saat setengah jam, jarum pendek sudah
       // bergeser mendekati angka berikutnya, dan itu kekeliruan paling umum.

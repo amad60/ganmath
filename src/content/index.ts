@@ -69,6 +69,20 @@ import { timesTwo } from './grade2/u4/m3-times-two';
 import { timesFive } from './grade2/u4/m4-times-five';
 import { timesTen } from './grade2/u4/m5-times-ten';
 import { timesCheck } from './grade2/u4/m6-times-check';
+import { evenAndOdd } from './grade2/u5/m1-even-and-odd';
+import { skipCount100 } from './grade2/u5/m2-skip-count-100';
+import { growingPatterns } from './grade2/u5/m3-growing-patterns';
+import { numberPatterns } from './grade2/u5/m4-number-patterns';
+import { centimetres } from './grade2/u6/m1-centimetres';
+import { metres } from './grade2/u6/m2-metres';
+import { gramsAndKilograms } from './grade2/u6/m3-grams-and-kilograms';
+import { compareMeasures } from './grade2/u6/m4-compare-measures';
+import { estimateLength } from './grade2/u6/m5-estimate-length';
+import { timeToFive } from './grade2/u7/m1-time-to-five';
+import { quarterPastAndTo } from './grade2/u7/m2-quarter-past-and-to';
+import { moneyTo20000 } from './grade2/u7/m3-money-to-20000';
+import { change } from './grade2/u7/m4-change';
+import { barChart } from './grade2/u7/m5-bar-chart';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -168,6 +182,23 @@ export const all: ContentModule[] = [
   timesFive,
   timesTen,
   timesCheck,
+  // Unit 5 — Even, Odd and Patterns
+  evenAndOdd,
+  skipCount100,
+  growingPatterns,
+  numberPatterns,
+  // Unit 6 — Measure with Real Units
+  centimetres,
+  metres,
+  gramsAndKilograms,
+  compareMeasures,
+  estimateLength,
+  // Unit 7 — Time, Money and Data
+  timeToFive,
+  quarterPastAndTo,
+  moneyTo20000,
+  change,
+  barChart,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -251,4 +282,7 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g2-u2': { title: 'Unit 2 · Add & Subtract', color: 'var(--c-unit-2)' },
   'g2-u3': { title: 'Unit 3 · Mental Math', color: 'var(--c-unit-3)' },
   'g2-u4': { title: 'Unit 4 · Meet Multiplication', color: 'var(--c-unit-4)' },
+  'g2-u5': { title: 'Unit 5 · Even, Odd & Patterns', color: 'var(--c-unit-5)' },
+  'g2-u6': { title: 'Unit 6 · Measure', color: 'var(--c-unit-6)' },
+  'g2-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
 };

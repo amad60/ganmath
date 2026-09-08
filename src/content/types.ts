@@ -10,7 +10,7 @@ export type LearnVisual =
   | { kind: 'shape2d'; name: import('../engine/types').ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
-  | { kind: 'clock'; hour: number; minute: 0 | 30 }
+  | { kind: 'clock'; hour: number; minute: number }
   | { kind: 'money'; items: number[] }
   | { kind: 'tally'; count: number }
   | { kind: 'array'; rows: number; cols: number; highlightRow?: number }

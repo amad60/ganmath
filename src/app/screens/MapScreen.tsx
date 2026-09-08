@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
 import { isUnlocked } from '../../engine/unlock';
 import { moduleById, registryFor, unitModules, unitTitles } from '../../content';
@@ -51,6 +51,18 @@ export function MapScreen(props: MapScreenProps) {
   /** Modul selesai yang sedang ditanyakan "mau diapakan". */
   const [chosen, setChosen] = useState<string | null>(null);
   const [skipOpen, setSkipOpen] = useState(false);
+  /** Bagian unit yang sengaja dibuka anak meski sudah tuntas. */
+  const [opened, setOpened] = useState<Set<number>>(new Set());
+  const nextRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Dengan 38–43 modul, membuka peta berarti mendarat di bagian yang SUDAH
+    // selesai dan harus menggulir jauh untuk menemukan diri sendiri. Peta selalu
+    // dibuka pada posisi anak berada.
+    // Panggilan opsional: tidak semua lingkungan punya scrollIntoView, dan peta
+    // tidak boleh jatuh hanya karena tidak bisa menggulir.
+    nextRef.current?.scrollIntoView?.({ block: 'center' });
+  }, [nextId]);
 
   const registry = registryFor(grade);
   const pathOrder = registry.pathOrder;
@@ -95,6 +107,13 @@ export function MapScreen(props: MapScreenProps) {
             <Stat icon="🔥" value={streak} color="var(--c-streak)" />
             <Stat icon="⭐" value={xp} color="var(--c-star)" />
             <span className="text-ink-soft">Lv.{level}</span>
+            {/* Kelas aktif harus terlihat di layar utama, bukan hanya di Parent Area. */}
+            <span
+              className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px]"
+              style={{ background: 'var(--c-primary-soft)', color: 'var(--c-primary)' }}
+            >
+              G{grade}
+            </span>
           </div>
           <div className="-mr-2 flex items-center gap-1">
             <IconButton label="My badges" onClick={onBadges} name="trophy" />
@@ -164,16 +183,32 @@ export function MapScreen(props: MapScreenProps) {
           const unit = unitTitles[unitId];
           const accent = unit?.color ?? 'var(--c-primary)';
           const unitDone = cleared === unitIds.length;
+          const hasNext = nextId != null && ids.includes(nextId);
+          // Unit yang sudah tuntas dilipat: daftar 40 node membuat yang penting
+          // tenggelam. Bagian tempat anak berada tidak pernah dilipat.
+          const collapsed = unitDone && !hasNext && !opened.has(sectionIndex);
 
           return (
             <section key={`${unitId}-${sectionIndex}`} className="flex w-full flex-col items-center">
               {/* Judul unit: anak bisa melihat "aku ada di bagian apa", dan berapa sisanya. */}
-              <div className="mt-2 mb-3 flex w-full items-center gap-3">
+              <button
+                type="button"
+                disabled={!unitDone || hasNext}
+                onClick={() =>
+                  setOpened((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(sectionIndex)) next.delete(sectionIndex);
+                    else next.add(sectionIndex);
+                    return next;
+                  })
+                }
+                className="mt-2 mb-3 flex w-full items-center gap-3"
+              >
                 <span
                   className="h-2.5 w-2.5 shrink-0 rounded-full"
                   style={{ background: unitDone ? 'var(--c-star)' : accent }}
                 />
-                <span className="text-[15px] font-black">
+                <span className="text-left text-[15px] font-black">
                   {unit?.title ?? unitId}
                   {repeat > 1 ? (
                     <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
@@ -185,9 +220,29 @@ export function MapScreen(props: MapScreenProps) {
                 >
                   {cleared}/{unitIds.length}
                 </span>
-              </div>
+                {unitDone && !hasNext ? (
+                  <span
+                    className="text-[13px] font-black"
+                    style={{ color: 'var(--c-primary)' }}
+                  >
+                    {collapsed ? en.map.expand : en.map.collapse}
+                  </span>
+                ) : null}
+              </button>
 
-              {ids.map((id, i) => {
+              {collapsed ? (
+                <div
+                  className="mb-2 flex w-full items-center justify-center gap-2 rounded-[var(--r-md)] py-3"
+                  style={{ background: 'var(--c-surface)', border: '2px solid var(--c-line)' }}
+                >
+                  <span style={{ fontSize: 18 }}>⭐</span>
+                  <span className="text-ink-soft text-[15px] font-bold">
+                    {en.map.unitDone(ids.length)}
+                  </span>
+                </div>
+              ) : null}
+
+              {(collapsed ? [] : ids).map((id, i) => {
                 const def = moduleById(id);
                 const st = states[id];
                 const unlocked = isUnlocked(id, states, registry);
@@ -197,7 +252,11 @@ export function MapScreen(props: MapScreenProps) {
                   st?.status === 'needs_review' || reviews.some((r) => r.moduleId === id);
 
                 return (
-                  <div key={id} className="flex w-full flex-col items-center">
+                  <div
+                    key={id}
+                    ref={id === nextId ? nextRef : undefined}
+                    className="flex w-full flex-col items-center"
+                  >
                     {i > 0 ? (
                       <div
                         aria-hidden
