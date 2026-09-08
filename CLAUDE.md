@@ -5,8 +5,10 @@ Semua kode, materi, aset, dan dokumen proyek **wajib** disimpan di dalam folder 
 Baca file ini lebih dulu sebelum mengerjakan task apa pun di proyek ini.
 
 **Nama app: GanMath.**
-Status: **Fase 4 (Desain teknis + plan) selesai** — semua dokumen di `docs/`.
-Berikutnya **Fase 5a: mulai menulis kode** (vertical slice, 13 langkah di `docs/tech/implementation-plan.md`).
+Status: **Fase 5a SELESAI — app sudah live.**
+- Live: https://ganmath.netlify.app · Repo: https://github.com/amad60/ganmath (private)
+- 16 modul Grade 1, 125 test, PWA offline penuh.
+- Berikutnya **Fase 5b: uji dengan anak** — checklist di `docs/tech/device-checklist.md`.
 Terakhir diperbarui: 2026-09-08
 
 ---
@@ -240,8 +242,9 @@ Berlaku di semua grade:
 - Aturan: setiap dependensi baru harus dibenarkan; target bundle awal < 200KB gzip.
 
 ### Deployment
-- Deploy sebagai **situs statis ke Netlify**, akun pribadi user (`rahmad.id60@gmail.com`).
-  Deploy dilakukan **oleh user sendiri**, bukan otomatis dari sesi ini.
+- Deploy sebagai **situs statis ke Netlify**, akun pribadi user (`rahmad.id60@gmail.com`,
+  tim "My Project"). **Sudah live di https://ganmath.netlify.app.**
+- Deploy ulang: `npm run build && netlify deploy --prod --dir dist` (folder sudah ter-link).
 - Sediakan `netlify.toml` (build command, publish dir, SPA redirect) supaya sekali klik jadi.
 - Link bersifat privat (tidak dibagikan/diindeks); tidak ada data sensitif di sisi server karena
   memang tidak ada server.

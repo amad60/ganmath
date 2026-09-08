@@ -1,5 +1,7 @@
 # GanMath
 
+**Live: https://ganmath.netlify.app**
+
 Web mobile app belajar matematika SD bergaya Duolingo, dibuat untuk satu anak kelas 1.
 Anak belajar sendiri dari materi yang bisa dibaca, lalu diuji, dan **hanya boleh lanjut ke modul
 berikutnya kalau benar-benar menguasai**.
@@ -40,8 +42,9 @@ Unit 2 (Add & Subtract within 10). Grade 1 lengkap 43 modul menyusul setelah diu
 
 Situs statis. `netlify.toml` sudah disiapkan:
 
+Folder ini sudah ter-link ke project Netlify `ganmath`:
+
 ```bash
-netlify login          # pastikan akun yang benar
-netlify init           # sekali, untuk menautkan project
-netlify deploy --prod
+npm run build
+netlify deploy --prod --dir dist
 ```

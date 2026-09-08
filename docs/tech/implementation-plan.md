@@ -20,7 +20,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S9** ✅ | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | ✅ onboarding 2 input; Parent Area menampilkan 3 topik dengan akurasi terendah, setelan, save/load file dengan konfirmasi perbandingan, dan peringatan kalau browser tidak menyimpan data |
 | **S10** ✅ | PWA: manifest, ikon, precache, prompt Add to Home Screen, `navigator.storage.persist()` | ✅ 14 entri di-precache (319KB) termasuk font & seluruh konten; update ditawarkan, tidak pernah reload otomatis. **Verifikasi mode pesawat di HP sungguhan menyusul di S11** |
 | **S11** ◐ | Uji perangkat + performa: Poco F3 & iPhone 17 | ✅ yang bisa diverifikasi tanpa HP: build, manifest, service worker, bundle **81KB gzip**. ⬜ 12 poin yang butuh HP sungguhan ada di [`device-checklist.md`](device-checklist.md) |
-| **S12** | Deploy | user menjalankan deploy Netlify; link terbuka di HP anak |
+| **S12** ✅ | Deploy | ✅ **https://ganmath.netlify.app** (akun rahmad.id60@gmail.com, tim My Project). index/manifest/sw/ikon/SPA-fallback semua 200 |
 
 ## Kenapa urutannya begini
 
@@ -94,6 +94,18 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | Bahasa Inggris ternyata menghambat | String terpusat di `src/i18n/en.ts` → menambah `id.ts` adalah pekerjaan sehari, bukan pekerjaan ulang |
 | iOS menghapus localStorage | Tiga lapis pertahanan di `storage.md §5` |
 | Maskot belum dipilih user | 5a jalan dengan placeholder; ganti maskot = ganti isi `src/assets/mascot/` |
+
+## Hasil akhir 5a
+
+| Hal | Angka |
+|---|---|
+| Langkah selesai | 13 / 13 |
+| Test | 125 hijau |
+| Modul konten | 16 (Unit 1 + 2 modul bentuk + Unit 2) |
+| Bundle | ±81KB gzip JS + 5KB CSS (batas 200KB) |
+| Precache PWA | 14 entri, 328KB — offline penuh |
+| Repo | https://github.com/amad60/ganmath (private) |
+| Live | https://ganmath.netlify.app |
 
 ## Setelah 5a
 **5b — uji dengan anak ±2 minggu.** Yang dicatat: modul mana yang macet, instruksi mana yang

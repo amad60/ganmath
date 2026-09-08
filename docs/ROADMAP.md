@@ -1,7 +1,12 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 5a sedang berjalan — S0–S10 selesai (11/13 langkah), 125 test hijau, 16 modul lengkap, PWA aktif.**
-Berikutnya: **deploy**, lalu **uji di HP sungguhan** — 12 poin di [`docs/tech/device-checklist.md`](tech/device-checklist.md).
+Status keseluruhan: **Fase 5a SELESAI — 13/13 langkah, sudah live.**
+
+- Live: **https://ganmath.netlify.app**
+- Repo: **https://github.com/amad60/ganmath** (private)
+
+Berikutnya: **Fase 5b — uji dengan anak.** Bukan lagi pekerjaan kode; 12 poin yang harus
+dicek di HP sungguhan ada di [`docs/tech/device-checklist.md`](tech/device-checklist.md).
 Baca `../CLAUDE.md` dulu untuk arahan produk.
 
 | Fase | Isi | Output | Status |
@@ -11,8 +16,8 @@ Baca `../CLAUDE.md` dulu untuk arahan produk.
 | 2 | Rancang kurikulum | Peta lengkap Grade→Unit→Module, prasyarat, tipe soal, flag kecepatan, path order | ✅ selesai → [`docs/curriculum/`](curriculum/README.md) |
 | 3 | Desain | Sistem desain, maskot, wireframe 8 layar, spesifikasi animasi | ✅ selesai → [`docs/design/`](design/README.md) |
 | 4 | Desain teknis + plan | Arsitektur, storage & migrasi, engine + rencana test, 13 langkah implementasi | ✅ selesai → [`docs/tech/`](tech/README.md) |
-| 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, siap deploy ke Netlify | 🔨 berjalan — S0–S10 ✅, lanjut S11 |
-| 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | ⬜ belum |
+| 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, live di Netlify | ✅ selesai — 13/13 langkah |
+| 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | 🔜 berikutnya |
 | 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ⬜ belum |
 | 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | ⬜ belum |
 
