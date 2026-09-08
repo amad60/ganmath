@@ -409,3 +409,27 @@ pemeriksaan visual jadi menyesatkan. Sekarang ada `npm run pathorder` (memuat
 Mode `--from=` masih memakai profil kelas 1, jadi modul kelas 3 dipotret di peta
 kelas 1; dan setelah CTA "I already know this" berubah membuka lembar pilihan,
 skripnya berhenti di lembar itu, bukan di layar soal. Keduanya diperbaiki.
+
+## Ronde 16 — pilihan yang selalu di tombol yang sama, dan label yang terpotong
+
+**1. Urutan pilihan `choose-text` tidak pernah diacak.**
+Generator menulis `q.choices = labels.map((_, i) => i)` — persis urutan penulisan
+konten. Untuk aturan yang jawabannya selalu indeks tetap, jawaban benar akan selalu
+berada di tombol yang sama; anak bisa lulus tanpa membaca soal. Bahkan pada modul
+lama (Halves and Fourths) pilihan "whole" selalu tombol keempat.
+*Perbaikan:* urutan tombol diacak lewat RNG sesi. Dijaga test yang memeriksa bahwa
+tombol pertama tidak selalu memuat jawaban yang sama.
+
+**2. Label sisi kanan pada persegi panjang terpotong.**
+Komponen baru `RectShape` (dibutuhkan Unit 6 — keliling) memakai padding simetris,
+padahal label "3 cm" ditulis DI LUAR bangunnya. Ketahuan langsung di screenshot:
+yang terbaca cuma "3 (". *Perbaikan:* padding kanan dilebihkan, plus test yang
+memeriksa jarak dari tepi kanan bangun ke tepi gambar.
+
+**3. Catatan cakupan kurikulum.**
+Rencana Grade 3 menyebut "pecahan pada garis bilangan". Yang tersedia hari ini
+adalah garis bilangan berlabel BILANGAN BULAT, jadi modulnya ditulis sebagai
+"Parts on a Line" — garisnya dipotong N bagian sama besar dan anak menaruh penanda
+di bagian ke-k. Ini representasi yang dipakai Singapore Math sebelum notasi, dan
+sah secara pedagogis. Garis bilangan dengan label pecahan (0, 1/4, 1/2, ...) masih
+menjadi lubang yang diketahui — butuh `step` dan format label di `NumberLine`.

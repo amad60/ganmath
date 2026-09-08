@@ -12,6 +12,7 @@ import type { DotState } from '../../components/ui/SessionDots';
 import {
   Bars,
   ArrayGrid,
+  RectShape,
   Base10Blocks,
   Clock,
   FractionShape,
@@ -131,6 +132,10 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
       return <Money items={visual.items} />;
     case 'tally':
       return <TallyChart count={visual.count} />;
+    case 'rect':
+      return (
+        <RectShape w={visual.w} h={visual.h} unit={visual.unit} showCorners={visual.showCorners} />
+      );
     case 'array':
       return (
         <ArrayGrid rows={visual.rows} cols={visual.cols} highlightRow={visual.highlightRow} />

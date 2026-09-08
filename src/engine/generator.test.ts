@@ -130,3 +130,31 @@ describe('skala pengecoh', () => {
     }
   });
 });
+
+describe('pilihan choose-text', () => {
+  // Regresi: urutan tombol dulu persis seperti ditulis di konten, jadi aturan yang
+  // jawabannya selalu indeks 0 menaruh jawaban benar di tombol yang sama terus.
+  it('urutan tombolnya diacak, bukan urutan penulisan', () => {
+    const def: ModuleDef = {
+      ...addModule(),
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: 'name',
+          params: { a: [1, 9], b: [1, 9] },
+          answer: () => 0,
+          text: (p) => `${p.a} and ${p.b}?`,
+          options: (p) => [`${p.a}`, `${p.b}`, 'none', 'both'],
+        },
+      ],
+    };
+
+    const { questions } = generateSet(def, 12, mulberry32(3));
+    const firsts = questions.map((q) => q.choices?.[0]);
+    expect(new Set(firsts).size).toBeGreaterThan(1);
+    for (const q of questions) {
+      expect([...(q.choices ?? [])].sort()).toEqual([0, 1, 2, 3]);
+    }
+  });
+});

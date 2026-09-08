@@ -109,6 +109,17 @@ import { add3Digit } from './grade3/u4/m2-add-3-digit';
 import { addAndRegroup } from './grade3/u4/m3-add-and-regroup';
 import { subtract3Digit } from './grade3/u4/m4-subtract-3-digit';
 import { subtractAndRegroup } from './grade3/u4/m5-subtract-and-regroup';
+import { equalParts } from './grade3/u5/m1-equal-parts';
+import { nameTheFraction } from './grade3/u5/m2-name-the-fraction';
+import { partsOnALine } from './grade3/u5/m3-parts-on-a-line';
+import { compareFractions } from './grade3/u5/m4-compare-fractions';
+import { equalFractions } from './grade3/u5/m5-equal-fractions';
+import { fractionOfANumber } from './grade3/u5/m6-fraction-of-a-number';
+import { sidesAndCorners } from './grade3/u6/m1-sides-and-corners';
+import { squareCorners } from './grade3/u6/m2-square-corners';
+import { perimeter } from './grade3/u6/m3-perimeter';
+import { missingSide } from './grade3/u6/m4-missing-side';
+import { samePerimeter } from './grade3/u6/m5-same-perimeter';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -255,6 +266,19 @@ export const all: ContentModule[] = [
   addAndRegroup,
   subtract3Digit,
   subtractAndRegroup,
+  // Unit 5 — Fractions
+  equalParts,
+  nameTheFraction,
+  partsOnALine,
+  compareFractions,
+  equalFractions,
+  fractionOfANumber,
+  // Unit 6 — Shapes & Perimeter
+  sidesAndCorners,
+  squareCorners,
+  perimeter,
+  missingSide,
+  samePerimeter,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -345,4 +369,6 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g3-u2': { title: 'Unit 2 · Times Tables', color: 'var(--c-unit-2)' },
   'g3-u3': { title: 'Unit 3 · Division', color: 'var(--c-unit-3)' },
   'g3-u4': { title: 'Unit 4 · Add & Subtract to 1000', color: 'var(--c-unit-4)' },
+  'g3-u5': { title: 'Unit 5 · Fractions', color: 'var(--c-unit-5)' },
+  'g3-u6': { title: 'Unit 6 · Shapes & Perimeter', color: 'var(--c-unit-6)' },
 };

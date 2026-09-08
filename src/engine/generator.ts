@@ -126,7 +126,10 @@ export function generateSet(
       if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];
         q.options = labels;
-        q.choices = labels.map((_, i) => i);
+        // Urutan tombol DIACAK. Sebelumnya pilihan tampil persis seperti ditulis,
+        // sehingga aturan yang jawabannya selalu indeks yang sama menaruh jawaban
+        // benar di tombol yang sama terus — anak bisa lulus tanpa membaca soal.
+        q.choices = shuffle(rng, labels.map((_, i) => i));
       } else if (pool.rule.type === 'compare-symbol') {
         // Jawaban dikodekan -1 / 0 / 1 dan dirender sebagai < = > oleh layar soal.
         // Pengecoh "di sekitar jawaban" tidak berlaku di sini — pilihannya memang cuma tiga.

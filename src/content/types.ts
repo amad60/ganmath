@@ -13,6 +13,7 @@ export type LearnVisual =
   | { kind: 'clock'; hour: number; minute: number }
   | { kind: 'money'; items: number[] }
   | { kind: 'tally'; count: number }
+  | { kind: 'rect'; w: number; h: number; unit?: string; showCorners?: boolean }
   | { kind: 'array'; rows: number; cols: number; highlightRow?: number }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | { kind: 'counter-objects'; count: number; icon?: string }

@@ -12,5 +12,6 @@ export { Money, formatRupiah } from './Money';
 export { TallyChart } from './TallyChart';
 export { Pictogram } from './Pictogram';
 export { ArrayGrid } from './ArrayGrid';
+export { RectShape } from './RectShape';
 export { useReducedMotion, teachingDuration } from './useReducedMotion';
 export * from './scale';

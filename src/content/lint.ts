@@ -37,7 +37,7 @@ export const BASE_VOCAB = new Set(
    each every them by full all has with next row again
    from into then only first small almost adding change
    across counting faster going jump keep us where show tell picture
-   become between no up goes gives so
+   become between no up goes gives so but like
    around big do end know step together without your
    beats enough find for good have land over read they things use`
     .split(/\s+/)
