@@ -48,7 +48,7 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
         }
       />
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-5 px-5 py-6">
+      <main className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-5">
         {/* Gan ikut menjelaskan: dia menunjuk saat ada aksi, dan bersorak saat tercapai. */}
         <div className="flex items-center gap-3">
           <Mascot mood={reached ? 'happy' : interactive ? 'thinking' : 'idle'} size={64} />
@@ -74,7 +74,7 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
         ) : null}
       </main>
 
-      <div className="safe-bottom px-5 pb-4">
+      <div className="safe-bottom px-6 pt-2 pb-5">
         <Button full disabled={!reached} onClick={advance}>
           {last ? en.learn.start : en.learn.next}
         </Button>

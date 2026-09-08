@@ -27,8 +27,8 @@ export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
   const [avatar, setAvatar] = useState<Avatar>('cat');
 
   return (
-    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col gap-6 p-5">
-      <div className="flex flex-1 flex-col items-center justify-center gap-6">
+    <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col gap-5 px-6 py-6">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <Mascot mood="happy" size={120} />
         <h1 className="text-2xl font-black">Hi! I am Gan.</h1>
         <p className="text-xl font-bold">What is your name?</p>
@@ -37,19 +37,20 @@ export function OnboardingScreen({ onDone }: OnboardingScreenProps) {
           value={name}
           onChange={(e) => setName(e.target.value.slice(0, 16))}
           aria-label="Your name"
+          placeholder="Type your name"
           autoComplete="off"
-          className="bg-surface w-full rounded-[var(--r-md)] border-2 border-[var(--c-line)] px-4 py-4 text-center text-2xl font-black"
+          className="bg-surface w-full rounded-[var(--r-md)] border-2 border-[var(--c-line)] px-4 py-4 text-center text-2xl font-black placeholder:font-bold placeholder:text-[var(--c-locked)]"
         />
 
         <p className="text-ink-soft text-[18px] font-bold">Pick your look</p>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="grid w-full grid-cols-5 gap-2">
           {AVATARS.map((a) => (
             <button
               key={a.id}
               type="button"
               onClick={() => setAvatar(a.id)}
               aria-label={a.id}
-              className="flex h-16 w-16 items-center justify-center rounded-[var(--r-md)] text-[36px]"
+              className="flex aspect-square w-full items-center justify-center rounded-[var(--r-md)] text-[30px]"
               style={{
                 background: avatar === a.id ? 'var(--c-primary-soft)' : 'var(--c-surface)',
                 outline: avatar === a.id ? '3px solid var(--c-primary)' : '2px solid var(--c-line)',

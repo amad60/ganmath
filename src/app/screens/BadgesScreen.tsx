@@ -25,7 +25,11 @@ export function BadgesScreen({
   nextId,
   onBack,
 }: BadgesScreenProps) {
-  const units = [...new Set(all.map((m) => m.unitId))];
+  // Diurutkan numerik. Mengikuti path order membuat daftarnya terbaca
+  // "Unit 1, Unit 6, Unit 2" — benar secara jalur, tapi terlihat seperti bug.
+  const units = [...new Set(all.map((m) => m.unitId))].sort(
+    (a, b) => Number(a.split('-u')[1] ?? 0) - Number(b.split('-u')[1] ?? 0),
+  );
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
 
   // Riwayat: apa yang sudah dikerjakan anak, terbaru dulu.
@@ -56,7 +60,7 @@ export function BadgesScreen({
         right={<Mascot mood="happy" size={40} />}
       />
 
-      <main className="safe-bottom flex flex-col gap-6 p-5">
+      <main className="safe-bottom flex flex-col gap-6 px-6 py-5">
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Grade 1</h2>
           <ProgressBar value={done} max={pathOrder.length} label={`${done}/${pathOrder.length}`} />

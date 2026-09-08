@@ -20,7 +20,7 @@ export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'style'>
  */
 const SIZES: Record<Variant, string> = {
   primary: 'h-16 px-6 text-xl',
-  answer: 'h-[72px] w-full text-[40px] leading-none',
+  answer: 'h-[66px] w-full text-[36px] leading-none',
   ghost: 'h-12 px-4 text-[15px]',
   danger: 'h-12 px-4 text-[15px]',
 };

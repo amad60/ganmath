@@ -59,12 +59,15 @@ export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: Pa
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
       <Header onBack={onBack} backLabel="Back" center={<span className="text-2xl font-black">Parent Area</span>} />
 
-      <main className="safe-bottom flex flex-col gap-6 p-5">
+      <main className="safe-bottom flex flex-col gap-6 px-6 py-5">
         <section className="bg-surface rounded-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]">
-          <Row label="Mastered" value={`${mastered} modules`} />
-          <Row label="Needs review" value={`${needsReview} modules`} />
+          <Row label="Mastered" value={plural(mastered, 'module')} />
+          <Row label="Needs review" value={plural(needsReview, 'module')} />
           <Row label="XP" value={String(data.xp)} />
-          <Row label="Streak" value={`${data.streak.current} days (best ${data.streak.best})`} />
+          <Row
+            label="Streak"
+            value={`${plural(data.streak.current, 'day')} (best ${data.streak.best})`}
+          />
           <div className="mt-3">
             <ProgressBar value={mastered} max={all.length} label={`${mastered}/${all.length}`} />
           </div>
@@ -128,7 +131,7 @@ export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: Pa
             Already ahead? On the map, tap <b>⏩ I already know this</b> to skip a module by
             passing a short check instead of learning it first. Failing costs nothing.
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3, 4, 5, 6].map((g) => {
               const available = g === 1;
               return (
@@ -136,14 +139,16 @@ export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: Pa
                   key={g}
                   type="button"
                   disabled={!available}
-                  className="rounded-[var(--r-md)] px-4 py-3 text-[18px] font-black disabled:opacity-45"
+                  className="rounded-[var(--r-md)] px-2 py-3 text-[16px] font-black disabled:opacity-45"
                   style={{
                     background: available ? 'var(--c-primary-soft)' : 'var(--c-surface-sunk)',
                     border: '2px solid var(--c-line)',
                   }}
                 >
-                  Grade {g}
-                  {available ? '' : ' · soon'}
+                  <span className="block">Grade {g}</span>
+                  {available ? null : (
+                    <span className="text-ink-soft block text-[12px] font-bold">soon</span>
+                  )}
                 </button>
               );
             })}
@@ -258,6 +263,10 @@ export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: Pa
       </Sheet>
     </div>
   );
+}
+
+function plural(n: number, word: string): string {
+  return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
 function Row({ label, value }: { label: string; value: string }) {

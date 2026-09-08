@@ -18,6 +18,11 @@ npm run dev      # buka alamat Network dari HP di WiFi yang sama
 npm run test     # 125 test
 npm run build    # menjalankan test dulu, lalu typecheck, lalu build
 npm run preview  # menjalankan hasil build (service worker aktif di sini)
+
+# Screenshot 8 layar utama memakai Chrome yang sudah terpasang
+# (jalankan `npm run preview` di terminal lain lebih dulu)
+npm run shots
+npm run shots -- --dark
 ```
 
 ## Isi

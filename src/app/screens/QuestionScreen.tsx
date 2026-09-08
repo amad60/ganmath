@@ -36,6 +36,52 @@ const TITLES: Record<SessionKind, string> = {
  * Mastery Check sengaja terlihat BEDA dari Practice: header emas, tanpa visual
  * pendamping, tanpa tombol Hint. Waktu diukur diam-diam — tidak ada timer terlihat.
  */
+/**
+ * Memisahkan kalimat dari deretan simbol ("How many dots? ●●●●●●").
+ * Sebelumnya keduanya dirender dalam satu paragraf 44px, jadi titik-titiknya
+ * tampil raksasa dan berat. Sekarang kalimatnya lebih kecil, simbolnya jadi
+ * baris tersendiri yang bisa membungkus rapi.
+ */
+function QuestionText({ text }: { text: string }) {
+  const match = text.match(/^(.*?[?:.]?)\s*([^\w\s.,?!=+×÷/-]+)$/u);
+  const words = match ? match[1] : text;
+  const symbols = match ? [...(match[2] ?? '')] : [];
+
+  return (
+    <div className="flex w-full flex-col items-center gap-3">
+      <p className="text-center text-[34px] leading-tight font-black text-balance">{words}</p>
+      {symbols.length > 0 ? (
+        <div className="flex max-w-full flex-wrap items-center justify-center gap-2">
+          {symbols.map((sym, i) => {
+            const size = symbols.length > 8 ? 26 : 34;
+            // Titik polos dirender sebagai lingkaran berwarna: '●' hitam pekat
+            // terasa berat dan tidak seperti alat hitung.
+            if (sym === '●') {
+              return (
+                <span
+                  key={i}
+                  style={{
+                    width: size,
+                    height: size,
+                    borderRadius: 999,
+                    background: 'var(--c-primary)',
+                    display: 'inline-block',
+                  }}
+                />
+              );
+            }
+            return (
+              <span key={i} style={{ fontSize: size, lineHeight: 1 }}>
+                {sym}
+              </span>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
   const question = currentQuestion(session);
   const [typed, setTyped] = useState('');
@@ -137,11 +183,18 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         right={<Mascot mood={mood} size={40} />}
       />
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-5 px-5 py-4">
-        <p className="text-center text-[44px] leading-tight font-black">{question.text}</p>
+      <main
+        // Soal dikelompokkan tepat DI ATAS tombol jawaban, bukan melayang di tengah:
+        // mata dan jempol anak jadi berdekatan, dan ruang kosongnya jatuh di atas
+        // (tempat yang tidak dipakai) alih-alih memisahkan soal dari jawabannya.
+        className="flex min-h-0 flex-1 flex-col items-center justify-end gap-4 overflow-y-auto px-6 pt-6 pb-2"
+      >
+        <QuestionText text={question.text} />
 
-        {!isQuiz && question.params.n != null ? (
-          <TenFrame value={hintUsed ? (question.params.n as number) : 0} animate={hintUsed} />
+        {/* Ten-frame hanya muncul SETELAH hint ditekan. Sebelumnya layar menampilkan
+            grid kosong tanpa makna di sebelah soal. */}
+        {!isQuiz && hintUsed && question.params.n != null ? (
+          <TenFrame value={question.params.n as number} animate />
         ) : null}
 
         {!isQuiz ? (
@@ -175,7 +228,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         ) : null}
       </main>
 
-      <div className="safe-bottom px-5 pb-4">
+      <div className="safe-bottom shrink-0 px-6 pt-2 pb-6">
         {isLine ? (
           <div className="flex flex-col gap-3">
             <NumberLine
@@ -203,9 +256,12 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               <Button
                 key={c}
                 variant="answer"
-                disabled={feedback != null}
+                // Bukan `disabled`: tombol yang diredupkan membuat seluruh layar
+                // terlihat mati begitu anak menjawab. Cukup matikan interaksinya.
                 onPointerDown={touch}
-                onClick={() => answer(c)}
+                onClick={() => (feedback ? undefined : answer(c))}
+                aria-disabled={feedback != null}
+                className={feedback != null ? 'pointer-events-none' : ''}
                 feedback={choiceFeedback(c)}
               >
                 {label(c)}

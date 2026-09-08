@@ -42,13 +42,44 @@ modul terkunci tidak bisa ditekan; pintu jump-level memanggil aksinya.
 
 Total test: **141**.
 
+## Ronde 2 — dengan MELIHAT layarnya
+
+Masalah nomor 1 di daftar bawah akhirnya terpecahkan: Chrome sudah terpasang di mesin ini,
+jadi `puppeteer-core` bisa memakainya tanpa mengunduh browser, dan hasil PNG-nya bisa
+diperiksa langsung.
+
+```bash
+npm run shots          # 8 layar, 393x873, tema terang
+npm run shots -- --dark
+```
+
+Temuan yang **hanya bisa terlihat dengan mata**, semuanya sudah diperbaiki:
+
+| Layar | Temuan | Perbaikan |
+|---|---|---|
+| Peta | Tombol Start berada di dalam daftar node yang digeser `translateX`, sehingga **menembus tepi kanan layar** | Aksi utama pindah ke footer lengket di bawah |
+| Peta | Banner "Add to home screen" `fixed` dan **menutupi node terakhir** | Jadi kartu biasa di dalam aliran, bisa ditutup |
+| Peta | Tidak ada garis penghubung → terbaca sebagai daftar acak | Penghubung berwarna antar node; terisi warna unit kalau sudah dilewati |
+| Peta | Emoji di atas lingkaran warna pekat (apel merah di lingkaran biru) | Lingkaran terang + cincin warna unit |
+| Peta | Node terakhir tertutup footer | Ruang bawah disesuaikan tinggi footer |
+| Soal | **Ten-frame kosong muncul padahal hint belum ditekan** | Hanya muncul setelah hint |
+| Soal | Dua tombol jawaban di bawah garis lipat | Tinggi tombol & jarak disesuaikan; konten bisa menyusut |
+| Soal | Soal melayang di tengah, jauh dari tombol jawaban | Soal dikelompokkan tepat di atas tombol — mata dan jempol berdekatan |
+| Soal | Tertulis "1 / 12" padahal sesi biasanya berhenti di 8 | Target dihitung dari batas minimum |
+| Soal | Titik hitam pekat 44px terasa berat | Dirender sebagai lingkaran berwarna |
+| Soal | Tombol lain redup 40% setelah menjawab → layar terlihat mati | Interaksi dimatikan tanpa meredupkan |
+| My Progress | Urutan unit "Unit 1, Unit 6, Unit 2" | Diurutkan numerik |
+| Parent | "1 modules" | Bentuk jamak diperbaiki |
+| Onboarding | Input nama kosong tanpa placeholder; avatar membungkus 4+1 | Placeholder + grid 5 kolom |
+| Semua | CTA terlalu menempel ke tepi | Padding horizontal aksi dinaikkan ke 24px |
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".
 
 | Prioritas | Masalah |
 |---|---|
-| **1** | **Masih belum pernah dilihat mata.** Tidak ada tooling browser di sesi ini; render test bukan pengganti melihat. Ini harus dipecahkan sebelum ronde perbaikan berikutnya |
+| **1** | **Belum pernah diuji di HP fisik.** Screenshot memakai Chrome desktop pada viewport HP — itu menangkap tata letak, tapi bukan sentuhan, kelincahan, atau perilaku Safari iOS |
 | **2** | **Modul bentuk memakai emoji, bukan bangun sungguhan.** `shape-2d`/`shape-3d` masih ada di daftar komponen tapi belum dibuat. Emoji 🔺🟦 terlihat murah dan tidak bisa dipakai mengajar sisi/sudut |
 | **3** | **Hint di Practice masih kasar** — cuma mengisi ten-frame. Rancangannya hint berjenjang: arah → tunjukkan alat → demo langkah |
 | **4** | **Tidak ada transisi antar soal.** Rancangan meminta geser keluar/masuk 300ms; sekarang soal berganti mendadak |

@@ -137,8 +137,11 @@ export function isFinished(state: SessionState, nowMs: number): boolean {
 export function progressOf(state: SessionState): { done: number; total: number } {
   const limits = SESSION_LIMITS[state.kind];
   const done = state.results.length;
-  const available = done + state.pending.length;
-  return { done, total: Math.min(limits.max, Math.max(limits.min, available)) };
+  if (state.pending.length === 0) return { done, total: done };
+  // Target yang ditampilkan bertumpu pada batas MINIMUM, bukan maksimum: menampilkan
+  // "1 / 12" padahal sesi biasanya berhenti di 8 membuat anak merasa jalannya lebih
+  // panjang daripada kenyataannya.
+  return { done, total: Math.min(limits.max, Math.max(limits.min, done + 1)) };
 }
 
 export function toSessionResult(state: SessionState, date: string): SessionResult {

@@ -14,7 +14,6 @@ import { ParentScreen } from './screens/ParentScreen';
 import { ParentGate } from './screens/ParentGate';
 import { usePwa } from './usePwa';
 import { setSoundEnabled } from './sfx';
-import { Button } from '../components/ui';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
@@ -46,6 +45,7 @@ export function App() {
   const reset = useProgress((s) => s.reset);
 
   const [screen, setScreen] = useState<Screen>({ name: 'map' });
+  const [installDismissed, setInstallDismissed] = useState(false);
   const [session, setSession] = useState<SessionState | null>(null);
   const [gateOpen, setGateOpen] = useState(false);
 
@@ -173,7 +173,19 @@ export function App() {
 
     default:
       return (
-        <div className="mx-auto min-h-full max-w-[430px]">
+        <div className="min-h-full">
+          {/* Tawaran, bukan paksaan: tidak pernah reload otomatis di tengah sesi anak.
+              Bar tipis di atas, supaya tidak pernah menutupi jalur belajar. */}
+          {pwa.needRefresh ? (
+            <button
+              type="button"
+              onClick={pwa.applyUpdate}
+              className="safe-top sticky top-0 z-30 w-full px-5 py-2 text-[15px] font-black"
+              style={{ background: 'var(--c-primary)', color: 'var(--c-primary-ink)' }}
+            >
+              New version ready — tap to update
+            </button>
+          ) : null}
           <MapScreen
             states={data.modules}
             nextId={next}
@@ -184,6 +196,15 @@ export function App() {
             onTestOut={(id) => startSession(id, 'testout')}
             onBadges={() => setScreen({ name: 'badges' })}
             onParent={() => setGateOpen(true)}
+            install={
+              pwa.canInstall && !installDismissed
+                ? {
+                    label: 'Add GanMath to the home screen so progress is safer.',
+                    onAccept: pwa.promptInstall,
+                    onDismiss: () => setInstallDismissed(true),
+                  }
+                : null
+            }
           />
           <ParentGate
             open={gateOpen}
@@ -193,21 +214,6 @@ export function App() {
               setScreen({ name: 'parent' });
             }}
           />
-
-          {/* Tawaran, bukan paksaan: tidak pernah reload otomatis di tengah sesi anak. */}
-          {pwa.needRefresh ? (
-            <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 mx-auto max-w-[430px] p-4">
-              <Button full onClick={pwa.applyUpdate}>
-                New version ready — tap to update
-              </Button>
-            </div>
-          ) : pwa.canInstall ? (
-            <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 mx-auto max-w-[430px] p-4">
-              <Button full onClick={pwa.promptInstall}>
-                Add GanMath to your home screen
-              </Button>
-            </div>
-          ) : null}
         </div>
       );
   }

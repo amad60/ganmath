@@ -11,6 +11,8 @@ export const en = {
     skipAhead: 'I already know this',
     nextUp: 'Next up',
     lockedHint: 'Finish the one before to open this',
+    installYes: 'Add to home screen',
+    later: 'Later',
     locked: 'Locked',
     review: 'Review',
     allDone: 'All done for now!',
