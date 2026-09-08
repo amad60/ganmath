@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "GanMath \u2014 mastery-based math learning app for primary school kids",
+  "description": "GanMath — mastery-based math learning app for primary school kids",
   "scripts": {
     "dev": "vite --host",
     "build": "npm run test && tsc --noEmit && vite build",
@@ -13,7 +13,6 @@
     "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
-    "motion": "^13.2.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "zustand": "^5.0.15"

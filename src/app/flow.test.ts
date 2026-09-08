@@ -274,6 +274,21 @@ describe('alur satu modul, ujung ke ujung', () => {
     expect(ids).not.toContain(after);
   });
 
+  it('modul yang sudah tuntas mengarah ke ULANGAN modul itu, bukan modul lain', async () => {
+    const { nextStepFor } = await import('../engine/steps');
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+    store.getState().markLearnComplete(first, '2026-09-08');
+    playSession(store, first, 'practice', { date: '2026-09-08' });
+    playSession(store, first, 'quiz', { date: '2026-09-08' });
+
+    const st = store.getState().moduleState(first);
+    expect(st.status).toBe('mastered');
+    // Langkahnya 'done' — dan app memperlakukan 'done' sebagai ulangan modul itu
+    // sendiri, bukan melompat ke modul lain.
+    expect(nextStepFor(moduleById(first), st, '2026-09-08')).toBe('done');
+  });
+
   it('registry konten tidak punya masalah struktural', async () => {
     const { validateRegistry } = await import('../engine/unlock');
     expect(validateRegistry(registry)).toEqual([]);

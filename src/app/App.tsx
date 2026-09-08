@@ -19,6 +19,7 @@ import { usePwa } from './usePwa';
 import { setSoundEnabled } from './sfx';
 import { looksWiped, readMeta } from '../store/meta';
 import { readProgressFile } from './backupFile';
+import { clearSession, loadSession, saveSession } from '../store/session';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
@@ -51,9 +52,19 @@ export function App() {
   const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
 
-  const [screen, setScreen] = useState<Screen>({ name: 'map' });
+  // Sesi yang sedang berjalan dipulihkan saat app dibuka: HP terkunci atau app
+  // dibunuh sistem tidak boleh menghapus jawaban yang sudah dikerjakan anak.
+  const [session, setSessionState] = useState<SessionState | null>(() => loadSession());
+  const [screen, setScreen] = useState<Screen>(() =>
+    session ? { name: 'session', moduleId: session.moduleId } : { name: 'map' },
+  );
   const [installDismissed, setInstallDismissed] = useState(false);
-  const [session, setSession] = useState<SessionState | null>(null);
+
+  const setSession = (next: SessionState | null) => {
+    setSessionState(next);
+    if (next) saveSession(next);
+    else clearSession();
+  };
   const [gateOpen, setGateOpen] = useState(false);
 
   const today = toDateString(new Date());
@@ -117,13 +128,22 @@ export function App() {
       return;
     }
     if (step === 'done') {
-      const after = nextModule(data.modules, registry);
-      if (after && after !== moduleId) openModule(after);
-      else setScreen({ name: 'map' });
+      // Modul ini sudah tuntas. Menekan node yang sudah selesai TIDAK boleh
+      // meluncurkan modul lain — anak menekan "Count to 5" lalu tiba-tiba
+      // mengerjakan modul yang sama sekali berbeda. Yang benar: mengulang modul
+      // yang dia tekan, sebagai ulangan singkat tanpa risiko.
+      startSession(moduleId, 'review');
       return;
     }
     // Sisa langkah semuanya berupa sesi soal.
     startSession(moduleId, step satisfies SessionKind);
+  };
+
+  /** Tombol utama di peta & layar hasil: maju ke modul berikutnya, bukan mengulang. */
+  const goToNextModule = (): void => {
+    const after = nextModule(data.modules, registry);
+    if (after) openModule(after);
+    else setScreen({ name: 'map' });
   };
 
   /** Kalimat untuk tombol utama: selalu menyebut apa yang terjadi berikutnya. */
@@ -131,10 +151,7 @@ export function App() {
     if (moduleId.startsWith('unit:')) {
       const after = nextModule(data.modules, registry);
       if (!after) return { label: en.result.allDone, run: () => setScreen({ name: 'map' }) };
-      return {
-        label: en.result.nextModule(moduleById(after).title),
-        run: () => openModule(after),
-      };
+      return { label: en.result.nextModule(moduleById(after).title), run: goToNextModule };
     }
     const step = stepFor(moduleId);
     if (step !== 'done') {
@@ -145,10 +162,7 @@ export function App() {
     }
     const after = nextModule(data.modules, registry);
     if (!after) return { label: en.result.allDone, run: () => setScreen({ name: 'map' }) };
-    return {
-      label: en.result.nextModule(moduleById(after).title),
-      run: () => openModule(after),
-    };
+    return { label: en.result.nextModule(moduleById(after).title), run: goToNextModule };
   };
 
   const finishSession = (final: SessionState) => {

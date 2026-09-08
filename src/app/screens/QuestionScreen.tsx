@@ -240,9 +240,16 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         // (tempat yang tidak dipakai) alih-alih memisahkan soal dari jawabannya.
         className="flex min-h-0 flex-1 flex-col items-center justify-end gap-4 overflow-y-auto px-6 pt-6 pb-2"
       >
-        {question.visual ? <QuestionVisualView visual={question.visual} /> : null}
-
-        <QuestionText text={question.text} />
+        {/* key = id soal: setiap soal baru memainkan animasi masuknya sendiri,
+            jadi pergantian soal terasa sebagai perpindahan, bukan teks yang berkedip. */}
+        <div
+          key={question.id}
+          className="flex w-full flex-col items-center gap-4"
+          style={{ animation: 'question-in 260ms var(--ease-std)' }}
+        >
+          {question.visual ? <QuestionVisualView visual={question.visual} /> : null}
+          <QuestionText text={question.text} />
+        </div>
 
         {/* Ten-frame hanya muncul SETELAH hint ditekan. Sebelumnya layar menampilkan
             grid kosong tanpa makna di sebelah soal. */}

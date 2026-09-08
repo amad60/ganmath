@@ -175,6 +175,16 @@ machine, bukan literal), yang justru membuat aturannya jadi presisi.
 Pola yang sama muncul lima kali di proyek ini: **selesai di engine ≠ sampai ke anak.**
 Test unit membuktikan fungsinya benar; tidak ada yang membuktikan fungsinya dipakai.
 
+## Ronde 7 — audit lanjutan
+
+| Temuan | Dampak nyata | Perbaikan |
+|---|---|---|
+| **Sesi berjalan tidak pernah disimpan** — `SESSION_KEY` dideklarasikan lalu tidak dipakai siapa pun, padahal `engine.md` menjanjikannya | HP terkunci, app dibunuh sistem, atau orang tua mengambil HP di tengah kuis = **seluruh jawaban anak hilang** dan dia mulai dari soal pertama. Untuk anak 6 tahun itu alasan berhenti | Sesi disimpan tiap jawaban dan dipulihkan otomatis saat app dibuka. Data rusak diabaikan, tidak menjatuhkan app |
+| **Menekan node yang sudah selesai meluncurkan modul LAIN** | Anak menekan "Count to 5", tiba-tiba mengerjakan modul yang berbeda | Node yang tuntas kini membuka **ulangan modul itu sendiri** |
+| **Paket `motion` terpasang tapi nol impor** | Dependensi yang menyiratkan fitur yang tidak ada | Dihapus; transisi antar soal ditulis dengan CSS |
+| **Tidak ada transisi antar soal** (rancangan meminta geser 300ms) | Soal berganti mendadak, terasa seperti teks berkedip | Animasi masuk per soal, otomatis dipotong saat `prefers-reduced-motion` |
+| **`reviewQueue` di skema tidak pernah diisi** | Field mati yang ikut terbawa ke setiap file backup | Dihapus |
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".
@@ -183,8 +193,7 @@ Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".
 |---|---|
 | **1** | **Belum pernah diuji di HP fisik.** Screenshot memakai Chrome desktop pada viewport HP — itu menangkap tata letak, tapi bukan sentuhan, kelincahan, atau perilaku Safari iOS |
 | ~~2~~ | ~~Modul bentuk memakai emoji~~ — **selesai.** `Shape2D` (SVG, bisa menandai sudut), `Base10Blocks`, dan `Bars` dibuat, dan soal kini bisa membawa gambarnya sendiri. Bangun ruang masih emoji |
-| **3** | **Hint di Practice masih kasar** — cuma mengisi ten-frame. Rancangannya hint berjenjang: arah → tunjukkan alat → demo langkah |
-| **4** | **Tidak ada transisi antar soal.** Rancangan meminta geser keluar/masuk 300ms; sekarang soal berganti mendadak |
+| **2** | **Hint di Practice masih satu tingkat** — cuma mengisi ten-frame. Rancangannya berjenjang: arah → tunjukkan alat → demo langkah. Ini sisa terbesar |
 | **5** | **Layar Learn masih terasa datar** untuk langkah `watch` — tidak ada gerak yang menjelaskan, cuma gambar diam |
 | **6** | Baru 16 dari 43 modul Grade 1 |
 | **7** | Maskot belum punya animasi idle halus; kemunculannya masih statis |

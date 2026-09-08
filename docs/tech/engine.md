@@ -62,8 +62,8 @@ Sesi **tidak pernah berhenti di tengah soal** — pemeriksaan hanya terjadi sete
   dua kali) tapi dicatat sebagai `retried: true` untuk diagnosis.
 - **Anak cepat selesai lebih cepat**: kalau 8 soal pertama benar semua dan mediannya cepat, sesi
   berhenti di 8 — memenuhi janji "modul awal harus bisa cepat selesai" (CLAUDE.md §7).
-- Sesi berjalan disimpan ke `ganmath.v1.session` setiap jawaban → app tertutup mendadak tidak
-  menghilangkan kemajuan.
+- Sesi berjalan disimpan ke `ganmath.v1.session` setiap jawaban dan **dipulihkan otomatis**
+  saat app dibuka → HP terkunci atau app dibunuh sistem tidak menghilangkan kemajuan.
 
 ### Pengukuran waktu
 ```ts
