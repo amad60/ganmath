@@ -7,12 +7,18 @@ import { all, moduleById, registry } from '../content';
 import { useProgress } from '../store/progress';
 import { toDateString } from '../engine/review';
 import { MapScreen } from './screens/MapScreen';
+import { OnboardingScreen } from './screens/OnboardingScreen';
+import { BadgesScreen } from './screens/BadgesScreen';
+import { ParentScreen } from './screens/ParentScreen';
+import { ParentGate } from './screens/ParentGate';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
 
 type Screen =
   | { name: 'map' }
+  | { name: 'badges' }
+  | { name: 'parent' }
   | { name: 'learn'; moduleId: string }
   | { name: 'session'; moduleId: string }
   | {
@@ -30,8 +36,14 @@ export function App() {
   const recordSession = useProgress((s) => s.recordSession);
   const markLearnComplete = useProgress((s) => s.markLearnComplete);
 
+  const setProfile = useProgress((s) => s.setProfile);
+  const updateSettings = useProgress((s) => s.updateSettings);
+  const replaceAll = useProgress((s) => s.replaceAll);
+  const reset = useProgress((s) => s.reset);
+
   const [screen, setScreen] = useState<Screen>({ name: 'map' });
   const [session, setSession] = useState<SessionState | null>(null);
+  const [gateOpen, setGateOpen] = useState(false);
 
   const next = useMemo(() => nextModule(data.modules, registry), [data.modules]);
   const today = toDateString(new Date());
@@ -63,6 +75,18 @@ export function App() {
       earnedBadges: outcome.earnedBadges,
     });
   };
+
+  // Onboarding muncul sekali seumur hidup, sebelum apa pun yang lain.
+  if (!data.profile.name) {
+    return (
+      <OnboardingScreen
+        onDone={(name, avatar) => {
+          setProfile(name, avatar);
+          if (next) openModule(next);
+        }}
+      />
+    );
+  }
 
   switch (screen.name) {
     case 'learn':
@@ -105,6 +129,34 @@ export function App() {
       );
     }
 
+    case 'badges':
+      return (
+        <BadgesScreen
+          owned={data.badges}
+          states={data.modules}
+          streakBest={data.streak.best}
+          streakCurrent={data.streak.current}
+          onBack={() => setScreen({ name: 'map' })}
+        />
+      );
+
+    case 'parent':
+      return (
+        <ParentScreen
+          data={data}
+          onSettings={updateSettings}
+          onImport={(state) => {
+            replaceAll(state);
+            setScreen({ name: 'map' });
+          }}
+          onReset={() => {
+            reset();
+            setScreen({ name: 'map' });
+          }}
+          onBack={() => setScreen({ name: 'map' })}
+        />
+      );
+
     default:
       return (
         <div className="mx-auto min-h-full max-w-[430px]">
@@ -115,7 +167,16 @@ export function App() {
             level={data.level}
             streak={data.streak.current}
             onOpen={openModule}
-            onParent={() => setScreen({ name: 'map' })}
+            onBadges={() => setScreen({ name: 'badges' })}
+            onParent={() => setGateOpen(true)}
+          />
+          <ParentGate
+            open={gateOpen}
+            onClose={() => setGateOpen(false)}
+            onPass={() => {
+              setGateOpen(false);
+              setScreen({ name: 'parent' });
+            }}
           />
         </div>
       );

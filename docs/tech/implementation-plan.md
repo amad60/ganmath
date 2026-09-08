@@ -17,7 +17,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S6** ✅ | Gamifikasi: XP, bintang, badge, streak, perayaan | ✅ perayaan canvas 60 partikel, 3 detik, bisa di-tap lewat; 11 badge; streak diuji lintas hari, freeze, dan jam HP yang dimundurkan |
 | **S7** ✅ | Konten **U1** (6 modul) + linter konten | ✅ Unit 1 lengkap; linter menegakkan 8 aturan dan langsung menemukan 8 pelanggaran kosakata di konten yang baru ditulis |
 | **S8** ✅ | Konten **U6-m1, U6-m2, U2** (10 modul) → total 16 | ✅ path order #1–16 lengkap dan lolos linter; tipe soal `choose-text` ditambahkan agar modul bentuk bisa ditulis |
-| **S9** | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | orang tua bisa melihat topik yang sering salah dan menyimpan file backup |
+| **S9** ✅ | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | ✅ onboarding 2 input; Parent Area menampilkan 3 topik dengan akurasi terendah, setelan, save/load file dengan konfirmasi perbandingan, dan peringatan kalau browser tidak menyimpan data |
 | **S10** | PWA: manifest, ikon, precache, prompt Add to Home Screen, `navigator.storage.persist()` | mode pesawat: app tetap jalan penuh; terpasang di home screen kedua HP |
 | **S11** | Uji perangkat + performa: Poco F3 & iPhone 17 | tidak ada scroll horizontal, safe-area benar di Dynamic Island, bundle <200KB gzip, tidak ada frame drop terlihat |
 | **S12** | Deploy | user menjalankan deploy Netlify; link terbuka di HP anak |

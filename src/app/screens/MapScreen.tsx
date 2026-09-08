@@ -12,11 +12,21 @@ export type MapScreenProps = {
   streak: number;
   onOpen: (moduleId: string) => void;
   onParent: () => void;
+  onBadges: () => void;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
 
-export function MapScreen({ states, nextId, xp, level, streak, onOpen, onParent }: MapScreenProps) {
+export function MapScreen({
+  states,
+  nextId,
+  xp,
+  level,
+  streak,
+  onOpen,
+  onParent,
+  onBadges,
+}: MapScreenProps) {
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
 
   return (
@@ -29,14 +39,24 @@ export function MapScreen({ states, nextId, xp, level, streak, onOpen, onParent 
             <span style={{ color: 'var(--c-star)' }}>⭐ {xp}</span>
             <span className="text-ink-soft">Lv.{level}</span>
           </div>
-          <button
-            type="button"
-            onClick={onParent}
-            aria-label="Parent area"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
-          >
-            👤
-          </button>
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={onBadges}
+              aria-label="My badges"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
+            >
+              🏅
+            </button>
+            <button
+              type="button"
+              onClick={onParent}
+              aria-label="Parent area"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-2xl"
+            >
+              👤
+            </button>
+          </div>
         </div>
         <ProgressBar value={done} max={pathOrder.length} label={en.map.gradeProgress(done, pathOrder.length)} />
       </header>
