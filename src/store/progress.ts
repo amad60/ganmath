@@ -1,0 +1,172 @@
+import { create, type StoreApi, type UseBoundStore } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { evaluate, type MasteryEvent } from '../engine/mastery';
+import type { ModuleDef, ModuleState, SessionResult } from '../engine/types';
+import { emptyModuleState } from '../engine/types';
+import { migrate } from './migrations';
+import {
+  CURRENT_SCHEMA_VERSION,
+  STORAGE_KEY,
+  createInitialState,
+  type Avatar,
+  type ProgressState,
+  type Settings,
+} from './schema';
+import { safeStorage, writeMeta } from './meta';
+
+export type ProgressStore = {
+  data: ProgressState;
+  moduleState: (id: string) => ModuleState;
+  setProfile: (name: string, avatar: Avatar) => void;
+  markLearnComplete: (moduleId: string, date: string) => void;
+  recordSession: (def: ModuleDef, result: SessionResult) => MasteryEvent[];
+  updateSettings: (patch: Partial<Settings>) => void;
+  replaceAll: (state: ProgressState) => void;
+  reset: () => void;
+};
+
+/** Penyimpanan di memori — dipakai test, dan sebagai jaring pengaman kalau
+ *  browser memblokir localStorage (mode privat). App tetap jalan, hanya tidak tersimpan. */
+export function memoryStorage(): Storage {
+  const map = new Map<string, string>();
+  return {
+    get length() {
+      return map.size;
+    },
+    clear: () => map.clear(),
+    getItem: (k) => map.get(k) ?? null,
+    key: (i) => [...map.keys()][i] ?? null,
+    removeItem: (k) => void map.delete(k),
+    setItem: (k, v) => void map.set(k, v),
+  } as Storage;
+}
+
+/**
+ * Membungkus Storage supaya kegagalan tulis/baca tidak pernah menjatuhkan app.
+ * Safari mode privat melempar error pada setItem, dan storage bisa penuh.
+ * Kalau itu terjadi, app tetap jalan penuh — hanya tidak tersimpan, dan
+ * Parent Area bisa memberi tahu supaya orang tua menyimpan backup ke file.
+ */
+export function resilientStorage(storage: Storage): Storage {
+  const fallback = memoryStorage();
+  let broken = false;
+  const mark = () => {
+    broken = true;
+  };
+  return {
+    get length() {
+      return broken ? fallback.length : storage.length;
+    },
+    clear: () => {
+      try {
+        if (!broken) storage.clear();
+      } catch {
+        mark();
+      }
+      fallback.clear();
+    },
+    getItem: (k) => {
+      if (broken) return fallback.getItem(k);
+      try {
+        return storage.getItem(k);
+      } catch {
+        mark();
+        return fallback.getItem(k);
+      }
+    },
+    key: (i) => (broken ? fallback.key(i) : storage.key(i)),
+    removeItem: (k) => {
+      try {
+        if (!broken) storage.removeItem(k);
+      } catch {
+        mark();
+      }
+      fallback.removeItem(k);
+    },
+    setItem: (k, v) => {
+      fallback.setItem(k, v);
+      if (broken) return;
+      try {
+        storage.setItem(k, v);
+      } catch {
+        mark();
+      }
+    },
+  } as Storage;
+}
+
+/** True kalau penyimpanan browser tidak bisa dipakai — dipakai Parent Area untuk memperingatkan. */
+export function storageIsAvailable(storage: Storage = safeStorage() ?? memoryStorage()): boolean {
+  try {
+    const probe = '__ganmath_probe__';
+    storage.setItem(probe, '1');
+    storage.removeItem(probe);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function createProgressStore(
+  rawStorage: Storage = safeStorage() ?? memoryStorage(),
+): UseBoundStore<StoreApi<ProgressStore>> {
+  const storage = resilientStorage(rawStorage);
+  return create<ProgressStore>()(
+    persist(
+      (set, get) => ({
+        data: createInitialState(),
+
+        moduleState: (id) => get().data.modules[id] ?? emptyModuleState(),
+
+        setProfile: (name, avatar) =>
+          set((s) => ({ data: touch({ ...s.data, profile: { name, avatar } }) })),
+
+        markLearnComplete: (moduleId, date) =>
+          set((s) => {
+            const prev = s.data.modules[moduleId] ?? emptyModuleState();
+            const next: ModuleState = {
+              ...prev,
+              learnCompletedAt: prev.learnCompletedAt ?? date,
+              status: prev.status === 'available' ? 'learning' : prev.status,
+            };
+            return { data: touch({ ...s.data, modules: { ...s.data.modules, [moduleId]: next } }) };
+          }),
+
+        recordSession: (def, result) => {
+          const s = get().data;
+          const prev = s.modules[def.id] ?? emptyModuleState();
+          const { next, events } = evaluate(def, prev, result, {
+            parentAccuracy: s.settings.masteryAccuracyOverride,
+          });
+          // XP, streak, dan badge sengaja belum disentuh di sini — itu S6.
+          set({ data: touch({ ...s, modules: { ...s.modules, [def.id]: next } }) });
+          writeMeta({ everUsed: true }, storage);
+          return events;
+        },
+
+        updateSettings: (patch) =>
+          set((s) => ({ data: touch({ ...s.data, settings: { ...s.data.settings, ...patch } }) })),
+
+        replaceAll: (state) => set({ data: touch(state) }),
+
+        reset: () => set({ data: createInitialState() }),
+      }),
+      {
+        name: STORAGE_KEY,
+        version: CURRENT_SCHEMA_VERSION,
+        storage: createJSONStorage(() => storage),
+        partialize: (s) => ({ data: s.data }),
+        migrate: (persisted) => {
+          const result = migrate((persisted as { data?: unknown } | undefined)?.data);
+          return { data: result.ok ? result.state : createInitialState() };
+        },
+      },
+    ),
+  );
+}
+
+function touch(s: ProgressState): ProgressState {
+  return { ...s, updatedAt: new Date().toISOString() };
+}
+
+export const useProgress = createProgressStore();
