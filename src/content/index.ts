@@ -23,6 +23,14 @@ import { compareTo20 } from './grade1/u3/m3-compare-to-20';
 import { orderTo20 } from './grade1/u3/m4-order-to-20';
 import { longerOrShorter } from './grade1/u7/m1-longer-or-shorter';
 import { measureWithUnits } from './grade1/u7/m2-measure-with-units';
+import { addTen } from './grade1/u4/m1-add-ten';
+import { doubles } from './grade1/u4/m2-doubles';
+import { nearDoubles } from './grade1/u4/m3-near-doubles';
+import { makeTenToAdd } from './grade1/u4/m4-make-ten-to-add';
+import { addWithin20 } from './grade1/u4/m5-add-within-20';
+import { subtractWithin20 } from './grade1/u4/m6-subtract-within-20';
+import { makeNewShapes } from './grade1/u6/m3-make-new-shapes';
+import { halvesAndFourths } from './grade1/u6/m4-halves-and-fourths';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -66,6 +74,16 @@ export const all: ContentModule[] = [
   // jeda ukur (#22–23)
   longerOrShorter,
   measureWithUnits,
+  // Unit 4 — Add & Subtract within 20 (#24–29)
+  addTen,
+  doubles,
+  nearDoubles,
+  makeTenToAdd,
+  addWithin20,
+  subtractWithin20,
+  // jeda bentuk & pecahan (#30–31)
+  makeNewShapes,
+  halvesAndFourths,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -86,6 +104,7 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g1-u1': { title: 'Unit 1 · Numbers to 10', color: 'var(--c-unit-1)' },
   'g1-u2': { title: 'Unit 2 · Add and Subtract', color: 'var(--c-unit-2)' },
   'g1-u3': { title: 'Unit 3 · Numbers to 20', color: 'var(--c-unit-3)' },
+  'g1-u4': { title: 'Unit 4 · Add & Subtract to 20', color: 'var(--c-unit-4)' },
   'g1-u6': { title: 'Unit 6 · Shapes', color: 'var(--c-unit-6)' },
   'g1-u7': { title: 'Unit 7 · Measure & Time', color: 'var(--c-unit-7)' },
   'g1-u8': { title: 'Unit 8 · Patterns & Data', color: 'var(--c-unit-8)' },

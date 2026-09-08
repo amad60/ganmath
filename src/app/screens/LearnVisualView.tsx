@@ -2,6 +2,7 @@ import {
   Bars,
   Base10Blocks,
   CounterObjects,
+  FractionShape,
   NumberBond,
   NumberLine,
   Shape2D,
@@ -55,5 +56,15 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       return <Shape2D name={visual.name} size={120} showCorners={visual.showCorners} />;
     case 'bars':
       return <Bars lengths={visual.lengths} labels={visual.labels} />;
+    case 'fraction':
+      return (
+        <FractionShape
+          parts={visual.parts}
+          shaded={visual.shaded}
+          shape={visual.shape ?? 'circle'}
+          unequal={visual.unequal}
+          size={140}
+        />
+      );
   }
 }

@@ -72,6 +72,7 @@ export type QuestionVisual =
   | { kind: 'base10'; tens: number; ones: number }
   | { kind: 'shape2d'; name: ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
+  | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
   | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] };
 
 /** Aturan pembuat soal. Soal dibuat dari aturan, bukan daftar tetap (anti-hafal). */

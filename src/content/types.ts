@@ -9,6 +9,7 @@ export type LearnVisual =
   | { kind: 'base10'; tens: number; ones: number }
   | { kind: 'shape2d'; name: import('../engine/types').ShapeName; showCorners?: boolean }
   | { kind: 'bars'; lengths: number[]; labels?: string[] }
+  | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
   | { kind: 'counter-objects'; count: number; icon?: string }
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
   | { kind: 'number-line'; min: number; max: number; value?: number | null }

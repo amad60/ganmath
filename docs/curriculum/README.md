@@ -61,9 +61,13 @@ sekaligus berisiko: engine belum teruji tapi konten sudah terlanjur banyak.
 | **5b — Uji dengan anak** | Perbaiki berdasarkan pemakaian nyata | Sebelum menulis 29 modul sisanya dengan pola yang mungkin salah |
 | **5c — Lengkapi Grade 1** | 27 modul sisanya (#17–43) | Pola sudah terbukti, tinggal isi konten |
 
-**Kemajuan 5c: 7 dari 27 modul selesai** (#17–23) — pola, Unit 3 lengkap, dan dua modul
-pengukuran. Tersisa #24–43: Add & Subtract within 20, Numbers to 100, sisa bentuk,
-waktu & uang, dan data.
+**Kemajuan 5c: 15 dari 27 modul selesai** (#17–31) — pola, Unit 3 lengkap, dua modul
+pengukuran, **Unit 4 lengkap** (tambah–kurang dalam 20), serta Make New Shapes dan
+Halves and Fourths.
+
+Tersisa 12 modul (#32–43): Numbers to 100 (6), Where Is It?, Heavy and Light,
+Tell the Time, Money, Tally Marks, Picture Graph. Empat di antaranya butuh komponen
+visual baru: `Clock`, `Money` (rupiah), `TallyChart`, dan `Pictogram`.
 
 Ini menggeser Fase 6 (uji dengan anak) jadi **di tengah** Fase 5, bukan sesudahnya. Perubahan
 ini sudah dimasukkan ke `../ROADMAP.md`.

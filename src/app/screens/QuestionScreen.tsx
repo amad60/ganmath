@@ -12,6 +12,7 @@ import type { DotState } from '../../components/ui/SessionDots';
 import {
   Bars,
   Base10Blocks,
+  FractionShape,
   NumberLine,
   Shape2D,
   TenFrame,
@@ -98,6 +99,16 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
       return <Shape2D name={visual.name} size={110} showCorners={visual.showCorners} />;
     case 'bars':
       return <Bars lengths={visual.lengths} labels={visual.labels} />;
+    case 'fraction':
+      return (
+        <FractionShape
+          parts={visual.parts}
+          shaded={visual.shaded}
+          shape={visual.shape ?? 'circle'}
+          unequal={visual.unequal}
+          size={130}
+        />
+      );
     case 'number-line':
       return (
         <NumberLine
@@ -291,7 +302,12 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                 onPointerDown={touch}
                 onClick={() => (feedback ? undefined : answer(c))}
                 aria-disabled={feedback != null}
-                className={feedback != null ? 'pointer-events-none' : ''}
+                // Pilihan berupa KATA tidak boleh memakai ukuran huruf angka:
+                // 36px membuat "three fourths" membungkus dua baris dan terpotong.
+                {...(isText ? { textSize: 21 } : {})}
+                className={`${isText ? 'px-3' : ''} ${
+                  feedback != null ? 'pointer-events-none' : ''
+                }`}
                 feedback={choiceFeedback(c)}
               >
                 {label(c)}

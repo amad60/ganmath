@@ -34,7 +34,8 @@ export const BASE_VOCAB = new Set(
    count number numbers box boxes line dot dots one two three four five six seven
    eight nine ten at once fast see say comes grow to the right can as more less same
    than it as we write jumps not five four here now
-   each every them by full all has with next row again`
+   each every them by full all has with next row again
+   from into then only first small almost adding change`
     .split(/\s+/)
     .filter(Boolean),
 );
@@ -86,7 +87,11 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
           add(m.id, 'prompt-length', `${field} ${n} kata (maks ${MAX_PROMPT_WORDS}): "${text}"`);
         }
         for (const w of words(text)) {
-          if (!known.has(w) && !/^\d+$/.test(w)) {
+          // Bentuk jamak dianggap sudah dikenal kalau bentuk tunggalnya sudah
+          // diperkenalkan — kalau tidak, setiap modul harus mendeklarasikan
+          // "triangle" dan "triangles" secara terpisah tanpa manfaat apa pun.
+          const isKnown = known.has(w) || (w.endsWith('s') && known.has(w.slice(0, -1)));
+          if (!isKnown && !/^\d+$/.test(w)) {
             add(m.id, 'vocab', `kata "${w}" belum diperkenalkan — tambahkan ke vocab modul`);
           }
         }

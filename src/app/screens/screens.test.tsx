@@ -36,6 +36,15 @@ describe('Button — umpan balik harus benar-benar terlihat', () => {
     render(<Button feedback="reveal">10</Button>);
     expect(screen.getByRole('button').style.background).toContain('--c-correct-soft');
   });
+
+  it('textSize benar-benar diterapkan, tidak kalah oleh utility ukuran varian', () => {
+    render(
+      <Button variant="answer" textSize={21}>
+        three fourths
+      </Button>,
+    );
+    expect(screen.getByRole('button').style.fontSize).toBe('21px');
+  });
 });
 
 describe('QuestionScreen — anak harus tahu sisa berapa lagi', () => {
@@ -152,6 +161,25 @@ describe('Onboarding', () => {
     expect(screen.getByLabelText(/Gan the fox/)).toBeInTheDocument();
     expect(screen.getByLabelText('cat')).toBeInTheDocument();
     expect(screen.queryByText('🤖')).not.toBeInTheDocument();
+  });
+});
+
+describe('pilihan berupa kata', () => {
+  it('dirender lebih kecil daripada pilihan angka supaya tidak terpotong', () => {
+    const def = moduleById('g1-u6-m4');
+    const s = createSession(def, 'quiz', 3, 0);
+    const q = s.pending.find((p) => p.question.type === 'choose-text');
+    expect(q).toBeTruthy();
+    render(
+      <QuestionScreen
+        session={{ ...s, pending: [q!, ...s.pending.filter((x) => x !== q)] }}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    const btn = screen.getByRole('button', { name: 'three fourths' });
+    expect(btn.style.fontSize).toBe('21px');
   });
 });
 

@@ -6,5 +6,6 @@ export { Shape2D, SHAPE_SIDES } from './Shape2D';
 
 export { Base10Blocks } from './Base10Blocks';
 export { Bars } from './Bars';
+export { FractionShape } from './FractionShape';
 export { useReducedMotion, teachingDuration } from './useReducedMotion';
 export * from './scale';

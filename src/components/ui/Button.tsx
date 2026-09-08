@@ -7,6 +7,13 @@ export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'style'>
   variant?: Variant;
   feedback?: Feedback;
   full?: boolean;
+  /**
+   * Ukuran huruf dalam px. WAJIB lewat prop ini, bukan className: `text-[21px]`
+   * di className akan bertabrakan dengan ukuran bawaan varian, dan pemenangnya
+   * ditentukan urutan di file CSS — bukan urutan className. Ini bug yang sama
+   * yang dulu membuat warna umpan balik jawaban tidak pernah muncul.
+   */
+  textSize?: number;
   children: ReactNode;
 };
 
@@ -64,6 +71,7 @@ export function Button({
   variant = 'primary',
   feedback = 'idle',
   full,
+  textSize,
   className = '',
   children,
   ...rest
@@ -76,6 +84,7 @@ export function Button({
     boxShadow: variant === 'ghost' ? undefined : '0 4px 0 rgb(0 0 0 / 0.18)',
     transform: feedback === 'selected' ? 'translateY(3px)' : undefined,
     animation: feedback === 'retry' ? 'shake 300ms ease-out' : undefined,
+    ...(textSize ? { fontSize: textSize, lineHeight: 1.1 } : {}),
   };
 
   return (
