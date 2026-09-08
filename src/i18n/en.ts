@@ -80,6 +80,7 @@ export const en = {
     nextIs: (label: string, title: string) => `${label}: ${title}`,
     nextModule: (title: string) => `Next: ${title}`,
     backToMap: 'Back to the map',
+    nextUpIs: (title: string) => `Next up: ${title}`,
     allDone: 'Grade finished!',
     reteach: 'Let us look at it again.',
     masterRound: 'Master Round · go for 3 stars',

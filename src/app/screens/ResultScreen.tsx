@@ -13,17 +13,24 @@ export type ResultScreenProps = {
   xpGained: number;
   earnedBadges: string[];
   sessionsNeeded: number;
-  /** Apa yang harus dikerjakan anak setelah ini, sudah jadi kalimat. */
-  nextLabel: string;
-  onNext: () => void;
+  /** Judul modul berikutnya — ditampilkan sebagai KETERANGAN, bukan tombol. */
+  nextTitle: string | null;
   onBackToMap: () => void;
-  /** Tawaran opsional, mis. Master Round untuk bintang ke-3. */
-  extra?: { label: string; run: () => void } | null;
 };
 
 /**
- * Tidak pernah menulis "Failed". Yang ditulis adalah JARAK MENUJU LULUS, dalam
- * kalimat yang bisa ditindaklanjuti anak.
+ * SATU tombol. Titik.
+ *
+ * Versi sebelumnya menumpuk tiga tombol tanpa hierarki — lanjut ke modul berikutnya,
+ * Master Round, dan kembali ke peta — plus judul modul di paling bawah yang terbaca
+ * seperti tombol keempat. Anak 6 tahun tidak sedang memilih rute; dia ingin tahu
+ * hasilnya lalu melanjutkan.
+ *
+ * Master Round dipindah sepenuhnya ke peta (tekan modul yang sudah selesai), supaya
+ * satu aksi hanya punya satu rumah. Peta juga sudah punya tombol utama yang menyebut
+ * langkah berikutnya, jadi layar ini tidak perlu menduplikasinya.
+ *
+ * Layar ini juga tidak pernah menulis "Failed" — yang ditulis adalah jarak menuju lulus.
  */
 export function ResultScreen({
   module,
@@ -31,10 +38,8 @@ export function ResultScreen({
   xpGained,
   earnedBadges,
   sessionsNeeded,
-  nextLabel,
-  onNext,
+  nextTitle,
   onBackToMap,
-  extra,
 }: ResultScreenProps) {
   const { next, detail } = evaluation;
   const mastered = next.status === 'mastered' || next.status === 'retained';
@@ -49,28 +54,32 @@ export function ResultScreen({
   const testedOut = evaluation.events.some((e) => e.type === 'tested-out');
   const testoutFailed = evaluation.events.some((e) => e.type === 'testout-failed');
 
-  void practiced;
   const message = testedOut
     ? en.result.testedOut
     : testoutFailed
       ? en.result.testoutFailed
       : mastered
-    ? en.result.mastered
-    : practiced
-      ? en.result.almost
-      : detail.accuracyPass
-        ? en.result.oneMore
-        : en.result.keepPractising;
+        ? en.result.mastered
+        : practiced
+          ? en.result.almost
+          : detail.accuracyPass
+            ? en.result.oneMore
+            : en.result.keepPractising;
 
   return (
     <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col items-center gap-4 px-6">
-      <Mascot mood={mastered ? 'celebrate' : 'encourage'} size={110} />
+      <Mascot mood={mastered ? 'celebrate' : 'encourage'} size={100} />
 
-      <StarRow stars={next.stars} size={48} animate />
+      <StarRow stars={next.stars} size={44} animate />
 
-      <h1 className="text-center text-2xl font-black">
-        {mastered ? en.result.niceWork : en.result.keepGoing}
-      </h1>
+      <div className="text-center">
+        <h1 className="text-2xl font-black">
+          {mastered ? en.result.niceWork : en.result.keepGoing}
+        </h1>
+        {/* Nama modul sebagai keterangan di ATAS, bukan teks nyasar di paling bawah
+            yang terbaca seperti tombol. */}
+        <p className="text-ink-soft text-[15px] font-bold">{module.title}</p>
+      </div>
 
       <div className="bg-surface w-full rounded-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]">
         <Row label={en.result.correct} value={`${Math.round(detail.accuracy * 100)}%`} />
@@ -91,35 +100,30 @@ export function ResultScreen({
         </div>
       ) : null}
 
-      {/* Jarak menuju lulus, bukan vonis. */}
       <div className="w-full">
-        <ProgressBar
-          value={Math.min(detail.passingSessions, sessionsNeeded)}
-          max={sessionsNeeded}
-          label={`${Math.min(detail.passingSessions, sessionsNeeded)}/${sessionsNeeded}`}
-          tone="star"
-        />
+        {/* Bar kemajuan hanya masuk akal SELAMA modul belum tuntas. Menampilkan
+            "1/2" di samping tulisan "Module mastered!" saling bertentangan. */}
+        {!mastered ? (
+          <ProgressBar
+            value={Math.min(detail.passingSessions, sessionsNeeded)}
+            max={sessionsNeeded}
+            label={`${Math.min(detail.passingSessions, sessionsNeeded)}/${sessionsNeeded}`}
+            tone="star"
+          />
+        ) : null}
         <p className="text-ink-soft mt-2 text-center text-[18px]">{message}</p>
+        {mastered && nextTitle ? (
+          <p className="mt-1 text-center text-[16px] font-bold">
+            {en.result.nextUpIs(nextTitle)}
+          </p>
+        ) : null}
       </div>
 
-      {/* Tombol utama SELALU membawa maju ke langkah berikutnya. Sebelumnya tombolnya
-          mengembalikan ke peta, dan dari peta anak menemukan modul yang sama lagi —
-          terasa seperti berputar di tempat meski dia baru saja berhasil. */}
-      <div className="mt-auto flex w-full flex-col gap-3">
-        <Button full onClick={onNext}>
-          {nextLabel}
-        </Button>
-        {extra ? (
-          <Button variant="ghost" full onClick={extra.run}>
-            {extra.label}
-          </Button>
-        ) : null}
-        <Button variant="ghost" full onClick={onBackToMap}>
+      <div className="mt-auto w-full pb-1">
+        <Button full onClick={onBackToMap}>
           {en.result.backToMap}
         </Button>
       </div>
-
-      <p className="text-ink-soft text-[13px]">{module.title}</p>
 
       <Celebration show={celebrating} onDone={() => setCelebrating(false)} />
     </div>

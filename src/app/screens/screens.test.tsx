@@ -129,8 +129,7 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
         xpGained={20}
         earnedBadges={[]}
         sessionsNeeded={2}
-        nextLabel="Practice: Count to 5"
-        onNext={() => {}}
+        nextTitle="More or Less"
         onBackToMap={() => {}}
       />,
     );
@@ -140,8 +139,8 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
     for (const s of spans) expect((s as HTMLElement).style.color).toContain('--c-star');
   });
 
-  it('tombol utama selalu membawa maju, bukan kembali ke peta', () => {
-    const onNext = vi.fn();
+  it('hanya punya SATU tombol, supaya arahnya tidak pernah ambigu', () => {
+    const onBackToMap = vi.fn();
     render(
       <ResultScreen
         module={def}
@@ -149,13 +148,14 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
         xpGained={0}
         earnedBadges={[]}
         sessionsNeeded={2}
-        nextLabel="Practice: Count to 5"
-        onNext={onNext}
-        onBackToMap={() => {}}
+        nextTitle="More or Less"
+        onBackToMap={onBackToMap}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Practice: Count to 5' }));
-    expect(onNext).toHaveBeenCalled();
+    const buttons = screen.getAllByRole('button');
+    expect(buttons).toHaveLength(1);
+    fireEvent.click(buttons[0] as HTMLElement);
+    expect(onBackToMap).toHaveBeenCalled();
   });
 
   it('tidak pernah menulis Failed', () => {
@@ -166,8 +166,7 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
         xpGained={0}
         earnedBadges={[]}
         sessionsNeeded={2}
-        nextLabel="Practice: Count to 5"
-        onNext={() => {}}
+        nextTitle="More or Less"
         onBackToMap={() => {}}
       />,
     );

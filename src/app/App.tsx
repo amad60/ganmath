@@ -139,30 +139,10 @@ export function App() {
     startSession(moduleId, step satisfies SessionKind);
   };
 
-  /** Tombol utama di peta & layar hasil: maju ke modul berikutnya, bukan mengulang. */
-  const goToNextModule = (): void => {
+  /** Judul modul berikutnya, dipakai layar hasil sebagai KETERANGAN (bukan tombol). */
+  const nextTitle = (): string | null => {
     const after = nextModule(data.modules, registry);
-    if (after) openModule(after);
-    else setScreen({ name: 'map' });
-  };
-
-  /** Kalimat untuk tombol utama: selalu menyebut apa yang terjadi berikutnya. */
-  const nextActionFor = (moduleId: string): { label: string; run: () => void } => {
-    if (moduleId.startsWith('unit:')) {
-      const after = nextModule(data.modules, registry);
-      if (!after) return { label: en.result.allDone, run: () => setScreen({ name: 'map' }) };
-      return { label: en.result.nextModule(moduleById(after).title), run: goToNextModule };
-    }
-    const step = stepFor(moduleId);
-    if (step !== 'done') {
-      return {
-        label: en.result.nextIs(en.step[step], moduleById(moduleId).title),
-        run: () => openModule(moduleId),
-      };
-    }
-    const after = nextModule(data.modules, registry);
-    if (!after) return { label: en.result.allDone, run: () => setScreen({ name: 'map' }) };
-    return { label: en.result.nextModule(moduleById(after).title), run: goToNextModule };
+    return after ? moduleById(after).title : null;
   };
 
   const finishSession = (final: SessionState) => {
@@ -257,12 +237,6 @@ export function App() {
 
     case 'result': {
       const isUnitTest = screen.moduleId.startsWith('unit:');
-      const action = nextActionFor(screen.moduleId);
-      const st = moduleState(screen.moduleId);
-      // Master Round adalah satu-satunya jalan ke bintang ke-3. Tanpa tawaran ini
-      // bintang ketiga dan badge Gold Brain mustahil didapat.
-      const canMaster =
-        !isUnitTest && (st.status === 'mastered' || st.status === 'retained') && st.stars < 3;
       return (
         <ResultScreen
           module={
@@ -279,17 +253,8 @@ export function App() {
               : (moduleById(screen.moduleId).masteryOverride?.sessions ??
                 GRADE_THRESHOLDS[moduleById(screen.moduleId).grade].sessions)
           }
-          nextLabel={action.label}
-          onNext={action.run}
+          nextTitle={nextTitle()}
           onBackToMap={() => setScreen({ name: 'map' })}
-          extra={
-            canMaster
-              ? {
-                  label: en.result.masterRound,
-                  run: () => startSession(screen.moduleId, 'master'),
-                }
-              : null
-          }
         />
       );
     }

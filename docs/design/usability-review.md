@@ -216,6 +216,37 @@ Keluhan user: "CTA ada banyak tapi unclear arahnya", "ga jelas hubungannya antar
   Round — beserta penjelasan **kenapa bintang ketiga belum didapat**. Bintang ke-3 kini
   punya jalan yang terlihat, bukan hanya tombol sekunder di layar hasil.
 
+## Ronde 9 — layar hasil: satu tombol
+
+Keluhan user: "many CTA, ga jelas alurnya… sekarang chaos asal-asalan aja."
+
+Layar hasil menumpuk **tiga tombol tanpa hierarki** — lanjut ke modul berikutnya,
+Master Round, kembali ke peta — ditambah judul modul di paling bawah dengan gaya teks
+abu-abu yang terbaca sebagai **tombol keempat**.
+
+Akar masalahnya bukan tata letak: **satu aksi punya dua rumah.** Layar hasil
+menduplikasi navigasi yang sudah dimiliki peta, padahal peta sudah punya tombol utama
+yang menyebut langkah berikutnya.
+
+Prinsip yang dipakai: **satu aksi hanya punya satu rumah**, dan setiap layar punya
+**satu tombol utama**.
+
+- Layar hasil kini punya **tepat satu tombol: "Back to the map"** — ada testnya yang
+  gagal kalau tombolnya bertambah.
+- Modul berikutnya ditampilkan sebagai **keterangan** ("Next up: More or Less"), bukan
+  tombol yang bersaing.
+- **Master Round pindah sepenuhnya ke peta** (tekan modul yang sudah selesai), tempat
+  bintangnya terlihat dan alasannya dijelaskan.
+- Nama modul pindah ke atas sebagai subjudul.
+- **Bar kemajuan disembunyikan saat modul sudah dikuasai** — sebelumnya tertulis "1/2"
+  tepat di samping "Module mastered!", dua pernyataan yang saling bertentangan.
+- **Perayaan tidak lagi menelan ketukan pertama.** Confetti dulu berupa lapisan penuh
+  layar yang bisa ditekan, jadi selama 3 detik ketukan pertama anak hanya membuang
+  confetti alih-alih menekan tombol yang dituju.
+
+Alurnya sekarang selalu sama: **peta → satu tombol → sesi → hasil → kembali ke peta**,
+dan peta selalu menunjukkan langkah berikutnya.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

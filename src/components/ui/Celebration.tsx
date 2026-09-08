@@ -75,12 +75,13 @@ export function Celebration({ show, onDone }: CelebrationProps) {
 
   if (!show) return null;
 
+  // pointer-events-none: perayaan TIDAK BOLEH menelan ketukan pertama anak.
+  // Sebelumnya ini lapisan penuh layar yang bisa ditekan, jadi selama 3 detik
+  // ketukan pertama hanya membuang confetti — bukan menekan tombol yang dituju.
   return (
-    <button
-      type="button"
-      onClick={onDone}
-      aria-label="Skip"
-      className="fixed inset-0 z-40 cursor-default"
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-40"
       style={{ background: 'transparent' }}
     >
       {reduced ? (
@@ -92,6 +93,6 @@ export function Celebration({ show, onDone }: CelebrationProps) {
       ) : (
         <canvas ref={canvasRef} className="h-full w-full" aria-hidden />
       )}
-    </button>
+    </div>
   );
 }
