@@ -120,6 +120,11 @@ import { squareCorners } from './grade3/u6/m2-square-corners';
 import { perimeter } from './grade3/u6/m3-perimeter';
 import { missingSide } from './grade3/u6/m4-missing-side';
 import { samePerimeter } from './grade3/u6/m5-same-perimeter';
+import { timeToTheMinute } from './grade3/u7/m1-time-to-the-minute';
+import { howLong } from './grade3/u7/m2-how-long';
+import { moneyTo100000 } from './grade3/u7/m3-money-to-100000';
+import { shopping } from './grade3/u7/m4-shopping';
+import { graphsThatCount } from './grade3/u7/m5-graphs-that-count';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -279,6 +284,12 @@ export const all: ContentModule[] = [
   perimeter,
   missingSide,
   samePerimeter,
+  // Unit 7 — Time, Data & Money
+  timeToTheMinute,
+  howLong,
+  moneyTo100000,
+  shopping,
+  graphsThatCount,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -371,4 +382,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g3-u4': { title: 'Unit 4 · Add & Subtract to 1000', color: 'var(--c-unit-4)' },
   'g3-u5': { title: 'Unit 5 · Fractions', color: 'var(--c-unit-5)' },
   'g3-u6': { title: 'Unit 6 · Shapes & Perimeter', color: 'var(--c-unit-6)' },
+  'g3-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
 };

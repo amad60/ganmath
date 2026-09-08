@@ -433,3 +433,35 @@ adalah garis bilangan berlabel BILANGAN BULAT, jadi modulnya ditulis sebagai
 di bagian ke-k. Ini representasi yang dipakai Singapore Math sebelum notasi, dan
 sah secara pedagogis. Garis bilangan dengan label pecahan (0, 1/4, 1/2, ...) masih
 menjadi lubang yang diketahui — butuh `step` dan format label di `NumberLine`.
+
+## Ronde 17 — audit kurikulum setelah Grade 3 lengkap
+
+Diperiksa dengan screenshot pada dua keadaan: kelas 3 baru dibuka (0/40) dan kelas 3
+di tengah jalan (24/40).
+
+**Yang sudah bekerja.** Peta membuka tepat di modul yang sedang dikerjakan (bukan di
+bagian yang sudah selesai), unit yang tuntas terlipat jadi satu baris ringkasan, satu
+CTA utama di bawah yang menyebut namanya sendiri ("Learn: Equal Parts"), dan satu
+tautan sekunder untuk melompat. Dengan 40 modul dalam 7 unit, peta tetap bisa dipindai.
+
+**1. Baris ringkasan unit terlipat terlihat bisa ditekan, tapi mati.**
+"⭐ All 6 done" digambar sebagai kartu bergaris selebar layar — bentuk yang sama
+persis dengan tombol. Satu-satunya kontrol sebenarnya adalah kata "Show" kecil di
+kanan atas. Anak akan menekan kartunya lebih dulu dan tidak terjadi apa-apa.
+*Perbaikan:* seluruh baris jadi tombol dengan aksi yang sama.
+
+**2. Pil kelas "G3" juga afordansi palsu.**
+Berwarna aksen dan berbentuk pil, tapi tidak bisa ditekan — padahal "bagaimana cara
+pindah kelas?" adalah pertanyaan pertama orang tua, dan jawabannya (Parent Area)
+tidak terhubung dari situ. *Perbaikan:* pil itu sekarang membuka gerbang orang tua.
+
+**3. "Finish the one before to open this" diulang 35 kali.**
+Kalimat itu tercetak di bawah SETIAP modul terkunci. Di Grade 1 (6 modul per unit)
+itu masih tertahankan; di Grade 3, peta berubah jadi dinding kalimat yang sama dan
+justru menutupi hal yang penting. *Perbaikan:* hanya muncul di modul terkunci
+PERTAMA — satu-satunya tempat ia menjawab pertanyaan yang sedang ada di kepala anak.
+Efek sampingnya satu node lagi muat di layar.
+
+**Yang sengaja tidak diubah.** Penggantian kelas tetap hanya di Parent Area di balik
+gerbang: anak tidak boleh bisa berpindah kelas sendiri, karena itu memutus gating
+yang jadi inti app ini. Pil G3 memberi JALAN ke sana, bukan pintasannya.

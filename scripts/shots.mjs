@@ -146,6 +146,10 @@ const clickText = async (page, text) => {
 if (FROM) {
   // Mode pemeriksaan satu modul: langsung ke layar soalnya.
   const page = await newPage({ seed: true });
+  // Peta dulu: yang perlu diperiksa bukan cuma layar soalnya, tapi juga bagaimana
+  // modul itu ditampilkan di antara modul lain (bagian mana yang terlipat, di mana
+  // anak mendarat saat membuka app).
+  await shot(page, `map-${FROM}`);
   await clickText(page, 'already know this');
   // "Sudah tahu ini" membuka lembar pilihan lompat; yang mau diperiksa adalah
   // layar soalnya, jadi lanjutkan menekan pilihan satu-modul.

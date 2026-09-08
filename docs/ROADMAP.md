@@ -1,6 +1,6 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 5a selesai; **Grade 1 lengkap (43 modul). Grade 2 LENGKAP (38 modul).** Berikutnya Grade 3.**
+Status keseluruhan: **Grade 1 lengkap (43 modul). Grade 2 lengkap (38 modul). Grade 3 LENGKAP (40 modul) — total 121 modul, 200 test.** Berikutnya Grade 4.
 
 - Live: **https://ganmath.netlify.app**
 - Repo: **https://github.com/amad60/ganmath** (private)
@@ -26,7 +26,7 @@ Baca `../CLAUDE.md` dulu untuk arahan produk.
 | 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, live di Netlify | ✅ selesai — 13/13 langkah |
 | 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | 🔜 berikutnya |
 | 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ✅ selesai — 43/43 |
-| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | ⬜ belum |
+| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | 🟨 jalan — G2 ✅, G3 ✅, G4–G6 belum |
 
 ## Catatan urutan
 - Fase 5 sengaja hanya Grade 1: lebih baik satu kelas yang benar-benar enak dipakai daripada

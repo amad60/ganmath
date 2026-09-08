@@ -383,15 +383,52 @@ describe('MapScreen — pintu jump level', () => {
     expect(screen.getByRole('button', { name: 'Count to 5' })).toBeInTheDocument();
   });
 
+  it('baris ringkasan unit yang dilipat bisa ditekan, bukan cuma kata "Show"', async () => {
+    // Barisnya berbentuk kartu bergaris — anak akan menekannya. Dulu tidak terjadi
+    // apa-apa: satu-satunya kontrol adalah kata "Show" kecil di kanan atas.
+    const { pathOrderFor } = await import('../../content');
+    const ids = pathOrderFor(1).slice(0, 6);
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states: Record<string, ModuleState> = Object.fromEntries(ids.map((id) => [id, done]));
+    render(<MapScreen {...mapProps({ states, nextId: pathOrderFor(1)[6] as string })} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /All 6 done/ }));
+    expect(screen.getByRole('button', { name: 'Count to 5' })).toBeInTheDocument();
+  });
+
   it('bagian tempat anak berada tidak pernah dilipat', async () => {
     const { pathOrderFor } = await import('../../content');
     render(<MapScreen {...mapProps({ nextId: pathOrderFor(1)[0] as string })} />);
     expect(screen.queryByText(/All 6 done/)).not.toBeInTheDocument();
   });
 
+  it('penjelasan kunci muncul sekali, bukan di bawah setiap modul terkunci', async () => {
+    // Diulang 35 kali di kelas 3, kalimat itu berubah jadi derau; peta jadi sulit
+    // dipindai justru di kelas yang modulnya paling banyak.
+    const { pathOrderFor } = await import('../../content');
+    render(<MapScreen {...mapProps({ nextId: pathOrderFor(1)[0] as string })} />);
+    expect(screen.getAllByText(/Finish the one before/)).toHaveLength(1);
+  });
+
   it('kelas aktif terlihat di layar utama', () => {
     render(<MapScreen {...mapProps({ grade: 2 })} />);
     expect(screen.getByText('G2')).toBeInTheDocument();
+  });
+
+  it('pil kelas adalah jalan masuk mengganti kelas, bukan label mati', () => {
+    // "Bagaimana cara pindah kelas?" adalah pertanyaan pertama orang tua, dan pil
+    // berwarna aksen ini terlihat bisa ditekan. Ia harus benar-benar bisa.
+    const onParent = vi.fn();
+    render(<MapScreen {...mapProps({ grade: 3, onParent })} />);
+    fireEvent.click(screen.getByRole('button', { name: /Grade 3/i }));
+    expect(onParent).toHaveBeenCalled();
   });
 
   it('setiap node menjelaskan apa yang terjadi kalau ditekan', () => {

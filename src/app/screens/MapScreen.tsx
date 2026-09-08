@@ -53,6 +53,13 @@ export function MapScreen(props: MapScreenProps) {
   const [skipOpen, setSkipOpen] = useState(false);
   /** Bagian unit yang sengaja dibuka anak meski sudah tuntas. */
   const [opened, setOpened] = useState<Set<number>>(new Set());
+  const toggleSection = (sectionIndex: number) =>
+    setOpened((prev) => {
+      const next = new Set(prev);
+      if (next.has(sectionIndex)) next.delete(sectionIndex);
+      else next.add(sectionIndex);
+      return next;
+    });
   const nextRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -94,6 +101,12 @@ export function MapScreen(props: MapScreenProps) {
     sections.push({ unitId: u, ids: [id], repeat });
   }
 
+  // Kalimat "Finish the one before to open this" berguna SEKALI. Diulang di bawah
+  // setiap modul terkunci — 35 kali di kelas 3 — ia berubah jadi derau yang membuat
+  // peta sulit dipindai. Cukup di modul terkunci PERTAMA, tempat ia menjawab
+  // pertanyaan yang sedang ada di kepala anak.
+  const firstLockedId = pathOrder.find((id) => !isUnlocked(id, states, registry));
+
   const chosenState = chosen ? states[chosen] : undefined;
 
   return (
@@ -107,13 +120,19 @@ export function MapScreen(props: MapScreenProps) {
             <Stat icon="🔥" value={streak} color="var(--c-streak)" />
             <Stat icon="⭐" value={xp} color="var(--c-star)" />
             <span className="text-ink-soft">Lv.{level}</span>
-            {/* Kelas aktif harus terlihat di layar utama, bukan hanya di Parent Area. */}
-            <span
-              className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px]"
+            {/* Kelas aktif harus terlihat di layar utama, bukan hanya di Parent Area.
+                Bentuknya pil berwarna aksen, jadi ia TERLIHAT bisa ditekan — dan
+                "bagaimana cara pindah kelas?" memang pertanyaan pertama orang tua.
+                Menekannya membuka gerbang orang tua, tempat kelas bisa diganti. */}
+            <button
+              type="button"
+              onClick={onParent}
+              aria-label={`Grade ${grade} — change grade`}
+              className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px] font-black"
               style={{ background: 'var(--c-primary-soft)', color: 'var(--c-primary)' }}
             >
               G{grade}
-            </span>
+            </button>
           </div>
           <div className="-mr-2 flex items-center gap-1">
             <IconButton label="My badges" onClick={onBadges} name="trophy" />
@@ -194,14 +213,7 @@ export function MapScreen(props: MapScreenProps) {
               <button
                 type="button"
                 disabled={!unitDone || hasNext}
-                onClick={() =>
-                  setOpened((prev) => {
-                    const next = new Set(prev);
-                    if (next.has(sectionIndex)) next.delete(sectionIndex);
-                    else next.add(sectionIndex);
-                    return next;
-                  })
-                }
+                onClick={() => toggleSection(sectionIndex)}
                 className="mt-2 mb-3 flex w-full items-center gap-3"
               >
                 <span
@@ -231,7 +243,12 @@ export function MapScreen(props: MapScreenProps) {
               </button>
 
               {collapsed ? (
-                <div
+                // Barisnya BERBENTUK kartu, jadi anak akan menekannya — dan dulu tidak
+                // terjadi apa-apa, karena satu-satunya kontrol adalah kata "Show" kecil
+                // di kanan atas. Sekarang seluruh baris membuka unitnya.
+                <button
+                  type="button"
+                  onClick={() => toggleSection(sectionIndex)}
                   className="mb-2 flex w-full items-center justify-center gap-2 rounded-[var(--r-md)] py-3"
                   style={{ background: 'var(--c-surface)', border: '2px solid var(--c-line)' }}
                 >
@@ -239,7 +256,7 @@ export function MapScreen(props: MapScreenProps) {
                   <span className="text-ink-soft text-[15px] font-bold">
                     {en.map.unitDone(ids.length)}
                   </span>
-                </div>
+                </button>
               ) : null}
 
               {(collapsed ? [] : ids).map((id, i) => {
@@ -337,7 +354,9 @@ export function MapScreen(props: MapScreenProps) {
                             ? en.map.tapDone
                             : unlocked
                               ? en.map.tapStart
-                              : en.map.lockedHint}
+                              : id === firstLockedId
+                                ? en.map.lockedHint
+                                : ''}
                       </span>
                     </div>
                   </div>
