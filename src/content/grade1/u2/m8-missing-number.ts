@@ -1,0 +1,60 @@
+import type { ContentModule } from '../../types';
+
+export const missingNumber: ContentModule = {
+  id: 'g1-u2-m8',
+  unitId: 'g1-u2',
+  grade: 1,
+  title: 'Missing Number',
+  icon: '❓',
+  prereq: ['g1-u2-m7'],
+  skills: ['missing-addend'],
+  kind: 'concept',
+  fluencyTracked: false,
+  questionTypes: ['missing-number', 'choose-number'],
+  visuals: ['number-bond', 'ten-frame'],
+  vocab: ['missing', 'equals', 'both', 'sides'],
+
+  learn: [
+    {
+      stage: 'concrete',
+      prompt: 'Fill boxes to make eight.',
+      visual: { kind: 'ten-frame', value: 0 },
+      action: 'tap-fill',
+      target: 8,
+      hint: 'Five and three make eight.',
+    },
+    {
+      stage: 'pictorial',
+      prompt: 'One part is missing.',
+      visual: { kind: 'number-bond', whole: 8, parts: [5, null], ask: 'part1' },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Both sides of equals are same.',
+      visual: { kind: 'number-bond', whole: 8, parts: [5, 3] },
+      action: 'watch',
+    },
+  ],
+
+  rules: [
+    {
+      type: 'missing-number',
+      skill: 'missing-addend',
+      params: { a: [1, 8], c: [2, 10] },
+      answer: (p) => (p.c as number) - (p.a as number),
+      text: (p) => `${p.a} + ? = ${p.c}`,
+      exclude: (p) => (p.a as number) >= (p.c as number),
+    },
+    {
+      type: 'choose-number',
+      skill: 'missing-addend',
+      params: { b: [1, 8], c: [2, 10] },
+      answer: (p) => (p.c as number) - (p.b as number),
+      text: (p) => `? + ${p.b} = ${p.c}`,
+      exclude: (p) => (p.b as number) >= (p.c as number),
+      distractors: 'near',
+      misconception: (p) => (p.c as number) + (p.b as number),
+    },
+  ],
+};

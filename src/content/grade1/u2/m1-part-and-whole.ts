@@ -1,0 +1,60 @@
+import type { ContentModule } from '../../types';
+
+export const partAndWhole: ContentModule = {
+  id: 'g1-u2-m1',
+  unitId: 'g1-u2',
+  grade: 1,
+  title: 'Part and Whole',
+  icon: '🧩',
+  prereq: ['g1-u1-m6'],
+  skills: ['part-whole'],
+  kind: 'concept',
+  fluencyTracked: false,
+  questionTypes: ['choose-number', 'missing-number'],
+  visuals: ['number-bond', 'ten-frame'],
+  vocab: ['part', 'parts', 'whole'],
+
+  learn: [
+    {
+      stage: 'concrete',
+      prompt: 'Fill five boxes.',
+      visual: { kind: 'ten-frame', value: 0 },
+      action: 'tap-fill',
+      target: 5,
+      hint: 'Five is the whole.',
+    },
+    {
+      stage: 'pictorial',
+      prompt: 'Two and three make five.',
+      visual: { kind: 'number-bond', whole: 5, parts: [2, 3] },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Two and three are parts.',
+      visual: { kind: 'number-bond', whole: 5, parts: [2, 3] },
+      action: 'watch',
+    },
+  ],
+
+  rules: [
+    {
+      type: 'choose-number',
+      skill: 'part-whole',
+      params: { whole: [3, 5], a: [1, 4] },
+      answer: (p) => (p.whole as number) - (p.a as number),
+      text: (p) => `${p.a} and ? make ${p.whole}`,
+      exclude: (p) => (p.a as number) >= (p.whole as number),
+      distractors: 'near',
+      misconception: (p) => (p.whole as number) + (p.a as number),
+    },
+    {
+      type: 'missing-number',
+      skill: 'part-whole',
+      params: { whole: [4, 6], a: [1, 5] },
+      answer: (p) => (p.whole as number) - (p.a as number),
+      text: (p) => `${p.a} + ? = ${p.whole}`,
+      exclude: (p) => (p.a as number) >= (p.whole as number),
+    },
+  ],
+};

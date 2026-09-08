@@ -19,6 +19,7 @@ export type ModuleStatus =
 export type QType =
   | 'count-tap'
   | 'choose-number'
+  | 'choose-text'
   | 'keypad'
   | 'tenframe-fill'
   | 'number-bond'
@@ -72,6 +73,8 @@ export type QuestionRule = {
   distractors?: DistractorKind;
   /** Domain garis bilangan untuk soal `number-line-drop`. */
   range?: [number, number];
+  /** Label pilihan untuk `choose-text`; jawabannya adalah INDEKS label yang benar. */
+  options?: (p: Record<string, number>) => string[];
   /** Pengecoh yang mencerminkan miskonsepsi khas modul ini. Wajib untuk modul `fact`. */
   misconception?: (p: Record<string, number>) => number | null;
 };
@@ -84,6 +87,8 @@ export type Question = {
   answer: number;
   choices?: number[];
   range?: [number, number];
+  /** Label untuk `choose-text` — layar merender options[choice], bukan angkanya. */
+  options?: string[];
   params: Record<string, number>;
 };
 

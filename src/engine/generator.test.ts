@@ -6,8 +6,21 @@ import { addModule } from './fixtures';
 describe('generator', () => {
   it('tidak pernah mengulang soal identik dalam satu sesi', () => {
     const set = generateSet(addModule(), 12, mulberry32(1));
-    const keys = set.questions.map((q) => `${q.type}:${JSON.stringify(q.params)}`);
+    const keys = set.questions.map((q) => `${q.type}:${q.text}`);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('dua aturan boleh memakai parameter sama untuk soal yang berbeda', () => {
+    const def = addModule();
+    const withTwin = {
+      ...def,
+      rules: [
+        def.rules[0]!,
+        { ...def.rules[0]!, text: (p: Record<string, number>) => `${p.a} plus ${p.b} = ?` },
+      ],
+    };
+    const set = generateSet(withTwin, 12, mulberry32(11));
+    expect(set.questions.some((q) => q.text.includes('plus'))).toBe(true);
   });
 
   it('menghormati exclude (tidak ada penjumlahan melebihi 10)', () => {

@@ -92,7 +92,11 @@ export function generateSet(
     while ((cursor[poolIndex] as number) < pool.combos.length) {
       const params = pool.combos[cursor[poolIndex] as number] as Record<string, number>;
       cursor[poolIndex] = (cursor[poolIndex] as number) + 1;
-      const key = `${pool.rule.type}:${JSON.stringify(params)}`;
+      const text = pool.rule.text(params);
+      // Dedupe berdasarkan APA YANG DILIHAT ANAK, bukan tipe+parameter. Dua aturan
+      // bisa memakai parameter yang sama untuk soal yang berbeda ("How many sides?"
+      // vs "How many corners?") — versi sebelumnya membuang yang kedua.
+      const key = `${pool.rule.type}:${text}`;
       if (seen.has(key)) continue;
       seen.add(key);
       const answer = pool.rule.answer(params);
@@ -100,12 +104,16 @@ export function generateSet(
         id: `${def.id}:${questions.length}:${key}`,
         type: pool.rule.type,
         skill: pool.rule.skill,
-        text: pool.rule.text(params),
+        text,
         answer,
         params,
         ...(pool.rule.range ? { range: pool.rule.range } : {}),
       };
-      if (pool.rule.type === 'compare-symbol') {
+      if (pool.rule.type === 'choose-text') {
+        const labels = pool.rule.options?.(params) ?? [];
+        q.options = labels;
+        q.choices = labels.map((_, i) => i);
+      } else if (pool.rule.type === 'compare-symbol') {
         // Jawaban dikodekan -1 / 0 / 1 dan dirender sebagai < = > oleh layar soal.
         // Pengecoh "di sekitar jawaban" tidak berlaku di sini — pilihannya memang cuma tiga.
         q.choices = [-1, 0, 1];

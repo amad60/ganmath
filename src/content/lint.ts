@@ -15,6 +15,7 @@ export const MAX_PROMPT_WORDS = 8;
  */
 export const RENDERABLE_TYPES: QType[] = [
   'choose-number',
+  'choose-text',
   'count-tap',
   'keypad',
   'missing-number',
@@ -33,7 +34,7 @@ export const BASE_VOCAB = new Set(
    count number numbers box boxes line dot dots one two three four five six seven
    eight nine ten at once fast see say comes grow to the right can as more less same
    than it as we write jumps not five four here now
-   each every them by full`
+   each every them by full all has with`
     .split(/\s+/)
     .filter(Boolean),
 );
@@ -132,6 +133,9 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
       for (const q of questions) {
         if (!Number.isFinite(q.answer)) add(m.id, 'generator', `jawaban tidak sah: ${q.text}`);
+        if (q.type === 'choose-text' && (q.options ?? []).length < 3) {
+          add(m.id, 'generator', `choose-text butuh minimal 3 pilihan: ${q.text}`);
+        }
         if (q.type !== 'compare-symbol' && q.answer < 0) {
           add(m.id, 'generator', `jawaban negatif di Grade ${m.grade}: ${q.text}`);
         }

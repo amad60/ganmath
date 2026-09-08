@@ -38,6 +38,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
 
   const isQuiz = session.kind === 'quiz' || session.kind === 'master';
   const isCompare = question?.type === 'compare-symbol';
+  const isText = question?.type === 'choose-text';
   const isLine = question?.type === 'number-line-drop';
 
   const [linePick, setLinePick] = useState<number | null>(null);
@@ -163,7 +164,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                         : 'idle'
                 }
               >
-                {isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : c}
+                {isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : c}
               </Button>
             ))}
           </div>
@@ -186,7 +187,13 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           >
             {feedback.correct
               ? en.question.correct
-              : `${en.question.retry} · ${isCompare ? COMPARE_LABEL[question.answer as -1 | 0 | 1] : question.answer}`}
+              : `${en.question.retry} · ${
+                  isText
+                    ? (question.options?.[question.answer] ?? '')
+                    : isCompare
+                      ? COMPARE_LABEL[question.answer as -1 | 0 | 1]
+                      : question.answer
+                }`}
           </p>
         ) : null}
       </div>
