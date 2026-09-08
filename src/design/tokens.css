@@ -1,0 +1,98 @@
+/* Token desain GanMath — sumber: docs/design/design-system.md
+   Jangan menulis warna literal di komponen. Selalu lewat token ini. */
+
+:root {
+  /* dasar */
+  --c-bg: #f7f6f2;
+  --c-surface: #ffffff;
+  --c-surface-sunk: #edebe4;
+  --c-ink: #1f2430;
+  --c-ink-soft: #5a6273;
+  --c-line: #dfdcd3;
+
+  /* aksi & progres */
+  --c-primary: #4c5bd4;
+  --c-primary-ink: #ffffff;
+  --c-primary-soft: #e5e7fb;
+
+  /* umpan balik — TIDAK ADA MERAH. salah = oranye "try again" */
+  --c-correct: #2e9e6b;
+  --c-correct-soft: #dff3e9;
+  --c-retry: #e8952f;
+  --c-retry-soft: #fdf0de;
+
+  /* hadiah */
+  --c-star: #f2b90c;
+  --c-badge: #c77dff;
+  --c-streak: #ff7a45;
+
+  /* status modul di peta */
+  --c-locked: #c9c6be;
+  --c-mastered: var(--c-star);
+  --c-review: #7ca3e8;
+
+  /* satu-satunya merah di app: tombol Reset di Parent Area */
+  --c-danger: #c0392b;
+
+  /* warna unit Grade 1 */
+  --c-unit-1: #4c9bd4;
+  --c-unit-2: #2e9e6b;
+  --c-unit-3: #e8952f;
+  --c-unit-4: #d4574c;
+  --c-unit-5: #4c5bd4;
+  --c-unit-6: #c77dff;
+  --c-unit-7: #3fa9a0;
+  --c-unit-8: #8a7ce8;
+
+  /* bentuk */
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+  --r-pill: 999px;
+
+  --shadow-card: 0 2px 0 rgb(0 0 0 / 0.06), 0 8px 24px rgb(31 36 48 / 0.08);
+  --shadow-press: 0 1px 0 rgb(0 0 0 / 0.1);
+
+  /* gerak */
+  --t-micro: 120ms;
+  --t-std: 250ms;
+  --t-screen: 320ms;
+  --ease-std: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-screen: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --c-bg: #171a21;
+    --c-surface: #212633;
+    --c-surface-sunk: #12151b;
+    --c-ink: #f2f3f7;
+    --c-ink-soft: #a7aebf;
+    --c-line: #333a4a;
+    --c-primary: #8b95f0;
+    --c-primary-ink: #14161c;
+    --c-primary-soft: #2a3050;
+    --c-correct: #56c596;
+    --c-correct-soft: #1d3a2f;
+    --c-retry: #f0ac5c;
+    --c-retry-soft: #3a2e1c;
+    --c-locked: #4a5060;
+  }
+}
+
+:root[data-theme='dark'] {
+  --c-bg: #171a21;
+  --c-surface: #212633;
+  --c-surface-sunk: #12151b;
+  --c-ink: #f2f3f7;
+  --c-ink-soft: #a7aebf;
+  --c-line: #333a4a;
+  --c-primary: #8b95f0;
+  --c-primary-ink: #14161c;
+  --c-primary-soft: #2a3050;
+  --c-correct: #56c596;
+  --c-correct-soft: #1d3a2f;
+  --c-retry: #f0ac5c;
+  --c-retry-soft: #3a2e1c;
+  --c-locked: #4a5060;
+}
