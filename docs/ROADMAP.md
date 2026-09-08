@@ -1,6 +1,6 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Fase 2 selesai.** Berikutnya: **Fase 3 — Desain**.
+Status keseluruhan: **Fase 3 selesai.** Berikutnya: **Fase 4 — Desain teknis + plan**.
 Baca `../CLAUDE.md` dulu untuk arahan produk.
 
 | Fase | Isi | Output | Status |
@@ -8,8 +8,8 @@ Baca `../CLAUDE.md` dulu untuk arahan produk.
 | 0 | Menangkap arahan produk | `CLAUDE.md`, roadmap, open questions | ✅ selesai |
 | 1 | Riset | Kurikulum Merdeka + acuan internasional untuk SD 1–6, cara mengajar konsep ke anak 6 th, bongkar mekanik Duolingo/Khan Kids/Prodigy, ambang mastery & spaced repetition, kosakata English yang aman untuk pembaca pemula | ✅ selesai → [`docs/research/`](research/README.md) |
 | 2 | Rancang kurikulum | Peta lengkap Grade→Unit→Module, prasyarat, tipe soal, flag kecepatan, path order | ✅ selesai → [`docs/curriculum/`](curriculum/README.md) |
-| 3 | Desain | Sistem desain (warna, tipografi, ikon), maskot, wireframe 8 layar, spesifikasi animasi | 🔜 berikutnya |
-| 4 | Desain teknis + plan | Arsitektur, skema localStorage final, engine soal & generator, komponen visual reusable, linter konten, rencana implementasi | ⬜ belum |
+| 3 | Desain | Sistem desain, maskot, wireframe 8 layar, spesifikasi animasi | ✅ selesai → [`docs/design/`](design/README.md) |
+| 4 | Desain teknis + plan | Arsitektur, skema localStorage final, engine soal & generator, komponen visual reusable, linter konten, rencana implementasi | 🔜 berikutnya |
 | 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, siap deploy ke Netlify | ⬜ belum |
 | 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | ⬜ belum |
 | 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ⬜ belum |
