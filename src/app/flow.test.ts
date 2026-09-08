@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createProgressStore, memoryStorage } from '../store/progress';
 import { createSession, currentQuestion, isFinished, submitAnswer, toSessionResult } from '../engine/session';
 import { isUnlocked, nextModule } from '../engine/unlock';
+import { nextStepFor } from '../engine/steps';
 import { moduleById, pathOrder, registry } from '../content';
 import type { SessionKind } from '../engine/types';
 
@@ -76,6 +77,58 @@ describe('alur satu modul, ujung ke ujung', () => {
         expect([...stages].sort()).toEqual(['abstract', 'concrete', 'pictorial']);
       }
     }
+  });
+
+  /**
+   * Regresi untuk bug terburuk yang pernah lolos: anak terjebak berlatih selamanya
+   * karena layar peta menebak langkahnya sendiri dan sesi latihan tidak pernah
+   * menaikkan status. Test ini meniru persis apa yang dilakukan tombol utama app.
+   */
+  it('mengikuti tombol utama app berkali-kali BENAR-BENAR menuntaskan modul', () => {
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+    const def = moduleById(first);
+    const trail: string[] = [];
+
+    for (let i = 0; i < 12; i++) {
+      const step = nextStepFor(def, store.getState().moduleState(first), '2026-09-08');
+      trail.push(step);
+      if (step === 'done') break;
+      if (step === 'learn') {
+        store.getState().markLearnComplete(first, '2026-09-08');
+        continue;
+      }
+      playSession(store, first, step, { date: '2026-09-08' });
+    }
+
+    expect(store.getState().moduleState(first).status).toBe('mastered');
+    expect(trail).toContain('practice');
+    expect(trail).toContain('quiz');
+    expect(trail.at(-1)).toBe('done');
+    // Modul berikutnya terbuka, jadi tombol utama pindah ke modul lain.
+    expect(nextModule(store.getState().data.modules, registry)).toBe(pathOrder[1]);
+  });
+
+  it('anak yang gagal terus tidak diulang-ulang di langkah yang sama', () => {
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+    const def = moduleById(first);
+    const trail: string[] = [];
+
+    for (let i = 0; i < 8; i++) {
+      const step = nextStepFor(def, store.getState().moduleState(first), '2026-09-08');
+      trail.push(step);
+      if (step === 'done') break;
+      if (step === 'learn') {
+        store.getState().markLearnComplete(first, '2026-09-08');
+        continue;
+      }
+      playSession(store, first, step, { correct: false, date: '2026-09-08' });
+    }
+
+    // Dia dikembalikan ke materi, bukan disuruh mengulang kuis yang sama terus.
+    expect(trail).toContain('learn');
+    expect(new Set(trail).size).toBeGreaterThan(2);
   });
 
   it('gamifikasi tersambung: XP bertambah, streak jalan, badge diberikan', () => {

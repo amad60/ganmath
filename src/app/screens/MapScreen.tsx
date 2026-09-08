@@ -19,6 +19,8 @@ export type MapScreenProps = {
    *  di atas konten, supaya tidak pernah menutupi node terakhir. */
   install?: { label: string; onAccept: () => void; onDismiss: () => void } | null;
   grade: number;
+  /** Label langkah berikutnya, mis. "Learn" / "Practice" / "Mastery Check". */
+  nextStepLabel: string;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
@@ -65,6 +67,7 @@ export function MapScreen({
   onBadges,
   install,
   grade,
+  nextStepLabel,
 }: MapScreenProps) {
   const registry = registryFor(grade);
   const pathOrder = registry.pathOrder;
@@ -105,7 +108,7 @@ export function MapScreen({
             <Mascot mood="idle" size={48} />
             <div className="min-w-0 flex-1">
               <p className="text-ink-soft text-[12px] font-black tracking-wide uppercase">
-                {en.map.nextUp}
+                {en.map.nextUp} · {nextStepLabel}
               </p>
               <p className="truncate text-[19px] leading-tight font-black">{nextDef.title}</p>
               <p className="text-ink-soft truncate text-[13px]">
@@ -244,8 +247,10 @@ export function MapScreen({
               'linear-gradient(to top, var(--c-bg) 72%, color-mix(in srgb, var(--c-bg) 0%, transparent))',
           }}
         >
+          {/* CTA menyebut langkah yang sebenarnya, bukan "Start" generik: anak
+              (dan orang tua) bisa melihat bahwa dia memang bergerak maju. */}
           <Button full onClick={() => onOpen(nextDef.id)}>
-            {en.map.startNext}: {nextDef.title}
+            {nextStepLabel}: {nextDef.title}
           </Button>
           <Button variant="ghost" full onClick={() => onTestOut(nextDef.id)}>
             <Icon name="skip" size={18} color="var(--c-ink-soft)" />

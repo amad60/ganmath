@@ -6,6 +6,15 @@
 export const en = {
   appName: 'GanMath',
 
+  step: {
+    learn: 'Learn',
+    practice: 'Practice',
+    quiz: 'Mastery Check',
+    speed: 'Speed Round',
+    review: 'Quick Review',
+    done: 'Done',
+  },
+
   map: {
     startNext: 'Start',
     skipAhead: 'I already know this',
@@ -55,6 +64,11 @@ export const en = {
     keepPractising: 'Practise this one more time.',
     newBadge: 'New badge!',
     speedRound: 'Try a Speed Round',
+    nextIs: (label: string, title: string) => `${label}: ${title}`,
+    nextModule: (title: string) => `Next: ${title}`,
+    backToMap: 'Back to the map',
+    allDone: 'Grade finished!',
+    reteach: 'Let us look at it again.',
     testedOut: 'Skipped — you already knew it!',
     testoutFailed: 'Let us learn this one properly.',
     moduleProgress: 'Module',

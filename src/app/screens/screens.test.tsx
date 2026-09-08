@@ -129,14 +129,33 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
         xpGained={20}
         earnedBadges={[]}
         sessionsNeeded={2}
-        onContinue={() => {}}
-        onRetry={() => {}}
+        nextLabel="Practice: Count to 5"
+        onNext={() => {}}
+        onBackToMap={() => {}}
       />,
     );
     const stars = within(container).getByLabelText(/of 3 stars/);
     const spans = stars.querySelectorAll('span');
     expect(spans.length).toBe(3);
     for (const s of spans) expect((s as HTMLElement).style.color).toContain('--c-star');
+  });
+
+  it('tombol utama selalu membawa maju, bukan kembali ke peta', () => {
+    const onNext = vi.fn();
+    render(
+      <ResultScreen
+        module={def}
+        evaluation={failing}
+        xpGained={0}
+        earnedBadges={[]}
+        sessionsNeeded={2}
+        nextLabel="Practice: Count to 5"
+        onNext={onNext}
+        onBackToMap={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Practice: Count to 5' }));
+    expect(onNext).toHaveBeenCalled();
   });
 
   it('tidak pernah menulis Failed', () => {
@@ -147,8 +166,9 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
         xpGained={0}
         earnedBadges={[]}
         sessionsNeeded={2}
-        onContinue={() => {}}
-        onRetry={() => {}}
+        nextLabel="Practice: Count to 5"
+        onNext={() => {}}
+        onBackToMap={() => {}}
       />,
     );
     expect(screen.queryByText(/fail/i)).not.toBeInTheDocument();
@@ -232,6 +252,7 @@ describe('MapScreen — pintu jump level', () => {
         level={1}
         streak={0}
         grade={1}
+        nextStepLabel="Learn"
         onOpen={() => {}}
         onTestOut={onTestOut}
         onParent={() => {}}
@@ -251,6 +272,7 @@ describe('MapScreen — pintu jump level', () => {
         level={1}
         streak={0}
         grade={1}
+        nextStepLabel="Learn"
         onOpen={() => {}}
         onTestOut={() => {}}
         onParent={() => {}}

@@ -122,6 +122,38 @@ Pass desain lainnya:
 - Belokan jalur peta diperbesar supaya terbaca sebagai jalur, bukan daftar.
 - Kotak jawaban di gerbang orang tua menggantikan em-dash yang terbaca sebagai garis nyasar.
 
+## Ronde 5 — jebakan yang membuat app tidak bisa diselesaikan
+
+User melaporkan "anak bisa terjebak di modul yang sama berkali-kali". Setelah ditelusuri,
+kenyataannya lebih buruk: **tidak ada satu modul pun yang bisa dikuasai lewat permainan
+normal.**
+
+Layar peta menebak langkah berikutnya sendiri:
+`status === 'learning' ? 'practice' : 'quiz'`. Setelah materi selesai status menjadi
+`learning`, dan sesi latihan menurut desain **tidak pernah menaikkan status** — jadi
+tombol utama mengirim anak ke latihan, selamanya. Kuis tidak pernah tercapai.
+
+Bug ini lolos karena test integrasi memanggil `playSession(..., 'quiz')` **langsung**:
+menguji engine, tapi tidak pernah menguji navigasinya. Pelajarannya sama dengan
+tombol Grade yang tidak punya `onClick` — yang tidak diuji adalah **perilaku app**,
+bukan kebenaran fungsinya.
+
+Perbaikan:
+- **`engine/steps.ts`** jadi satu-satunya sumber kebenaran untuk "anak harus ngapain
+  sekarang": materi → latihan → kuis → (ulang) → dikuasai; gagal kuis mengembalikan ke
+  **latihan**, bukan mengulang kuis; gagal tiga kali mengembalikan ke **materi**.
+  Menyelesaikan materi mereset hitungan gagal, supaya tidak berputar di situ.
+- **Tombol utama selalu menyebut langkah yang sebenarnya** — "Practice: Count to 10",
+  "Mastery Check: Count to 10" — bukan "Start" generik. Anak dan orang tua bisa melihat
+  bahwa dia memang bergerak.
+- **Layar hasil membawa maju**, bukan mengembalikan ke peta. Sebelumnya tombolnya
+  mengembalikan ke peta dan dari peta anak menemukan modul yang sama lagi — terasa
+  berputar di tempat justru setelah dia berhasil. Sekarang tombol utama langsung
+  mengerjakan langkah berikutnya, atau modul berikutnya kalau modul ini sudah tuntas.
+- Dua test regresi meniru **persis apa yang dilakukan tombol utama**, dan membuktikan
+  modul benar-benar bisa dituntaskan, serta anak yang selalu gagal tidak diulang-ulang
+  di langkah yang sama.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

@@ -13,8 +13,10 @@ export type ResultScreenProps = {
   xpGained: number;
   earnedBadges: string[];
   sessionsNeeded: number;
-  onContinue: () => void;
-  onRetry: () => void;
+  /** Apa yang harus dikerjakan anak setelah ini, sudah jadi kalimat. */
+  nextLabel: string;
+  onNext: () => void;
+  onBackToMap: () => void;
 };
 
 /**
@@ -27,8 +29,9 @@ export function ResultScreen({
   xpGained,
   earnedBadges,
   sessionsNeeded,
-  onContinue,
-  onRetry,
+  nextLabel,
+  onNext,
+  onBackToMap,
 }: ResultScreenProps) {
   const { next, detail } = evaluation;
   const mastered = next.status === 'mastered' || next.status === 'retained';
@@ -43,6 +46,7 @@ export function ResultScreen({
   const testedOut = evaluation.events.some((e) => e.type === 'tested-out');
   const testoutFailed = evaluation.events.some((e) => e.type === 'testout-failed');
 
+  void practiced;
   const message = testedOut
     ? en.result.testedOut
     : testoutFailed
@@ -95,15 +99,16 @@ export function ResultScreen({
         <p className="text-ink-soft mt-2 text-center text-[18px]">{message}</p>
       </div>
 
+      {/* Tombol utama SELALU membawa maju ke langkah berikutnya. Sebelumnya tombolnya
+          mengembalikan ke peta, dan dari peta anak menemukan modul yang sama lagi —
+          terasa seperti berputar di tempat meski dia baru saja berhasil. */}
       <div className="mt-auto flex w-full flex-col gap-3">
-        <Button full onClick={onContinue}>
-          {en.result.continue}
+        <Button full onClick={onNext}>
+          {nextLabel}
         </Button>
-        {!mastered ? (
-          <Button variant="ghost" full onClick={onRetry}>
-            {practiced ? en.result.speedRound : en.result.tryAgain}
-          </Button>
-        ) : null}
+        <Button variant="ghost" full onClick={onBackToMap}>
+          {en.result.backToMap}
+        </Button>
       </div>
 
       <p className="text-ink-soft text-[13px]">{module.title}</p>

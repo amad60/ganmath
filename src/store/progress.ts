@@ -139,6 +139,9 @@ export function createProgressStore(
               ...prev,
               learnCompletedAt: prev.learnCompletedAt ?? date,
               status: prev.status === 'available' ? 'learning' : prev.status,
+              // Anak baru saja diajar ulang: hitungan gagal beruntun dimulai dari
+              // nol, kalau tidak dia akan dikirim ke materi terus-menerus.
+              consecutiveFails: 0,
             };
             return { data: touch({ ...s.data, modules: { ...s.data.modules, [moduleId]: next } }) };
           }),

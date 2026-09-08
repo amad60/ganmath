@@ -125,9 +125,12 @@ const shot = async (page, name) => {
 };
 
 const clickText = async (page, text) => {
+  // Cocokkan sebagian teks ATAU pola: label CTA utama berubah mengikuti langkah
+  // (Learn / Practice / Mastery Check), jadi mencocokkan "Start" saja rapuh.
   const el = await page.evaluateHandle((t) => {
     const nodes = [...document.querySelectorAll('button')];
-    return nodes.find((n) => n.textContent?.toLowerCase().includes(t.toLowerCase())) ?? null;
+    const re = new RegExp(t, 'i');
+    return nodes.find((n) => re.test(n.textContent ?? '')) ?? null;
   }, text);
   const node = el.asElement();
   if (!node) throw new Error(`tombol "${text}" tidak ada`);
@@ -157,7 +160,7 @@ try {
   await shot(page, '02-map');
 
   // 3. Layar Learn
-  await clickText(page, 'Start');
+  await clickText(page, 'Learn|Practice|Mastery|Start');
   await shot(page, '03-learn');
 
   // 4. Soal latihan
