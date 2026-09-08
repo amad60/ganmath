@@ -5,8 +5,8 @@ Semua kode, materi, aset, dan dokumen proyek **wajib** disimpan di dalam folder 
 Baca file ini lebih dulu sebelum mengerjakan task apa pun di proyek ini.
 
 **Nama app: GanMath.**
-Status: **Fase 3 (Desain) selesai** — hasil di `docs/research/`, `docs/curriculum/`, `docs/design/`.
-Berikutnya Fase 4 (desain teknis + rencana implementasi).
+Status: **Fase 4 (Desain teknis + plan) selesai** — semua dokumen di `docs/`.
+Berikutnya **Fase 5a: mulai menulis kode** (vertical slice, 13 langkah di `docs/tech/implementation-plan.md`).
 Terakhir diperbarui: 2026-09-08
 
 ---
@@ -114,13 +114,36 @@ Berlaku di semua grade:
 - Ambang kecepatan hanya untuk modul bertipe **fakta hafalan** (mis. 7+5, 6×8). Modul bertipe
   **penalaran** (word problem, geometri, pemecahan masalah) tidak dinilai kecepatannya.
 - Angka di atas adalah default; bisa disetel per modul di data konten, dan bisa diubah orang tua.
-- **Retensi / spaced repetition.** Modul yang sudah dikuasai muncul lagi sebagai sesi
-  "Quick Review" setelah ~3 hari, ~1 minggu, ~1 bulan. Gagal review → status jadi `needs_review`
-  (tidak mengunci ulang modul berikutnya, tapi memunculkan pengingat).
+
+**Cara kecepatan diukur** (ditetapkan Fase 4, dasar riset di `docs/research/03-mastery-and-spacing.md`):
+- Dua metrik dicatat: `thinkMs` (soal muncul → **input pertama disentuh**) dan `totalMs`
+  (soal muncul → jawaban terkirim). **`thinkMs` yang dipakai untuk ambang**, karena `totalMs`
+  ikut mengukur waktu mengetik, bukan waktu berpikir.
+- Dipakai **median**, bukan rata-rata. Soal dengan `totalMs > 30 detik` dibuang dari perhitungan
+  kecepatan (anak teralih), tapi tetap dihitung untuk akurasi.
+- **Kecepatan tidak pernah menggagalkan modul.** Akurasi + konsistensi + cakupan lolos tapi
+  kecepatan belum → status `practiced`, **modul berikutnya tetap terbuka**, dan app menawarkan
+  **Speed Round** pendek. Mengunci anak yang berpikir hati-hati adalah hukuman yang salah sasaran.
+- `thinkMs` median ≤3 detik = penanda internal "otomatis", dipakai untuk bintang ke-3.
+
+**Retensi / spaced repetition — 4 titik review:**
+
+| Review | Jarak dari `masteredAt` | Bentuk |
+|---|---|---|
+| R1 | +3 hari | Quick Review, 5 soal |
+| R2 | +1 minggu | Quick Review, 5 soal |
+| R3 | +1 bulan | Quick Review, 5 soal |
+| R4 | +2 bulan | Quick Review, 5 soal → lolos = status `retained` |
+
+- **Maksimal 2 modul review per hari** supaya sesi tetap 5–10 menit dan tidak menumpuk jadi
+  hukuman setelah berbulan-bulan.
+- Gagal review → `needs_review`, jadwal mundur ke R1. **Tidak mengunci ulang** modul berikutnya.
+- Review dihitung sebagai sesi sah untuk streak — kalau tidak, anak tidak akan mau mengerjakannya.
 - **Kalau gagal:** app tidak bilang "gagal". App mengarahkan balik ke bagian materi yang salah,
   lalu tawarkan coba lagi. Tidak ada batas jumlah percobaan.
 - **Anti-tebak:** soal digenerate dari aturan/bank secara acak, bukan set tetap.
-- **Status modul:** `locked` → `available` → `learning` → `practiced` → `mastered` → `needs_review`.
+- **Status modul:** `available` → `learning` → `practiced` → `mastered` → `needs_review` → `retained`.
+  (`locked` tidak disimpan — itu keadaan turunan dari prasyarat + path order.)
 
 ## 7. Gating & Anti-Macet
 
@@ -206,7 +229,7 @@ Berlaku di semua grade:
 }
 ```
 
-### Stack (keputusan saya, user menyerahkan pilihan — difinalkan di Fase 4)
+### Stack (difinalkan di Fase 4 — detail di `docs/tech/architecture.md`)
 - **Vite + React + TypeScript** — konten 6 grade akan besar; tipe & komponen menahan kekacauan
   jangka panjang jauh lebih baik daripada vanilla JS.
 - **Tailwind CSS** untuk styling cepat dan konsisten.
@@ -247,7 +270,8 @@ learn math/
 │   ├── OPEN-QUESTIONS.md  ← keputusan user (terjawab & belum)
 │   ├── research/          ← ✅ Fase 1: riset kurikulum, pedagogi, mastery, app sejenis
 │   ├── curriculum/        ← ✅ Fase 2: skema modul, Grade 1 lengkap, peta Grade 2–6
-│   └── design/            ← ✅ Fase 3: sistem desain, maskot, wireframe, animasi
+│   ├── design/            ← ✅ Fase 3: sistem desain, maskot, wireframe, animasi
+│   └── tech/              ← ✅ Fase 4: arsitektur, storage, engine, rencana 5a
 ├── src/                   ← kode aplikasi (Fase 5)
 └── content/               ← data materi & bank soal per modul
 ```
@@ -257,7 +281,8 @@ Aturan: **tidak ada file proyek ini yang ditaruh di luar folder `learn math`.**
 ## 15. Cara Kerja Claude di Repo Ini
 
 - Baca `CLAUDE.md` + `docs/ROADMAP.md` sebelum mulai task.
-- Jangan mulai menulis kode sebelum diminta; ikuti urutan fase di roadmap.
+- Ikuti urutan fase di roadmap. Fase 0–4 sudah selesai; **kode boleh dimulai** mengikuti
+  13 langkah di `docs/tech/implementation-plan.md`, berurutan.
 - Setiap keputusan besar dicatat ke dokumen di `docs/` atau file ini, bukan hanya di percakapan.
 - Pertanyaan yang mengubah arah produk → tulis ke `docs/OPEN-QUESTIONS.md` dan tanyakan;
   jangan diam-diam berasumsi.
