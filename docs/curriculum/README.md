@@ -7,6 +7,7 @@ Selesai: 2026-09-08. Dasar: [`../research/01-curriculum.md`](../research/01-curr
 | [module-schema.md](module-schema.md) | Skema data satu modul + taksonomi tipe soal + aturan penamaan |
 | [grade-1.md](grade-1.md) | **Detail penuh Grade 1** — 8 unit, 43 modul, prasyarat, tipe soal, flag kecepatan |
 | [grades-2-6.md](grades-2-6.md) | Peta unit-level Grade 2–6 (dirinci per grade saat gilirannya dibangun) |
+| [BUILD-STATE.md](BUILD-STATE.md) | **Checklist pembangunan Grade 4–6** — sumber kebenaran status per unit, dipakai loop |
 
 ## Konvensi ID
 
@@ -21,17 +22,18 @@ ID lama dipertahankan sebagai alias di layer migrasi supaya progress anak tidak 
 
 ## Ringkasan cakupan
 
-| Grade | Unit | Modul | Fokus utama | Acuan |
-|---|---|---|---|---|
-| 1 | 8 | 43 | Bilangan s/d 100, +/− dalam 20, bangun datar & ruang, ukuran tak baku, pola, data turus | Fase A + CC G1 |
-| 2 | 7 | **38** | Nilai tempat s/d 1.000, +/− dengan menyimpan/meminjam, pengenalan ×, waktu & uang | Fase A akhir + CC G2 · **✅ lengkap** |
-| 3 | 7 | ±40 | Perkalian & pembagian, pecahan sederhana, satuan baku, keliling | Fase B + CC G3 |
-| 4 | 7 | ±40 | Bilangan s/d 10.000, faktor & kelipatan, pecahan senilai, sudut, luas | Fase B + CC G4 |
-| 5 | 7 | ±40 | Operasi pecahan, desimal, persen, volume, KPK/FPB | Fase C + CC G5 |
-| 6 | 7 | ±40 | Bilangan bulat, rasio & proporsi, lingkaran, koordinat, statistika & peluang | Fase C + CC G6 |
+| Grade | Unit | Modul | Fokus utama | Acuan | Status |
+|---|---|---|---|---|---|
+| 1 | 8 | **43** | Bilangan s/d 100, +/− dalam 20, bangun datar & ruang, ukuran tak baku, pola, data turus | Fase A + CC G1 | ✅ lengkap |
+| 2 | 7 | **38** | Nilai tempat s/d 1.000, +/− dengan menyimpan & meminjam, pengenalan ×, waktu & uang | Fase A akhir + CC G2 | ✅ lengkap |
+| 3 | 7 | **40** | Bilangan s/d 10.000, tabel perkalian & pembagian, pecahan sederhana, keliling, waktu & uang | Fase B + CC G3 | ✅ lengkap |
+| 4 | 7 | ±40 | Bilangan s/d 1.000.000, × & ÷ bilangan besar, faktor & kelipatan (KPK/FPB awal), pecahan senilai, desimal awal, sudut & luas | Fase B akhir + CC G4 | 🔜 berikutnya |
+| 5 | 7 | ±40 | Operasi pecahan, desimal, persen, pangkat dua & akar, volume, jaring-jaring, kecepatan | Fase C + CC G5 | belum |
+| 6 | 7 | ±40 | Bilangan bulat, rasio & proporsi, aljabar awal, lingkaran, bangun ruang, koordinat, statistika & peluang | Fase C akhir + CC G6 | belum |
 
-Total perkiraan **±240 modul** untuk enam tahun. Itu besar — karena itu Grade 1 saja yang dirinci
-sekarang, dan urutan pembangunannya dipecah (lihat di bawah).
+Total perkiraan **±240 modul** untuk enam tahun; **121 sudah dibangun** (Grade 1–3). Itu besar —
+karena itu hanya Grade 1 yang dirinci di muka, sisanya dirinci saat gilirannya dan dibangun
+**satu unit per iterasi**. Status per unit Grade 4–6 ada di [BUILD-STATE.md](BUILD-STATE.md).
 
 ## Batas antar-grade yang sengaja diputuskan
 

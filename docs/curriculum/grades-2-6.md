@@ -1,7 +1,7 @@
 # Grade 2–6 — Peta Unit
 
 Tingkat detail di sini sengaja **unit-level saja**. Rincian modul per grade ditulis saat grade itu
-tiba gilirannya dibangun (Fase 7), memakai format yang sama dengan [`grade-1.md`](grade-1.md).
+tiba gilirannya dibangun (Fase 6 di ROADMAP), memakai format yang sama dengan [`grade-1.md`](grade-1.md).
 Alasan: merinci 200 modul sekarang berisiko usang sebelum dipakai — Fase 6 (uji dengan anak)
 hampir pasti mengubah pola modul.
 
@@ -9,7 +9,7 @@ Kolom **⏱** = jumlah unit yang berisi modul `fact` (dinilai kecepatan).
 
 ---
 
-## Grade 2 — Fase A (akhir) + CC G2 · ±38 modul
+## Grade 2 — Fase A (akhir) + CC G2 · 38 modul · ✅ dibangun
 
 | Unit | Isi | Modul | ⏱ |
 |---|---|---|---|
@@ -23,7 +23,7 @@ Kolom **⏱** = jumlah unit yang berisi modul `fact` (dinilai kecepatan).
 
 Batas: perkalian hanya **pengenalan** (×2, ×5, ×10). Tabel perkalian penuh → Grade 3 (sesuai Fase B).
 
-## Grade 3 — Fase B + CC G3 · ±40 modul
+## Grade 3 — Fase B + CC G3 · 40 modul · ✅ dibangun
 
 | Unit | Isi | Modul | ⏱ |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Batas: perkalian hanya **pengenalan** (×2, ×5, ×10). Tabel perkalian penuh �
 **Titik kritis:** U2 (tabel perkalian) adalah modul `fact` terbesar di seluruh app. Ini tempat
 ambang kecepatan & spaced repetition paling menentukan.
 
-## Grade 4 — Fase B (akhir) + CC G4 · ±40 modul
+## Grade 4 — Fase B (akhir) + CC G4 · ±40 modul · 🔜 berikutnya
 
 | Unit | Isi | Modul | ⏱ |
 |---|---|---|---|
