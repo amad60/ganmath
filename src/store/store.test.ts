@@ -22,8 +22,8 @@ describe('store + persist', () => {
     const s = createProgressStore(memoryStorage());
     const def = addModule();
     s.getState().recordSession(def, session());
-    const events = s.getState().recordSession(def, session());
-    expect(events.map((e) => e.type)).toContain('mastered');
+    const evaluation = s.getState().recordSession(def, session());
+    expect(evaluation.events.map((e) => e.type)).toContain('mastered');
     expect(s.getState().moduleState(def.id).status).toBe('mastered');
   });
 

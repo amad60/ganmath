@@ -49,9 +49,14 @@ type SessionConfig = {
 };
 ```
 
-Aturan:
-- Sesi berakhir saat **`maxQuestions` tercapai**, atau `minQuestions` tercapai **dan** ≥5 menit
-  berlalu. Sesi **tidak pernah berhenti di tengah soal**.
+Aturan berhenti (tiga, diperiksa berurutan — **klarifikasi saat S5**, spesifikasi awal saling
+bertabrakan antara "lanjut sampai 5 menit" dan "anak cepat selesai lebih cepat"):
+1. `maxQuestions` tercapai → berhenti. Sesi tidak pernah berlarut-larut.
+2. `minQuestions` tercapai **dan semua benar dan median `thinkMs` ≤4 detik** → berhenti lebih
+   awal. Anak sudah jelas bisa; memanjangkan sesi hanya menghukum yang cepat.
+3. `minQuestions` tercapai **dan** ≥5 menit berlalu → berhenti.
+
+Sesi **tidak pernah berhenti di tengah soal** — pemeriksaan hanya terjadi setelah menjawab.
 - **Antrean ulang**: soal yang dijawab salah masuk ke antrean, dimunculkan lagi setelah ≥2 soal
   lain. Soal ulangan **tidak dihitung** dalam akurasi (kalau dihitung, satu kesalahan dihukum
   dua kali) tapi dicatat sebagai `retried: true` untuk diagnosis.

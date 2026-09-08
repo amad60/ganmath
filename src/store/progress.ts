@@ -1,6 +1,6 @@
 import { create, type StoreApi, type UseBoundStore } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { evaluate, type MasteryEvent } from '../engine/mastery';
+import { evaluate, type Evaluation } from '../engine/mastery';
 import type { ModuleDef, ModuleState, SessionResult } from '../engine/types';
 import { emptyModuleState } from '../engine/types';
 import { migrate } from './migrations';
@@ -19,7 +19,7 @@ export type ProgressStore = {
   moduleState: (id: string) => ModuleState;
   setProfile: (name: string, avatar: Avatar) => void;
   markLearnComplete: (moduleId: string, date: string) => void;
-  recordSession: (def: ModuleDef, result: SessionResult) => MasteryEvent[];
+  recordSession: (def: ModuleDef, result: SessionResult) => Evaluation;
   updateSettings: (patch: Partial<Settings>) => void;
   replaceAll: (state: ProgressState) => void;
   reset: () => void;
@@ -135,13 +135,15 @@ export function createProgressStore(
         recordSession: (def, result) => {
           const s = get().data;
           const prev = s.modules[def.id] ?? emptyModuleState();
-          const { next, events } = evaluate(def, prev, result, {
+          const evaluation = evaluate(def, prev, result, {
             parentAccuracy: s.settings.masteryAccuracyOverride,
           });
           // XP, streak, dan badge sengaja belum disentuh di sini — itu S6.
-          set({ data: touch({ ...s, modules: { ...s.modules, [def.id]: next } }) });
+          set({ data: touch({ ...s, modules: { ...s.modules, [def.id]: evaluation.next } }) });
           writeMeta({ everUsed: true }, storage);
-          return events;
+          // Dikembalikan utuh supaya layar hasil memakai evaluasi YANG SAMA dengan
+          // yang disimpan — bukan menghitung ulang dan berisiko berbeda.
+          return evaluation;
         },
 
         updateSettings: (patch) =>

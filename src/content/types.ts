@@ -1,0 +1,32 @@
+import type { ModuleDef } from '../engine/types';
+
+/**
+ * Materi layar Learn. Deklaratif — engine dan komponen tidak perlu tahu isi modulnya.
+ * Aturan konten (dicek linter di S7): setiap modul concept/fact WAJIB melewati
+ * concrete → pictorial → abstract, dan `prompt` maksimal 8 kata.
+ */
+export type LearnVisual =
+  | { kind: 'counter-objects'; count: number; icon?: string }
+  | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
+  | { kind: 'number-line'; min: number; max: number; value?: number | null }
+  | {
+      kind: 'number-bond';
+      whole: number | null;
+      parts: [number | null, number | null];
+      ask?: 'whole' | 'part0' | 'part1';
+    };
+
+export type LearnStep = {
+  stage: 'concrete' | 'pictorial' | 'abstract';
+  /** ≤8 kata, English sederhana. */
+  prompt: string;
+  visual: LearnVisual;
+  /** Aksi yang diminta. `watch` = tidak ada aksi, tombol Next langsung aktif. */
+  action: 'tap-count' | 'tap-fill' | 'drop-on-line' | 'watch';
+  /** Nilai yang harus dicapai anak sebelum tombol Next aktif. */
+  target?: number;
+  /** Teks aksi di bawah visual, mis. "Tap each apple." */
+  hint?: string;
+};
+
+export type ContentModule = ModuleDef & { learn: LearnStep[] };

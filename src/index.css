@@ -113,3 +113,14 @@ body {
     opacity: 1;
   }
 }
+
+/* satu-satunya animasi tak berujung di app: node berikutnya di peta */
+@keyframes node-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
