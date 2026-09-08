@@ -185,6 +185,37 @@ Test unit membuktikan fungsinya benar; tidak ada yang membuktikan fungsinya dipa
 | **Tidak ada transisi antar soal** (rancangan meminta geser 300ms) | Soal berganti mendadak, terasa seperti teks berkedip | Animasi masuk per soal, otomatis dipotong saat `prefers-reduced-motion` |
 | **`reviewQueue` di skema tidak pernah diisi** | Field mati yang ikut terbawa ke setiap file backup | Dihapus |
 
+## Ronde 8 — audit CTA
+
+Keluhan user: "CTA ada banyak tapi unclear arahnya", "ga jelas hubungannya antara sub unit",
+"kenapa bintang 2 semua".
+
+**Diagnosis:**
+1. **Peta tidak pernah menampilkan unit.** 43 modul tampil sebagai satu daftar panjang
+   berkelok tanpa struktur. Unit ada di data, ada di layar My Progress, tapi tidak ada di
+   tempat anak menghabiskan waktunya.
+2. **Tiga CTA bersaing di tempat yang sama** — tombol utama plus dua tombol hantu
+   berdampingan ("Skip this one", "Skip whole unit") dengan bobot visual yang sama dan
+   nama yang menuntut anak sudah paham konsepnya.
+3. **Node tidak memberi tahu apa yang terjadi kalau ditekan.** Modul yang sama bisa
+   membuka materi, latihan, kuis, atau ulangan — dan tidak ada satu pun petunjuk.
+4. **Bintang tidak bermakna.** Nilai sempurna memberi 2 bintang, dan bintang ke-3 hanya
+   ada di layar hasil sebagai tombol sekunder yang mudah terlewat. Hasilnya hampir semua
+   modul berhenti di ★★☆ tanpa penjelasan.
+
+**Perbaikan:**
+- **Peta dikelompokkan per unit**, dengan judul dan kemajuan tiap unit (`3/6`), serta titik
+  berwarna unit yang berubah emas saat unit tuntas.
+- **Satu tombol utama** yang menyebut langkah sebenarnya. Pintu melompat jadi satu tombol
+  hantu → membuka lembar berisi dua pilihan yang **dijelaskan kalimatnya**, plus jaminan
+  "kalau gagal, tidak ada yang hilang".
+- **Setiap node punya keterangan** di bawahnya: "Tap to start", "Done · tap to practise
+  again", "Time to remember · tap", atau syarat pembukanya.
+- **Kartu berikutnya jadi tombol** (sebelumnya hanya kartu hiasan) dengan panah arah.
+- **Menekan modul yang sudah selesai membuka lembar pilihan** — Quick Review atau Master
+  Round — beserta penjelasan **kenapa bintang ketiga belum didapat**. Bintang ke-3 kini
+  punya jalan yang terlihat, bukan hanya tombol sekunder di layar hasil.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

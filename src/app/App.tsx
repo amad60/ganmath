@@ -6,7 +6,7 @@ import { nextStepFor, type ModuleStep } from '../engine/steps';
 import { dueReviews } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
-import { all, moduleById, registryFor, unitModules, unitTestDef, unitTitles } from '../content';
+import { all, moduleById, registryFor, unitModules, unitTestDef } from '../content';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
 import { toDateString } from '../engine/review';
@@ -349,14 +349,7 @@ export function App() {
             onOpen={openModule}
             onTestOut={(id) => startSession(id, 'testout')}
             onSkipUnit={startUnitTest}
-            skippableUnit={
-              next && unitModules(moduleById(next).unitId).length >= 3
-                ? {
-                    unitId: moduleById(next).unitId,
-                    title: unitTitles[moduleById(next).unitId]?.title ?? '',
-                  }
-                : null
-            }
+            onMaster={(id) => startSession(id, 'master')}
             grade={grade}
             nextStepLabel={next ? en.step[stepFor(next)] : en.step.done}
             reviews={reviews}

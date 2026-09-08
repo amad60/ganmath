@@ -242,53 +242,84 @@ describe('pilihan berupa kata', () => {
 });
 
 describe('MapScreen — pintu jump level', () => {
-  it('menawarkan lewati modul untuk anak yang sudah bisa', () => {
+  const mapProps = (over: Partial<Parameters<typeof MapScreen>[0]> = {}) => ({
+    states: {},
+    nextId: pathOrder[0] as string,
+    xp: 0,
+    level: 1,
+    streak: 0,
+    grade: 1,
+    nextStepLabel: 'Learn',
+    reviews: [],
+    onOpen: () => {},
+    onReview: () => {},
+    onMaster: () => {},
+    onTestOut: () => {},
+    onSkipUnit: () => {},
+    onParent: () => {},
+    onBadges: () => {},
+    ...over,
+  });
+
+  it('pintu melompat dijelaskan dulu, tidak langsung menembak', () => {
     const onTestOut = vi.fn();
-    render(
-      <MapScreen
-        states={{}}
-        nextId={pathOrder[0] as string}
-        xp={0}
-        level={1}
-        streak={0}
-        grade={1}
-        nextStepLabel="Learn"
-        reviews={[]}
-        onReview={() => {}}
-        onSkipUnit={() => {}}
-        onOpen={() => {}}
-        onTestOut={onTestOut}
-        onParent={() => {}}
-        onBadges={() => {}}
-      />,
-    );
-    fireEvent.click(screen.getByRole('button', { name: /skip this one/i }));
+    const onSkipUnit = vi.fn();
+    render(<MapScreen {...mapProps({ onTestOut, onSkipUnit })} />);
+
+    // Tombolnya membuka penjelasan, bukan langsung memulai tes.
+    fireEvent.click(screen.getByRole('button', { name: /skip ahead/i }));
+    expect(onTestOut).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: /skip just/i }));
     expect(onTestOut).toHaveBeenCalledWith(pathOrder[0]);
   });
 
-  it('menawarkan lompat satu unit penuh kalau unitnya cukup besar', () => {
+  it('lompat satu unit ditawarkan di lembar yang sama', () => {
     const onSkipUnit = vi.fn();
+    render(<MapScreen {...mapProps({ onSkipUnit })} />);
+    fireEvent.click(screen.getByRole('button', { name: /skip ahead/i }));
+    fireEvent.click(screen.getByRole('button', { name: /skip the whole/i }));
+    expect(onSkipUnit).toHaveBeenCalledWith('g1-u1');
+  });
+
+  it('peta menunjukkan unit, bukan satu daftar panjang tanpa struktur', () => {
+    render(<MapScreen {...mapProps()} />);
+    // Muncul di kartu 'berikutnya' dan sebagai judul bagian — keduanya disengaja.
+    expect(screen.getAllByText(/Unit 1 · Numbers to 10/).length).toBeGreaterThan(0);
+  });
+
+  it('setiap node menjelaskan apa yang terjadi kalau ditekan', () => {
+    render(<MapScreen {...mapProps()} />);
+    expect(screen.getAllByText(/Tap to start/).length).toBeGreaterThan(0);
+  });
+
+  it('modul yang sudah selesai menanyakan mau diapakan, tidak langsung jalan', () => {
+    const onReview = vi.fn();
+    const onOpen = vi.fn();
     render(
       <MapScreen
-        states={{}}
-        nextId={pathOrder[0] as string}
-        xp={0}
-        level={1}
-        streak={0}
-        grade={1}
-        nextStepLabel="Learn"
-        reviews={[]}
-        onReview={() => {}}
-        skippableUnit={{ unitId: 'g1-u1', title: 'Unit 1' }}
-        onSkipUnit={onSkipUnit}
-        onOpen={() => {}}
-        onTestOut={() => {}}
-        onParent={() => {}}
-        onBadges={() => {}}
+        {...mapProps({
+          onReview,
+          onOpen,
+          states: {
+            [pathOrder[0] as string]: {
+              status: 'mastered',
+              stars: 2,
+              reviewStage: 1,
+              consecutiveFails: 0,
+              attempts: [],
+              totals: { sessions: 2, questions: 20, correct: 20 },
+            },
+          },
+          nextId: pathOrder[1] as string,
+        })}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /skip whole unit/i }));
-    expect(onSkipUnit).toHaveBeenCalledWith('g1-u1');
+    // Nama harus persis: /Count to 5/ juga cocok dengan "Count to 50".
+    fireEvent.click(screen.getByRole('button', { name: 'Count to 5' }));
+    expect(onOpen).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: /Quick Review/ }));
+    expect(onReview).toHaveBeenCalledWith(pathOrder[0]);
   });
 
   it('modul terkunci tidak bisa ditekan', () => {
@@ -303,6 +334,7 @@ describe('MapScreen — pintu jump level', () => {
         nextStepLabel="Learn"
         reviews={[]}
         onReview={() => {}}
+        onMaster={() => {}}
         onSkipUnit={() => {}}
         onOpen={() => {}}
         onTestOut={() => {}}
