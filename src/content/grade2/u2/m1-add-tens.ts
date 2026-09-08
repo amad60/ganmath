@@ -40,6 +40,7 @@ export const addTens: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 10,
       skill: 'add-tens',
       params: { a: [1, 9], b: [1, 9] },
       answer: (p) => ((p.a as number) + (p.b as number)) * 10,

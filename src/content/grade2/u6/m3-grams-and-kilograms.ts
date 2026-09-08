@@ -49,6 +49,7 @@ export const gramsAndKilograms: ContentModule = {
     },
     {
       type: 'choose-number',
+      distractorUnit: 1000,
       skill: 'measure-mass',
       params: { k: [1, 9] },
       answer: (p) => (p.k as number) * 1000,

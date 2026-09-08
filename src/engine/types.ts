@@ -93,6 +93,15 @@ export type QuestionRule = {
   /** Buang kombinasi yang tidak diinginkan (soal sepele, di luar cakupan). */
   exclude?: (p: Record<string, number>) => boolean;
   distractors?: DistractorKind;
+  /**
+   * Skala pengecoh `near`. Pengecoh dibuat pada jarak ±1, ±2, ±3 KALI nilai ini.
+   *
+   * Default 1 benar untuk soal satuan, tapi salah total untuk soal yang jawabannya
+   * selalu kelipatan: "Round 270 to the nearest hundred" dengan pilihan 298/302
+   * bisa dieliminasi tanpa berpikir. Isi 100 (atau 1000) di sana supaya pengecohnya
+   * ratusan tetangga, bukan angka mustahil. Dijaga aturan lint `distractor-scale`.
+   */
+  distractorUnit?: number;
   /** Domain garis bilangan untuk soal `number-line-drop`. */
   range?: [number, number];
   /** Label pilihan untuk `choose-text`; jawabannya adalah INDEKS label yang benar. */

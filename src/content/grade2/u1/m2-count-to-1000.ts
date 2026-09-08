@@ -40,6 +40,7 @@ export const countTo1000: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 100,
       skill: 'count-to-1000',
       params: { h: [1, 9] },
       answer: (p) => (p.h as number) * 100 + 100,

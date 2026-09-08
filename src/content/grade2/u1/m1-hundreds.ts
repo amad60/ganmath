@@ -42,6 +42,7 @@ export const hundreds: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 100,
       skill: 'hundreds',
       params: { h: [1, 9] },
       answer: (p) => (p.h as number) * 100,
@@ -52,6 +53,7 @@ export const hundreds: ContentModule = {
     },
     {
       type: 'missing-number',
+      distractorUnit: 10,
       skill: 'hundreds',
       params: { h: [1, 9] },
       answer: (p) => (p.h as number) * 10,

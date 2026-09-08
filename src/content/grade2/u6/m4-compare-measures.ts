@@ -48,6 +48,7 @@ export const compareMeasures: ContentModule = {
     },
     {
       type: 'choose-number',
+      distractorUnit: 100,
       skill: 'compare-measure',
       params: { m: [1, 5], c: [10, 90] },
       answer: (p) => (p.m as number) * 100,

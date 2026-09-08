@@ -2,7 +2,7 @@ import type { ModuleDef, Question, QuestionRule } from './types';
 import { randInt, shuffle, type Rng } from './rng';
 
 /** Semua kombinasi parameter yang sah untuk satu aturan (sudah lewat exclude). */
-function enumerate(rule: QuestionRule): Record<string, number>[] {
+export function enumerate(rule: QuestionRule): Record<string, number>[] {
   const keys = Object.keys(rule.params);
   let combos: Record<string, number>[] = [{}];
   for (const k of keys) {
@@ -18,11 +18,15 @@ function enumerate(rule: QuestionRule): Record<string, number>[] {
   return rule.exclude ? combos.filter((c) => !rule.exclude!(c)) : combos;
 }
 
-function nearDistractors(answer: number, rng: Rng): number[] {
+function nearDistractors(answer: number, rng: Rng, unit: number): number[] {
   // Hanya di sekitar jawaban. Versi sebelumnya menyertakan `answer + 10`, yang untuk
   // jawaban kecil menghasilkan pilihan mustahil (18 untuk jawaban 8) — itu memberi
   // anak eliminasi gratis dan membuat soalnya lebih mudah dari yang dimaksud.
-  const cands = [answer + 1, answer - 1, answer + 2, answer - 2, answer + 3, answer - 3].filter(
+  //
+  // `unit` menjaga hal yang sama pada arah sebaliknya: untuk soal yang jawabannya
+  // selalu kelipatan seratus, jarak 1 menghasilkan pengecoh yang mustahil juga.
+  const u = Math.max(1, Math.trunc(unit));
+  const cands = [answer + u, answer - u, answer + 2 * u, answer - 2 * u, answer + 3 * u, answer - 3 * u].filter(
     (n) => n >= 0 && n !== answer,
   );
   return shuffle(rng, cands);
@@ -55,12 +59,16 @@ export function buildChoices(
     if (d != null) out.add(d);
   }
 
-  for (const n of nearDistractors(answer, rng)) {
+  const unit = Math.max(1, Math.trunc(rule.distractorUnit ?? 1));
+  for (const n of nearDistractors(answer, rng, unit)) {
     if (out.size >= 4) break;
     out.add(n);
   }
-  let extra = answer + 3;
-  while (out.size < 4) out.add(extra++);
+  let extra = answer + 4 * unit;
+  while (out.size < 4) {
+    out.add(extra);
+    extra += unit;
+  }
 
   return shuffle(rng, [...out]).slice(0, 4);
 }

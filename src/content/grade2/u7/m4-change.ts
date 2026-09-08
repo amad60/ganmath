@@ -64,6 +64,7 @@ export const change: ContentModule = {
     },
     {
       type: 'choose-number',
+      distractorUnit: 1000,
       skill: 'money-change',
       params: { pay: [1, 4], cost: [1, 9] },
       answer: (p) => ((p.pay as number) * 5 - (p.cost as number)) * 1000,

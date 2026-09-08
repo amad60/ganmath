@@ -40,6 +40,7 @@ export const metres: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 100,
       skill: 'measure-m',
       params: { m: [1, 9] },
       answer: (p) => (p.m as number) * 100,

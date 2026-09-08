@@ -372,3 +372,40 @@ Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".
 
 Fitur yang dilihat anak **tidak boleh** dinyatakan selesai hanya karena test logika hijau.
 Minimal harus ada test render yang menekan tombolnya, dan idealnya seseorang melihat layarnya.
+
+## Ronde 15 — layar soal tanpa gambar, dan pengecoh yang bisa dicoret gratis
+
+Ditemukan lewat screenshot Grade 3 (`npm run shots -- --from=g3-u2-m8`).
+
+**1. Setengah layar kosong pada soal fakta.**
+Soal seperti `8 × 7 = ?` tidak punya gambar, sehingga area soal — yang sengaja
+di-*bottom-anchor* supaya mata dan jempol berdekatan — menyisakan ruang kosong
+sebesar separuh layar. Terbaca seperti halaman yang gagal dimuat.
+*Perbaikan:* Gan tampil besar (190px) di tengah ruang sisa kalau soal tidak punya
+gambar, dan Gan kecil di header disembunyikan supaya tidak ada dua Gan sekaligus.
+Ekspresinya mengikuti jawaban (happy / encourage), jadi ruang kosong sekarang
+membawa umpan balik. Dijaga dua test di `screens.test.tsx`.
+
+**2. Pengecoh berskala salah — kelas kesalahan ketiga kalinya.**
+"Round 270 to the nearest hundred" menawarkan **298** dan **302**. Anak yang paham
+kata "hundred" bisa mencoret keduanya tanpa berhitung; soalnya jadi menilai
+pembacaan, bukan pembulatan. Kesalahan yang sama pernah terjadi pada uang
+(Rp12.000 vs Rp12.002) dan sekarang pada ribuan.
+
+*Perbaikan:* `QuestionRule.distractorUnit` — pengecoh `near` dibuat pada jarak
+±1, ±2, ±3 **kali** nilai itu. Ditambah aturan lint baru `distractor-scale`: kalau
+seluruh jawaban satu aturan adalah kelipatan *g* ≥ 10 sementara `distractorUnit`
+lebih kecil, konten ditolak. Aturan itu langsung menemukan **21 aturan bermasalah**
+di Grade 2 dan Grade 3 — semuanya sudah diperbaiki. Ini bukan lagi hal yang perlu
+diingat saat menulis konten.
+
+**3. `pathOrder.json` bisa melenceng dari registry.**
+File itu dipakai `npm run shots -- --from=`; kalau melenceng, seeding-nya salah dan
+pemeriksaan visual jadi menyesatkan. Sekarang ada `npm run pathorder` (memuat
+`src/content/index.ts` lewat Vite, jadi tidak ada resolver kedua) dan test
+`pathOrder.test.ts` yang menjaganya tetap sama.
+
+**4. Screenshot per modul memotret layar yang salah.**
+Mode `--from=` masih memakai profil kelas 1, jadi modul kelas 3 dipotret di peta
+kelas 1; dan setelah CTA "I already know this" berubah membuka lembar pilihan,
+skripnya berhenti di lembar itu, bukan di layar soal. Keduanya diperbaiki.

@@ -72,6 +72,11 @@ const seeded = {
 };
 
 if (FROM) {
+  // Peta hanya menampilkan kelas yang sedang dipilih, jadi memeriksa modul kelas 3
+  // sambil profilnya masih kelas 1 akan memotret layar yang salah.
+  const grade = Number(FROM.match(/^g(\d+)-/)?.[1] ?? 1);
+  seeded.state.data.profile.grade = grade;
+
   const { pathOrder } = await import('../src/content/pathOrder.json', { with: { type: 'json' } })
     .then((m) => m.default)
     .catch(() => ({ pathOrder: [] }));
@@ -142,6 +147,9 @@ if (FROM) {
   // Mode pemeriksaan satu modul: langsung ke layar soalnya.
   const page = await newPage({ seed: true });
   await clickText(page, 'already know this');
+  // "Sudah tahu ini" membuka lembar pilihan lompat; yang mau diperiksa adalah
+  // layar soalnya, jadi lanjutkan menekan pilihan satu-modul.
+  await clickText(page, 'Skip just');
   await new Promise((r) => setTimeout(r, 600));
   await shot(page, `module-${FROM}`);
   await page.close();

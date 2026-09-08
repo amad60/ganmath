@@ -41,6 +41,7 @@ export const nearestTen: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 10,
       skill: 'round-ten',
       params: { n: [11, 99] },
       answer: (p) => Math.round((p.n as number) / 10) * 10,

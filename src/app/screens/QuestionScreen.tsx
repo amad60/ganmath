@@ -238,7 +238,8 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             <SessionDots states={dots} />
           </div>
         }
-        right={<Mascot mood={mood} size={40} />}
+        // Kalau Gan sudah tampil besar di badan layar, jangan ada dua Gan sekaligus.
+        right={question.visual ? <Mascot mood={mood} size={40} /> : null}
       />
 
       <main
@@ -247,6 +248,12 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         // (tempat yang tidak dipakai) alih-alih memisahkan soal dari jawabannya.
         className="flex min-h-0 flex-1 flex-col items-center justify-end gap-4 overflow-y-auto px-6 pt-6 pb-2"
       >
+        {/* Soal fakta murni (7 × 8 = ?) tidak punya gambar, jadi separuh layar
+            tadinya kosong melompong dan terlihat seperti halaman gagal dimuat.
+            `my-auto` menaruh Gan tepat di tengah ruang sisa: ruangnya jadi terpakai,
+            dan reaksi wajahnya memberi umpan balik yang tidak bisa diberikan angka. */}
+        {!question.visual ? <Mascot mood={mood} size={190} className="my-auto opacity-90" /> : null}
+
         {/* key = id soal: setiap soal baru memainkan animasi masuknya sendiri,
             jadi pergantian soal terasa sebagai perpindahan, bukan teks yang berkedip. */}
         <div

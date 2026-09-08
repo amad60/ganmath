@@ -40,6 +40,7 @@ export const timesTen: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 10,
       skill: 'times-10',
       params: { n: [1, 10] },
       answer: (p) => (p.n as number) * 10,

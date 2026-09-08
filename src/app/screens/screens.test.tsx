@@ -451,3 +451,32 @@ describe('MapScreen — pintu jump level', () => {
     expect(screen.getByRole('button', { name: /Count to 10, locked/ })).toBeDisabled();
   });
 });
+
+describe('QuestionScreen — soal tanpa gambar tidak boleh terlihat kosong', () => {
+  // Regresi visual: pada soal fakta murni (7 × 8 = ?) tidak ada gambar apa pun,
+  // sehingga separuh layar kosong dan terbaca seperti halaman yang gagal dimuat.
+  const factDef = moduleById('g3-u2-m8'); // Times Table Check — semua aturannya angka saja
+
+  const renderQ = (id: string) =>
+    render(
+      <QuestionScreen
+        session={createSession(moduleById(id), 'quiz', 7, 0)}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+
+  it('menaruh Gan di ruang kosong', () => {
+    renderQ(factDef.id);
+    expect(screen.getAllByRole('img', { name: /Gan the fox/ })).toHaveLength(1);
+    expect(screen.getByRole('img', { name: /Gan the fox/ }).getAttribute('width')).toBe('190');
+  });
+
+  it('tidak menampilkan dua Gan sekaligus saat soal punya gambar', () => {
+    renderQ('g1-u7-m4'); // Tell the Time — tiap soal membawa gambar jam
+    const gans = screen.getAllByRole('img', { name: /Gan the fox/ });
+    expect(gans).toHaveLength(1);
+    expect(gans[0]?.getAttribute('width')).toBe('40');
+  });
+});

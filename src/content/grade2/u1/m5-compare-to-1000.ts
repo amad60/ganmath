@@ -51,6 +51,7 @@ export const compareTo1000: ContentModule = {
     },
     {
       type: 'choose-number',
+      distractorUnit: 10,
       skill: 'compare-1000',
       params: { a: [11, 99], b: [10, 98] },
       answer: (p) => Math.max(p.a as number, p.b as number) * 10,

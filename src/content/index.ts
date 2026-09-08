@@ -84,6 +84,21 @@ import { moneyTo20000 } from './grade2/u7/m3-money-to-20000';
 import { change } from './grade2/u7/m4-change';
 import { barChart } from './grade2/u7/m5-bar-chart';
 
+// ---- Grade 3
+import { thousands } from './grade3/u1/m1-thousands';
+import { numbersTo10000 } from './grade3/u1/m2-numbers-to-10000';
+import { compareTo10000 } from './grade3/u1/m3-compare-to-10000';
+import { nearestHundred } from './grade3/u1/m4-nearest-hundred';
+import { numberLine10000 } from './grade3/u1/m5-number-line-10000';
+import { timesThree } from './grade3/u2/m1-times-three';
+import { timesFour } from './grade3/u2/m2-times-four';
+import { turnAroundFacts } from './grade3/u2/m3-turn-around-facts';
+import { timesSix } from './grade3/u2/m4-times-six';
+import { timesSeven } from './grade3/u2/m5-times-seven';
+import { timesEight } from './grade3/u2/m6-times-eight';
+import { timesNine } from './grade3/u2/m7-times-nine';
+import { timesTableCheck } from './grade3/u2/m8-times-table-check';
+
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
  * tidak ada migrasi data yang diperlukan, karena status `locked` tidak pernah disimpan.
@@ -199,6 +214,23 @@ export const all: ContentModule[] = [
   moneyTo20000,
   change,
   barChart,
+
+  // ===== Grade 3 =====
+  // Unit 1 — Numbers to 10.000
+  thousands,
+  numbersTo10000,
+  compareTo10000,
+  nearestHundred,
+  numberLine10000,
+  // Unit 2 — Times Tables
+  timesThree,
+  timesFour,
+  turnAroundFacts,
+  timesSix,
+  timesSeven,
+  timesEight,
+  timesNine,
+  timesTableCheck,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -285,4 +317,6 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g2-u5': { title: 'Unit 5 · Even, Odd & Patterns', color: 'var(--c-unit-5)' },
   'g2-u6': { title: 'Unit 6 · Measure', color: 'var(--c-unit-6)' },
   'g2-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
+  'g3-u1': { title: 'Unit 1 · Numbers to 10.000', color: 'var(--c-unit-1)' },
+  'g3-u2': { title: 'Unit 2 · Times Tables', color: 'var(--c-unit-2)' },
 };

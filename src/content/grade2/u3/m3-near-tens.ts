@@ -53,6 +53,7 @@ export const nearTens: ContentModule = {
     },
     {
       type: 'missing-number',
+      distractorUnit: 10,
       skill: 'compensate',
       params: { b: [1, 9] },
       answer: (p) => (p.b as number) * 10,

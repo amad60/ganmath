@@ -40,6 +40,7 @@ export const estimateLength: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 10,
       skill: 'estimate',
       params: { n: [2, 10] },
       answer: (p) => (p.n as number) * 10,

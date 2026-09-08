@@ -79,3 +79,53 @@ describe('generator', () => {
     expect(() => generateSet(addModule({ rules: [] }), 5, mulberry32(1))).toThrow();
   });
 });
+
+describe('skala pengecoh', () => {
+  // Regresi: "Round 270 to the nearest hundred" pernah menawarkan 298 dan 302.
+  // Anak yang tahu artinya "pembulatan" bisa mencoret keduanya tanpa berhitung,
+  // jadi soalnya menilai hal yang salah.
+  it('distractorUnit membuat semua pilihan sekelipatan jawaban', () => {
+    const def = {
+      ...addModule(),
+      rules: [
+        {
+          type: 'choose-number',
+          skill: 'round',
+          params: { n: [11, 99] },
+          answer: (p) => Math.round((p.n as number) / 10) * 100,
+          text: (p) => `Round ${(p.n as number) * 10}.`,
+          exclude: (p) => (p.n as number) % 10 === 0,
+          distractors: 'near',
+          distractorUnit: 100,
+        },
+      ],
+    };
+
+    const { questions } = generateSet(def, 10, mulberry32(7));
+    expect(questions.length).toBeGreaterThan(0);
+    for (const q of questions) {
+      for (const c of q.choices ?? []) expect(c % 100).toBe(0);
+    }
+  });
+
+  it('tanpa distractorUnit pengecoh tetap rapat di sekitar jawaban', () => {
+    const def = {
+      ...addModule(),
+      rules: [
+        {
+          type: 'choose-number',
+          skill: 'add',
+          params: { a: [1, 9], b: [1, 9] },
+          answer: (p) => (p.a as number) + (p.b as number),
+          text: (p) => `${p.a} + ${p.b} = ?`,
+          distractors: 'near',
+        },
+      ],
+    };
+
+    const { questions } = generateSet(def, 10, mulberry32(7));
+    for (const q of questions) {
+      for (const c of q.choices ?? []) expect(Math.abs(c - q.answer)).toBeLessThanOrEqual(4);
+    }
+  });
+});

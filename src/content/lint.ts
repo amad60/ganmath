@@ -1,5 +1,5 @@
 import { validateRegistry, type Registry } from '../engine/unlock';
-import { generateSet } from '../engine/generator';
+import { enumerate, generateSet } from '../engine/generator';
 import { mulberry32 } from '../engine/rng';
 import type { QType } from '../engine/types';
 import type { ContentModule } from './types';
@@ -50,6 +50,11 @@ function words(text: string): string[] {
     .replace(/[^a-z\s']/g, ' ')
     .split(/\s+/)
     .filter(Boolean);
+}
+
+function gcd(a: number, b: number): number {
+  while (b) [a, b] = [b, a % b];
+  return a;
 }
 
 export function lintContent(modules: ContentModule[], registry: Registry): LintProblem[] {
@@ -134,7 +139,31 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
     }
 
-    // 6. Aturan soal benar-benar bisa menghasilkan soal yang sah
+    // 6. Skala pengecoh cocok dengan skala jawaban.
+    //    Kalau semua jawaban satu aturan kelipatan seratus, pengecoh berjarak 1
+    //    (298, 302) bisa dicoret anak tanpa berpikir — soalnya jadi lebih mudah
+    //    daripada yang dimaksud. Ini kesalahan yang sudah terjadi tiga kali
+    //    (uang, ribuan, pembulatan), jadi sekarang dijaga di sini.
+    for (const r of m.rules) {
+      if (r.type !== 'choose-number' && r.type !== 'missing-number') continue;
+      let g = 0;
+      for (const c of enumerate(r)) {
+        const a = r.answer(c);
+        if (!Number.isFinite(a) || a === 0) continue;
+        g = gcd(g, Math.abs(a));
+        if (g === 1) break;
+      }
+      const unit = r.distractorUnit ?? 1;
+      if (g >= 10 && unit < g) {
+        add(
+          m.id,
+          'distractor-scale',
+          `jawaban selalu kelipatan ${g} tapi distractorUnit ${unit} — setel distractorUnit: ${g}`,
+        );
+      }
+    }
+
+    // 7. Aturan soal benar-benar bisa menghasilkan soal yang sah
     try {
       const { questions } = generateSet(m, 12, mulberry32(1), { requireCoverage: true });
       if (questions.length < 8) {

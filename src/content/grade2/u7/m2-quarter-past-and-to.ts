@@ -57,6 +57,7 @@ export const quarterPastAndTo: ContentModule = {
     },
     {
       type: 'choose-number',
+      distractorUnit: 15,
       skill: 'time-quarter',
       params: { q: [0, 3] },
       answer: (p) => [0, 15, 30, 45][p.q as number] ?? 0,

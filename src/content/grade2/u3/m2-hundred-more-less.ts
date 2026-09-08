@@ -40,6 +40,7 @@ export const hundredMoreLess: ContentModule = {
   rules: [
     {
       type: 'choose-number',
+      distractorUnit: 10,
       skill: 'mental-hundred',
       params: { h: [1, 8], t: [0, 9] },
       answer: (p) => ((p.h as number) + 1) * 100 + (p.t as number) * 10,

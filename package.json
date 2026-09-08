@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "shots": "node scripts/shots.mjs",
-    "icons": "node scripts/icons.mjs"
+    "icons": "node scripts/icons.mjs",
+    "pathorder": "node scripts/pathorder.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",
