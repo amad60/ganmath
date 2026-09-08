@@ -11,6 +11,7 @@ import { Button, Header, Keypad, SessionDots, type Feedback } from '../../compon
 import type { DotState } from '../../components/ui/SessionDots';
 import {
   Bars,
+  ArrayGrid,
   Base10Blocks,
   Clock,
   FractionShape,
@@ -130,6 +131,10 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
       return <Money items={visual.items} />;
     case 'tally':
       return <TallyChart count={visual.count} />;
+    case 'array':
+      return (
+        <ArrayGrid rows={visual.rows} cols={visual.cols} highlightRow={visual.highlightRow} />
+      );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
   }

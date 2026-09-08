@@ -1,5 +1,6 @@
 import {
   Bars,
+  ArrayGrid,
   Base10Blocks,
   Clock,
   CounterObjects,
@@ -79,6 +80,10 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       return <Money items={visual.items} />;
     case 'tally':
       return <TallyChart count={visual.count} />;
+    case 'array':
+      return (
+        <ArrayGrid rows={visual.rows} cols={visual.cols} highlightRow={visual.highlightRow} />
+      );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
   }

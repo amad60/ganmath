@@ -11,5 +11,6 @@ export { Clock } from './Clock';
 export { Money, formatRupiah } from './Money';
 export { TallyChart } from './TallyChart';
 export { Pictogram } from './Pictogram';
+export { ArrayGrid } from './ArrayGrid';
 export { useReducedMotion, teachingDuration } from './useReducedMotion';
 export * from './scale';

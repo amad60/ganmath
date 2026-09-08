@@ -76,6 +76,7 @@ export type QuestionVisual =
   | { kind: 'clock'; hour: number; minute: 0 | 30 }
   | { kind: 'money'; items: number[] }
   | { kind: 'tally'; count: number }
+  | { kind: 'array'; rows: number; cols: number; highlightRow?: number }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] };
 

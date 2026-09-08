@@ -58,6 +58,17 @@ import { addWithRegrouping } from './grade2/u2/m4-add-with-regrouping';
 import { subtractNoRegroup } from './grade2/u2/m5-subtract-no-regroup';
 import { subtractWithRegrouping } from './grade2/u2/m6-subtract-with-regrouping';
 import { checkYourAnswer } from './grade2/u2/m7-check-your-answer';
+import { tenMoreLess100 } from './grade2/u3/m1-ten-more-ten-less';
+import { hundredMoreLess } from './grade2/u3/m2-hundred-more-less';
+import { nearTens } from './grade2/u3/m3-near-tens';
+import { doublesTo100 } from './grade2/u3/m4-doubles-to-100';
+import { countOnAndBack } from './grade2/u3/m5-count-on-and-back';
+import { equalGroups } from './grade2/u4/m1-equal-groups';
+import { arrays } from './grade2/u4/m2-arrays';
+import { timesTwo } from './grade2/u4/m3-times-two';
+import { timesFive } from './grade2/u4/m4-times-five';
+import { timesTen } from './grade2/u4/m5-times-ten';
+import { timesCheck } from './grade2/u4/m6-times-check';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -144,6 +155,19 @@ export const all: ContentModule[] = [
   subtractNoRegroup,
   subtractWithRegrouping,
   checkYourAnswer,
+  // Unit 3 — Mental Math
+  tenMoreLess100,
+  hundredMoreLess,
+  nearTens,
+  doublesTo100,
+  countOnAndBack,
+  // Unit 4 — Meet Multiplication
+  equalGroups,
+  arrays,
+  timesTwo,
+  timesFive,
+  timesTen,
+  timesCheck,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -225,4 +249,6 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g1-u8': { title: 'Unit 8 · Patterns & Data', color: 'var(--c-unit-8)' },
   'g2-u1': { title: 'Unit 1 · Numbers to 1000', color: 'var(--c-unit-1)' },
   'g2-u2': { title: 'Unit 2 · Add & Subtract', color: 'var(--c-unit-2)' },
+  'g2-u3': { title: 'Unit 3 · Mental Math', color: 'var(--c-unit-3)' },
+  'g2-u4': { title: 'Unit 4 · Meet Multiplication', color: 'var(--c-unit-4)' },
 };
