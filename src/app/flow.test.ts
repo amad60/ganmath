@@ -78,6 +78,37 @@ describe('alur satu modul, ujung ke ujung', () => {
     }
   });
 
+  it('gamifikasi tersambung: XP bertambah, streak jalan, badge diberikan', () => {
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+
+    const a = playSession(store, first, 'practice', { date: '2026-09-08' });
+    expect(a.xpGained).toBeGreaterThan(0);
+    expect(a.earnedBadges).toContain('first-step');
+    expect(store.getState().data.streak.current).toBe(1);
+
+    // main lagi di hari yang sama tidak menambah streak
+    playSession(store, first, 'quiz', { date: '2026-09-08' });
+    expect(store.getState().data.streak.current).toBe(1);
+
+    // hari berikutnya menambah streak, dan modul dikuasai memberi badge
+    const c = playSession(store, first, 'quiz', { date: '2026-09-09' });
+    expect(store.getState().data.streak.current).toBe(2);
+    expect(c.earnedBadges).toContain('module-master');
+    expect(store.getState().data.xp).toBeGreaterThan(a.xpGained);
+    expect(store.getState().data.level).toBeGreaterThanOrEqual(1);
+  });
+
+  it('badge tidak pernah diberikan dua kali', () => {
+    const store = createProgressStore(memoryStorage());
+    const first = pathOrder[0] as string;
+    playSession(store, first, 'practice');
+    const second = playSession(store, first, 'practice');
+    expect(second.earnedBadges).not.toContain('first-step');
+    const ids = store.getState().data.badges;
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
   it('registry konten tidak punya masalah struktural', async () => {
     const { validateRegistry } = await import('../engine/unlock');
     expect(validateRegistry(registry)).toEqual([]);

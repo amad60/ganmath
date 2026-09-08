@@ -4,3 +4,5 @@ export { Keypad } from './Keypad';
 export { StarRow } from './StarRow';
 export { Header } from './Header';
 export { Sheet } from './Sheet';
+export { Celebration } from './Celebration';
+export { BadgeCard } from './BadgeCard';

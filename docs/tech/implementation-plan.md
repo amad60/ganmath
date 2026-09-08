@@ -14,7 +14,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S3** ✅ | UI kit: `Button` (gaya tebal 3D), `ProgressBar`, `Keypad`, `StarRow`, `Header`, `Sheet` | ✅ halaman demo dengan pengalih tema system/light/dark; semua tombol jawaban 64px |
 | **S4** ✅ | Manipulatif gelombang 1: `counter-objects`, `ten-frame`, `number-bond`, `number-line` | ✅ keempatnya interaktif di halaman demo; `number-line` sudah menangani domain negatif & langkah pecahan; matematika penempatan diuji terpisah (12 test) |
 | **S5** ✅ | Session runner + layar `map` → `learn` → `practice` → `quiz` → `result` | ✅ alur ujung-ke-ujung diuji di `src/app/flow.test.ts` (peta → learn → practice → quiz → mastered → modul berikutnya terbuka). Verifikasi visual di HP menyusul di S11 |
-| **S6** | Gamifikasi: XP, bintang, badge, streak, perayaan | perayaan ≤3 detik & bisa di-tap lewat; badge tersimpan; streak berganti hari dengan benar (uji ganti tanggal HP) |
+| **S6** ✅ | Gamifikasi: XP, bintang, badge, streak, perayaan | ✅ perayaan canvas 60 partikel, 3 detik, bisa di-tap lewat; 11 badge; streak diuji lintas hari, freeze, dan jam HP yang dimundurkan |
 | **S7** | Konten **U1** (6 modul) + `scripts/lint-content.ts` | linter menegakkan 6 aturan; 6 modul bisa diselesaikan betulan |
 | **S8** | Konten **U6-m1, U6-m2, U2** (10 modul) → total 16 | path order #1–16 tembus dari awal sampai akhir |
 | **S9** | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | orang tua bisa melihat topik yang sering salah dan menyimpan file backup |
@@ -55,6 +55,11 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
   berurutan, dengan "benar semua + median thinkMs ≤4 detik" menang atas aturan 5 menit.
 - **S5:** `recordSession` mengembalikan `Evaluation` utuh, supaya layar hasil memakai evaluasi
   yang SAMA dengan yang disimpan — versi pertama menghitungnya dua kali dan berisiko berbeda.
+- **S6:** freeze streak dipakai **diam-diam** — anak tidak pernah diberi tahu streaknya nyaris
+  putus, dan tidak ada peringatan "streakmu akan hilang malam ini". Kekuatan streak berasal dari
+  rasa takut kehilangan, dan itu salah sasaran untuk anak yang tidak mengendalikan jadwalnya.
+- **S6:** field `streak.freezesWeek` ditambahkan tanpa migrasi — state lama yang tidak punya
+  field itu diisi default saat merge. Ini contoh kenapa aturan "migrasi hanya menambah" murah.
 - **Aturan animasi materi ditegakkan lewat `teachingDuration()`**: saat `prefers-reduced-motion`
   aktif, animasi manipulatif dipercepat 50%, bukan dimatikan — blok yang bergabung jadi puluhan
   itu materi, bukan dekorasi.

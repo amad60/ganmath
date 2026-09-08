@@ -1,6 +1,7 @@
 import { create, type StoreApi, type UseBoundStore } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { evaluate, type Evaluation } from '../engine/mastery';
+import { levelForXp, newBadges, updateStreak, xpForSession } from '../engine/gamification';
 import type { ModuleDef, ModuleState, SessionResult } from '../engine/types';
 import { emptyModuleState } from '../engine/types';
 import { migrate } from './migrations';
@@ -19,7 +20,11 @@ export type ProgressStore = {
   moduleState: (id: string) => ModuleState;
   setProfile: (name: string, avatar: Avatar) => void;
   markLearnComplete: (moduleId: string, date: string) => void;
-  recordSession: (def: ModuleDef, result: SessionResult) => Evaluation;
+  recordSession: (
+    def: ModuleDef,
+    result: SessionResult,
+    ctx?: { unitModuleIds?: string[] },
+  ) => Evaluation & { xpGained: number; earnedBadges: string[] };
   updateSettings: (patch: Partial<Settings>) => void;
   replaceAll: (state: ProgressState) => void;
   reset: () => void;
@@ -132,18 +137,56 @@ export function createProgressStore(
             return { data: touch({ ...s.data, modules: { ...s.data.modules, [moduleId]: next } }) };
           }),
 
-        recordSession: (def, result) => {
+        recordSession: (def, result, ctx) => {
           const s = get().data;
           const prev = s.modules[def.id] ?? emptyModuleState();
           const evaluation = evaluate(def, prev, result, {
             parentAccuracy: s.settings.masteryAccuracyOverride,
           });
-          // XP, streak, dan badge sengaja belum disentuh di sini — itu S6.
-          set({ data: touch({ ...s, modules: { ...s.modules, [def.id]: evaluation.next } }) });
+          const modules = { ...s.modules, [def.id]: evaluation.next };
+
+          const streak = updateStreak(s.streak, result.date);
+
+          const mastered =
+            evaluation.next.status === 'mastered' || evaluation.next.status === 'retained';
+          const wasMastered = prev.status === 'mastered' || prev.status === 'retained';
+          const xpGained = xpForSession(result, {
+            passed: evaluation.detail.accuracyPass,
+            mastered: mastered && !wasMastered,
+            thirdStar: evaluation.next.stars === 3 && prev.stars < 3,
+          });
+          const xp = s.xp + xpGained;
+
+          const cleared = (id: string) => {
+            const st = modules[id]?.status;
+            return st === 'mastered' || st === 'retained' || st === 'practiced';
+          };
+          const earnedBadges = newBadges({
+            owned: s.badges,
+            result,
+            before: prev,
+            after: evaluation.next,
+            accuracy: evaluation.detail.accuracy,
+            medianThinkMs: evaluation.detail.medianThinkMs,
+            streakCurrent: streak.current,
+            unitComplete: (ctx?.unitModuleIds ?? []).length > 0
+              && (ctx?.unitModuleIds ?? []).every(cleared),
+          });
+
+          set({
+            data: touch({
+              ...s,
+              modules,
+              streak,
+              xp,
+              level: levelForXp(xp),
+              badges: [...s.badges, ...earnedBadges],
+            }),
+          });
           writeMeta({ everUsed: true }, storage);
           // Dikembalikan utuh supaya layar hasil memakai evaluasi YANG SAMA dengan
           // yang disimpan — bukan menghitung ulang dan berisiko berbeda.
-          return evaluation;
+          return { ...evaluation, xpGained, earnedBadges };
         },
 
         updateSettings: (patch) =>

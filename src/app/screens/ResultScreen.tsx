@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import type { Evaluation } from '../../engine/mastery';
 import type { ContentModule } from '../../content/types';
-import { Button, ProgressBar, StarRow } from '../../components/ui';
+import type { BadgeId } from '../../engine/gamification';
+import { BadgeCard, Button, Celebration, ProgressBar, StarRow } from '../../components/ui';
 import { en } from '../../i18n/en';
 
 export type ResultScreenProps = {
   module: ContentModule;
   evaluation: Evaluation;
+  xpGained: number;
+  earnedBadges: string[];
   onContinue: () => void;
   onRetry: () => void;
 };
@@ -14,10 +18,18 @@ export type ResultScreenProps = {
  * Layar ini tidak pernah menulis "Failed". Yang ditulis adalah JARAK MENUJU LULUS
  * (docs/design/README.md keputusan #5).
  */
-export function ResultScreen({ module, evaluation, onContinue, onRetry }: ResultScreenProps) {
+export function ResultScreen({
+  module,
+  evaluation,
+  xpGained,
+  earnedBadges,
+  onContinue,
+  onRetry,
+}: ResultScreenProps) {
   const { next, detail } = evaluation;
   const mastered = next.status === 'mastered' || next.status === 'retained';
   const practiced = next.status === 'practiced';
+  const [celebrating, setCelebrating] = useState(mastered || earnedBadges.length > 0);
 
   const message = mastered
     ? en.result.mastered
@@ -40,7 +52,16 @@ export function ResultScreen({ module, evaluation, onContinue, onRetry }: Result
       <div className="bg-surface w-full rounded-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]">
         <Row label={en.result.correct} value={`${Math.round(detail.accuracy * 100)}%`} />
         <Row label={en.result.speed} value={en.common.seconds(detail.medianThinkMs / 1000)} />
+        <Row label={en.result.xp} value={`+${xpGained}`} />
       </div>
+
+      {earnedBadges.length > 0 ? (
+        <div className="flex flex-wrap justify-center gap-3">
+          {earnedBadges.map((id) => (
+            <BadgeCard key={id} id={id as BadgeId} owned size="lg" />
+          ))}
+        </div>
+      ) : null}
 
       <div className="w-full">
         <ProgressBar
@@ -64,6 +85,8 @@ export function ResultScreen({ module, evaluation, onContinue, onRetry }: Result
       </div>
 
       <p className="text-ink-soft text-[13px]">{module.title}</p>
+
+      <Celebration show={celebrating} onDone={() => setCelebrating(false)} />
     </div>
   );
 }

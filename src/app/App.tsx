@@ -3,7 +3,7 @@ import type { Evaluation } from '../engine/mastery';
 import { createSession, toSessionResult, type SessionState } from '../engine/session';
 import { nextModule } from '../engine/unlock';
 import type { SessionKind } from '../engine/types';
-import { moduleById, registry } from '../content';
+import { all, moduleById, registry } from '../content';
 import { useProgress } from '../store/progress';
 import { toDateString } from '../engine/review';
 import { MapScreen } from './screens/MapScreen';
@@ -15,7 +15,13 @@ type Screen =
   | { name: 'map' }
   | { name: 'learn'; moduleId: string }
   | { name: 'session'; moduleId: string }
-  | { name: 'result'; moduleId: string; evaluation: Evaluation };
+  | {
+      name: 'result';
+      moduleId: string;
+      evaluation: Evaluation;
+      xpGained: number;
+      earnedBadges: string[];
+    };
 
 /** Mesin state layar — bukan router (docs/tech/architecture.md §3). */
 export function App() {
@@ -46,9 +52,16 @@ export function App() {
 
   const finishSession = (final: SessionState) => {
     const def = moduleById(final.moduleId);
-    const evaluation = recordSession(def, toSessionResult(final, today));
+    const unitModuleIds = all.filter((m) => m.unitId === def.unitId).map((m) => m.id);
+    const outcome = recordSession(def, toSessionResult(final, today), { unitModuleIds });
     setSession(null);
-    setScreen({ name: 'result', moduleId: final.moduleId, evaluation });
+    setScreen({
+      name: 'result',
+      moduleId: final.moduleId,
+      evaluation: outcome,
+      xpGained: outcome.xpGained,
+      earnedBadges: outcome.earnedBadges,
+    });
   };
 
   switch (screen.name) {
@@ -84,6 +97,8 @@ export function App() {
         <ResultScreen
           module={moduleById(screen.moduleId)}
           evaluation={screen.evaluation}
+          xpGained={screen.xpGained}
+          earnedBadges={screen.earnedBadges}
           onContinue={() => setScreen({ name: 'map' })}
           onRetry={() => startSession(screen.moduleId, retryKind)}
         />
@@ -96,6 +111,9 @@ export function App() {
           <MapScreen
             states={data.modules}
             nextId={next}
+            xp={data.xp}
+            level={data.level}
+            streak={data.streak.current}
             onOpen={openModule}
             onParent={() => setScreen({ name: 'map' })}
           />

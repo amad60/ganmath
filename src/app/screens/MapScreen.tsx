@@ -7,20 +7,28 @@ import { en } from '../../i18n/en';
 export type MapScreenProps = {
   states: Record<string, ModuleState>;
   nextId: string | null;
+  xp: number;
+  level: number;
+  streak: number;
   onOpen: (moduleId: string) => void;
   onParent: () => void;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
 
-export function MapScreen({ states, nextId, onOpen, onParent }: MapScreenProps) {
+export function MapScreen({ states, nextId, xp, level, streak, onOpen, onParent }: MapScreenProps) {
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
 
   return (
     <div className="flex min-h-full flex-col">
       <header className="safe-top bg-bg sticky top-0 z-10 px-5 pt-2 pb-3">
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-2xl font-black">{en.appName}</span>
+          <div className="flex items-center gap-3 text-[15px] font-black">
+            {/* streak ditampilkan sebagai pencapaian, tanpa peringatan "akan hilang" */}
+            <span style={{ color: 'var(--c-streak)' }}>🔥 {streak}</span>
+            <span style={{ color: 'var(--c-star)' }}>⭐ {xp}</span>
+            <span className="text-ink-soft">Lv.{level}</span>
+          </div>
           <button
             type="button"
             onClick={onParent}

@@ -24,6 +24,8 @@ export type Streak = {
   best: number;
   lastActiveDate: string | null;
   freezes: number;
+  /** Minggu ISO terakhir freeze diisi ulang. */
+  freezesWeek: string | null;
 };
 
 export type ProgressState = {
@@ -48,7 +50,7 @@ export function createInitialState(now = new Date().toISOString()): ProgressStat
     xp: 0,
     level: 1,
     badges: [],
-    streak: { current: 0, best: 0, lastActiveDate: null, freezes: 2 },
+    streak: { current: 0, best: 0, lastActiveDate: null, freezes: 2, freezesWeek: null },
     modules: {},
     settings: {
       sound: true,
