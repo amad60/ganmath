@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
-import { all, moduleById } from '../../content';
+import { all, availableGrades, moduleById, pathOrderFor } from '../../content';
 import { storageIsAvailable } from '../../store/progress';
 import type { ProgressState, Settings } from '../../store/schema';
 import { readMeta, shouldRemindBackup, writeMeta } from '../../store/meta';
@@ -11,6 +11,7 @@ import { APP_VERSION } from '../backupFile';
 
 export type ParentScreenProps = {
   data: ProgressState;
+  onGrade: (grade: number) => void;
   onSettings: (patch: Partial<Settings>) => void;
   onImport: (state: ProgressState) => void;
   onReset: () => void;
@@ -24,7 +25,15 @@ function accuracyOf(s: ModuleState | undefined): number | null {
   return s.totals.correct / s.totals.questions;
 }
 
-export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: ParentScreenProps) {
+export function ParentScreen({
+  data,
+  onGrade,
+  onSettings,
+  onImport,
+  onReset,
+  onBack,
+}: ParentScreenProps) {
+  const activeGrade = data.profile.grade ?? 1;
   const fileRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<{ state: ProgressState; text: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -128,31 +137,48 @@ export function ParentScreen({ data, onSettings, onImport, onReset, onBack }: Pa
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Jump to level</h2>
           <p className="text-ink-soft text-[15px]">
-            Already ahead? On the map, tap <b>⏩ I already know this</b> to skip a module by
-            passing a short check instead of learning it first. Failing costs nothing.
+            Pick the grade your child is in. Within a grade, tap <b>⏩ I already know this</b> on
+            the map to skip a module by passing a short check instead of learning it first.
+            Failing costs nothing.
           </p>
           <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3, 4, 5, 6].map((g) => {
-              const available = g === 1;
+              const available = availableGrades.includes(g);
+              const active = g === activeGrade;
+              const count = pathOrderFor(g).length;
               return (
                 <button
                   key={g}
                   type="button"
                   disabled={!available}
+                  onClick={() => onGrade(g)}
+                  aria-pressed={active}
                   className="rounded-[var(--r-md)] px-2 py-3 text-[16px] font-black disabled:opacity-45"
                   style={{
-                    background: available ? 'var(--c-primary-soft)' : 'var(--c-surface-sunk)',
-                    border: '2px solid var(--c-line)',
+                    background: active
+                      ? 'var(--c-primary)'
+                      : available
+                        ? 'var(--c-primary-soft)'
+                        : 'var(--c-surface-sunk)',
+                    color: active ? 'var(--c-primary-ink)' : 'var(--c-ink)',
+                    border: `2px solid ${active ? 'var(--c-primary)' : 'var(--c-line)'}`,
                   }}
                 >
                   <span className="block">Grade {g}</span>
-                  {available ? null : (
-                    <span className="text-ink-soft block text-[12px] font-bold">soon</span>
-                  )}
+                  <span
+                    className="block text-[12px] font-bold"
+                    style={{ opacity: 0.75 }}
+                  >
+                    {available ? `${count} modules` : 'soon'}
+                  </span>
                 </button>
               );
             })}
           </div>
+          <p className="text-ink-soft text-[15px]">
+            Switching grade never erases anything — progress is kept per module, so you can
+            switch back any time.
+          </p>
         </section>
 
         <section className="flex flex-col gap-3">

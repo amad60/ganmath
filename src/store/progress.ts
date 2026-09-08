@@ -19,6 +19,7 @@ export type ProgressStore = {
   data: ProgressState;
   moduleState: (id: string) => ModuleState;
   setProfile: (name: string, avatar: Avatar) => void;
+  setGrade: (grade: number) => void;
   markLearnComplete: (moduleId: string, date: string) => void;
   recordSession: (
     def: ModuleDef,
@@ -124,7 +125,12 @@ export function createProgressStore(
         moduleState: (id) => get().data.modules[id] ?? emptyModuleState(),
 
         setProfile: (name, avatar) =>
-          set((s) => ({ data: touch({ ...s.data, profile: { name, avatar } }) })),
+          set((s) => ({
+            data: touch({ ...s.data, profile: { ...s.data.profile, name, avatar } }),
+          })),
+
+        setGrade: (grade) =>
+          set((s) => ({ data: touch({ ...s.data, profile: { ...s.data.profile, grade } }) })),
 
         markLearnComplete: (moduleId, date) =>
           set((s) => {

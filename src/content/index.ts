@@ -94,6 +94,25 @@ export const pathOrder: string[] = all.map((m) => m.id);
 
 export const registry: Registry = { modules, pathOrder };
 
+/** Kelas yang benar-benar punya konten. Jangan pernah menawarkan kelas kosong. */
+export const availableGrades: number[] = [...new Set(all.map((m) => m.grade))].sort();
+
+export function pathOrderFor(grade: number): string[] {
+  return all.filter((m) => m.grade === grade).map((m) => m.id);
+}
+
+/**
+ * Registry yang hanya memuat satu kelas. Gating dihitung di dalam kelas itu saja,
+ * sehingga anak kelas 2 tidak perlu menempuh seluruh Grade 1 lebih dulu.
+ */
+export function registryFor(grade: number): Registry {
+  const ids = pathOrderFor(grade);
+  return {
+    modules: Object.fromEntries(ids.map((id) => [id, modules[id] as ContentModule])),
+    pathOrder: ids,
+  };
+}
+
 export function moduleById(id: string): ContentModule {
   const m = modules[id];
   if (!m) throw new Error(`Modul tidak terdaftar: ${id}`);

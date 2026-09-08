@@ -1,6 +1,6 @@
 import { BADGES, type BadgeId } from '../../engine/gamification';
 import type { ModuleState } from '../../engine/types';
-import { all, pathOrder, unitTitles, moduleById } from '../../content';
+import { all, pathOrderFor, unitTitles, moduleById } from '../../content';
 import { BadgeCard, Header, ProgressBar, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 
@@ -10,6 +10,7 @@ export type BadgesScreenProps = {
   streakBest: number;
   streakCurrent: number;
   nextId: string | null;
+  grade: number;
   onBack: () => void;
 };
 
@@ -23,11 +24,13 @@ export function BadgesScreen({
   streakBest,
   streakCurrent,
   nextId,
+  grade,
   onBack,
 }: BadgesScreenProps) {
+  const pathOrder = pathOrderFor(grade);
   // Diurutkan numerik. Mengikuti path order membuat daftarnya terbaca
   // "Unit 1, Unit 6, Unit 2" — benar secara jalur, tapi terlihat seperti bug.
-  const units = [...new Set(all.map((m) => m.unitId))].sort(
+  const units = [...new Set(all.filter((m) => m.grade === grade).map((m) => m.unitId))].sort(
     (a, b) => Number(a.split('-u')[1] ?? 0) - Number(b.split('-u')[1] ?? 0),
   );
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
@@ -62,7 +65,7 @@ export function BadgesScreen({
 
       <main className="safe-bottom flex flex-col gap-6 px-6 py-5">
         <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-black">Grade 1</h2>
+          <h2 className="text-xl font-black">Grade {grade}</h2>
           <ProgressBar value={done} max={pathOrder.length} label={`${done}/${pathOrder.length}`} />
           {units.map((unitId) => {
             const ids = all.filter((m) => m.unitId === unitId).map((m) => m.id);

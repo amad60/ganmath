@@ -4,7 +4,7 @@ import { createSession, toSessionResult, type SessionState } from '../engine/ses
 import { nextModule } from '../engine/unlock';
 import { GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
-import { all, moduleById, registry } from '../content';
+import { all, moduleById, registryFor } from '../content';
 import { useProgress } from '../store/progress';
 import { toDateString } from '../engine/review';
 import { MapScreen } from './screens/MapScreen';
@@ -42,6 +42,7 @@ export function App() {
   const setProfile = useProgress((s) => s.setProfile);
   const updateSettings = useProgress((s) => s.updateSettings);
   const replaceAll = useProgress((s) => s.replaceAll);
+  const setGrade = useProgress((s) => s.setGrade);
   const reset = useProgress((s) => s.reset);
 
   const [screen, setScreen] = useState<Screen>({ name: 'map' });
@@ -49,7 +50,9 @@ export function App() {
   const [session, setSession] = useState<SessionState | null>(null);
   const [gateOpen, setGateOpen] = useState(false);
 
-  const next = useMemo(() => nextModule(data.modules, registry), [data.modules]);
+  const grade = data.profile.grade ?? 1;
+  const registry = useMemo(() => registryFor(grade), [grade]);
+  const next = useMemo(() => nextModule(data.modules, registry), [data.modules, registry]);
   const pwa = usePwa(Object.keys(data.modules).length > 0);
 
   useEffect(() => {
@@ -150,6 +153,7 @@ export function App() {
           streakBest={data.streak.best}
           streakCurrent={data.streak.current}
           nextId={next}
+          grade={grade}
           onBack={() => setScreen({ name: 'map' })}
         />
       );
@@ -158,6 +162,7 @@ export function App() {
       return (
         <ParentScreen
           data={data}
+          onGrade={setGrade}
           onSettings={updateSettings}
           onImport={(state) => {
             replaceAll(state);
@@ -194,6 +199,7 @@ export function App() {
             streak={data.streak.current}
             onOpen={openModule}
             onTestOut={(id) => startSession(id, 'testout')}
+            grade={grade}
             onBadges={() => setScreen({ name: 'badges' })}
             onParent={() => setGateOpen(true)}
             install={

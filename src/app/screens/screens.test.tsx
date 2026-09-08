@@ -164,6 +164,21 @@ describe('Onboarding', () => {
   });
 });
 
+describe('pindah kelas', () => {
+  it('hanya kelas yang punya konten yang bisa dipilih', async () => {
+    const { availableGrades, pathOrderFor } = await import('../../content');
+    expect(availableGrades).toEqual([1]);
+    expect(pathOrderFor(1).length).toBeGreaterThan(0);
+    expect(pathOrderFor(2)).toEqual([]);
+  });
+
+  it('gating dihitung di dalam kelas aktif, bukan lintas kelas', async () => {
+    const { registryFor } = await import('../../content');
+    const r = registryFor(1);
+    expect(r.pathOrder.every((id) => r.modules[id]?.grade === 1)).toBe(true);
+  });
+});
+
 describe('pilihan berupa kata', () => {
   it('dirender lebih kecil daripada pilihan angka supaya tidak terpotong', () => {
     const def = moduleById('g1-u6-m4');
@@ -193,6 +208,7 @@ describe('MapScreen — pintu jump level', () => {
         xp={0}
         level={1}
         streak={0}
+        grade={1}
         onOpen={() => {}}
         onTestOut={onTestOut}
         onParent={() => {}}
@@ -211,6 +227,7 @@ describe('MapScreen — pintu jump level', () => {
         xp={0}
         level={1}
         streak={0}
+        grade={1}
         onOpen={() => {}}
         onTestOut={() => {}}
         onParent={() => {}}

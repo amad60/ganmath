@@ -73,6 +73,28 @@ Temuan yang **hanya bisa terlihat dengan mata**, semuanya sudah diperbaiki:
 | Onboarding | Input nama kosong tanpa placeholder; avatar membungkus 4+1 | Placeholder + grid 5 kolom |
 | Semua | CTA terlalu menempel ke tepi | Padding horizontal aksi dinaikkan ke 24px |
 
+## Ronde 3 — kontrol yang tidak melakukan apa-apa
+
+User bertanya "how to pindah kelas saat ini?" dan jawabannya memalukan: **tidak bisa**.
+Tombol Grade 1–6 di Parent Area dibuat tanpa `onClick` sama sekali — termasuk Grade 1.
+Kontrol yang terlihat bisa ditekan tapi tidak melakukan apa pun adalah bentuk lain dari
+"asal jadi", dan tidak ada test yang bisa menangkapnya karena tidak ada yang salah
+secara logika; yang salah adalah tidak adanya perilaku.
+
+Diperbaiki jadi mekanisme sungguhan:
+- `profile.grade` disimpan (aditif, state lama otomatis dapat default 1).
+- `registryFor(grade)` — gating dihitung **di dalam kelas aktif saja**, sehingga anak
+  kelas 2 tidak perlu menempuh seluruh Grade 1 lebih dulu.
+- Kelas yang belum punya konten tidak bisa dipilih dan ditandai "soon"; kelas aktif
+  disorot dan menampilkan jumlah modulnya.
+- Berpindah kelas **tidak pernah menghapus apa pun** — progress disimpan per modul,
+  jadi selalu bisa dibalik.
+
+**Keputusan: tidak memakai burger menu.** Menu tersembunyi di balik ikon tiga garis harus
+ditemukan dan dibaca lebih dulu, dan isinya bukan hal yang dibutuhkan anak setiap hari.
+Pindah kelas adalah keputusan orang tua yang jarang, jadi tempatnya di Parent Area.
+Navigasi anak tetap dua ikon di header: 🏅 progress dan 👤 area orang tua.
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

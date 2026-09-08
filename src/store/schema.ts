@@ -34,7 +34,13 @@ export type ProgressState = {
   schemaVersion: number;
   createdAt: string;
   updatedAt: string;
-  profile: { name: string; avatar: Avatar };
+  profile: {
+    name: string;
+    avatar: Avatar;
+    /** Kelas yang sedang ditempuh. Progress disimpan per modul, jadi berpindah
+     *  kelas tidak pernah menghapus apa pun dan selalu bisa dibalik. */
+    grade?: number;
+  };
   xp: number;
   level: number;
   badges: string[];
@@ -48,7 +54,7 @@ export function createInitialState(now = new Date().toISOString()): ProgressStat
     schemaVersion: CURRENT_SCHEMA_VERSION,
     createdAt: now,
     updatedAt: now,
-    profile: { name: '', avatar: 'cat' },
+    profile: { name: '', avatar: 'cat', grade: 1 },
     xp: 0,
     level: 1,
     badges: [],

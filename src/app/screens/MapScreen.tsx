@@ -1,6 +1,6 @@
 import type { ModuleState } from '../../engine/types';
 import { isUnlocked } from '../../engine/unlock';
-import { pathOrder, registry, moduleById, unitTitles } from '../../content';
+import { moduleById, registryFor, unitTitles } from '../../content';
 import { Button, ProgressBar, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
@@ -18,6 +18,7 @@ export type MapScreenProps = {
   /** Kartu tawaran pasang ke home screen — dirender DI DALAM aliran, bukan menempel
    *  di atas konten, supaya tidak pernah menutupi node terakhir. */
   install?: { label: string; onAccept: () => void; onDismiss: () => void } | null;
+  grade: number;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
@@ -33,7 +34,10 @@ export function MapScreen({
   onParent,
   onBadges,
   install,
+  grade,
 }: MapScreenProps) {
+  const registry = registryFor(grade);
+  const pathOrder = registry.pathOrder;
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
   const nextIndex = nextId ? pathOrder.indexOf(nextId) : -1;
   const nextDef = nextId ? moduleById(nextId) : null;
