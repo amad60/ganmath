@@ -126,6 +126,13 @@ import { moneyTo100000 } from './grade3/u7/m3-money-to-100000';
 import { shopping } from './grade3/u7/m4-shopping';
 import { graphsThatCount } from './grade3/u7/m5-graphs-that-count';
 
+// ---- Grade 4
+import { tenThousands } from './grade4/u1/m1-ten-thousands';
+import { numbersTo1000000 } from './grade4/u1/m2-numbers-to-1000000';
+import { readBigNumbers } from './grade4/u1/m3-read-big-numbers';
+import { compareBigNumbers } from './grade4/u1/m4-compare-big-numbers';
+import { nearestThousand } from './grade4/u1/m5-nearest-thousand';
+
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
  * tidak ada migrasi data yang diperlukan, karena status `locked` tidak pernah disimpan.
@@ -290,6 +297,14 @@ export const all: ContentModule[] = [
   moneyTo100000,
   shopping,
   graphsThatCount,
+
+  // ===== Grade 4 =====
+  // Unit 1 — Big Numbers
+  tenThousands,
+  numbersTo1000000,
+  readBigNumbers,
+  compareBigNumbers,
+  nearestThousand,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -383,4 +398,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g3-u5': { title: 'Unit 5 · Fractions', color: 'var(--c-unit-5)' },
   'g3-u6': { title: 'Unit 6 · Shapes & Perimeter', color: 'var(--c-unit-6)' },
   'g3-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
+  'g4-u1': { title: 'Unit 1 · Big Numbers', color: 'var(--c-unit-1)' },
 };
