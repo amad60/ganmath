@@ -122,6 +122,48 @@ Semua keputusan "lulus / bintang / badge / jadwal review" lahir di satu tempat y
   saat pertama buka. Ini penting untuk iOS: PWA terinstal jauh lebih tahan dari penghapusan
   localStorage oleh Safari (lihat `storage.md §5`).
 
+## 5b. Seberapa berat materinya, dan kapan diunduh
+
+Angka nyata (31 modul, diukur 2026-09-08):
+
+| Hal | Ukuran terkirim (gzip) |
+|---|---|
+| Kode app (React + engine + semua layar) | 88 KB |
+| CSS | 5,5 KB |
+| Font Nunito | 39 KB |
+| **Total kunjungan pertama** | **±130 KB** |
+| **Seluruh 31 modul materi** | **7,5 KB** (±242 byte per modul) |
+
+Materinya hampir tidak berbobot, dan itu bukan kebetulan:
+
+1. **Soal dibuat di HP, bukan diunduh.** Satu modul menyimpan *aturan* ("a + b, keduanya
+   1–9, buang yang lebih dari 10"), bukan daftar ribuan soal. Resep, bukan katalog.
+2. **Tidak ada satu pun file gambar.** Semua visual digambar kode sebagai SVG. Empat PNG
+   yang ada hanya ikon home-screen, tidak pernah dimuat saat anak belajar.
+
+### Kapan diunduh
+- **Kunjungan pertama:** seluruh app + seluruh materi diunduh sekali dari Netlify (±130 KB,
+  sekitar satu detik di 4G).
+- **Service worker menyimpannya di HP.** Sesudah itu **tidak ada apa pun yang diambil dari
+  jaringan** — app terbuka dari HP, jalan penuh dalam mode pesawat.
+- **Versi baru** hanya diunduh saat kita deploy, dan penerapannya menunggu ketukan anak,
+  tidak pernah memutus sesi yang sedang berjalan.
+
+### Proyeksi
+| Cakupan | Tambahan materi |
+|---|---|
+| Grade 1 lengkap (43 modul) | ±10 KB |
+| Enam grade penuh (±240 modul) | ±58 KB |
+
+Seluruh kurikulum enam tahun **masih lebih ringan daripada fontnya sendiri**.
+
+### Kapan ini perlu ditinjau ulang
+Memecah materi per grade (unduh saat dibutuhkan) baru masuk akal kalau materi menembus
+**±150 KB gzip** — kira-kira 600+ modul, atau kalau kita menambahkan audio/gambar sungguhan.
+Sekarang memecahnya justru merugikan: menambah permintaan jaringan dan merumitkan offline
+tanpa keuntungan apa pun. Kalau saatnya tiba, `registryFor(grade)` sudah menyiapkan batasnya,
+jadi tinggal mengubahnya jadi `import()` dinamis.
+
 ## 6. Netlify
 
 ```toml
