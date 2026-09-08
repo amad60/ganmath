@@ -313,6 +313,36 @@ Sebelumnya semua keterangan memakai abu-abu yang sama, jadi "Tap to start" (ajak
 membaca satu per satu untuk tahu mana yang bisa ditekan. Aturannya ditulis eksplisit:
 **warna hanya untuk makna, tidak pernah untuk hiasan.**
 
+## Ronde 13 — badge, dan lensa B = M·A·T
+
+### Lensa keputusan yang kini dipakai seterusnya
+
+Ditambahkan ke `CLAUDE.md §4b`: setiap keputusan UX diperiksa lewat **B = M·A·T** (Fogg)
+plus dua sumbu khas produk ini.
+
+| Sumbu | Pertanyaan |
+|---|---|
+| **Motivation** | Apakah anak *ingin*? |
+| **Ability** | Apakah *mudah dilakukan*? |
+| **Trigger** | Apakah *jelas kapan dan apa*? |
+| **Nilai pendidikan** | Apakah anak jadi *lebih bisa*? |
+| **Retensi** | Apakah *bertahan* dan dia *kembali*? |
+
+Gunanya bukan sekadar rapi: ia memaksa diagnosis sebelum menambal. Contoh nyata dari
+proyek ini — anak terjebak mengulang modul **bukan** karena kurang motivasi, tapi karena
+**Trigger**-nya salah: tombol utamanya tidak pernah mengarah ke langkah berikutnya.
+Kalau waktu itu kami "menambah hadiah", masalahnya tidak akan tersentuh.
+
+### Audit badge
+
+| Temuan | Sumbu yang patah | Perbaikan |
+|---|---|---|
+| Badge ditaruh **di bawah** progress kelas dan Coming next | Motivation | Badge naik ke paling atas — ini bagian yang paling ingin dilihat anak |
+| Tidak ada penanda **badge terbaru** | Motivation | Kartu sorotan "Newest badge" dengan ikon besar dan cara mendapatkannya |
+| Anak yang belum punya badge melihat grid abu-abu tanpa arah | Trigger | Kalau belum ada satu pun, yang ditampilkan adalah **badge pertama yang bisa dikejar** |
+| Sebelas badge sekaligus membanjiri layar | Ability | Enam dulu, sisanya lewat **"See all 11 badges"**; yang sudah didapat tampil lebih dulu |
+| Badge tidak bisa ditekan — hadiah yang tidak bisa dilihat lebih dekat | Motivation + Trigger | Setiap badge membuka lembar: ikon besar, cara mendapatkannya, status. **Badge terkunci pun bisa dibuka** — justru di situ pemicunya |
+
 ## Yang MASIH lemah (jujur)
 
 Diurut berdasarkan seberapa besar pengaruhnya ke rasa "asal jadi".

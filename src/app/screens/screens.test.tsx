@@ -206,6 +206,57 @@ describe('area aman', () => {
   });
 });
 
+describe('badge di My Progress', () => {
+  const props = (owned: string[] = []) => ({
+    owned,
+    states: {},
+    streakBest: 3,
+    streakCurrent: 1,
+    nextId: pathOrder[0] as string,
+    grade: 1,
+    onBack: () => {},
+  });
+
+  it('badge muncul lebih dulu daripada progress kelas', async () => {
+    const { BadgesScreen } = await import('./BadgesScreen');
+    const { container } = render(<BadgesScreen {...props(['first-step'])} />);
+    const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent);
+    expect(headings[0]).toBe('Badges');
+  });
+
+  it('menyorot badge terbaru', async () => {
+    const { BadgesScreen } = await import('./BadgesScreen');
+    render(<BadgesScreen {...props(['first-step', 'module-master'])} />);
+    expect(screen.getByText(/Newest badge/i)).toBeInTheDocument();
+    // Yang terbaru adalah yang paling akhir didapat.
+    expect(screen.getAllByText('Module Master').length).toBeGreaterThan(0);
+  });
+
+  it('anak yang belum punya badge tetap diberi target', async () => {
+    const { BadgesScreen } = await import('./BadgesScreen');
+    render(<BadgesScreen {...props([])} />);
+    expect(screen.getByText(/Your first badge/i)).toBeInTheDocument();
+  });
+
+  it('tidak membanjiri layar: sebagian dulu, sisanya lewat "see all"', async () => {
+    const { BadgesScreen } = await import('./BadgesScreen');
+    render(<BadgesScreen {...props([])} />);
+    const seeAll = screen.getByRole('button', { name: /See all/i });
+    const before = screen.getAllByRole('button', { name: /Locked badge|Earned|First Step/i }).length;
+    fireEvent.click(seeAll);
+    const after = screen.getAllByRole('button', { name: /Locked badge|Earned|First Step/i }).length;
+    expect(after).toBeGreaterThan(before);
+  });
+
+  it('badge bisa ditekan dan menjelaskan cara mendapatkannya', async () => {
+    const { BadgesScreen } = await import('./BadgesScreen');
+    render(<BadgesScreen {...props([])} />);
+    const first = screen.getAllByRole('button', { name: /Locked badge/i })[0] as HTMLElement;
+    fireEvent.click(first);
+    expect(screen.getByText(/Not yet — keep going/i)).toBeInTheDocument();
+  });
+});
+
 describe('pindah kelas', () => {
   it('hanya kelas yang punya konten yang bisa dipilih', async () => {
     const { availableGrades, pathOrderFor } = await import('../../content');

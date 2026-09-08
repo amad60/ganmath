@@ -15,6 +15,16 @@ export const en = {
     done: 'Done',
   },
 
+  badges: {
+    title: 'Badges',
+    newest: 'Newest badge',
+    firstOne: 'Your first badge',
+    earned: 'Earned',
+    notYet: 'Not yet — keep going',
+    more: (n: number) => `See all ${n} badges`,
+    less: 'Show fewer',
+  },
+
   map: {
     skipAhead: 'Already know this? Skip ahead',
     skipTitle: 'Skip ahead',

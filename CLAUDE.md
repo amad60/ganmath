@@ -66,6 +66,29 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
 7. **Gagal itu aman.** Tidak ada skor merah. Salah = coba lagi dengan petunjuk visual.
 8. **Offline-first.** Harus jalan tanpa internet setelah dibuka sekali.
 
+## 4b. Lensa Keputusan: B = M · A · T (+ 2 sumbu produk ini)
+
+Setiap keputusan UX di app ini diperiksa lewat lima pertanyaan. Kalau sebuah perubahan
+tidak memperkuat salah satunya, dia hiasan — dan hiasan mengambil perhatian anak
+tanpa membayar apa pun.
+
+**B = MAT** (Fogg): perilaku terjadi kalau **Motivasi**, **Kemampuan**, dan **Pemicu**
+bertemu di saat yang sama. Kalau anak tidak melakukan sesuatu, salah satu dari tiga ini
+sedang hilang — dan biasanya jawabannya BUKAN "tambah motivasi".
+
+| Sumbu | Pertanyaan | Wujudnya di GanMath |
+|---|---|---|
+| **Motivation** | Apakah anak *ingin*? | Bintang, badge, XP, maskot yang ikut senang, perayaan. Tidak pernah lewat rasa takut: tanpa nyawa, tanpa peringatan streak, tanpa leaderboard |
+| **Ability** | Apakah *mudah dilakukan*? | Satu tombol utama per layar, target tap besar, sesi pendek dengan panjang pasti, kalimat ≤8 kata, tidak perlu memilih rute |
+| **Trigger** | Apakah *jelas kapan dan apa*? | Node berikutnya berdenyut, CTA menyebut langkah sebenarnya, kartu "Time to remember", tawaran pasang ke home screen |
+| **Nilai pendidikan** | Apakah anak jadi *lebih bisa*? | Mastery, bukan completion. CPA. Pengecoh berbasis miskonsepsi. Gagal mengembalikan ke materi, bukan mengulang kuis |
+| **Retensi** | Apakah *bertahan* dan dia *kembali*? | Ulangan berjarak 4 titik, streak ramah anak, sesi tersimpan saat app tertutup |
+
+**Cara memakainya saat menemukan masalah:** jangan langsung menambah hadiah. Tanya dulu
+sumbu mana yang patah. Contoh nyata dari proyek ini: anak terjebak mengulang modul bukan
+karena kurang motivasi, tapi karena **Trigger**-nya salah — tombol utamanya tidak pernah
+mengarah ke langkah berikutnya.
+
 ## 5. Struktur Konten
 
 ```
