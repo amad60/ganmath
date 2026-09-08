@@ -1,7 +1,7 @@
 # Roadmap — GanMath
 
 Status keseluruhan: **Fase 5a sedang berjalan — S0–S10 selesai (11/13 langkah), 125 test hijau, 16 modul lengkap, PWA aktif.**
-Berikutnya: **S11 (uji perangkat & performa), lalu repo GitHub + deploy Netlify** — checklist di [`docs/tech/implementation-plan.md`](tech/implementation-plan.md).
+Berikutnya: **deploy**, lalu **uji di HP sungguhan** — 12 poin di [`docs/tech/device-checklist.md`](tech/device-checklist.md).
 Baca `../CLAUDE.md` dulu untuk arahan produk.
 
 | Fase | Isi | Output | Status |
