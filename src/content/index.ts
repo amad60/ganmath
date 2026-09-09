@@ -217,6 +217,13 @@ import { colderOrWarmer } from './grade6/u1/m3-colder-or-warmer';
 import { addAcrossZero } from './grade6/u1/m4-add-across-zero';
 import { takeAwayAcrossZero } from './grade6/u1/m5-take-away-across-zero';
 import { howFarFromZero } from './grade6/u1/m6-how-far-from-zero';
+import { whatIsARatio } from './grade6/u2/m1-what-is-a-ratio';
+import { simplestRatio } from './grade6/u2/m2-simplest-ratio';
+import { equalRatios } from './grade6/u2/m3-equal-ratios';
+import { shareByRatio } from './grade6/u2/m4-share-by-ratio';
+import { mapScale } from './grade6/u2/m5-map-scale';
+import { moreMeansMore } from './grade6/u2/m6-more-means-more';
+import { moreMeansLess } from './grade6/u2/m7-more-means-less';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -489,6 +496,14 @@ export const all: ContentModule[] = [
   addAcrossZero,
   takeAwayAcrossZero,
   howFarFromZero,
+  // Unit 2 — Ratio & Proportion
+  whatIsARatio,
+  simplestRatio,
+  equalRatios,
+  shareByRatio,
+  mapScale,
+  moreMeansMore,
+  moreMeansLess,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -597,4 +612,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g5-u6': { title: 'Unit 6 · Shapes in Space', color: 'var(--c-unit-6)' },
   'g5-u7': { title: 'Unit 7 · Data & Speed', color: 'var(--c-unit-7)' },
   'g6-u1': { title: 'Unit 1 · Integers', color: 'var(--c-unit-1)' },
+  'g6-u2': { title: 'Unit 2 · Ratio & Proportion', color: 'var(--c-unit-2)' },
 };
