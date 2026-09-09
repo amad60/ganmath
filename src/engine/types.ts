@@ -50,6 +50,7 @@ export type VisualId =
   | 'shape-2d'
   | 'rectangle'
   | 'shape-3d'
+  | 'shape-net'
   | 'tally-chart'
   | 'pictogram'
   | 'bar-chart'
@@ -60,6 +61,18 @@ export type VisualId =
 export type DistractorKind = 'near' | 'digit-swap' | 'random';
 
 export type ShapeName = 'circle' | 'triangle' | 'square' | 'rectangle' | 'pentagon' | 'hexagon';
+
+/**
+ * Bangun ruang yang bisa digambar app ini. Aturannya (nama, jumlah sisi, volume,
+ * jaring-jaring) ada di `src/components/manipulatives/solids.ts` — satu tempat,
+ * dipakai bersama data modul dan gambar.
+ */
+export type SolidName =
+  | 'cube'
+  | 'rectangular-prism'
+  | 'triangular-prism'
+  | 'square-pyramid'
+  | 'cylinder';
 
 /**
  * Gambar yang MERUPAKAN bagian dari soal (bukan bantuan).
@@ -96,7 +109,47 @@ export type QuestionVisual =
       showValue?: boolean;
       showName?: boolean;
       showScale?: boolean;
-    };
+    }
+  | ({ kind: 'solid' } & SolidVisual)
+  | ({ kind: 'net' } & NetVisual);
+
+/**
+ * Balok yang tersusun dari kubus satuan. Dipakai sama persis di Learn dan di soal,
+ * jadi bentuknya ditulis sekali di sini.
+ */
+export type SolidVisual = {
+  /** Panjang, lebar (kedalaman), tinggi dalam SATUAN kubus. 1–8. */
+  l: number;
+  w: number;
+  h: number;
+  /** Gambar tiap kubus satuan supaya bisa dihitung. Matikan untuk balok berlabel ukuran. */
+  cubes?: boolean;
+  /** Tulis ukuran di rusuknya. */
+  showDimensions?: boolean;
+  /** Tulis volumenya. Dimatikan saat volumenya yang ditanyakan. */
+  showVolume?: boolean;
+  /** Tulis namanya, mis. "rectangular prism". */
+  showName?: boolean;
+  /** Sorot satu lapis (0 = lapis paling bawah) — jembatan luas alas → volume. */
+  highlightLayer?: number;
+  /** Satuan panjang di label, mis. "cm". Kosong = "units". */
+  unit?: string;
+};
+
+/** Jaring-jaring: bentangan sebuah bangun ruang. */
+export type NetVisual = {
+  solid: SolidName;
+  /** Susunan jaring; bangun yang sama punya beberapa bentangan yang sah. */
+  layout?: number;
+  /** Ukuran balok, hanya untuk `rectangular-prism`. */
+  l?: number;
+  w?: number;
+  h?: number;
+  /** Tulis nama bangun hasil lipatannya. Dimatikan saat itu yang ditanyakan. */
+  showName?: boolean;
+  /** Beri nomor tiap sisi — dipakai saat mengajarkan "a cube has 6 faces". */
+  numberFaces?: boolean;
+};
 
 /** Aturan pembuat soal. Soal dibuat dari aturan, bukan daftar tetap (anti-hafal). */
 export type QuestionRule = {

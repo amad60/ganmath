@@ -22,6 +22,8 @@ import {
   NumberLine,
   Pictogram,
   Shape2D,
+  ShapeNet,
+  Solid3D,
   TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
@@ -155,6 +157,32 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
       );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
+    case 'solid':
+      return (
+        <Solid3D
+          l={visual.l}
+          w={visual.w}
+          h={visual.h}
+          cubes={visual.cubes ?? true}
+          showDimensions={visual.showDimensions}
+          showVolume={visual.showVolume}
+          showName={visual.showName}
+          highlightLayer={visual.highlightLayer}
+          unit={visual.unit}
+        />
+      );
+    case 'net':
+      return (
+        <ShapeNet
+          solid={visual.solid}
+          layout={visual.layout}
+          l={visual.l}
+          w={visual.w}
+          h={visual.h}
+          showName={visual.showName}
+          numberFaces={visual.numberFaces}
+        />
+      );
   }
 }
 

@@ -12,6 +12,8 @@ import {
   NumberLine,
   Pictogram,
   Shape2D,
+  ShapeNet,
+  Solid3D,
   TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
@@ -103,5 +105,31 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
+    case 'solid':
+      return (
+        <Solid3D
+          l={visual.l}
+          w={visual.w}
+          h={visual.h}
+          cubes={visual.cubes ?? true}
+          showDimensions={visual.showDimensions}
+          showVolume={visual.showVolume}
+          showName={visual.showName}
+          highlightLayer={visual.highlightLayer}
+          unit={visual.unit}
+        />
+      );
+    case 'net':
+      return (
+        <ShapeNet
+          solid={visual.solid}
+          layout={visual.layout}
+          l={visual.l}
+          w={visual.w}
+          h={visual.h}
+          showName={visual.showName}
+          numberFaces={visual.numberFaces}
+        />
+      );
   }
 }

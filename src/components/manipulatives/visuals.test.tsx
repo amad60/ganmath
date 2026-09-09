@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
 import { ArrayGrid } from './ArrayGrid';
@@ -6,6 +7,19 @@ import { TallyChart } from './TallyChart';
 import { RectShape } from './RectShape';
 import { Angle, ANGLE_NAMES, angleKind } from './Angle';
 import { NumberLine } from './NumberLine';
+import { Solid3D } from './Solid3D';
+import { ShapeNet } from './ShapeNet';
+import {
+  NET_SOLIDS,
+  SOLID_FACES,
+  layerOf,
+  netEdges,
+  netFaces,
+  netLayoutCount,
+  solidFromDims,
+  surfaceAreaOf,
+  volumeOf,
+} from './solids';
 
 /**
  * Manipulatif adalah CARA app mengajar, bukan hiasan — jadi jumlah benda yang
@@ -275,5 +289,274 @@ describe('NumberLine — langkah otomatis dari rentang', () => {
     const { container } = render(<NumberLine min={0} max={1000} />);
     expect(labels(container)).toEqual(['0', '200', '400', '600', '800', '1000']);
     expect(container.querySelectorAll('div[style*="opacity: 0.55"]')).toHaveLength(5);
+  });
+});
+
+/**
+ * Aturan bangun ruang dipakai DUA kali: sekali oleh data modul yang menyusun soal,
+ * sekali oleh gambar yang menuliskannya di layar. Test di sini menjaga keduanya
+ * mengambil dari satu sumber — bukan menghitung sendiri-sendiri.
+ */
+describe('solids — aturan yang dipakai bersama data modul dan gambar', () => {
+  it('kubus hanya kubus kalau ketiga rusuknya sama', () => {
+    expect(solidFromDims(3, 3, 3)).toBe('cube');
+    expect(solidFromDims(3, 3, 2)).toBe('rectangular-prism');
+    expect(solidFromDims(1, 1, 1)).toBe('cube');
+  });
+
+  it('volume = panjang × lebar × tinggi, dan satu lapis = panjang × lebar', () => {
+    expect(volumeOf(3, 4, 2)).toBe(24);
+    expect(layerOf(3, 4)).toBe(12);
+    // Volume itu lapis yang ditumpuk — inti materi g5-u5.
+    expect(layerOf(3, 4) * 2).toBe(volumeOf(3, 4, 2));
+  });
+
+  it('luas permukaan balok 2(pl + pt + lt)', () => {
+    expect(surfaceAreaOf(2, 3, 4)).toBe(52);
+    expect(surfaceAreaOf(2, 2, 2)).toBe(24);
+  });
+
+  it('jaring selalu punya sebanyak sisi bangunnya, di setiap susunan', () => {
+    for (const solid of NET_SOLIDS) {
+      for (let layout = 0; layout < netLayoutCount(solid); layout++) {
+        expect(netFaces(solid, {}, layout)).toHaveLength(SOLID_FACES[solid]);
+      }
+    }
+  });
+
+  it('jaring yang sah punya tepat (jumlah sisi − 1) garis lipat', () => {
+    // Kalau lebih, ada sisi yang dobel; kalau kurang, jaringnya terputus jadi dua
+    // lembar dan tidak mungkin dilipat. Ini pagar geometri, bukan gaya gambar.
+    for (const solid of NET_SOLIDS) {
+      if (solid === 'cylinder') continue; // sisi bundar tidak punya rusuk lurus
+      for (let layout = 0; layout < netLayoutCount(solid); layout++) {
+        const folds = netEdges(netFaces(solid, {}, layout)).filter((e) => e.fold);
+        expect(folds).toHaveLength(SOLID_FACES[solid] - 1);
+      }
+    }
+  });
+
+  it('nomor susunan di luar rentang dibungkus, tidak membuat jaring kosong', () => {
+    expect(netFaces('cube', {}, 7)).toHaveLength(6);
+    expect(netFaces('cube', {}, -1)).toHaveLength(6);
+  });
+});
+
+/** Ambil semua titik yang benar-benar digambar sebuah SVG. */
+function drawnPoints(container: HTMLElement): [number, number][] {
+  const pts: [number, number][] = [];
+  for (const el of container.querySelectorAll('polygon')) {
+    for (const pair of (el.getAttribute('points') ?? '').trim().split(/\s+/)) {
+      const [x, y] = pair.split(',').map(Number);
+      pts.push([x as number, y as number]);
+    }
+  }
+  for (const el of container.querySelectorAll('line')) {
+    pts.push([Number(el.getAttribute('x1')), Number(el.getAttribute('y1'))]);
+    pts.push([Number(el.getAttribute('x2')), Number(el.getAttribute('y2'))]);
+  }
+  for (const el of container.querySelectorAll('text')) {
+    pts.push([Number(el.getAttribute('x')), Number(el.getAttribute('y'))]);
+  }
+  return pts;
+}
+
+function expectInsideViewBox(container: HTMLElement) {
+  const svg = container.querySelector('svg') as SVGSVGElement;
+  const [vx, vy, vw, vh] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+  for (const [x, y] of drawnPoints(container)) {
+    expect(x).toBeGreaterThanOrEqual(vx as number);
+    expect(x).toBeLessThanOrEqual((vx as number) + (vw as number));
+    expect(y).toBeGreaterThanOrEqual(vy as number);
+    expect(y).toBeLessThanOrEqual((vy as number) + (vh as number));
+  }
+}
+
+describe('Solid3D — kubus satuan yang bisa dihitung anak', () => {
+  const faces = (c: HTMLElement) => c.querySelectorAll('[data-part="face"]');
+
+  it('menggambar tiap kubus satuan, bukan satu kotak mulus', () => {
+    // 3×4×2 = 24 kubus; 6 di dalam tidak pernah terlihat, jadi 18 kubus × 3 sisi.
+    const { container } = render(<Solid3D l={3} w={4} h={2} />);
+    expect(faces(container)).toHaveLength(18 * 3);
+  });
+
+  it('kubus yang tertutup tidak digambar — 6×6×6 tetap murah', () => {
+    const { container } = render(<Solid3D l={6} w={6} h={6} />);
+    expect(faces(container).length).toBe((216 - 125) * 3);
+  });
+
+  it('balok tanpa kubus satuan hanya tiga sisi — untuk tahap p × l × t', () => {
+    const { container } = render(<Solid3D l={5} w={4} h={3} cubes={false} />);
+    expect(faces(container)).toHaveLength(3);
+  });
+
+  it('sisi kubus pekat — kalau tembus pandang, kubus belakang muncul di depan', () => {
+    const { container } = render(<Solid3D l={3} w={3} h={3} />);
+    for (const f of container.querySelectorAll('[data-part="face"]')) {
+      expect(f.getAttribute('fill-opacity')).toBeNull();
+    }
+  });
+
+  it('menyorot satu lapis: itu jembatan dari luas alas ke volume', () => {
+    const { container } = render(<Solid3D l={3} w={4} h={2} highlightLayer={0} />);
+    const hot = [...faces(container)].filter((f) =>
+      (f.getAttribute('fill') ?? '').includes('--c-unit-3'),
+    );
+    // Lapis bawah 3×4: hanya lapis paling atas yang seluruhnya terlihat, di lapis
+    // bawah yang tergambar adalah kubus tepinya saja (12 − 2×3 tertutup = 6).
+    expect(hot.length).toBe(6 * 3);
+    expect(hot.length).toBeLessThan(faces(container).length);
+  });
+
+  it('ukuran kubus tidak pernah menyusut jadi tak terhitung', () => {
+    // Rusuk kubus di layar = lebar sisi atas dibagi jumlah kolomnya.
+    const { container } = render(<Solid3D l={8} w={8} h={8} />);
+    const svg = container.querySelector('svg') as SVGSVGElement;
+    const [, , vw] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+    expect((vw as number) / 16).toBeGreaterThan(12);
+  });
+
+  it('menulis volumenya hanya kalau diminta — kalau tidak, jawaban soal bocor', () => {
+    expect(
+      render(<Solid3D l={3} w={4} h={2} />).container.querySelector('[data-part="value"]'),
+    ).toBeNull();
+    expect(
+      render(<Solid3D l={3} w={4} h={2} showVolume />).container.querySelector(
+        '[data-part="value"]',
+      )?.textContent,
+    ).toBe('24 cubic units');
+    expect(
+      render(<Solid3D l={3} w={4} h={2} showVolume unit="cm" />).container.querySelector(
+        '[data-part="value"]',
+      )?.textContent,
+    ).toBe('24 cubic cm');
+  });
+
+  it('nama bangun mengikuti aturan yang sama dengan data modul', () => {
+    const name = (l: number, w: number, h: number) =>
+      render(<Solid3D l={l} w={w} h={h} showName />).container.querySelector(
+        '[data-part="name"]',
+      )?.textContent;
+    expect(name(3, 3, 3)).toBe('cube');
+    expect(name(3, 3, 2)).toBe('rectangular prism');
+  });
+
+  it('ukuran rusuk ditulis lengkap dengan satuannya', () => {
+    const { container } = render(<Solid3D l={5} w={3} h={2} showDimensions unit="cm" />);
+    const dims = [...container.querySelectorAll('[data-part="dim"]')].map((t) => t.textContent);
+    expect(dims).toEqual(['5 cm', '3 cm', '2 cm']);
+  });
+
+  it('label pembaca layar tidak membocorkan apa yang sengaja disembunyikan', () => {
+    const aria = (el: ReactElement) =>
+      render(el).container.querySelector('svg')?.getAttribute('aria-label');
+    expect(aria(<Solid3D l={3} w={4} h={2} />)).toBe('solid made of unit cubes');
+    expect(aria(<Solid3D l={3} w={4} h={2} showName />)).toBe('rectangular prism');
+    expect(aria(<Solid3D l={3} w={4} h={2} showVolume />)).toBe(
+      'rectangular prism of 24 unit cubes',
+    );
+  });
+
+  it('gambar tetap di dalam bingkai untuk semua ukuran dan semua label', () => {
+    // Pola yang sama dengan regresi Angle: label rusuk jatuh di empat arah berbeda,
+    // jadi kotak pembatas TIDAK boleh ditebak dari siluetnya saja.
+    for (const [l, w, h] of [
+      [1, 1, 1],
+      [8, 1, 1],
+      [1, 8, 1],
+      [1, 1, 8],
+      [3, 4, 2],
+      [8, 8, 8],
+      [6, 2, 5],
+    ] as const) {
+      for (const opts of [
+        {},
+        { showDimensions: true },
+        { showDimensions: true, unit: 'cm', showVolume: true, showName: true },
+        { cubes: false, showVolume: true },
+      ]) {
+        const { container } = render(<Solid3D l={l} w={w} h={h} {...opts} />);
+        expectInsideViewBox(container);
+      }
+    }
+  });
+});
+
+describe('ShapeNet — bentangan yang bisa dilipat kembali', () => {
+  it('menggambar setiap sisi bangunnya', () => {
+    for (const solid of NET_SOLIDS) {
+      const { container } = render(<ShapeNet solid={solid} />);
+      expect(container.querySelectorAll('[data-part="face"]')).toHaveLength(SOLID_FACES[solid]);
+    }
+  });
+
+  it('membedakan garis lipat dari garis potong — tanpa itu jaring cuma kotak berdempet', () => {
+    const { container } = render(<ShapeNet solid="cube" />);
+    const folds = container.querySelectorAll('[data-part="fold"]');
+    expect(folds).toHaveLength(5);
+    expect([...folds].every((f) => f.getAttribute('stroke-dasharray'))).toBe(true);
+    // 6 sisi × 4 rusuk = 24; 5 pasang berimpit jadi 19 rusuk, 5 di antaranya lipatan.
+    expect(container.querySelectorAll('[data-part="cut"]')).toHaveLength(14);
+  });
+
+  it('satu bangun punya beberapa bentangan yang berbeda gambarnya', () => {
+    const shot = (layout: number) =>
+      [...render(<ShapeNet solid="cube" layout={layout} />).container.querySelectorAll('polygon')]
+        .map((p) => p.getAttribute('points'))
+        .join('|');
+    expect(shot(0)).not.toBe(shot(1));
+    expect(shot(0)).not.toBe(shot(2));
+  });
+
+  it('jaring balok tidak identik dengan jaring kubus', () => {
+    const cube = render(<ShapeNet solid="cube" />).container.querySelector('polygon');
+    const box = render(<ShapeNet solid="rectangular-prism" />).container.querySelector('polygon');
+    expect(cube?.getAttribute('points')).not.toBe(box?.getAttribute('points'));
+  });
+
+  it('memberi nomor sisi hanya kalau diminta — kalau tidak, "how many faces" terjawab sendiri', () => {
+    expect(
+      render(<ShapeNet solid="cube" />).container.querySelectorAll('[data-part="face-number"]'),
+    ).toHaveLength(0);
+    const numbered = render(<ShapeNet solid="cube" numberFaces />).container;
+    expect([...numbered.querySelectorAll('[data-part="face-number"]')].map((t) => t.textContent))
+      .toEqual(['1', '2', '3', '4', '5', '6']);
+  });
+
+  it('menulis nama bangun hanya kalau diminta', () => {
+    expect(
+      render(<ShapeNet solid="square-pyramid" />).container.querySelector('[data-part="name"]'),
+    ).toBeNull();
+    expect(
+      render(<ShapeNet solid="square-pyramid" showName />).container.querySelector(
+        '[data-part="name"]',
+      )?.textContent,
+    ).toBe('square pyramid');
+    expect(
+      render(<ShapeNet solid="cube" />).container.querySelector('svg')?.getAttribute('aria-label'),
+    ).toBe('net of a solid shape');
+  });
+
+  it('gambar tetap di dalam bingkai untuk semua bangun dan semua susunan', () => {
+    for (const solid of NET_SOLIDS) {
+      for (let layout = 0; layout < netLayoutCount(solid); layout++) {
+        for (const opts of [{}, { showName: true }, { numberFaces: true, showName: true }]) {
+          const { container } = render(<ShapeNet solid={solid} layout={layout} {...opts} />);
+          expectInsideViewBox(container);
+        }
+      }
+    }
+  });
+
+  it('jaring lebar dan jaring tinggi sama-sama muat di layar 390px', () => {
+    for (const solid of NET_SOLIDS) {
+      const svg = render(<ShapeNet solid={solid} />).container.querySelector(
+        'svg',
+      ) as SVGSVGElement;
+      const [, , vw, vh] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+      expect(vw as number).toBeLessThanOrEqual(330);
+      expect(vh as number).toBeLessThanOrEqual(240);
+    }
   });
 });
