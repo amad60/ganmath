@@ -29,7 +29,7 @@ sepadan di `src/content/grade3/`.
 
 ## Grade 5 — ±40 modul
 
-- [ ] `g5-u1` · Fraction Operations — +/− penyebut beda, × dan ÷ pecahan · 8 modul
+- [x] `g5-u1` · Fraction Operations — +/− penyebut beda, × dan ÷ pecahan · 8 modul → commit `07ad431` (`m3` pakai `step: 1` eksplisit; opsi `choose-text` dicek unik brute-force)
 - [ ] `g5-u2` · Decimals — operasi desimal, konversi pecahan↔desimal · 6 modul · ⏱ fact
 - [ ] `g5-u3` · Percent — persen, hubungan dengan pecahan & desimal, diskon · 5 modul
 - [ ] `g5-u4` · Multiply & Divide Fluently — bilangan besar, pangkat dua & akar · 6 modul · ⏱ fact
