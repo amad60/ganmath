@@ -10,6 +10,7 @@ import {
 import { Button, Header, Keypad, SessionDots, type Feedback } from '../../components/ui';
 import type { DotState } from '../../components/ui/SessionDots';
 import {
+  Angle,
   Bars,
   ArrayGrid,
   RectShape,
@@ -105,6 +106,16 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
       );
     case 'shape2d':
       return <Shape2D name={visual.name} size={110} showCorners={visual.showCorners} />;
+    case 'angle':
+      return (
+        <Angle
+          degrees={visual.degrees}
+          rotate={visual.rotate}
+          showValue={visual.showValue}
+          showName={visual.showName}
+          showScale={visual.showScale}
+        />
+      );
     case 'bars':
       return <Bars lengths={visual.lengths} labels={visual.labels} />;
     case 'fraction':

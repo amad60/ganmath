@@ -80,7 +80,15 @@ export type QuestionVisual =
   | { kind: 'rect'; w: number; h: number; unit?: string; showCorners?: boolean }
   | { kind: 'array'; rows: number; cols: number; highlightRow?: number }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
-  | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] };
+  | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] }
+  | {
+      kind: 'angle';
+      degrees: number;
+      rotate?: number;
+      showValue?: boolean;
+      showName?: boolean;
+      showScale?: boolean;
+    };
 
 /** Aturan pembuat soal. Soal dibuat dari aturan, bukan daftar tetap (anti-hafal). */
 export type QuestionRule = {

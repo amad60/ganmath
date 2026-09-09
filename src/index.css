@@ -164,3 +164,14 @@ body {
     transform: translateX(0);
   }
 }
+
+/* Sudut yang membuka dari kaki dasarnya. Besar bukaannya berbeda tiap sudut, jadi
+   sudut awalnya dikirim lewat custom property, bukan ditulis di keyframe. */
+@keyframes angle-open {
+  from {
+    transform: rotate(var(--angle-open-from, 0deg));
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}

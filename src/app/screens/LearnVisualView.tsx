@@ -1,4 +1,5 @@
 import {
+  Angle,
   Bars,
   ArrayGrid,
   RectShape,
@@ -63,6 +64,16 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       );
     case 'shape2d':
       return <Shape2D name={visual.name} size={120} showCorners={visual.showCorners} />;
+    case 'angle':
+      return (
+        <Angle
+          degrees={visual.degrees}
+          rotate={visual.rotate}
+          showValue={visual.showValue}
+          showName={visual.showName}
+          showScale={visual.showScale}
+        />
+      );
     case 'bars':
       return <Bars lengths={visual.lengths} labels={visual.labels} />;
     case 'fraction':

@@ -20,6 +20,14 @@ export type LearnVisual =
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
   | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] }
   | {
+      kind: 'angle';
+      degrees: number;
+      rotate?: number;
+      showValue?: boolean;
+      showName?: boolean;
+      showScale?: boolean;
+    }
+  | {
       kind: 'number-bond';
       whole: number | null;
       parts: [number | null, number | null];
