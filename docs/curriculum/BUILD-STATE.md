@@ -23,6 +23,8 @@ sepadan di `src/content/grade3/`.
 - [x] `add-angle-visual` · **penghalang g4-u6** — komponen `Angle` + `angleKind()`, commit `ef42c62`
 - [ ] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul
 - [ ] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul
+- [ ] `fix-numberline-step` · **keputusan user 2026-09-09** — step otomatis dari rentang + override eksplisit; betulkan `g3-u1-m5` yang sudah live
+- [ ] `fix-keypad-input` · **keputusan user 2026-09-09** — tombol `.` dan `−`, dimunculkan per-rule (bukan per-soal, supaya tidak bocor); longgarkan lint `input-width`
 - [ ] `g4-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
 
 ## Grade 5 — ±40 modul
@@ -92,7 +94,30 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
   Belum bisa: sudut yang digeser anak (read-only), penjumlahan sudut satu titik sudut,
   sudut di dalam poligon.
 
-### Keputusan yang akan datang — keypad desimal & minus
+### ~~Keputusan yang akan datang~~ — DIPUTUSKAN 2026-09-09: dua-duanya diperbaiki
+
+User memutuskan kedua penghalang komponen diperbaiki sebelum Grade 5 dimulai, dan menyerahkan
+pilihan pendekatannya. Dua baris checklist disisipkan **sebelum `g4-DONE`** supaya deploy Grade 4
+sekalian membawa perbaikannya.
+
+**`fix-numberline-step` — pendekatan yang dipilih: step diturunkan otomatis dari rentang,
+dengan override eksplisit.** `NumberLine` menghitung sendiri step "bulat" yang enak dibaca
+(1 / 2 / 5 / 10 / 25 / 100 … sesuai lebar rentang), dan `QuestionRule`/`LearnVisual` boleh
+menimpanya lewat `step` opsional. Alasan memilih ini di atas alternatifnya:
+- Menambah `step` wajib di data modul saja → 150+ modul harus disunting, dan tiap modul baru
+  bisa lupa mengisinya. Otomatis berarti `g3-u1-m5` sembuh **tanpa menyentuh konten**.
+- Toleransi jawaban ("anggap benar kalau dekat") ditolak — itu menyembunyikan soal yang memang
+  tidak bisa dijawab, bukan memperbaikinya.
+- Override tetap ada karena pecahan & desimal butuh step yang bukan bilangan bulat.
+`ticksFor` juga harus ikut step, supaya label tidak lagi jatuh di 3125/6250/9375.
+
+**`fix-keypad-input` — tombol `.` dan `−`.** Kuncinya: kemunculan tombol diturunkan **per rule**,
+bukan per soal — sama seperti `maxDigits`. Kalau per soal, ada-tidaknya tombol minus langsung
+membocorkan tanda jawabannya. Termasuk: validasi satu titik desimal, minus hanya di depan,
+dan `input-width` dilonggarkan supaya desimal/negatif tidak lagi ditolak. Di luar lingkup:
+mengetik pecahan (`3/4`) — itu tetap lewat soal pilihan.
+
+
 
 `g5-u2` (operasi desimal), `g5-u3` (persen) dan `g6-u1` (bilangan bulat negatif) adalah unit
 yang **inti materinya** justru jawaban desimal/negatif. Dengan keypad sekarang, unit-unit itu
