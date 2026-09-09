@@ -44,6 +44,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g6-u1` · Integers — bilangan bulat negatif, garis bilangan, operasi · 6 modul · ⏱ fact → commit `50de613`; **10 rule jawaban negatif diketik**, tiap rule sengaja melintasi nol agar tombol `−` tidak membocorkan tanda
 - [x] `g6-u2` · Ratio & Proportion — rasio, skala, perbandingan senilai & berbalik nilai · 7 modul → commit `b8034bc`; jumlah dibangun sebagai kelipatan `a+b`/`s×d` supaya berbalik nilai tak pernah pecahan
 - [x] `g6-u3` · Algebra Begins — variabel, persamaan sederhana, pola ×/÷ · 6 modul → commit `dbbf913`
+- [ ] `add-circle-visual` · **penghalang g6-u4** — tak ada komponen lingkaran berjari-jari/diameter bertanda (`Shape2D` hanya lingkaran polos `r=42` tetap, tipe visual tak punya varian lingkaran)
 - [ ] `g6-u4` · Circles — keliling & luas lingkaran, π · 5 modul
 - [ ] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul
 - [ ] `g6-u6` · Coordinates — sistem koordinat, memplot titik & bangun · 4 modul
