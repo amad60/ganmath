@@ -61,8 +61,47 @@ TIDAK dikerjakan** — ditunda sampai ada bukti dari pemakaian anak sungguhan (F
 itu pekerjaan besar yang alasannya masih tebakan kita.
 
 - [x] `fix-bars-and-grid` · `Bars` prop `values` menyalakan sumbu (pakai ulang `scale.ts`), `ArrayGrid` prop `square` opt-in; commit `04643cf`. Konten yang ikut: `g4-u6-m4/m5/m6` ("parts" → "squares"). Unit data G4/G5/G6 **bisa** memakai batang bernilai sekarang — sengaja belum ditulis ulang.
-- [ ] `split-content-per-grade` · lazy-load konten per grade (unduhan awal 154 KB → ±seperlima)
+- [x] `split-content-per-grade` · **DISELIDIKI LALU DITOLAK** — tidak ada perubahan kode. Alasan di bawah.
 - [ ] `wrap-up` · build hijau + `git push` ke origin, lalu loop berhenti
+
+### Kenapa `split-content-per-grade` tidak dikerjakan (2026-09-09)
+
+Diselidiki dengan probe build nyata, lalu **dihentikan**. Ringkasnya: sasarannya salah.
+
+**Angka unduhan kunjungan pertama yang sebenarnya (405 KB):**
+
+| Bagian | Ukuran | Porsi |
+|---|---|---|
+| Ikon PNG (4 file, tak bisa digzip) | **204 KB** | **50%** |
+| JS (konten 240 modul = 60.7 KB gz di dalamnya) | 154 KB | 38% |
+| Font | 39 KB | 10% |
+| CSS | 5.9 KB | 1% |
+
+Memecah konten per grade hanya menyasar 53 KB gzip — **13%** dari unduhan awal.
+
+**Dua alasan menghentikan:**
+
+1. **Precache membatalkan manfaatnya.** `dist/sw.js` memuat `precacheAndRoute([...])` dan
+   `globPatterns: ['**/*.{js,css,html,woff2,png,svg}']` menyapu **semua** `.js`. Chunk hasil
+   pemecahan ikut ter-precache → unduhan awal berkurang **0 byte**, hanya berubah jadi 7 request.
+   Bisa dihindari dengan `globIgnores` + `runtimeCaching`, tapi itu mengikat jaminan offline pada
+   konvensi nama file berhash, tanpa satu pun test yang menjaganya.
+2. **Trade-off offline tidak bisa dimenangkan.** Prefetch latar semua grade → janji offline utuh
+   tapi hemat 0 byte. Runtime-cache murni → hemat ~53 KB gzip, tapi anak yang sedang offline lalu
+   naik grade (atau ortu mengganti grade di Parent Area) menemui konten kosong. Itu regresi nyata
+   pada "jalan tanpa internet setelah dibuka sekali" — tepat sebelum tahap uji dengan anak.
+
+Ongkosnya juga tidak sepadan: registry asinkron di App + 4 layar + 10 file test, plus artefak
+metadata generated sebagai invarian sinkron ketiga (di samping `pathOrder.json`).
+Padahal 154 KB gzip sudah jauh di dalam target <200 KB di CLAUDE.md §11.
+
+**Yang seharusnya dikerjakan kalau unduhan awal mau dipangkas — BELUM DIKERJAKAN, menunggu user:**
+
+- `globIgnores: ['**/icon-*.png','**/apple-touch-icon.png']` → **−204 KB**, kira-kira **dua kali
+  lipat** manfaat seluruh refactor yang batal itu, satu baris, tanpa menyentuh registry.
+- Kompres ulang `icon-512` dan `maskable` (84 KB per ikon berlebihan untuk PNG ikon).
+- Peringatan chunk dari Vite itu soal ukuran **mentah**, bukan unduhan — `build.chunkSizeWarningLimit`
+  sudah cukup untuk membungkamnya.
 
 ---
 
