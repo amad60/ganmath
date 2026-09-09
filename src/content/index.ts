@@ -205,6 +205,10 @@ import { foldItUp } from './grade5/u6/m2-fold-it-up';
 import { manyNetsOneSolid } from './grade5/u6/m3-many-nets-one-solid';
 import { facesEdgesCorners } from './grade5/u6/m4-faces-edges-corners';
 import { isItANet } from './grade5/u6/m5-is-it-a-net';
+import { howFastIsIt } from './grade5/u7/m1-how-fast-is-it';
+import { howFarDidItGo } from './grade5/u7/m2-how-far-did-it-go';
+import { howLongDidItTake } from './grade5/u7/m3-how-long-did-it-take';
+import { readTheData } from './grade5/u7/m4-read-the-data';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -463,6 +467,11 @@ export const all: ContentModule[] = [
   manyNetsOneSolid,
   facesEdgesCorners,
   isItANet,
+  // Unit 7 — Data & Speed
+  howFastIsIt,
+  howFarDidItGo,
+  howLongDidItTake,
+  readTheData,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -569,4 +578,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g5-u4': { title: 'Unit 4 · Multiply & Divide Fluently', color: 'var(--c-unit-4)' },
   'g5-u5': { title: 'Unit 5 · Volume & Measurement', color: 'var(--c-unit-5)' },
   'g5-u6': { title: 'Unit 6 · Shapes in Space', color: 'var(--c-unit-6)' },
+  'g5-u7': { title: 'Unit 7 · Data & Speed', color: 'var(--c-unit-7)' },
 };
