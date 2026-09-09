@@ -152,6 +152,11 @@ import { simplestForm } from './grade4/u4/m4-simplest-form';
 import { compareTwoFractions } from './grade4/u4/m5-compare-two-fractions';
 import { addAndTakeAway } from './grade4/u4/m6-add-and-take-away';
 import { mixedNumbers } from './grade4/u4/m7-mixed-numbers';
+import { tenths } from './grade4/u5/m1-tenths';
+import { writeADecimal } from './grade4/u5/m2-write-a-decimal';
+import { hundredths } from './grade4/u5/m3-hundredths';
+import { tenthsOnALine } from './grade4/u5/m4-tenths-on-a-line';
+import { compareDecimals } from './grade4/u5/m5-compare-decimals';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -348,6 +353,12 @@ export const all: ContentModule[] = [
   compareTwoFractions,
   addAndTakeAway,
   mixedNumbers,
+  // Unit 5 — Decimals Begin
+  tenths,
+  writeADecimal,
+  hundredths,
+  tenthsOnALine,
+  compareDecimals,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -445,4 +456,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g4-u2': { title: 'Unit 2 · Multiply & Divide Bigger', color: 'var(--c-unit-2)' },
   'g4-u3': { title: 'Unit 3 · Factors & Multiples', color: 'var(--c-unit-3)' },
   'g4-u4': { title: 'Unit 4 · Equivalent Fractions', color: 'var(--c-unit-4)' },
+  'g4-u5': { title: 'Unit 5 · Decimals Begin', color: 'var(--c-unit-5)' },
 };
