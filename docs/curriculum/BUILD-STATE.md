@@ -42,7 +42,7 @@ sepadan di `src/content/grade3/`.
 ## Grade 6 — ±40 modul
 
 - [x] `g6-u1` · Integers — bilangan bulat negatif, garis bilangan, operasi · 6 modul · ⏱ fact → commit `50de613`; **10 rule jawaban negatif diketik**, tiap rule sengaja melintasi nol agar tombol `−` tidak membocorkan tanda
-- [ ] `g6-u2` · Ratio & Proportion — rasio, skala, perbandingan senilai & berbalik nilai · 7 modul
+- [x] `g6-u2` · Ratio & Proportion — rasio, skala, perbandingan senilai & berbalik nilai · 7 modul → commit `b8034bc`; jumlah dibangun sebagai kelipatan `a+b`/`s×d` supaya berbalik nilai tak pernah pecahan
 - [ ] `g6-u3` · Algebra Begins — variabel, persamaan sederhana, pola ×/÷ · 6 modul
 - [ ] `g6-u4` · Circles — keliling & luas lingkaran, π · 5 modul
 - [ ] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul
