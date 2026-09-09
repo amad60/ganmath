@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "shots": "node scripts/shots.mjs",
     "icons": "node scripts/icons.mjs",
-    "pathorder": "node scripts/pathorder.mjs"
+    "pathorder": "node scripts/pathorder.mjs",
+    "audit:layout": "node scripts/layout-audit.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

@@ -89,6 +89,75 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'misconception')).toBe(true);
   });
 
+  /**
+   * Bug nyata: "Tap the three corners." digambar dengan visual shape2d yang waktu itu
+   * cuma gambar mati. Nilai tap tidak pernah naik, tombol Next tidak pernah aktif,
+   * dan anak terjebak di layar pertama Grade 1 unit 6.
+   */
+  it('menolak aksi di atas manipulatif yang tidak bisa menerimanya', () => {
+    const mods = broken({
+      learn: [
+        {
+          stage: 'concrete',
+          prompt: 'Tap the three corners.',
+          visual: { kind: 'shape2d', name: 'triangle', showCorners: true },
+          action: 'tap-count',
+          target: 3,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'learn-action')).toBe(true);
+  });
+
+  it('menolak target yang lebih banyak daripada yang digambar', () => {
+    const tooMany = broken({
+      learn: [
+        {
+          stage: 'concrete',
+          prompt: 'Tap each one.',
+          visual: { kind: 'counter-objects', count: 3 },
+          action: 'tap-count',
+          target: 5,
+        },
+      ],
+    });
+    expect(lintContent(tooMany, reg(tooMany)).some((p) => p.rule === 'learn-action')).toBe(true);
+
+    const shape = broken({
+      learn: [
+        {
+          stage: 'concrete',
+          prompt: 'Tap the five corners.',
+          visual: { kind: 'shape2d', name: 'triangle', showCorners: true, tap: 'corners' },
+          action: 'tap-count',
+          target: 5,
+        },
+      ],
+    });
+    expect(lintContent(shape, reg(shape)).some((p) => p.rule === 'learn-action')).toBe(true);
+  });
+
+  it('menolak pilihan kata yang tinggal dua setelah tulisan kembar dibuang', () => {
+    const base = all[0] as ContentModule;
+    const mods = broken({
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: base.rules[0]!.skill,
+          params: { a: [1, 4] },
+          answer: () => 0,
+          text: (p) => `Which is ${p.a}?`,
+          // Tiga dari empat pilihan bertulisan sama: yang tersisa cuma dua tombol.
+          options: (p) => [`${p.a}`, `${p.a}`, `${p.a}`, 'none'],
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'choices')).toBe(true);
+  });
+
   it('menolak langkah interaktif yang lupa target', () => {
     const mods = broken({
       learn: [

@@ -5,11 +5,15 @@ import { QuestionScreen } from './QuestionScreen';
 import { ResultScreen } from './ResultScreen';
 import { OnboardingScreen } from './OnboardingScreen';
 import { MapScreen } from './MapScreen';
+import { LearnScreen } from './LearnScreen';
+import { LearnVisualView } from './LearnVisualView';
 import { Button, Keypad } from '../../components/ui';
 import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
 import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
+import { ACTION_VISUALS } from '../../content/lint';
+import type { LearnVisual } from '../../content/types';
 import type { ModuleDef, ModuleState } from '../../engine/types';
 import { session as fakeSession } from '../../engine/fixtures';
 
@@ -772,5 +776,135 @@ describe('QuestionScreen — soal tanpa gambar tidak boleh terlihat kosong', () 
     const gans = screen.getAllByRole('img', { name: /Gan the fox/ });
     expect(gans).toHaveLength(1);
     expect(gans[0]?.getAttribute('width')).toBe('40');
+  });
+});
+
+/**
+ * Bug nyata: di Grade 1 "Flat Shapes" layar pertama meminta "Tap the three corners",
+ * tapi bangunnya digambar sebagai gambar mati. Tombol Next tidak pernah aktif, jadi
+ * anak terjebak di layar itu — tidak bisa lanjut, tidak bisa apa-apa selain keluar.
+ */
+describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaikan', () => {
+  it('sudut segitiga di g1-u6-m1 bisa disentuh sampai Next terbuka', () => {
+    const done = vi.fn();
+    const mod = moduleById('g1-u6-m1');
+    expect(mod).toBeTruthy();
+    render(<LearnScreen module={mod!} onDone={done} onExit={() => {}} />);
+
+    const next = screen.getByRole('button', { name: /next|start/i });
+    expect(next).toBeDisabled();
+
+    const corners = screen.getAllByRole('button', { name: /^Corner \d/ });
+    expect(corners).toHaveLength(3);
+    for (const c of corners) fireEvent.click(c);
+    expect(next).not.toBeDisabled();
+
+    // Menyentuh sudut yang sama dua kali tidak boleh menghitung dua kali.
+    fireEvent.click(corners[0]!);
+    expect(screen.getAllByRole('button', { name: /Corner \d, counted/ })).toHaveLength(3);
+  });
+
+  it('sisi persegi di g1-u6-m3 dihitung per sisi, bukan per sudut', () => {
+    const mod = moduleById('g1-u6-m3');
+    render(<LearnScreen module={mod!} onDone={() => {}} onExit={() => {}} />);
+    const sides = screen.getAllByRole('button', { name: /^Side \d/ });
+    expect(sides).toHaveLength(4);
+    const next = screen.getByRole('button', { name: /next|start/i });
+    for (const s of sides) fireEvent.click(s);
+    expect(next).not.toBeDisabled();
+  });
+
+  /**
+   * Linter konten (aturan `learn-action`) memakai tabel ACTION_VISUALS untuk menolak
+   * aksi di atas manipulatif yang tidak bisa menerimanya. Tabel itu hanya berguna
+   * kalau isinya benar — jadi tabelnya diuji di sini terhadap layar yang sebenarnya,
+   * bukan dipercaya begitu saja.
+   */
+  it('ACTION_VISUALS jujur: manipulatif di tabel memang mengirim nilai balik', () => {
+    const samples: Record<string, LearnVisual> = {
+      'counter-objects': { kind: 'counter-objects', count: 3 },
+      'ten-frame': { kind: 'ten-frame', value: 0 },
+      shape2d: { kind: 'shape2d', name: 'triangle', showCorners: true, tap: 'corners' },
+      'number-line': { kind: 'number-line', min: 0, max: 10, value: null },
+    };
+    for (const kinds of Object.values(ACTION_VISUALS)) {
+      for (const kind of kinds) {
+        const visual = samples[kind];
+        expect(visual, `tidak ada contoh visual "${kind}"`).toBeTruthy();
+        const onValue = vi.fn();
+        const { unmount } = render(
+          <LearnVisualView visual={visual!} value={0} onValue={onValue} interactive />,
+        );
+        if (kind === 'number-line') {
+          // Garis bilangan digeser, bukan ditekan: `role="slider"` hanya muncul
+          // kalau layar benar-benar memberinya onChange. Itu buktinya.
+          expect(screen.getByRole('slider'), 'garis bilangan tidak bisa digeser').toBeTruthy();
+        } else {
+          const controls = screen.queryAllByRole('button');
+          expect(controls.length, `visual "${kind}" tidak punya kontrol apa pun`).toBeGreaterThan(0);
+          fireEvent.click(controls[0]!);
+          expect(onValue, `visual "${kind}" tidak mengirim nilai balik`).toHaveBeenCalled();
+        }
+        unmount();
+      }
+    }
+  });
+});
+
+/**
+ * Bug nyata (audit usability Grade 1–6): di modul dengan gambar tinggi (balok 3D,
+ * jaring bangun) isi layar soal melebihi tinggi layar. Karena tinggi layarnya tidak
+ * dibatasi, HALAMAN yang memanjang — tombol Check ikut turun sampai separuhnya di
+ * bawah layar 393×873, dan anak harus menggulung halaman yang tidak terlihat bisa
+ * digulung untuk mengirim jawabannya.
+ *
+ * jsdom tidak punya tata letak, jadi yang dikunci di sini adalah keputusan CSS-nya:
+ * layar dibatasi tinggi layar, isinya yang menggulung, dan tombol jawaban tinggal
+ * di luar area gulung itu.
+ */
+describe('layar soal & materi tidak boleh melebihi tinggi layar', () => {
+  const shell = (c: HTMLElement) => c.firstElementChild as HTMLElement;
+
+  it('layar soal: badan menggulung, keypad tetap di tempatnya', () => {
+    const s = createSession(moduleById(pathOrder[0] as string), 'practice', 1, 0);
+    const { container } = render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    expect(shell(container).className).toContain('h-full');
+    expect(shell(container).className).not.toContain('min-h-full');
+
+    const main = container.querySelector('main') as HTMLElement;
+    expect(main.className).toContain('overflow-y-auto');
+    expect(main.className).toContain('min-h-0');
+    // `justify-end` mendorong bagian atas isi keluar batas gulung dan tidak bisa
+    // digulung balik — ruang kosongnya harus dibuat dengan margin auto.
+    expect(main.className).not.toContain('justify-end');
+    expect((main.firstElementChild as HTMLElement).className).toContain('mt-auto');
+  });
+
+  it('layar materi: sama, dan isinya dipusatkan lewat margin auto', () => {
+    const { container } = render(
+      <LearnScreen module={moduleById('g1-u6-m1')} onDone={() => {}} onExit={() => {}} />,
+    );
+    expect(shell(container).className).toContain('h-full');
+    const main = container.querySelector('main') as HTMLElement;
+    expect(main.className).not.toContain('justify-center');
+    expect((main.firstElementChild as HTMLElement).className).toContain('m-auto');
+  });
+
+  it('kotak jawaban ketik menempel pada keypad, bukan ikut menggulung', () => {
+    // Modul berjawaban ketik yang sungguhan — kalau tidak, test ini lulus
+    // hanya karena kotaknya memang tidak pernah dirender.
+    const typedId = pathOrder.find((id) =>
+      moduleById(id).questionTypes.some((t) => t === 'keypad' || t === 'missing-number'),
+    );
+    expect(typedId).toBeTruthy();
+    const s = createSession(moduleById(typedId as string), 'practice', 3, 0);
+    const { container } = render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    const box = container.querySelector('[aria-live="polite"]');
+    expect(box).not.toBeNull();
+    expect(box?.closest('main')).toBeNull();
   });
 });

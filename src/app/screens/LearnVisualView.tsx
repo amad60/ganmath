@@ -68,7 +68,17 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
         <Base10Blocks hundreds={visual.hundreds ?? 0} tens={visual.tens} ones={visual.ones} />
       );
     case 'shape2d':
-      return <Shape2D name={visual.name} size={120} showCorners={visual.showCorners} />;
+      return (
+        <Shape2D
+          name={visual.name}
+          // Sudut/sisi yang bisa disentuh butuh sasaran tap ≥44px (CLAUDE.md §2),
+          // jadi bangun yang interaktif digambar lebih besar.
+          size={interactive && visual.tap ? 200 : 120}
+          showCorners={visual.showCorners}
+          tap={interactive ? visual.tap : undefined}
+          onTap={interactive && visual.tap ? onValue : undefined}
+        />
+      );
     case 'angle':
       return (
         <Angle

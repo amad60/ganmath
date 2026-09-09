@@ -465,3 +465,108 @@ Efek sampingnya satu node lagi muat di layar.
 **Yang sengaja tidak diubah.** Penggantian kelas tetap hanya di Parent Area di balik
 gerbang: anak tidak boleh bisa berpindah kelas sendiri, karena itu memutus gating
 yang jadi inti app ini. Pil G3 memberi JALAN ke sana, bukan pintasannya.
+
+---
+
+## Ronde 4 — audit menyeluruh Grade 1–6 (2026-09-09)
+
+Pemicunya satu laporan: *"di tab segitiga, grade 1, tidak bisa di-tap dan continue,
+stuck screen-nya."* Setelah bug itu diperbaiki, seluruh kurikulum 240 modul diperiksa
+untuk mencari saudara-saudaranya. Tiga lapis pemeriksaan, semuanya otomatis dan bisa
+diulang:
+
+- **A. Bisa diselesaikan atau tidak** — 240 modul dijalankan lewat UI sungguhnya
+  (jsdom): setiap langkah Learn ditelusuri sampai tombol Next terbuka, dan setiap soal
+  latihan + kuis diperiksa apakah jawaban benarnya benar-benar bisa dimasukkan
+  (tombol pilihannya ada, keypadnya punya digit/titik/minus yang dibutuhkan,
+  garis bilangannya bisa digeser ke angka itu).
+- **B. Heuristik atas data konten** — panjang teks soal, panjang label pilihan,
+  pilihan yang tulisannya kembar, dan visual yang terlalu padat untuk layar 393px.
+- **C. Tata letak di Chrome sungguhan** — 393×873 (Poco F3 / iPhone 17): scroll
+  horizontal, elemen keluar layar, isi yang terpotong, sasaran tap di bawah 44px.
+
+### Yang ditemukan dan diperbaiki
+
+**1. Dua layar Learn yang benar-benar buntu (Grade 1 Unit 6).**
+`g1-u6-m1` meminta "Tap the three corners." dan `g1-u6-m3` meminta "Tap the four
+sides." — di atas `Shape2D` yang waktu itu cuma gambar mati. Nilai tap tidak pernah
+naik, jadi tombol Next terkunci selamanya dan anak tidak punya jalan maju.
+*Perbaikan:* sudut dan sisi bangun sekarang bisa disentuh satu per satu dan dinomori
+(seperti CounterObjects), sasaran tap ±56px. Linter konten mendapat aturan
+`learn-action`: aksi di atas manipulatif yang tidak bisa menerimanya, dan target yang
+mustahil dicapai (5 sudut pada segitiga), sekarang ditolak sebelum sampai ke anak.
+
+**2. Dua tombol jawaban bertulisan sama — anak yang benar dinilai salah.**
+Pengecoh `choose-text` dirakit dari angka soal, jadi pada nilai tertentu ia jatuh
+persis sama dengan jawaban benarnya: jam pukul :30 (`g2-u7-m1`), pecahan berpembilang
+satu (`g3-u5-m4`), dan uang saat kedua angkanya sama (`g3-u7-m3`) — 11 kejadian.
+Anak membaca benar, menekan salinan yang salah, dan dihukum untuk jawaban yang benar.
+*Perbaikan:* generator membuang pilihan yang tulisannya kembar dan selalu
+mempertahankan indeks jawaban (`uniqueChoices`). Linter memeriksa SELURUH kombinasi
+parameter tiap aturan, bukan cuma soal yang kebetulan tergenerate, dan menolak aturan
+yang setelah dibuang kembarannya tinggal menyisakan dua tombol (50% benar dengan
+menebak).
+
+**3. Tombol Check jatuh di bawah layar pada modul bergambar tinggi.**
+Balok 3D + soal dua baris + keypad melebihi 873px. Karena tinggi layar tidak
+dibatasi, HALAMAN yang memanjang: baris terakhir keypad (hapus, 0, ✓) terpotong, dan
+anak harus menggulung halaman yang tidak terlihat bisa digulung untuk mengirim
+jawaban. *Perbaikan:* layar soal dan layar materi dibatasi tinggi layar (`h-full`),
+isinya yang menggulung.
+
+**4. Isi yang terpotong dan tidak bisa digulung balik.**
+Perbaikan (3) sendirian justru memunculkan bug klasik flexbox: `justify-end`
+(layar soal) dan `justify-center` (layar materi) mendorong bagian atas isi keluar
+batas gulung — gambar 3D-nya terpotong di atas dan tidak bisa dicapai sama sekali.
+*Perbaikan:* ruang kosong dibuat dengan margin auto pada pembungkus, bukan
+`justify-*` pada induknya; margin auto menyusut jadi nol saat ruangnya habis.
+
+**5. Kotak jawaban ketik tertutup keypad.**
+Kotak angka besar itu berada di dalam area yang menggulung, jadi pada soal bergambar
+tinggi ia terdorong ke bawah keypad — anak mengetik tanpa bisa melihat angka yang
+sudah masuk. *Perbaikan:* kotaknya pindah ke luar area gulung, menempel tepat di atas
+keypad.
+
+**6. Label jawaban tiga baris terpotong di dalam pil.**
+"the right number of faces" (`g5-u6-m5`, `g6-u5-m5`) tidak muat di tombol setinggi
+tetap 66px. *Perbaikan:* tombol jawaban memakai tinggi minimum, bukan tinggi tetap —
+tombol boleh tumbuh, teks tidak boleh terpotong.
+
+**7. Tiga sentuhan dalam satu tick cuma terhitung satu.**
+`Shape2D` mencatat sudut yang sudah disentuh lewat state React, dan `take()` membacanya
+lewat closure — dua sentuhan yang tiba sebelum render berikutnya sama-sama membaca
+daftar kosong, jadi yang tercatat hanya yang terakhir. Ditemukan justru oleh harness
+audit ini (yang mengirim tiga klik sekaligus) sebelum sempat kena ke anak yang menyentuh
+cepat. *Perbaikan:* daftarnya disimpan di ref yang diperbarui seketika.
+
+**8. Judul unit di peta: sasaran tap 345×23px.**
+Di bawah ambang 44px di §2, padahal ia tombol sungguhan (melipat unit yang sudah
+selesai). *Perbaikan:* area sentuhnya dibesarkan ke 44px; ukuran tulisannya tetap.
+
+### Yang diperiksa dan sengaja TIDAK diubah
+
+- **Teks soal 92–97 huruf** di `g6-u6-m4` dan `g6-u7-m6` (soal koordinat dan peluang).
+  Panjang, tapi ini Grade 6 dan setelah perbaikan (3)+(4) semuanya terbaca tanpa ada
+  yang terpotong. Aturan ≤8 kata di CLAUDE.md §3 mengikat instruksi Learn, bukan soal.
+- **30 titik pada "Tap twenty dots"** (`g4-u2-m1`): objeknya memang sengaja lebih
+  banyak daripada targetnya — anak harus berhenti di angka yang benar, bukan
+  menghabiskan semua yang ada. Muat di layar (5 kolom × 6 baris).
+- **Pil kelas "G1" 34×24px**: kecil dengan sengaja, karena itu pintu ke Parent Area.
+  Membesarkannya justru membuat anak lebih sering masuk ke sana.
+
+### Hasil akhir sapuan menyeluruh
+
+Setelah semua perbaikan, 240 modul disapu ulang di Chrome sungguhan (393×873):
+**0 layar buntu, 0 scroll horizontal, 0 elemen keluar layar, 0 halaman yang melebihi
+tinggi layar, 0 sasaran tap di bawah 44px** (di luar peta). Sisa temuan yang sengaja
+dibiarkan: 27 label pilihan panjang, 21 teks soal panjang, dan 25 visual padat —
+semuanya sudah dipastikan TERBACA UTUH lewat pengukuran, bukan diabaikan.
+
+### Yang sekarang dijaga otomatis
+
+Tiga aturan linter baru (`learn-action`, `choices`, target yang mustahil) dan delapan
+test layar/manipulatif baru. Bug kelas "layar buntu" dan "pilihan kembar" tidak bisa
+lagi masuk lewat konten baru tanpa gagal di `npm run build`.
+
+Sapuan tata letaknya sendiri sekarang bisa diulang siapa pun:
+`npm run preview` lalu `npm run audit:layout` (lihat `scripts/layout-audit.mjs`).

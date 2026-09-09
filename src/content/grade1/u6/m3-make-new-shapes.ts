@@ -18,7 +18,7 @@ export const makeNewShapes: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap the four sides.',
-      visual: { kind: 'shape2d', name: 'square', showCorners: true },
+      visual: { kind: 'shape2d', name: 'square', showCorners: true, tap: 'sides' },
       action: 'tap-count',
       target: 4,
       hint: 'A square has four sides.',

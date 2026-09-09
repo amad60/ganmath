@@ -43,7 +43,7 @@ export const flatShapes: ContentModule = {
       // Bangun digambar SVG dengan titik sudut, bukan emoji: emoji berbeda bentuk
       // di tiap HP dan tidak bisa dipakai menunjukkan sisi atau sudut.
       prompt: 'Tap the three corners.',
-      visual: { kind: 'shape2d', name: 'triangle', showCorners: true },
+      visual: { kind: 'shape2d', name: 'triangle', showCorners: true, tap: 'corners' },
       action: 'tap-count',
       target: 3,
       hint: 'A triangle has three corners.',

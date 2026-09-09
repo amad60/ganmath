@@ -127,6 +127,33 @@ export type GeneratedSet = { questions: Question[] };
  * - `requireCoverage`: setiap questionType modul wajib muncul minimal sekali (syarat
  *   "cakupan" pada aturan penguasaan) — dipakai untuk Mastery Check.
  */
+/**
+ * Indeks pilihan yang boleh jadi tombol, tanpa dua tombol bertulisan sama.
+ *
+ * Pengecoh `choose-text` dirakit dari parameter soal, jadi pada sebagian nilai
+ * dia bisa jatuh persis sama dengan pilihan lain — dan kalau yang kembar itu
+ * jawaban benarnya, anak yang MEMBACA dengan benar tetap dinilai salah karena
+ * menekan salinan yang salah. Terjadi di tiga modul sekaligus (jam pukul :30,
+ * pecahan berpembilang satu, dan uang saat kedua angkanya sama).
+ *
+ * Indeks jawaban selalu dipertahankan; kembarannya yang dibuang.
+ */
+export function uniqueChoices(labels: string[], answer: number): number[] {
+  const keep: number[] = [];
+  const used = new Set<string>();
+  const answerLabel = labels[answer];
+  if (answerLabel != null) {
+    keep.push(answer);
+    used.add(answerLabel);
+  }
+  labels.forEach((label, i) => {
+    if (i === answer || used.has(label)) return;
+    used.add(label);
+    keep.push(i);
+  });
+  return keep;
+}
+
 export function generateSet(
   def: ModuleDef,
   count: number,
@@ -189,7 +216,7 @@ export function generateSet(
         // Urutan tombol DIACAK. Sebelumnya pilihan tampil persis seperti ditulis,
         // sehingga aturan yang jawabannya selalu indeks yang sama menaruh jawaban
         // benar di tombol yang sama terus — anak bisa lulus tanpa membaca soal.
-        q.choices = shuffle(rng, labels.map((_, i) => i));
+        q.choices = shuffle(rng, uniqueChoices(labels, answer));
       } else if (pool.rule.type === 'compare-symbol') {
         // Jawaban dikodekan -1 / 0 / 1 dan dirender sebagai < = > oleh layar soal.
         // Pengecoh "di sekitar jawaban" tidak berlaku di sini — pilihannya memang cuma tiga.

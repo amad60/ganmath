@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { ArrayGrid } from './ArrayGrid';
 import { Bars } from './Bars';
 import { Base10Blocks } from './Base10Blocks';
@@ -30,6 +30,7 @@ import {
 } from './coordinates';
 import { maxTicksFor, stepFor, ticksFor } from './scale';
 import { ShapeNet } from './ShapeNet';
+import { Shape2D } from './Shape2D';
 import {
   NET_SOLIDS,
   SOLID_FACES,
@@ -1395,5 +1396,60 @@ describe('ArrayGrid — penanda bulat untuk benda, petak persegi untuk luas', ()
     );
     expect(container.querySelector('[aria-label="3 rows of 4 squares"]')).not.toBeNull();
     expect(container.querySelectorAll('span')).toHaveLength(12);
+  });
+});
+
+describe('Shape2D — sudut & sisi yang bisa dihitung anak', () => {
+  const targets = (c: HTMLElement) => [...c.querySelectorAll('[data-part="tap-target"]')];
+
+  it('tanpa `tap` bangunnya cuma gambar — tidak ada yang bisa disentuh', () => {
+    const { container } = render(<Shape2D name="triangle" showCorners onTap={() => {}} />);
+    expect(targets(container)).toHaveLength(0);
+  });
+
+  it('menghitung sudut, dan sentuhan kedua di sudut yang sama tidak menambah', () => {
+    const seen: number[] = [];
+    const { container } = render(
+      <Shape2D name="square" showCorners tap="corners" onTap={(n) => seen.push(n)} />,
+    );
+    const t = targets(container);
+    expect(t).toHaveLength(4);
+    fireEvent.click(t[0]!);
+    fireEvent.click(t[0]!);
+    fireEvent.click(t[1]!);
+    expect(seen).toEqual([1, 2]);
+  });
+
+  /**
+   * Bug nyata: `take` membaca state lewat closure, jadi tiga sentuhan yang tiba di
+   * tick yang sama semuanya membaca daftar kosong dan hanya yang terakhir tercatat.
+   * Anak menyentuh tiga sudut, hitungannya berhenti di satu, dan Next tidak terbuka.
+   */
+  it('tiga sentuhan dalam satu tick tetap terhitung tiga', () => {
+    const seen: number[] = [];
+    const { container } = render(
+      <Shape2D name="triangle" showCorners tap="corners" onTap={(n) => seen.push(n)} />,
+    );
+    const t = targets(container);
+    act(() => {
+      for (const el of t) el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(seen.at(-1)).toBe(3);
+  });
+
+  it('sisi dihitung per sisi, bukan per sudut', () => {
+    const seen: number[] = [];
+    const { container } = render(
+      <Shape2D name="triangle" showCorners tap="sides" onTap={(n) => seen.push(n)} />,
+    );
+    const t = targets(container);
+    expect(t.map((e) => e.getAttribute('aria-label'))).toEqual(['Side 1', 'Side 2', 'Side 3']);
+    for (const el of t) fireEvent.click(el);
+    expect(seen).toEqual([1, 2, 3]);
+  });
+
+  it('lingkaran tidak punya sudut maupun sisi untuk dihitung', () => {
+    const { container } = render(<Shape2D name="circle" tap="corners" onTap={() => {}} />);
+    expect(targets(container)).toHaveLength(0);
   });
 });

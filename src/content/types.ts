@@ -13,7 +13,13 @@ import type {
  */
 export type LearnVisual =
   | { kind: 'base10'; hundreds?: number; tens: number; ones: number }
-  | { kind: 'shape2d'; name: import('../engine/types').ShapeName; showCorners?: boolean }
+  | {
+      kind: 'shape2d';
+      name: import('../engine/types').ShapeName;
+      showCorners?: boolean;
+      /** Bagian yang harus disentuh anak. Wajib ada kalau `action` bukan `watch`. */
+      tap?: import('../components/manipulatives/Shape2D').ShapePart;
+    }
   | {
       kind: 'bars';
       /** Panjang relatif 0..1 — batang perbandingan, tanpa sumbu. */

@@ -1,15 +1,69 @@
 import { validateRegistry, type Registry } from '../engine/unlock';
-import { answerCaps, enumerate, generateSet } from '../engine/generator';
+import { answerCaps, enumerate, generateSet, uniqueChoices } from '../engine/generator';
 import { mulberry32 } from '../engine/rng';
 import { MAX_ANSWER_DIGITS, type QType } from '../engine/types';
 // Matematika penempatan yang dipakai komponen garis bilangan itu sendiri — linter
 // harus memakai angka yang PERSIS sama, kalau tidak dia hanya memeriksa tebakannya.
 import { stepFor } from '../components/manipulatives/scale';
-import type { ContentModule } from './types';
+// Jumlah sisi/sudut diambil dari komponen yang menggambarnya, bukan disalin —
+// salinan akan berbeda diam-diam begitu ada bangun baru.
+import { SHAPE_SIDES } from '../components/manipulatives/Shape2D';
+import type { ContentModule, LearnStep, LearnVisual } from './types';
 
 export type LintProblem = { moduleId: string; rule: string; detail: string };
 
 export const MAX_PROMPT_WORDS = 8;
+
+/**
+ * Manipulatif yang benar-benar bisa MENERIMA tiap aksi di layar Learn.
+ *
+ * Layar Learn mengunci tombol Next sampai anak mencapai `target`. Kalau aksinya
+ * diminta pada manipulatif yang tidak punya jalan masuk (`onValue`), nilainya
+ * tidak pernah naik dan anak terjebak di layar itu selamanya — tanpa pesan error,
+ * tanpa jalan mundur selain keluar dari modul. Sudah terjadi dua kali di g1-u6
+ * ("Tap the three corners" di atas gambar bangun yang tidak bisa disentuh).
+ */
+export const ACTION_VISUALS: Record<Exclude<LearnStep['action'], 'watch'>, LearnVisual['kind'][]> =
+  {
+    'tap-count': ['counter-objects', 'shape2d'],
+    'tap-fill': ['ten-frame'],
+    'drop-on-line': ['number-line'],
+  };
+
+/**
+ * Alasan sebuah langkah Learn tidak bisa diselesaikan anak, atau null kalau bisa.
+ * Selain manipulatif yang salah, target yang lebih besar daripada apa yang digambar
+ * juga membuat layar buntu: 5 sudut diminta pada segitiga tidak akan pernah tercapai.
+ */
+export function learnStepBlocked(step: LearnStep): string | null {
+  if (step.action === 'watch') return null;
+  const v = step.visual;
+  const allowed = ACTION_VISUALS[step.action];
+  if (!allowed.includes(v.kind)) {
+    return `aksi "${step.action}" tidak bisa dilakukan di visual "${v.kind}"`;
+  }
+  const target = step.target;
+  if (target == null) return null;
+
+  if (v.kind === 'shape2d') {
+    if (!v.tap) return 'bangun tidak menyatakan bagian yang bisa disentuh (`tap`)';
+    // Sudut dan sisi jumlahnya sama di semua bangun yang digambar app ini.
+    const parts = SHAPE_SIDES[v.name];
+    if (v.tap === 'corners' && !v.showCorners) {
+      return 'menghitung sudut tapi sudutnya tidak digambar (`showCorners`)';
+    }
+    if (target !== parts) {
+      return `minta ${target} ${v.tap} tapi ${v.name} punya ${parts}`;
+    }
+  }
+  if (v.kind === 'counter-objects' && target > v.count) {
+    return `minta ${target} tap tapi hanya ada ${v.count} objek`;
+  }
+  if (v.kind === 'ten-frame' && target > (v.capacity ?? 10)) {
+    return `minta ${target} tapi frame hanya memuat ${v.capacity ?? 10}`;
+  }
+  return null;
+}
 
 /**
  * Tipe soal yang benar-benar bisa dirender layar soal hari ini.
@@ -116,11 +170,13 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
     }
 
-    // 3. Aksi yang butuh target harus punya target
+    // 3. Aksi yang butuh target harus punya target — DAN harus bisa dikerjakan.
     for (const step of m.learn) {
       if (step.action !== 'watch' && step.target == null) {
         add(m.id, 'learn-target', `langkah "${step.prompt}" minta aksi tapi tidak punya target`);
       }
+      const blocked = learnStepBlocked(step);
+      if (blocked) add(m.id, 'learn-action', `langkah "${step.prompt}": ${blocked}`);
     }
 
     // 4. Tipe soal
@@ -253,6 +309,39 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
             'number-line-step',
             `rule "${r.skill}" berjawaban ${a}, bukan kelipatan langkah ${step} dari ${lo} — ` +
               `penanda tidak bisa mendarat di sana; persempit range atau isi step`,
+          );
+          break;
+        }
+      }
+    }
+
+    // 10. Pilihan kata: tidak boleh ada dua tombol bertulisan sama, dan setelah
+    //     kembarannya dibuang harus masih tersisa minimal 3 tombol.
+    //
+    //     Ini diperiksa untuk SELURUH kombinasi parameter, bukan cuma soal yang
+    //     kebetulan tergenerate: pengecohnya dirakit dari angka soal, jadi
+    //     tabrakan hanya muncul pada nilai tertentu (jam pukul :30, pecahan
+    //     berpembilang satu, uang dengan dua angka yang sama). Generator membuang
+    //     kembarannya supaya soalnya tetap adil; yang dijaga di sini adalah
+    //     akibatnya — pilihan yang menyusut jadi tinggal dua, yaitu 50% benar
+    //     hanya dengan menebak.
+    for (const r of m.rules) {
+      if (r.type !== 'choose-text' || !r.options) continue;
+      for (const c of enumerate(r)) {
+        const labels = r.options(c);
+        const answer = r.answer(c);
+        if (labels[answer] == null) {
+          add(m.id, 'choices', `rule "${r.skill}" berjawaban indeks ${answer}, di luar ${labels.length} pilihan`);
+          break;
+        }
+        const kept = uniqueChoices(labels, answer);
+        if (kept.length < 3) {
+          const dup = labels.filter((l, i) => labels.indexOf(l) !== i);
+          add(
+            m.id,
+            'choices',
+            `rule "${r.skill}" menyisakan ${kept.length} pilihan setelah membuang tulisan kembar ` +
+              `(${dup.join(', ')}) — butuh ≥3 supaya tidak bisa ditebak`,
           );
           break;
         }

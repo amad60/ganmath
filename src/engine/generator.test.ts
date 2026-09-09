@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { answerCaps, generateSet } from './generator';
+import { answerCaps, generateSet, uniqueChoices } from './generator';
 import { mulberry32 } from './rng';
 import { addModule } from './fixtures';
 import type { ModuleDef, QuestionRule } from './types';
@@ -154,8 +154,26 @@ describe('pilihan choose-text', () => {
     const firsts = questions.map((q) => q.choices?.[0]);
     expect(new Set(firsts).size).toBeGreaterThan(1);
     for (const q of questions) {
-      expect([...(q.choices ?? [])].sort()).toEqual([0, 1, 2, 3]);
+      const labels = (q.choices ?? []).map((c) => q.options?.[c]);
+      // Semua pilihan tetap ada — kecuali yang tulisannya kembar (a === b),
+      // yang memang sengaja dibuang. Jawaban benar tidak pernah ikut terbuang.
+      expect(new Set(labels).size).toBe(labels.length);
+      expect(labels).toContain(q.options?.[q.answer]);
+      expect(labels.length).toBeGreaterThanOrEqual(3);
     }
+  });
+
+  /**
+   * Bug nyata di tiga modul (jam pukul :30, pecahan berpembilang satu, uang dengan
+   * dua angka sama): pengecoh jatuh persis sama dengan jawaban benar, jadi ada DUA
+   * tombol bertulisan sama dan salah satunya dinilai salah. Anak yang membaca
+   * dengan benar tetap dihukum.
+   */
+  it('tidak pernah ada dua tombol bertulisan sama, dan jawabannya yang bertahan', () => {
+    expect(uniqueChoices(['2:30', '3:30', '2:30', '2:06'], 0)).toEqual([0, 1, 3]);
+    // Kembaran boleh dibuang dari mana pun — yang dipertahankan indeks jawabannya.
+    expect(uniqueChoices(['1/4', '4/1', '1/4', '3/4'], 2)).toEqual([2, 1, 3]);
+    expect(uniqueChoices(['a', 'b', 'c'], 1)).toEqual([1, 0, 2]);
   });
 });
 

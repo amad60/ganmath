@@ -315,7 +315,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : formatAnswer(c);
 
   return (
-    <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
+    <div className="mx-auto flex h-full max-w-[430px] flex-col">
       <Header
         onBack={onExit}
         tone={isQuiz ? 'mastery' : 'plain'}
@@ -335,12 +335,17 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         right={question.visual ? <Mascot mood={mood} size={40} /> : null}
       />
 
-      <main
-        // Soal dikelompokkan tepat DI ATAS tombol jawaban, bukan melayang di tengah:
-        // mata dan jempol anak jadi berdekatan, dan ruang kosongnya jatuh di atas
-        // (tempat yang tidak dipakai) alih-alih memisahkan soal dari jawabannya.
-        className="flex min-h-0 flex-1 flex-col items-center justify-end gap-4 overflow-y-auto px-6 pt-6 pb-2"
-      >
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 pt-6 pb-2">
+        {/* Soal dikelompokkan tepat DI ATAS tombol jawaban, bukan melayang di tengah:
+            mata dan jempol anak jadi berdekatan, dan ruang kosongnya jatuh di atas
+            (tempat yang tidak dipakai) alih-alih memisahkan soal dari jawabannya.
+
+            Ruang kosong itu dibuat dengan `mt-auto`, BUKAN `justify-end` di induknya:
+            saat isinya lebih tinggi daripada layar (gambar 3D besar + soal dua baris),
+            `justify-end` mendorong bagian atas isi keluar batas gulung — gambarnya
+            terpotong dan tidak bisa digulung balik. Margin auto menyusut jadi nol
+            begitu ruangnya habis, jadi semuanya tetap terjangkau. */}
+        <div className="mt-auto flex w-full flex-col items-center gap-4">
         {/* Soal fakta murni (7 × 8 = ?) tidak punya gambar, jadi separuh layar
             tadinya kosong melompong dan terlihat seperti halaman gagal dimuat.
             `my-auto` menaruh Gan tepat di tengah ruang sisa: ruangnya jadi terpakai,
@@ -379,22 +384,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
 
         {hintUsed ? <p className="text-ink-soft text-[18px]">{en.question.showMe}</p> : null}
 
-        {/* Jawaban yang sedang diketik selalu terlihat besar, bukan hanya di keypad. */}
-        {!question.choices && !isLine ? (
-          <div
-            // min-w, bukan w: kotaknya tetap seukuran semula untuk jawaban pendek,
-            // tapi jawaban 4–6 digit melebar alih-alih terpotong.
-            className="flex h-16 min-w-32 items-center justify-center rounded-[var(--r-md)] px-4 text-[40px] font-black"
-            style={{
-              background: 'var(--c-surface)',
-              border: '3px solid var(--c-line)',
-              color: typed ? 'var(--c-ink)' : 'var(--c-locked)',
-            }}
-            aria-live="polite"
-          >
-            {typed || '?'}
-          </div>
-        ) : null}
+        </div>
       </main>
 
       <div className="safe-bottom shrink-0 px-6 pt-2">
@@ -444,7 +434,25 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             ))}
           </div>
         ) : (
-          <Keypad
+          <div className="flex w-full flex-col gap-2">
+            {/* Angka yang sedang diketik menempel DI ATAS keypad, di luar area yang
+                menggulung. Saat isinya panjang (gambar 3D + soal dua baris) kotak ini
+                dulu ikut terdorong ke bawah keypad: anak mengetik tanpa bisa melihat
+                angka yang sudah masuk. */}
+            <div
+              // min-w, bukan w: kotaknya tetap seukuran semula untuk jawaban pendek,
+              // tapi jawaban 4–6 digit melebar alih-alih terpotong.
+              className="flex h-16 min-w-32 self-center items-center justify-center rounded-[var(--r-md)] px-4 text-[40px] font-black"
+              style={{
+                background: 'var(--c-surface)',
+                border: '3px solid var(--c-line)',
+                color: typed ? 'var(--c-ink)' : 'var(--c-locked)',
+              }}
+              aria-live="polite"
+            >
+              {typed || '?'}
+            </div>
+            <Keypad
             value={typed}
             onChange={(v) => {
               touch();
@@ -463,8 +471,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             // per soal, munculnya minus sudah membocorkan tandanya.
             allowDecimal={question.allowDecimal}
             allowNegative={question.allowNegative}
-            disabled={feedback != null}
-          />
+              disabled={feedback != null}
+            />
+          </div>
         )}
 
         {feedback ? (

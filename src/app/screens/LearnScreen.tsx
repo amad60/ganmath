@@ -36,7 +36,7 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
   };
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full flex-col">
       <Header
         onBack={onExit}
         center={
@@ -48,7 +48,11 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
         }
       />
 
-      <main className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-5">
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-5">
+        {/* `m-auto` pada pembungkus, bukan `justify-center` pada induknya: isi yang
+            lebih tinggi daripada layar akan terpotong DI DUA SISI kalau dipusatkan
+            lewat justify-center, dan bagian atasnya tidak bisa digulung balik. */}
+        <div className="m-auto flex w-full flex-col items-center gap-5">
         {/* Gan ikut menjelaskan: dia menunjuk saat ada aksi, dan bersorak saat tercapai. */}
         <div className="flex items-center gap-3">
           <Mascot mood={reached ? 'happy' : interactive ? 'thinking' : 'idle'} size={64} />
@@ -56,6 +60,9 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
         </div>
 
         <LearnVisualView
+          // Manipulatif boleh menyimpan hitungannya sendiri (bagian mana yang sudah
+          // disentuh); `key` memastikan itu ikut nol lagi saat langkahnya berganti.
+          key={step}
           visual={current.visual}
           value={value}
           onValue={setValue}
@@ -72,6 +79,7 @@ export function LearnScreen({ module, onDone, onExit }: LearnScreenProps) {
             ✓ {current.target}
           </p>
         ) : null}
+        </div>
       </main>
 
       <div className="safe-bottom px-6 pt-2">

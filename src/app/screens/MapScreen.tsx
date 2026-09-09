@@ -214,7 +214,10 @@ export function MapScreen(props: MapScreenProps) {
                 type="button"
                 disabled={!unitDone || hasNext}
                 onClick={() => toggleSection(sectionIndex)}
-                className="mt-2 mb-3 flex w-full items-center gap-3"
+                // min-h-11 = 44px: judul unit ini BISA ditekan (melipat unit yang
+                // sudah selesai), jadi ia terikat ambang sasaran tap di CLAUDE.md §2.
+                // Tulisannya tetap 15px; yang dibesarkan area sentuhnya.
+                className="mt-0.5 mb-1.5 flex min-h-11 w-full items-center gap-3"
               >
                 <span
                   className="h-2.5 w-2.5 shrink-0 rounded-full"

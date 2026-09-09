@@ -7,11 +7,13 @@ Baca file ini lebih dulu sebelum mengerjakan task apa pun di proyek ini.
 **Nama app: GanMath.**
 Status: **KURIKULUM LENGKAP — Grade 1–6, 240 modul. App live dan sudah beberapa ronde perbaikan UX.**
 - Live: https://ganmath.netlify.app · Repo: https://github.com/amad60/ganmath (private)
-- 340 test, PWA offline penuh.
+- 373 test, PWA offline penuh.
 - Riwayat pembangunan Grade 4–6 + keputusan yang tertunda: `docs/curriculum/BUILD-STATE.md`.
 - Berikutnya **uji dengan anak** — checklist di `docs/tech/device-checklist.md`.
-  Riwayat temuan & perbaikan UX: `docs/design/usability-review.md`.
-Terakhir diperbarui: 2026-09-08
+  Riwayat temuan & perbaikan UX: `docs/design/usability-review.md` — ronde 4 (2026-09-09)
+  menyapu seluruh 240 modul Grade 1–6: 8 bug usability ditemukan & diperbaiki, sapuannya
+  bisa diulang dengan `npm run audit:layout`.
+Terakhir diperbarui: 2026-09-09
 
 ---
 
