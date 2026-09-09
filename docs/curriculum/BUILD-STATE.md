@@ -20,7 +20,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g4-u3` · Factors & Multiples — faktor, kelipatan, prima, KPK & FPB awal · 6 modul → commit `03e19cc` (KPK/FPB dibatasi metode mendaftar, tanpa faktorisasi prima)
 - [x] `g4-u4` · Equivalent Fractions — senilai, menyederhanakan, +/− penyebut sama · 7 modul → commit `56a9760`
 - [x] `g4-u5` · Decimals Begin — persepuluhan & perseratusan, hubungan dengan pecahan · 5 modul → commit `2a44e12` (perseratusan pakai `array-grid` 10×10, bukan `fraction-shape`)
-- [ ] `add-angle-visual` · **penghalang g4-u6** — belum ada komponen manipulatif untuk sudut
+- [x] `add-angle-visual` · **penghalang g4-u6** — komponen `Angle` + `angleKind()`, commit `ef42c62`
 - [ ] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul
 - [ ] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul
 - [ ] `g4-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
@@ -82,6 +82,15 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
   teksnya konstan dan tanpa visual akan menyusut jadi **satu** soal dan gagal syarat minimal 8.
   Teks soal harus memuat angkanya (lihat `g4-u4-m5`).
 - **`number-line-drop` jangan dipakai untuk rentang lebar** selama bug `step` masih terbuka.
+
+### Komponen visual yang ditambahkan sambil jalan
+
+- **`Angle`** (`src/components/manipulatives/Angle.tsx`, commit `ef42c62`) — props `degrees`,
+  `rotate`, `showArc`, `showValue`, `showName`, `showScale` (busur derajat), `size`, `color`.
+  Mengekspor `angleKind()` + `ANGLE_NAMES` supaya data modul dan gambarnya memakai satu aturan
+  yang sama. Dipakai lewat `kind: 'angle'` pada `LearnVisual` & `QuestionVisual`.
+  Belum bisa: sudut yang digeser anak (read-only), penjumlahan sudut satu titik sudut,
+  sudut di dalam poligon.
 
 ### Keputusan yang akan datang — keypad desimal & minus
 
