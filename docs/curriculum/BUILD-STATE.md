@@ -15,6 +15,7 @@ sepadan di `src/content/grade3/`.
 ## Grade 4 — ±40 modul
 
 - [x] `g4-u1` · Big Numbers — s/d 1.000.000, nilai tempat, pembulatan · 5 modul → 5 modul, commit `5686af2`
+- [x] `fix-input-limits` · **penghalang g4-u2** — lebar input diturunkan per rule (pagar 6 digit), lint `input-width`, commit `e945cc3`
 - [ ] `g4-u2` · Multiply & Divide Bigger — 2–3 digit × 1 digit, pembagian panjang awal · 7 modul · ⏱ fact
 - [ ] `g4-u3` · Factors & Multiples — faktor, kelipatan, prima, KPK & FPB awal · 6 modul
 - [ ] `g4-u4` · Equivalent Fractions — senilai, menyederhanakan, +/− penyebut sama · 7 modul
@@ -73,18 +74,24 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
 ### Bug lama yang ditemukan saat membangun g4-u1 (2026-09-09) — perlu keputusan user
 
 Dua-duanya **bukan** cacat konten Grade 4, tapi cacat komponen yang sudah terlanjur dipakai
-Grade 3. Loop tetap jalan; g4-u1 menghindari keduanya. Perlu diperbaiki terpisah.
+Grade 3. Bug 1 sudah diperbaiki di tick tersendiri. Bug 2 masih terbuka.
 
-1. **Keypad maksimal 3 digit.** `Keypad` default `maxLength: 3` dan `QuestionScreen` tidak
-   pernah menimpanya, jadi jawaban >3 digit **tidak bisa diketik anak**.
-   → Korban nyata: `g3-u1-m2` punya rule keypad berjawaban 4 digit (mis. 9990) — soal buntu.
-   → Dampak ke depan: G4–G6 penuh bilangan besar/desimal. Ini harus dibetulkan **sebelum**
-     unit lain yang butuh jawaban panjang (g4-u2 pembagian panjang, g5-u2 desimal).
+1. ~~**Keypad maksimal 3 digit.**~~ **SELESAI** (commit `e945cc3`). Lebar input kini diturunkan
+   dari jawaban terbesar yang mungkin **per rule** (bukan per soal — kalau per soal, panjang
+   kotak membocorkan jawaban), dipagari `MAX_ANSWER_DIGITS = 6`. Lint baru `input-width`
+   menolak rule ketik yang jawabannya melebihi kapasitas keypad, **atau negatif/pecahan**
+   (keypad tidak punya minus maupun titik desimal) — ini yang akan menjaga g5-u2 desimal dan
+   g6-u1 bilangan bulat. Ternyata tidak ada modul yang perlu diubah; `g3-u1-m2` lolos sendiri.
 
-2. **`NumberLine` selalu `step = 1`.** Rentang lebar jadi tidak bisa dijawab tepat lewat
-   `number-line-drop`. Korban: `g3-u1-m5` (range 0–10.000).
-   → g4-u1 sengaja tidak memakai `number-line-drop`; garis bilangan hanya dipakai di langkah
-     Learn (`drop-on-line` toleran karena memakai `value >= target`).
+2. **`NumberLine` tidak pernah menerima `step`** dari `QuestionScreen`/`LearnScreen` — selalu
+   `step = 1`. **MASIH TERBUKA, perlu keputusan user.** Dua akibatnya di `g3-u1-m5` (0–10.000),
+   yang **sudah live**: `number-line-drop` tidak bisa dijawab tepat, dan label tick jatuh di
+   angka ganjil (3125 / 6250 / 9375) karena `ticksFor` mengalikan step 1 dengan 5.
+   → Perbaikannya **tidak sepele**: butuh `step` di `QuestionRule` dan `LearnVisual`, plus
+     mengubah tampilan tick pada komponen yang dipakai ratusan modul. Karena itu tidak
+     dikerjakan diam-diam oleh loop.
+   → Siasat sementara: unit G4 ke atas tidak memakai `number-line-drop` untuk rentang lebar.
+     Langkah Learn `drop-on-line` aman (gerbangnya `value >= target`).
 
 Keduanya lolos `npm test` karena linter konten tidak tahu batas UI — **pertimbangkan menambah
 aturan lint** yang menolak rule keypad dengan jawaban melebihi `maxLength`.
