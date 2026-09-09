@@ -188,6 +188,12 @@ import { threeWaysToWrite } from './grade5/u3/m2-three-ways-to-write';
 import { percentOfANumber } from './grade5/u3/m3-percent-of-a-number';
 import { discountAndPrice } from './grade5/u3/m4-discount-and-price';
 import { compareWithPercent } from './grade5/u3/m5-compare-with-percent';
+import { twoDigitsTimesTwo } from './grade5/u4/m1-two-digits-times-two';
+import { divideByTwoDigits } from './grade5/u4/m2-divide-by-two-digits';
+import { whatIsLeftOver } from './grade5/u4/m3-what-is-left-over';
+import { squareNumbers } from './grade5/u4/m4-square-numbers';
+import { squareRoots } from './grade5/u4/m5-square-roots';
+import { whichStepFirst } from './grade5/u4/m6-which-step-first';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -426,6 +432,13 @@ export const all: ContentModule[] = [
   percentOfANumber,
   discountAndPrice,
   compareWithPercent,
+  // Unit 4 — Multiply & Divide Fluently
+  twoDigitsTimesTwo,
+  divideByTwoDigits,
+  whatIsLeftOver,
+  squareNumbers,
+  squareRoots,
+  whichStepFirst,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -529,4 +542,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g5-u1': { title: 'Unit 1 · Fraction Operations', color: 'var(--c-unit-1)' },
   'g5-u2': { title: 'Unit 2 · Decimals', color: 'var(--c-unit-2)' },
   'g5-u3': { title: 'Unit 3 · Percent', color: 'var(--c-unit-3)' },
+  'g5-u4': { title: 'Unit 4 · Multiply & Divide Fluently', color: 'var(--c-unit-4)' },
 };
