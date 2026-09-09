@@ -17,7 +17,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g4-u1` · Big Numbers — s/d 1.000.000, nilai tempat, pembulatan · 5 modul → 5 modul, commit `5686af2`
 - [x] `fix-input-limits` · **penghalang g4-u2** — lebar input diturunkan per rule (pagar 6 digit), lint `input-width`, commit `e945cc3`
 - [x] `g4-u2` · Multiply & Divide Bigger — 2–3 digit × 1 digit, pembagian panjang awal · 7 modul · ⏱ fact → commit `b6b5e54` (`m3` pakai `speedTargetMs: 9000`, hitung dua langkah)
-- [ ] `g4-u3` · Factors & Multiples — faktor, kelipatan, prima, KPK & FPB awal · 6 modul
+- [x] `g4-u3` · Factors & Multiples — faktor, kelipatan, prima, KPK & FPB awal · 6 modul → commit `03e19cc` (KPK/FPB dibatasi metode mendaftar, tanpa faktorisasi prima)
 - [ ] `g4-u4` · Equivalent Fractions — senilai, menyederhanakan, +/− penyebut sama · 7 modul
 - [ ] `g4-u5` · Decimals Begin — persepuluhan & perseratusan, hubungan dengan pecahan · 5 modul
 - [ ] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul
