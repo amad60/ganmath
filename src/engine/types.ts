@@ -160,6 +160,16 @@ export type Question = {
    * anak tahu jawabannya tiga digit sebelum menghitung apa pun.
    */
   maxDigits: number;
+  /**
+   * Keypad menampilkan tombol titik desimal / minus untuk soal ini.
+   *
+   * Sama seperti `maxDigits`, diturunkan dari ATURANNYA — dari semua jawaban yang
+   * mungkin dihasilkan rule itu, bukan dari jawaban soal yang sedang tampil.
+   * Kalau per soal, munculnya tombol minus langsung memberi tahu anak bahwa
+   * jawaban soal ini negatif: tombolnya menjawab soalnya.
+   */
+  allowDecimal: boolean;
+  allowNegative: boolean;
   params: Record<string, number>;
 };
 
@@ -252,10 +262,12 @@ export const GRADE_THRESHOLDS: Record<Grade, Thresholds> = {
 /**
  * Batas atas lebar input angka di keypad.
  *
- * Lebar sebenarnya diturunkan per aturan soal (lihat `answerDigits`); konstanta ini
+ * Lebar sebenarnya diturunkan per aturan soal (lihat `answerCaps`); konstanta ini
  * hanya pagar terakhir supaya aturan konten yang salah tulis tidak pernah meminta
  * anak mengetik dua puluh digit. Enam digit menampung seluruh bilangan yang ditulis
  * anak sampai Grade 6 (999.999) dan masih muat di kotak jawaban selebar layar 390px.
+ * Yang dihitung hanya DIGIT: tanda minus dan titik desimal punya tombolnya sendiri
+ * dan tidak memakan jatah, jadi `−12.75` memakai 4 dari 6.
  * Dijaga aturan lint `input-width`.
  */
 export const MAX_ANSWER_DIGITS = 6;

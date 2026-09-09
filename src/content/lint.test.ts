@@ -3,6 +3,7 @@ import { lintContent } from './lint';
 import { all, registry } from './index';
 import { generateSet } from '../engine/generator';
 import { mulberry32 } from '../engine/rng';
+import { answerDigitCount } from '../engine/answer';
 import type { ContentModule } from './types';
 import { snapToStep, stepFor } from '../components/manipulatives/scale';
 
@@ -113,7 +114,8 @@ describe('linter konten', () => {
       const { questions } = generateSet(m, 12, mulberry32(9));
       for (const q of questions) {
         if (q.choices || q.type === 'number-line-drop') continue;
-        expect(String(q.answer).length).toBeLessThanOrEqual(q.maxDigits);
+        // Yang dihitung digitnya saja: tanda minus dan titik punya tombol sendiri.
+        expect(answerDigitCount(q.answer)).toBeLessThanOrEqual(q.maxDigits);
       }
     }
   });
@@ -135,7 +137,14 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'input-width')).toBe(true);
   });
 
-  it('menolak rule ketik yang jawabannya pecahan — keypad tidak punya titik desimal', () => {
+  /**
+   * `input-width` dulu menolak SEMUA jawaban desimal dan negatif, karena keypad
+   * memang tidak punya tombolnya. Sekarang punya — dan tombolnya muncul per rule
+   * (lihat `answerCaps`), jadi tiga unit yang inti materinya justru menuliskan
+   * angka semacam itu (g5-u2 desimal, g5-u3 persen, g6-u1 bilangan bulat) tidak
+   * lagi terpaksa dibangun sebagai soal pilihan.
+   */
+  it('menerima rule ketik yang jawabannya desimal — keypad punya titik', () => {
     const mods = broken({
       questionTypes: ['keypad'],
       rules: [
@@ -149,7 +158,60 @@ describe('linter konten', () => {
       ],
     });
     const problems = lintContent(mods, reg(mods));
+    expect(problems.filter((p) => p.rule === 'input-width')).toEqual([]);
+  });
+
+  it('menerima rule ketik yang jawabannya negatif — keypad punya minus', () => {
+    const mods = broken({
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'below-zero',
+          params: { a: [1, 9] },
+          answer: (p) => -(p.a as number),
+          text: (p) => `0 − ${p.a} = ?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.filter((p) => p.rule === 'input-width')).toEqual([]);
+    // Aturan lama "tidak boleh jawaban negatif" juga tidak boleh ikut menyala.
+    expect(problems.filter((p) => p.rule === 'generator')).toEqual([]);
+  });
+
+  it('tetap menolak desimal yang tak berujung — 1/3 tidak bisa diketik anak', () => {
+    const mods = broken({
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'third',
+          params: { a: [1, 9] },
+          answer: (p) => (p.a as number) / 3,
+          text: (p) => `${p.a} ÷ 3 = ?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
     expect(problems.some((p) => p.rule === 'input-width')).toBe(true);
+  });
+
+  it('jawaban pilihan ganda tetap tidak boleh negatif — pengecohnya jadi mustahil', () => {
+    const mods = broken({
+      questionTypes: ['choose-number'],
+      rules: [
+        {
+          type: 'choose-number',
+          skill: 'below-zero',
+          params: { a: [1, 9] },
+          answer: (p) => -(p.a as number),
+          text: (p) => `0 − ${p.a} = ?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'generator' && /negatif/.test(p.detail))).toBe(true);
   });
 
   /**

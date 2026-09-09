@@ -1,4 +1,5 @@
 import { MAX_ANSWER_DIGITS, type ModuleDef, type Question, type QuestionRule } from './types';
+import { answerDigitCount, normalizeAnswer } from './answer';
 import { randInt, shuffle, type Rng } from './rng';
 
 /** Semua kombinasi parameter yang sah untuk satu aturan (sudah lewat exclude). */
@@ -19,20 +20,45 @@ export function enumerate(rule: QuestionRule): Record<string, number>[] {
 }
 
 /**
- * Banyak digit jawaban TERBESAR yang mungkin dihasilkan sebuah aturan.
+ * Kemampuan input yang dibutuhkan sebuah aturan soal.
  *
- * Inilah lebar keypad yang dibutuhkan soal-soal aturan ini. Diambil dari seluruh
- * ruang parameter, bukan dari satu soal, supaya panjang input tidak membocorkan
- * jawaban. Tidak dipotong di sini: linter (`input-width`) perlu tahu kalau sebuah
- * aturan benar-benar minta lebih dari yang bisa diketik anak.
+ * Diturunkan dari SELURUH ruang parameter aturan, bukan dari satu soal — dan itu
+ * bukan detail teknis, itu inti keputusannya. Kalau tombol minus hanya muncul saat
+ * jawaban soal yang sedang tampil kebetulan negatif, keberadaan tombolnya sudah
+ * menjawab soalnya sebelum anak berpikir. Sama persis dengan alasan `digits`
+ * diambil per aturan: panjang kotak input tidak boleh membocorkan panjang jawaban.
+ *
+ * Tidak dipotong ke `MAX_ANSWER_DIGITS` di sini: linter (`input-width`) perlu tahu
+ * kalau sebuah aturan benar-benar minta lebih dari yang bisa diketik anak.
  */
-export function answerDigits(rule: QuestionRule, combos = enumerate(rule)): number {
-  let max = 0;
+export type AnswerCaps = {
+  /** Digit terbanyak yang mungkin diketik (tanda dan titik tidak dihitung). */
+  digits: number;
+  /** Ada jawaban yang bukan bilangan bulat → keypad butuh tombol titik. */
+  decimal: boolean;
+  /** Ada jawaban di bawah nol → keypad butuh tombol minus. */
+  negative: boolean;
+  /** Jawaban pertama yang tidak bisa dituliskan sama sekali (∞, NaN, 1e+21). */
+  untypable: number | null;
+};
+
+export function answerCaps(rule: QuestionRule, combos = enumerate(rule)): AnswerCaps {
+  const caps: AnswerCaps = { digits: 1, decimal: false, negative: false, untypable: null };
   for (const p of combos) {
-    const a = rule.answer(p);
-    if (Number.isFinite(a)) max = Math.max(max, Math.abs(Math.trunc(a)));
+    // Dinormalkan lebih dulu: 0.1 + 0.2 tersimpan sebagai 0.30000000000000004,
+    // dan tanpa normalisasi itu terbaca sebagai jawaban 17 digit — aturan yang
+    // sempurna wajar jadi ditolak linter karena galat biner, bukan karena isinya.
+    const a = normalizeAnswer(rule.answer(p));
+    const n = answerDigitCount(a);
+    if (n == null) {
+      if (caps.untypable == null) caps.untypable = a;
+      continue;
+    }
+    if (n > caps.digits) caps.digits = n;
+    if (!Number.isInteger(a)) caps.decimal = true;
+    if (a < 0) caps.negative = true;
   }
-  return String(max).length;
+  return caps;
 }
 
 function nearDistractors(answer: number, rng: Rng, unit: number): number[] {
@@ -111,12 +137,15 @@ export function generateSet(
 
   const pools = def.rules.map((rule) => {
     const combos = enumerate(rule);
+    const caps = answerCaps(rule, combos);
     return {
       rule,
       combos: shuffle(rng, combos),
       // Dihitung sekali per aturan: menghitung ulang per soal berarti meng-enumerate
       // ribuan kombinasi untuk setiap soal yang dibuat.
-      maxDigits: Math.min(MAX_ANSWER_DIGITS, Math.max(1, answerDigits(rule, combos))),
+      maxDigits: Math.min(MAX_ANSWER_DIGITS, Math.max(1, caps.digits)),
+      allowDecimal: caps.decimal,
+      allowNegative: caps.negative,
     };
   });
   const cursor = new Array(pools.length).fill(0) as number[];
@@ -138,7 +167,7 @@ export function generateSet(
       const key = `${pool.rule.type}:${text}:${visual ? JSON.stringify(visual) : ''}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      const answer = pool.rule.answer(params);
+      const answer = normalizeAnswer(pool.rule.answer(params));
       const q: Question = {
         id: `${def.id}:${questions.length}:${key}`,
         type: pool.rule.type,
@@ -146,6 +175,9 @@ export function generateSet(
         text,
         answer,
         maxDigits: pool.maxDigits,
+        // Kapabilitas keypad ikut ATURAN, bukan soal ini. Lihat `answerCaps`.
+        allowDecimal: pool.allowDecimal,
+        allowNegative: pool.allowNegative,
         params,
         ...(pool.rule.range ? { range: pool.rule.range } : {}),
         ...(pool.rule.step != null ? { step: pool.rule.step } : {}),

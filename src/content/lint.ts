@@ -1,5 +1,5 @@
 import { validateRegistry, type Registry } from '../engine/unlock';
-import { answerDigits, enumerate, generateSet } from '../engine/generator';
+import { answerCaps, enumerate, generateSet } from '../engine/generator';
 import { mulberry32 } from '../engine/rng';
 import { MAX_ANSWER_DIGITS, type QType } from '../engine/types';
 // Matematika penempatan yang dipakai komponen garis bilangan itu sendiri — linter
@@ -172,32 +172,32 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
     }
 
-    // 7. Jawaban soal ketik harus muat di keypad — dan benar-benar bisa diketik.
-    //    Keypad hanya punya 0–9: tidak ada tanda minus, tidak ada titik desimal, dan
-    //    lebarnya terbatas. Aturan yang jawabannya di luar itu menghasilkan soal buntu
-    //    yang baru ketahuan saat anak menyerah di depannya. Ini sudah terjadi sekali
-    //    (keypad terkunci 3 digit sementara g3-u1-m2 berjawaban 9990), jadi sekarang
-    //    dijaga di sini sebelum modul Grade 4–6 ditulis.
+    // 7. Jawaban soal ketik harus benar-benar bisa diketik anak.
+    //    Keypad menyediakan titik desimal dan minus, tapi HANYA kalau aturannya
+    //    memang membutuhkannya (diturunkan per rule, lihat `answerCaps`) — jadi
+    //    desimal dan negatif tidak lagi ditolak di sini. Yang masih ditolak adalah
+    //    yang benar-benar tidak bisa dituliskan: lebih lebar dari keypad (termasuk
+    //    pecahan tak berujung seperti 1/3, yang jadi belasan digit), atau bukan
+    //    angka desimal sama sekali (∞, NaN, 1e+21). Aturan seperti itu menghasilkan
+    //    soal buntu yang baru ketahuan saat anak menyerah di depannya — sudah
+    //    terjadi sekali (keypad terkunci 3 digit sementara g3-u1-m2 berjawaban 9990).
     for (const r of m.rules) {
       if (!TYPED_TYPES.includes(r.type)) continue;
-      const digits = answerDigits(r);
-      if (digits > MAX_ANSWER_DIGITS) {
+      const caps = answerCaps(r);
+      if (caps.untypable != null) {
         add(
           m.id,
           'input-width',
-          `rule "${r.type}" (${r.skill}) berjawaban ${digits} digit — keypad hanya menampung ${MAX_ANSWER_DIGITS}`,
+          `rule "${r.type}" (${r.skill}) berjawaban ${caps.untypable} — tidak bisa dituliskan di keypad`,
         );
       }
-      for (const c of enumerate(r)) {
-        const a = r.answer(c);
-        if (!Number.isInteger(a) || a < 0) {
-          add(
-            m.id,
-            'input-width',
-            `rule "${r.type}" (${r.skill}) berjawaban ${a} — keypad tidak punya tanda minus atau titik desimal`,
-          );
-          break;
-        }
+      if (caps.digits > MAX_ANSWER_DIGITS) {
+        add(
+          m.id,
+          'input-width',
+          `rule "${r.type}" (${r.skill}) berjawaban ${caps.digits} digit — keypad hanya menampung ` +
+            `${MAX_ANSWER_DIGITS} (tanda minus dan titik desimal tidak ikut dihitung)`,
+        );
       }
     }
 
@@ -271,7 +271,14 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
           // Dua pilihan = 50% benar hanya dengan menebak; tidak cukup untuk menilai.
           add(m.id, 'generator', `choose-text butuh minimal 3 pilihan: ${q.text}`);
         }
-        if (q.type !== 'compare-symbol' && q.answer < 0) {
+        // Jawaban negatif sah untuk soal KETIK (keypad punya tombol minusnya).
+        // Untuk soal pilihan tidak: pengecoh dibangun di sekitar jawaban dan
+        // dipagari ≥0, jadi tombolnya akan berisi angka yang tidak masuk akal.
+        if (
+          q.type !== 'compare-symbol' &&
+          !TYPED_TYPES.includes(q.type) &&
+          q.answer < 0
+        ) {
           add(m.id, 'generator', `jawaban negatif di Grade ${m.grade}: ${q.text}`);
         }
         if (q.choices && !q.choices.includes(q.answer)) {

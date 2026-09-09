@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { generateSet } from './generator';
+import { answerCaps, generateSet } from './generator';
 import { mulberry32 } from './rng';
 import { addModule } from './fixtures';
-import type { ModuleDef } from './types';
+import type { ModuleDef, QuestionRule } from './types';
 
 describe('generator', () => {
   it('tidak pernah mengulang soal identik dalam satu sesi', () => {
@@ -155,6 +155,93 @@ describe('pilihan choose-text', () => {
     expect(new Set(firsts).size).toBeGreaterThan(1);
     for (const q of questions) {
       expect([...(q.choices ?? [])].sort()).toEqual([0, 1, 2, 3]);
+    }
+  });
+});
+
+/**
+ * Kemampuan input keypad diturunkan per ATURAN, bukan per soal.
+ *
+ * Kalau per soal, munculnya tombol minus pada "3 − 8 = ?" sudah memberi tahu anak
+ * bahwa jawabannya di bawah nol sebelum dia berhitung — tombolnya menjawab soalnya.
+ * Karena itu `answerCaps` memindai seluruh ruang parameter aturan, persis seperti
+ * `maxDigits` yang sudah lebih dulu memakai alasan yang sama.
+ */
+describe('kemampuan input diturunkan per rule', () => {
+  const rule = (over: Partial<QuestionRule>): QuestionRule => ({
+    type: 'keypad',
+    skill: 'x',
+    params: { a: [1, 9] },
+    answer: (p) => p.a as number,
+    text: (p) => `${p.a} = ?`,
+    ...over,
+  });
+
+  it('bilangan bulat positif tidak memunculkan tombol apa pun', () => {
+    const caps = answerCaps(rule({}));
+    expect(caps).toMatchObject({ decimal: false, negative: false, digits: 1, untypable: null });
+  });
+
+  it('aturan berjawaban desimal minta titik; berjawaban negatif minta minus', () => {
+    expect(answerCaps(rule({ answer: (p) => (p.a as number) / 2 }))).toMatchObject({
+      decimal: true,
+      negative: false,
+    });
+    expect(answerCaps(rule({ answer: (p) => -(p.a as number) }))).toMatchObject({
+      decimal: false,
+      negative: true,
+    });
+  });
+
+  it('digit dihitung tanpa tanda dan titik: −7.25 adalah 3 digit', () => {
+    const caps = answerCaps(rule({ params: { a: [1, 1] }, answer: () => -7.25 }));
+    expect(caps.digits).toBe(3);
+  });
+
+  it('galat float tidak dibaca sebagai jawaban belasan digit', () => {
+    // 0.1 + 0.2 = 0.30000000000000004. Tanpa normalisasi ini 17 digit dan
+    // aturan yang sempurna wajar akan ditolak linter karena hal yang bukan isinya.
+    const caps = answerCaps(rule({ params: { a: [1, 1] }, answer: () => 0.1 + 0.2 }));
+    expect(caps.digits).toBe(2);
+    expect(caps.decimal).toBe(true);
+  });
+
+  it('jawaban yang tak bisa dituliskan dilaporkan, bukan dibulatkan diam-diam', () => {
+    const caps = answerCaps(rule({ params: { a: [1, 1] }, answer: () => 1 / 0 }));
+    expect(caps.untypable).toBe(Infinity);
+  });
+
+  it('SEMUA soal dari satu aturan membawa kapabilitas yang sama, walau jawabannya tidak', () => {
+    // Aturan campur: sebagian jawabannya negatif, sebagian tidak. Soal yang
+    // jawabannya positif tetap harus menampilkan tombol minus — kalau tidak,
+    // tidak adanya tombol itu sendiri sudah membocorkan tanda jawabannya.
+    const def: ModuleDef = {
+      ...addModule(),
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'integers',
+          params: { a: [1, 9], b: [1, 9] },
+          answer: (p) => (p.a as number) - (p.b as number),
+          text: (p) => `${p.a} − ${p.b} = ?`,
+        },
+      ],
+    };
+    const { questions } = generateSet(def, 12, mulberry32(5));
+    expect(questions.some((q) => q.answer < 0)).toBe(true);
+    expect(questions.some((q) => q.answer > 0)).toBe(true);
+    for (const q of questions) {
+      expect(q.allowNegative).toBe(true);
+      expect(q.allowDecimal).toBe(false);
+    }
+  });
+
+  it('modul biasa tidak mendapat tombol tambahan sama sekali', () => {
+    const { questions } = generateSet(addModule(), 12, mulberry32(2));
+    for (const q of questions) {
+      expect(q.allowNegative).toBe(false);
+      expect(q.allowDecimal).toBe(false);
     }
   });
 });

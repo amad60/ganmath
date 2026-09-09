@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import { QuestionScreen } from './QuestionScreen';
@@ -9,7 +10,7 @@ import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
 import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
-import type { ModuleState } from '../../engine/types';
+import type { ModuleDef, ModuleState } from '../../engine/types';
 import { session as fakeSession } from '../../engine/fixtures';
 
 /**
@@ -114,6 +115,193 @@ describe('Keypad — lebar input mengikuti soal', () => {
     );
     type(String(q.answer));
     expect(screen.getByText(String(q.answer))).toBeInTheDocument();
+  });
+});
+
+/**
+ * Keypad hanya punya 0–9, jadi tiga unit yang inti materinya justru menuliskan
+ * angka desimal/negatif (g5-u2, g5-u3, g6-u1) hanya bisa dibangun sebagai soal
+ * pilihan — anak tidak pernah menuliskan sendiri keterampilan yang diuji.
+ * Tombol `.` dan `−` menutup lubang itu, dengan satu syarat keras: kemunculannya
+ * ikut ATURAN soal, bukan jawaban soal yang sedang tampil.
+ */
+describe('Keypad — titik desimal dan minus', () => {
+  const pad = (props: Partial<ComponentProps<typeof Keypad>> = {}) => {
+    let value = props.value ?? '';
+    const view = render(
+      <Keypad
+        value={value}
+        onChange={(v) => (value = v)}
+        onSubmit={() => {}}
+        maxLength={3}
+        {...props}
+      />,
+    );
+    const press = (name: string) => {
+      fireEvent.click(screen.getByRole('button', { name }));
+      view.rerender(
+        <Keypad
+          value={value}
+          onChange={(v) => (value = v)}
+          onSubmit={() => {}}
+          maxLength={3}
+          {...props}
+        />,
+      );
+    };
+    return { press, get: () => value };
+  };
+
+  it('tombolnya tidak ada sama sekali untuk soal bilangan bulat positif', () => {
+    render(<Keypad value="" onChange={() => {}} onSubmit={() => {}} maxLength={3} />);
+    expect(screen.queryByRole('button', { name: 'Point' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Minus' })).not.toBeInTheDocument();
+    // 12 tombol: 0–9, hapus, kirim. Tata letak lama tidak berubah sedikit pun.
+    expect(screen.getAllByRole('button')).toHaveLength(12);
+  });
+
+  it('hanya tombol yang diminta rule yang muncul', () => {
+    const { unmount } = render(
+      <Keypad value="" onChange={() => {}} onSubmit={() => {}} maxLength={3} allowDecimal />,
+    );
+    expect(screen.getByRole('button', { name: 'Point' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Minus' })).not.toBeInTheDocument();
+    unmount();
+
+    render(
+      <Keypad value="" onChange={() => {}} onSubmit={() => {}} maxLength={3} allowNegative />,
+    );
+    expect(screen.getByRole('button', { name: 'Minus' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Point' })).not.toBeInTheDocument();
+  });
+
+  it('✓ tetap di pojok kanan bawah dan ⌫ tepat di atasnya — zona jempol', () => {
+    const { container } = render(
+      <Keypad
+        value=""
+        onChange={() => {}}
+        onSubmit={() => {}}
+        maxLength={3}
+        allowDecimal
+        allowNegative
+      />,
+    );
+    const cellOf = (name: string) =>
+      (screen.getByRole('button', { name }).parentElement as HTMLElement).style;
+
+    expect(container.firstElementChild).toHaveClass('grid-cols-4');
+    expect(cellOf('Check').gridRow).toBe('4');
+    expect(cellOf('Check').gridColumn).toBe('4');
+    expect(cellOf('Delete').gridRow).toBe('3');
+    expect(cellOf('Delete').gridColumn).toBe('4');
+    // Tombol jarang pakai naik ke atas, jauh dari jempol.
+    expect(cellOf('Point').gridRow).toBe('2');
+    expect(cellOf('Minus').gridRow).toBe('1');
+    // Blok angka 3×3 tidak digeser; 0 melebar mengisi sisa baris terakhir.
+    expect(cellOf('1').gridColumn).toBe('1');
+    expect(cellOf('9').gridRow).toBe('3');
+    expect(cellOf('0').gridColumn).toBe('1 / span 3');
+  });
+
+  it('maksimal satu titik desimal', () => {
+    const p = pad({ allowDecimal: true, maxLength: 4 });
+    p.press('1');
+    p.press('Point');
+    p.press('5');
+    p.press('Point');
+    expect(p.get()).toBe('1.5');
+  });
+
+  it('menekan titik lebih dulu memberi 0., bukan .', () => {
+    const p = pad({ allowDecimal: true });
+    p.press('Point');
+    p.press('5');
+    expect(p.get()).toBe('0.5');
+  });
+
+  it('titik dimatikan kalau tidak ada lagi jatah digit di belakangnya', () => {
+    const p = pad({ allowDecimal: true, maxLength: 2 });
+    p.press('1');
+    p.press('2');
+    expect(screen.getByRole('button', { name: 'Point' })).toBeDisabled();
+  });
+
+  it('minus selalu di paling depan, walau ditekan belakangan', () => {
+    const p = pad({ allowNegative: true });
+    p.press('4');
+    p.press('2');
+    p.press('Minus');
+    expect(p.get()).toBe('−42');
+    // dan bisa dibatalkan tanpa menghapus angkanya
+    p.press('Minus');
+    expect(p.get()).toBe('42');
+  });
+
+  it('tanda dan titik tidak memakan jatah lebar input', () => {
+    const p = pad({ allowDecimal: true, allowNegative: true, maxLength: 3 });
+    p.press('Minus');
+    for (const d of '1234') p.press(d);
+    p.press('Point');
+    expect(p.get()).toBe('−123');
+  });
+
+  it('tidak bisa mengirim masukan yang belum sah', () => {
+    for (const value of ['', '−', '5.', '−0.']) {
+      const { unmount } = render(
+        <Keypad
+          value={value}
+          onChange={() => {}}
+          onSubmit={() => {}}
+          maxLength={3}
+          allowDecimal
+          allowNegative
+        />,
+      );
+      expect(screen.getByRole('button', { name: 'Check' })).toBeDisabled();
+      unmount();
+    }
+    render(
+      <Keypad
+        value="−0.5"
+        onChange={() => {}}
+        onSubmit={() => {}}
+        maxLength={3}
+        allowDecimal
+        allowNegative
+      />,
+    );
+    expect(screen.getByRole('button', { name: 'Check' })).toBeEnabled();
+  });
+
+  it('QuestionScreen menerima jawaban desimal yang diketik anak', () => {
+    vi.useFakeTimers();
+    const def: ModuleDef = {
+      ...moduleById('g1-u1-m1'),
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'add-decimals',
+          params: { a: [1, 9] },
+          // 0.1 + 0.2 dan kawan-kawannya: jawabannya lahir dengan galat float.
+          answer: (p) => (p.a as number) / 10 + 0.2,
+          text: (p) => `0.${p.a} + 0.2 = ?`,
+        },
+      ],
+    };
+    const s = createSession(def, 'practice', 3, 0);
+    const q = s.pending[0]!.question;
+    expect(q.allowDecimal).toBe(true);
+
+    render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    for (const ch of String(q.answer)) {
+      fireEvent.click(screen.getByRole('button', { name: ch === '.' ? 'Point' : ch }));
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Check' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Yes!');
+    vi.useRealTimers();
   });
 });
 

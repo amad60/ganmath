@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Question, SessionKind } from '../../engine/types';
+import { formatAnswer, parseTypedAnswer, sameAnswer } from '../../engine/answer';
 import {
   currentQuestion,
   isFinished,
@@ -197,7 +198,10 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     if (feedback) return;
     touch();
     const now = performance.now();
-    const correct = value === question.answer;
+    // Dibandingkan sebagai NILAI, bukan string atau `===` mentah: jawaban desimal
+    // yang dihitung modul bisa lahir sebagai 0.30000000000000004 (0.1 + 0.2),
+    // dan "0.50" adalah angka yang sama dengan "0.5". Lihat `sameAnswer`.
+    const correct = sameAnswer(value, question.answer);
     setFeedback({ value, correct });
     if (correct) sfx.correct();
     else sfx.retry();
@@ -230,13 +234,13 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
 
   const choiceFeedback = (c: number): Feedback => {
     if (!feedback) return 'idle';
-    if (c === feedback.value) return feedback.correct ? 'correct' : 'retry';
-    if (c === question.answer) return 'reveal';
+    if (sameAnswer(c, feedback.value)) return feedback.correct ? 'correct' : 'retry';
+    if (sameAnswer(c, question.answer)) return 'reveal';
     return 'idle';
   };
 
   const label = (c: number) =>
-    isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : c;
+    isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : formatAnswer(c);
 
   return (
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
@@ -375,11 +379,18 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               sfx.tap();
               setTyped(v);
             }}
-            onSubmit={() => answer(Number(typed))}
+            onSubmit={() => {
+              const n = parseTypedAnswer(typed);
+              if (n != null) answer(n);
+            }}
             // Lebar input ikut soalnya. Konstanta 3 dulu membuat setiap soal
             // berjawaban ≥1000 (9990, 999 × 9 = 8991, pembagian panjang) buntu:
             // anak tidak bisa mengetik digit terakhirnya.
             maxLength={question.maxDigits}
+            // Tombol . dan − ikut ATURAN soal, bukan jawaban soal ini — kalau
+            // per soal, munculnya minus sudah membocorkan tandanya.
+            allowDecimal={question.allowDecimal}
+            allowNegative={question.allowNegative}
             disabled={feedback != null}
           />
         )}
