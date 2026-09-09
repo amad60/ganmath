@@ -47,6 +47,7 @@ sepadan di `src/content/grade3/`.
 - [x] `add-circle-visual` · `Circle` + `circles.ts` (`PI = 3.14`), commit `826e55e`
 - [x] `g6-u4` · Circles — keliling & luas lingkaran, π · 5 modul → commit `01969f4`; `m5` mulai dari r=3 karena pada r=2 keliling & luas sama-sama 12.56
 - [x] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul → commit `a7d7b91`; jebakan volume = luas permukaan diajarkan di Learn lalu dipagari `exclude`
+- [ ] `add-coordinate-visual` · **penghalang g6-u6** — `VisualId 'coordinate-grid'` ada tapi tak punya renderer (jebakan yang sama dengan `shape-3d` dulu)
 - [ ] `g6-u6` · Coordinates — sistem koordinat, memplot titik & bangun · 4 modul
 - [ ] `g6-u7` · Statistics & Chance — mean/median/modus, peluang percobaan acak · 6 modul
 - [ ] `g6-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
