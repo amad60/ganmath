@@ -46,7 +46,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g6-u3` · Algebra Begins — variabel, persamaan sederhana, pola ×/÷ · 6 modul → commit `dbbf913`
 - [x] `add-circle-visual` · `Circle` + `circles.ts` (`PI = 3.14`), commit `826e55e`
 - [x] `g6-u4` · Circles — keliling & luas lingkaran, π · 5 modul → commit `01969f4`; `m5` mulai dari r=3 karena pada r=2 keliling & luas sama-sama 12.56
-- [ ] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul
+- [x] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul → commit `a7d7b91`; jebakan volume = luas permukaan diajarkan di Learn lalu dipagari `exclude`
 - [ ] `g6-u6` · Coordinates — sistem koordinat, memplot titik & bangun · 4 modul
 - [ ] `g6-u7` · Statistics & Chance — mean/median/modus, peluang percobaan acak · 6 modul
 - [ ] `g6-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
