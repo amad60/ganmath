@@ -33,7 +33,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g5-u2` · Decimals — operasi desimal, konversi pecahan↔desimal · 6 modul · ⏱ fact → commit `ae60132`; **9 rule jawaban desimal diketik** (bukti `fix-keypad-input` terpakai), `m1`/`m2` override `speedTargetMs`
 - [x] `g5-u3` · Percent — persen, hubungan dengan pecahan & desimal, diskon · 5 modul → commit `a8f4c30`; 6 rule ketik desimal, harga Rp10.000–90.000 (jawaban ≤5 digit)
 - [x] `g5-u4` · Multiply & Divide Fluently — bilangan besar, pangkat dua & akar · 6 modul · ⏱ fact → commit `a6f245d`; `m1` override 15000 ms, `m4`/`m5` tetap ketat 5000 (hafalan)
-- [ ] `add-solid-visual` · **penghalang g5-u5 DAN g5-u6** — belum ada visual bangun ruang / jaring-jaring (15 jenis visual yang dirender, tak satu pun 3D)
+- [x] `add-solid-visual` · `Solid3D` + `ShapeNet` + `solids.ts` (aturan murni bersama), commit `894a2b7`
 - [ ] `g5-u5` · Volume & Measurement — volume kubus & balok, konversi satuan · 6 modul
 - [ ] `g5-u6` · Shapes in Space — jaring-jaring, visualisasi spasial · 5 modul
 - [ ] `g5-u7` · Data & Speed — kecepatan, jarak, waktu; interpretasi data · 4 modul
@@ -87,6 +87,18 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
 - **`number-line-drop` jangan dipakai untuk rentang lebar** selama bug `step` masih terbuka.
 
 ### Utang kualitas kecil (bukan penghalang, menunggu keputusan user)
+
+- **`Solid3D` + `ShapeNet`** (`894a2b7`) — dua komponen terpisah karena prop-nya tidak
+  beririsan. `Solid3D {l,w,h,cubes,showDimensions,showVolume,showName,highlightLayer,unit}`
+  menggambar balok isometrik dari kubus satuan yang bisa dihitung anak (hanya kubus permukaan,
+  urut belakang→depan). `ShapeNet {solid,layout,l,w,h,showName,numberFaces}` menggambar
+  bentangan kubus/balok/prisma segitiga/limas/tabung, garis lipat putus-putus vs potong tebal.
+  Aturan bersama di `src/components/manipulatives/solids.ts` (murni, tanpa React, pola yang sama
+  dengan `angleKind`): `SOLID_NAMES/FACES/EDGES/VERTICES`, `solidFromDims`, `volumeOf`,
+  `layerOf`, `surfaceAreaOf`, `netFaces`, `netEdges`, `netLayoutCount`. **Data modul wajib
+  mengambil angka dari sini**, jangan menghitung sendiri.
+  Dipakai lewat `kind: 'solid'` / `kind: 'net'`.
+  Belum bisa: bola & kerucut, luas permukaan bergambar, animasi melipat jaring.
 
 - **`Bars` tidak punya sumbu berangka.** Di `g4-u7` batang mulus hanya bisa dipakai untuk soal
   *perbandingan*; setiap soal yang butuh nilai tepat terpaksa digambar sebagai baris blok
