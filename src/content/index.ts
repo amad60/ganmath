@@ -163,6 +163,10 @@ import { measureAngles } from './grade4/u6/m3-measure-angles';
 import { coverAndCount } from './grade4/u6/m4-cover-and-count';
 import { areaOfARectangle } from './grade4/u6/m5-area-of-a-rectangle';
 import { areaOrPerimeter } from './grade4/u6/m6-area-or-perimeter';
+import { readABarChart } from './grade4/u7/m1-read-a-bar-chart';
+import { frequencyTable } from './grade4/u7/m2-frequency-table';
+import { compareTheData } from './grade4/u7/m3-compare-the-data';
+import { findTheMean } from './grade4/u7/m4-find-the-mean';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -372,6 +376,11 @@ export const all: ContentModule[] = [
   coverAndCount,
   areaOfARectangle,
   areaOrPerimeter,
+  // Unit 7 — Data
+  readABarChart,
+  frequencyTable,
+  compareTheData,
+  findTheMean,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -471,4 +480,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g4-u4': { title: 'Unit 4 · Equivalent Fractions', color: 'var(--c-unit-4)' },
   'g4-u5': { title: 'Unit 5 · Decimals Begin', color: 'var(--c-unit-5)' },
   'g4-u6': { title: 'Unit 6 · Angles & Area', color: 'var(--c-unit-6)' },
+  'g4-u7': { title: 'Unit 7 · Data', color: 'var(--c-unit-7)' },
 };
