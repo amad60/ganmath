@@ -22,7 +22,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g4-u5` · Decimals Begin — persepuluhan & perseratusan, hubungan dengan pecahan · 5 modul → commit `2a44e12` (perseratusan pakai `array-grid` 10×10, bukan `fraction-shape`)
 - [x] `add-angle-visual` · **penghalang g4-u6** — komponen `Angle` + `angleKind()`, commit `ef42c62`
 - [x] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul → commit `8060399`
-- [ ] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul
+- [x] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul → commit `927d42b`; rantai prereq G4 diverifikasi utuh (40 modul, hanya `g4-u1-m1` yang `prereq: []`)
 - [ ] `fix-numberline-step` · **keputusan user 2026-09-09** — step otomatis dari rentang + override eksplisit; betulkan `g3-u1-m5` yang sudah live
 - [ ] `fix-keypad-input` · **keputusan user 2026-09-09** — tombol `.` dan `−`, dimunculkan per-rule (bukan per-soal, supaya tidak bocor); longgarkan lint `input-width`
 - [ ] `g4-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
@@ -87,6 +87,10 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
 
 ### Utang kualitas kecil (bukan penghalang, menunggu keputusan user)
 
+- **`Bars` tidak punya sumbu berangka.** Di `g4-u7` batang mulus hanya bisa dipakai untuk soal
+  *perbandingan*; setiap soal yang butuh nilai tepat terpaksa digambar sebagai baris blok
+  (`pictogram`) yang bisa dihitung satu-satu. Untuk Grade 5–6 (data & statistik makin banyak)
+  sumbu berangka pada `Bars` kemungkinan besar diperlukan.
 - **`array-grid` menggambar penanda bulat, bukan kotak.** Di `g4-u6` (luas) teksnya terpaksa
   memakai kata "parts", bukan "squares". Padahal inti gagasan luas justru **menutup bidang
   dengan persegi**. Perbaikannya kecil (mode kotak pada `ArrayGrid`) tapi menyentuh komponen
