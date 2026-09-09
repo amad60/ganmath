@@ -145,6 +145,13 @@ import { dividesExactly } from './grade4/u3/m3-divides-exactly';
 import { primeOrNot } from './grade4/u3/m4-prime-or-not';
 import { commonFactors } from './grade4/u3/m5-common-factors';
 import { commonMultiples } from './grade4/u3/m6-common-multiples';
+import { sameSizeFractions } from './grade4/u4/m1-same-size-fractions';
+import { multiplyBothParts } from './grade4/u4/m2-multiply-both-parts';
+import { divideBothParts } from './grade4/u4/m3-divide-both-parts';
+import { simplestForm } from './grade4/u4/m4-simplest-form';
+import { compareTwoFractions } from './grade4/u4/m5-compare-two-fractions';
+import { addAndTakeAway } from './grade4/u4/m6-add-and-take-away';
+import { mixedNumbers } from './grade4/u4/m7-mixed-numbers';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -333,6 +340,14 @@ export const all: ContentModule[] = [
   primeOrNot,
   commonFactors,
   commonMultiples,
+  // Unit 4 — Equivalent Fractions
+  sameSizeFractions,
+  multiplyBothParts,
+  divideBothParts,
+  simplestForm,
+  compareTwoFractions,
+  addAndTakeAway,
+  mixedNumbers,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -429,4 +444,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g4-u1': { title: 'Unit 1 · Big Numbers', color: 'var(--c-unit-1)' },
   'g4-u2': { title: 'Unit 2 · Multiply & Divide Bigger', color: 'var(--c-unit-2)' },
   'g4-u3': { title: 'Unit 3 · Factors & Multiples', color: 'var(--c-unit-3)' },
+  'g4-u4': { title: 'Unit 4 · Equivalent Fractions', color: 'var(--c-unit-4)' },
 };
