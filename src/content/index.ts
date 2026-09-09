@@ -177,6 +177,12 @@ import { fractionTimesWhole } from './grade5/u1/m5-fraction-times-whole';
 import { fractionTimesFraction } from './grade5/u1/m6-fraction-times-fraction';
 import { divideByAFraction } from './grade5/u1/m7-divide-by-a-fraction';
 import { tidyUpTheAnswer } from './grade5/u1/m8-tidy-up-the-answer';
+import { lineUpThePoints } from './grade5/u2/m1-line-up-the-points';
+import { timesAWholeNumber } from './grade5/u2/m2-times-a-whole-number';
+import { decimalTimesDecimal } from './grade5/u2/m3-decimal-times-decimal';
+import { divideDecimals } from './grade5/u2/m4-divide-decimals';
+import { fractionsAndDecimals } from './grade5/u2/m5-fractions-and-decimals';
+import { roundDecimals } from './grade5/u2/m6-round-decimals';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -402,6 +408,13 @@ export const all: ContentModule[] = [
   fractionTimesFraction,
   divideByAFraction,
   tidyUpTheAnswer,
+  // Unit 2 — Decimals
+  lineUpThePoints,
+  timesAWholeNumber,
+  decimalTimesDecimal,
+  divideDecimals,
+  fractionsAndDecimals,
+  roundDecimals,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -503,4 +516,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g4-u6': { title: 'Unit 6 · Angles & Area', color: 'var(--c-unit-6)' },
   'g4-u7': { title: 'Unit 7 · Data', color: 'var(--c-unit-7)' },
   'g5-u1': { title: 'Unit 1 · Fraction Operations', color: 'var(--c-unit-1)' },
+  'g5-u2': { title: 'Unit 2 · Decimals', color: 'var(--c-unit-2)' },
 };
