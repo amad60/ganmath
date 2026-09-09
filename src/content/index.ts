@@ -240,6 +240,10 @@ import { addEveryFace } from './grade6/u5/m2-add-every-face';
 import { sixEqualFaces } from './grade6/u5/m3-six-equal-faces';
 import { volumeOrSurface } from './grade6/u5/m4-volume-or-surface';
 import { fillOrCover } from './grade6/u5/m5-fill-or-cover';
+import { rightThenUp } from './grade6/u6/m1-right-then-up';
+import { sayThePair } from './grade6/u6/m2-say-the-pair';
+import { allFourQuadrants } from './grade6/u6/m3-all-four-quadrants';
+import { shapesOnTheGrid } from './grade6/u6/m4-shapes-on-the-grid';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -539,6 +543,11 @@ export const all: ContentModule[] = [
   sixEqualFaces,
   volumeOrSurface,
   fillOrCover,
+  // Unit 6 — Coordinates
+  rightThenUp,
+  sayThePair,
+  allFourQuadrants,
+  shapesOnTheGrid,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -651,4 +660,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g6-u3': { title: 'Unit 3 · Algebra Begins', color: 'var(--c-unit-3)' },
   'g6-u4': { title: 'Unit 4 · Circles', color: 'var(--c-unit-4)' },
   'g6-u5': { title: 'Unit 5 · Solids', color: 'var(--c-unit-5)' },
+  'g6-u6': { title: 'Unit 6 · Coordinates', color: 'var(--c-unit-6)' },
 };
