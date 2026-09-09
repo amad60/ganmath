@@ -18,7 +18,7 @@ export const readAndWrite1000: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 105 on the line.',
-      visual: { kind: 'number-line', min: 100, max: 200, value: null },
+      visual: { kind: 'number-line', min: 100, max: 200, value: null, step: 5 },
       action: 'drop-on-line',
       target: 105,
       hint: 'One hundred and five.',

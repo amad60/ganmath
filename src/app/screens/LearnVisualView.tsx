@@ -51,6 +51,7 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
         <NumberLine
           min={visual.min}
           max={visual.max}
+          step={visual.step}
           value={interactive ? (value > visual.min - 1 ? value : null) : (visual.value ?? null)}
           marks={visual.marks ?? []}
           onChange={interactive ? onValue : undefined}

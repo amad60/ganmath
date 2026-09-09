@@ -18,7 +18,7 @@ export const add3Digit: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 240 on the line.',
-      visual: { kind: 'number-line', min: 0, max: 1000, value: null },
+      visual: { kind: 'number-line', min: 0, max: 1000, value: null, step: 20 },
       action: 'drop-on-line',
       target: 240,
       hint: 'Two hundreds and four tens.',

@@ -21,7 +21,7 @@ export const nearTens: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 47 on the line.',
-      visual: { kind: 'number-line', min: 40, max: 70, value: null },
+      visual: { kind: 'number-line', min: 40, max: 70, value: null, step: 1 },
       action: 'drop-on-line',
       target: 47,
       hint: 'Nineteen is almost twenty.',

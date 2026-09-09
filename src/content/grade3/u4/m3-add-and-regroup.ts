@@ -18,7 +18,7 @@ export const addAndRegroup: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 180 on the line.',
-      visual: { kind: 'number-line', min: 0, max: 1000, value: null },
+      visual: { kind: 'number-line', min: 0, max: 1000, value: null, step: 20 },
       action: 'drop-on-line',
       target: 180,
       hint: 'One hundred and eight tens.',

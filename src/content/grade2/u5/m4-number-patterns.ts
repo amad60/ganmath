@@ -18,7 +18,7 @@ export const numberPatterns: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 12 on the line.',
-      visual: { kind: 'number-line', min: 0, max: 30, value: null },
+      visual: { kind: 'number-line', min: 0, max: 30, value: null, step: 3 },
       action: 'drop-on-line',
       target: 12,
       hint: 'Count by threes.',

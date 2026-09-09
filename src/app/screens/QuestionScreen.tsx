@@ -133,6 +133,7 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
         <NumberLine
           min={visual.min}
           max={visual.max}
+          step={visual.step}
           value={visual.value ?? null}
           marks={visual.marks ?? []}
         />
@@ -326,6 +327,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             <NumberLine
               min={question.range?.[0] ?? 0}
               max={question.range?.[1] ?? 10}
+              step={question.step}
               value={linePick}
               onChange={(v) => {
                 touch();

@@ -2,6 +2,9 @@ import { validateRegistry, type Registry } from '../engine/unlock';
 import { answerDigits, enumerate, generateSet } from '../engine/generator';
 import { mulberry32 } from '../engine/rng';
 import { MAX_ANSWER_DIGITS, type QType } from '../engine/types';
+// Matematika penempatan yang dipakai komponen garis bilangan itu sendiri — linter
+// harus memakai angka yang PERSIS sama, kalau tidak dia hanya memeriksa tebakannya.
+import { stepFor } from '../components/manipulatives/scale';
 import type { ContentModule } from './types';
 
 export type LintProblem = { moduleId: string; rule: string; detail: string };
@@ -198,7 +201,65 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
     }
 
-    // 8. Aturan soal benar-benar bisa menghasilkan soal yang sah
+    // 8. Garis bilangan: setiap angka yang diminta harus benar-benar bisa disentuh.
+    //    Penanda melompat per langkah efektif (otomatis dari lebar rentang, atau `step`
+    //    dari data modul), jadi jawaban yang bukan kelipatan langkah itu MUSTAHIL
+    //    disentuh anak — soal buntu yang tidak kelihatan sampai anak menyerah di
+    //    depannya. Ini sudah terjadi sekali (g3-u1-m5, garis 0–10.000 berjawaban
+    //    kelipatan 1000 sementara langkahnya 1), jadi sekarang dijaga di sini.
+    for (const step of m.learn) {
+      if (step.visual.kind !== 'number-line' || step.action !== 'drop-on-line') continue;
+      const { min, max } = step.visual;
+      const target = step.target;
+      if (target == null) continue;
+      const s = step.visual.step != null && step.visual.step > 0 ? step.visual.step : stepFor(min, max);
+      const jumps = (target - min) / s;
+      if (target < min || target > max || Math.abs(jumps - Math.round(jumps)) > 1e-9) {
+        add(
+          m.id,
+          'number-line-step',
+          `langkah "${step.prompt}" minta ${target} tapi garis [${min}, ${max}] melompat ${s} — ` +
+            `penanda tidak bisa mendarat tepat di sana`,
+        );
+      }
+    }
+
+    for (const r of m.rules) {
+      if (r.type !== 'number-line-drop') continue;
+      if (!r.range) {
+        add(m.id, 'number-line-step', `rule "${r.skill}" number-line-drop tanpa range`);
+        continue;
+      }
+      const [lo, hi] = r.range;
+      if (!(hi > lo)) {
+        add(m.id, 'number-line-step', `rule "${r.skill}" punya range kosong [${lo}, ${hi}]`);
+        continue;
+      }
+      const step = r.step != null && r.step > 0 ? r.step : stepFor(lo, hi);
+      for (const c of enumerate(r)) {
+        const a = r.answer(c);
+        if (!Number.isFinite(a) || a < lo || a > hi) {
+          add(
+            m.id,
+            'number-line-step',
+            `rule "${r.skill}" berjawaban ${a} — di luar garis [${lo}, ${hi}]`,
+          );
+          break;
+        }
+        const jumps = (a - lo) / step;
+        if (Math.abs(jumps - Math.round(jumps)) > 1e-9) {
+          add(
+            m.id,
+            'number-line-step',
+            `rule "${r.skill}" berjawaban ${a}, bukan kelipatan langkah ${step} dari ${lo} — ` +
+              `penanda tidak bisa mendarat di sana; persempit range atau isi step`,
+          );
+          break;
+        }
+      }
+    }
+
+    // 9. Aturan soal benar-benar bisa menghasilkan soal yang sah
     try {
       const { questions } = generateSet(m, 12, mulberry32(1), { requireCoverage: true });
       if (questions.length < 8) {

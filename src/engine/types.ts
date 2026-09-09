@@ -80,7 +80,15 @@ export type QuestionVisual =
   | { kind: 'rect'; w: number; h: number; unit?: string; showCorners?: boolean }
   | { kind: 'array'; rows: number; cols: number; highlightRow?: number }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
-  | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] }
+  | {
+      kind: 'number-line';
+      min: number;
+      max: number;
+      value?: number | null;
+      marks?: number[];
+      /** Menimpa langkah otomatis. Isi hanya untuk langkah pecahan/desimal. */
+      step?: number;
+    }
   | {
       kind: 'angle';
       degrees: number;
@@ -114,6 +122,15 @@ export type QuestionRule = {
   distractorUnit?: number;
   /** Domain garis bilangan untuk soal `number-line-drop`. */
   range?: [number, number];
+  /**
+   * Menimpa langkah otomatis garis bilangan (lihat `stepFor`).
+   *
+   * Dikosongkan untuk hampir semua modul: langkahnya diturunkan dari lebar rentang,
+   * jadi 150+ modul tidak perlu menuliskannya dan tidak bisa lupa menuliskannya.
+   * Diisi hanya kalau materinya butuh langkah yang bukan bilangan bulat (pecahan,
+   * desimal). Jawaban WAJIB kelipatan langkah efektif — dijaga lint `number-line-step`.
+   */
+  step?: number;
   /** Label pilihan untuk `choose-text`; jawabannya adalah INDEKS label yang benar. */
   options?: (p: Record<string, number>) => string[];
   /** Gambar yang merupakan bagian dari soal — selalu tampil, termasuk saat ujian. */
@@ -130,6 +147,8 @@ export type Question = {
   answer: number;
   choices?: number[];
   range?: [number, number];
+  /** Langkah garis bilangan kalau modulnya menimpa langkah otomatis. */
+  step?: number;
   /** Label untuk `choose-text` — layar merender options[choice], bukan angkanya. */
   options?: string[];
   visual?: QuestionVisual;

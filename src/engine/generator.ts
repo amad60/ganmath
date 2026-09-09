@@ -148,6 +148,7 @@ export function generateSet(
         maxDigits: pool.maxDigits,
         params,
         ...(pool.rule.range ? { range: pool.rule.range } : {}),
+        ...(pool.rule.step != null ? { step: pool.rule.step } : {}),
         ...(visual ? { visual } : {}),
       };
       if (pool.rule.type === 'choose-text') {

@@ -18,7 +18,15 @@ export type LearnVisual =
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | { kind: 'counter-objects'; count: number; icon?: string }
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
-  | { kind: 'number-line'; min: number; max: number; value?: number | null; marks?: number[] }
+  | {
+      kind: 'number-line';
+      min: number;
+      max: number;
+      value?: number | null;
+      marks?: number[];
+      /** Menimpa langkah otomatis. Isi hanya untuk langkah pecahan/desimal. */
+      step?: number;
+    }
   | {
       kind: 'angle';
       degrees: number;

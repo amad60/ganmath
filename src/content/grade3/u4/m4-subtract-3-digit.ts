@@ -18,7 +18,7 @@ export const subtract3Digit: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 460 on the line.',
-      visual: { kind: 'number-line', min: 0, max: 1000, value: null },
+      visual: { kind: 'number-line', min: 0, max: 1000, value: null, step: 20 },
       action: 'drop-on-line',
       target: 460,
       hint: 'Four hundreds and six tens.',

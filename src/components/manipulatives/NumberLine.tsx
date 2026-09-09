@@ -1,10 +1,24 @@
 import { useRef } from 'react';
-import { clamp, formatValue, fromRatio, snapToStep, ticksFor, toRatio } from './scale';
+import {
+  clamp,
+  formatValue,
+  fromRatio,
+  maxTicksFor,
+  snapToStep,
+  stepFor,
+  ticksFor,
+  toRatio,
+} from './scale';
 import { teachingDuration, useReducedMotion } from './useReducedMotion';
 
 export type NumberLineProps = {
   min: number;
   max: number;
+  /**
+   * Jarak antar posisi yang bisa disentuh anak. Kosongkan untuk langkah otomatis
+   * yang diturunkan dari lebar rentang (`stepFor`) — isi hanya kalau materinya
+   * memang butuh langkah yang bukan bilangan bulat (pecahan, desimal).
+   */
   step?: number;
   value?: number | null;
   onChange?: (next: number) => void;
@@ -25,7 +39,7 @@ export type NumberLineProps = {
 export function NumberLine({
   min,
   max,
-  step = 1,
+  step,
   value = null,
   onChange,
   marks = [],
@@ -34,14 +48,30 @@ export function NumberLine({
 }: NumberLineProps) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const ticks = ticksFor(min, max, step);
-  const jumps = value == null ? 0 : Math.abs(Math.round((value - min) / step));
+
+  // Langkah efektif: dari data kalau ditulis, kalau tidak diturunkan dari rentang.
+  // Satu nilai ini dipakai bersama oleh snap, label tick, dan hitungan lompatan —
+  // kalau ketiganya memakai angka yang berbeda, penanda mendarat di tempat yang
+  // tidak ada tanda-tandanya.
+  const effectiveStep = step != null && step > 0 ? step : stepFor(min, max);
+  const ticks = ticksFor(min, max, effectiveStep, maxTicksFor(min, max, denominator));
+  // Tanda kecil tanpa angka di setiap posisi yang bisa disentuh: label boleh jarang
+  // supaya terbaca, tapi anak tetap melihat ke mana penandanya bisa mendarat.
+  const stops = (max - min) / effectiveStep + 1;
+  const labelled = new Set(ticks);
+  const minorTicks =
+    stops > ticks.length && stops <= 41
+      ? ticksFor(min, max, effectiveStep, Number.POSITIVE_INFINITY).filter(
+          (t) => !labelled.has(t),
+        )
+      : [];
+  const jumps = value == null ? 0 : Math.abs(Math.round((value - min) / effectiveStep));
 
   const handle = (clientX: number) => {
     if (!onChange || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const ratio = clamp((clientX - rect.left) / rect.width, 0, 1);
-    onChange(clamp(snapToStep(fromRatio(ratio, min, max), min, step), min, max));
+    onChange(clamp(snapToStep(fromRatio(ratio, min, max), min, effectiveStep), min, max));
   };
 
   return (
@@ -56,11 +86,27 @@ export function NumberLine({
       aria-valuemin={onChange ? min : undefined}
       aria-valuemax={onChange ? max : undefined}
       aria-valuenow={onChange && value != null ? value : undefined}
+      data-step={effectiveStep}
     >
       <div
         className="absolute right-0 left-0 rounded-full"
         style={{ top: height / 2 - 2, height: 4, background: 'var(--c-line)' }}
       />
+
+      {minorTicks.map((t) => (
+        <div
+          key={`n${t}`}
+          className="absolute -translate-x-1/2"
+          style={{
+            left: `${toRatio(t, min, max) * 100}%`,
+            top: height / 2 - 5,
+            width: 2,
+            height: 10,
+            background: 'var(--c-line)',
+            opacity: 0.55,
+          }}
+        />
+      ))}
 
       {ticks.map((t) => {
         const isZero = t === 0 && min < 0;

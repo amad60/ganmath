@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { ArrayGrid } from './ArrayGrid';
 import { Base10Blocks } from './Base10Blocks';
 import { TallyChart } from './TallyChart';
 import { RectShape } from './RectShape';
 import { Angle, ANGLE_NAMES, angleKind } from './Angle';
+import { NumberLine } from './NumberLine';
 
 /**
  * Manipulatif adalah CARA app mengajar, bukan hiasan — jadi jumlah benda yang
@@ -207,5 +208,72 @@ describe('Angle — bukaan yang digambar harus jujur', () => {
     const scaled = vb(render(<Angle degrees={60} showScale />).container.querySelector('svg'));
     expect(scaled[2] as number).toBeGreaterThan(plain[2] as number);
     expect(scaled[0] as number).toBeLessThan(plain[0] as number);
+  });
+});
+
+/**
+ * Garis bilangan dulu selalu melompat per satu satuan, berapa pun lebarnya —
+ * `step` tidak pernah sampai ke komponen ini. Di garis 0–10.000 (g3-u1-m5, sudah
+ * live) itu membuat soalnya mustahil dijawab tepat dan labelnya jatuh di angka
+ * ganjil. Langkahnya sekarang diturunkan dari rentang, dan data modul boleh
+ * menimpanya.
+ */
+describe('NumberLine — langkah otomatis dari rentang', () => {
+  /** jsdom tidak melakukan layout: garisnya harus diberi lebar supaya bisa disentuh. */
+  const withWidth = (el: HTMLElement, width = 300) => {
+    el.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, width, height: 96, right: width, bottom: 96, x: 0, y: 0 }) as DOMRect;
+  };
+  const labels = (c: HTMLElement) => [...c.querySelectorAll('span')].map((s) => s.textContent);
+
+  it('garis 0–10 tetap berlabel setiap satuan', () => {
+    const { container } = render(<NumberLine min={0} max={10} />);
+    expect(labels(container)).toEqual(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+  });
+
+  it('garis 0–10.000 berlabel ribuan bulat, bukan 3125 / 6250 / 9375', () => {
+    const { container } = render(<NumberLine min={0} max={10000} />);
+    const shown = labels(container);
+    expect(shown).not.toContain('3125');
+    expect(shown[0]).toBe('0');
+    expect(shown[shown.length - 1]).toBe('10000');
+    for (const t of shown) expect(Number(t) % 1000).toBe(0);
+  });
+
+  it('label tidak berdesakan di layar 390px', () => {
+    const { container } = render(<NumberLine min={0} max={10000} />);
+    expect(labels(container).length).toBeLessThanOrEqual(7);
+  });
+
+  it('anak menjatuhkan penanda tepat di 3000 — soal g3-u1-m5 jadi bisa dijawab', () => {
+    const picked: number[] = [];
+    const { container } = render(
+      <NumberLine min={0} max={10000} onChange={(v) => picked.push(v)} />,
+    );
+    const line = container.firstElementChild as HTMLElement;
+    withWidth(line);
+    // 0,3 × 300px = tepat di 3000; sedikit meleset pun harus mendarat di 3000.
+    fireEvent.pointerDown(line, { clientX: 94 });
+    expect(picked).toEqual([3000]);
+  });
+
+  it('data modul boleh menimpa langkahnya untuk pecahan dan desimal', () => {
+    const picked: number[] = [];
+    const { container } = render(
+      <NumberLine min={0} max={1} step={0.25} denominator={4} onChange={(v) => picked.push(v)} />,
+    );
+    expect(labels(container)).toEqual(['0', '1/4', '1/2', '3/4', '1']);
+    const line = container.firstElementChild as HTMLElement;
+    withWidth(line);
+    fireEvent.pointerDown(line, { clientX: 160 });
+    expect(picked).toEqual([0.5]);
+  });
+
+  it('posisi yang bisa disentuh tetap terlihat walau labelnya dijarangkan', () => {
+    // 0–1000 melompat 100 tapi hanya berlabel enam angka: tanda kecil tanpa angka
+    // yang memberi tahu anak ke mana penandanya bisa mendarat.
+    const { container } = render(<NumberLine min={0} max={1000} />);
+    expect(labels(container)).toEqual(['0', '200', '400', '600', '800', '1000']);
+    expect(container.querySelectorAll('div[style*="opacity: 0.55"]')).toHaveLength(5);
   });
 });

@@ -18,7 +18,7 @@ export const doublesTo100: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Put 25 on the line.',
-      visual: { kind: 'number-line', min: 0, max: 100, value: null },
+      visual: { kind: 'number-line', min: 0, max: 100, value: null, step: 5 },
       action: 'drop-on-line',
       target: 25,
       hint: 'Two tens and five.',
