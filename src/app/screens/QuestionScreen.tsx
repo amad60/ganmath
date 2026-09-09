@@ -294,7 +294,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         {/* Jawaban yang sedang diketik selalu terlihat besar, bukan hanya di keypad. */}
         {!question.choices && !isLine ? (
           <div
-            className="flex h-16 w-32 items-center justify-center rounded-[var(--r-md)] text-[40px] font-black"
+            // min-w, bukan w: kotaknya tetap seukuran semula untuk jawaban pendek,
+            // tapi jawaban 4–6 digit melebar alih-alih terpotong.
+            className="flex h-16 min-w-32 items-center justify-center rounded-[var(--r-md)] px-4 text-[40px] font-black"
             style={{
               background: 'var(--c-surface)',
               border: '3px solid var(--c-line)',
@@ -361,6 +363,10 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               setTyped(v);
             }}
             onSubmit={() => answer(Number(typed))}
+            // Lebar input ikut soalnya. Konstanta 3 dulu membuat setiap soal
+            // berjawaban ≥1000 (9990, 999 × 9 = 8991, pembagian panjang) buntu:
+            // anak tidak bisa mengetik digit terakhirnya.
+            maxLength={question.maxDigits}
             disabled={feedback != null}
           />
         )}

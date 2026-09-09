@@ -4,10 +4,10 @@ import { QuestionScreen } from './QuestionScreen';
 import { ResultScreen } from './ResultScreen';
 import { OnboardingScreen } from './OnboardingScreen';
 import { MapScreen } from './MapScreen';
-import { Button } from '../../components/ui';
+import { Button, Keypad } from '../../components/ui';
 import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
-import { emptyModuleState } from '../../engine/types';
+import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
 import type { ModuleState } from '../../engine/types';
 import { session as fakeSession } from '../../engine/fixtures';
@@ -45,6 +45,75 @@ describe('Button — umpan balik harus benar-benar terlihat', () => {
       </Button>,
     );
     expect(screen.getByRole('button').style.fontSize).toBe('21px');
+  });
+});
+
+/**
+ * Keypad dulu terkunci di 3 digit lewat default diam-diam. Setiap soal berjawaban
+ * ≥1000 (g3-u1-m2 sampai 9990, dan seluruh Grade 4–6) jadi buntu: anak bisa
+ * mengetik tiga digit lalu keypadnya berhenti menanggapi.
+ */
+describe('Keypad — lebar input mengikuti soal', () => {
+  const type = (digits: string) => {
+    for (const d of digits) fireEvent.click(screen.getByRole('button', { name: d }));
+  };
+
+  it('menerima jawaban 4 digit kalau soalnya memang selebar itu', () => {
+    let value = '';
+    const { rerender } = render(
+      <Keypad value={value} onChange={(v) => (value = v)} onSubmit={() => {}} maxLength={4} />,
+    );
+    for (const d of '9990') {
+      fireEvent.click(screen.getByRole('button', { name: d }));
+      rerender(
+        <Keypad value={value} onChange={(v) => (value = v)} onSubmit={() => {}} maxLength={4} />,
+      );
+    }
+    expect(value).toBe('9990');
+  });
+
+  it('tetap berhenti di lebar yang diminta soal', () => {
+    let value = '';
+    const { rerender } = render(
+      <Keypad value={value} onChange={(v) => (value = v)} onSubmit={() => {}} maxLength={2} />,
+    );
+    for (const d of '1234') {
+      fireEvent.click(screen.getByRole('button', { name: d }));
+      rerender(
+        <Keypad value={value} onChange={(v) => (value = v)} onSubmit={() => {}} maxLength={2} />,
+      );
+    }
+    expect(value).toBe('12');
+  });
+
+  it('tidak pernah membiarkan anak mengetik dua puluh digit', () => {
+    let value = '';
+    const { rerender } = render(
+      <Keypad value={value} onChange={(v) => (value = v)} onSubmit={() => {}} maxLength={20} />,
+    );
+    for (let i = 0; i < 20; i++) {
+      fireEvent.click(screen.getByRole('button', { name: '7' }));
+      rerender(
+        <Keypad value={value} onChange={(v) => (value = v)} onSubmit={() => {}} maxLength={20} />,
+      );
+    }
+    expect(value).toHaveLength(MAX_ANSWER_DIGITS);
+  });
+
+  it('QuestionScreen meneruskan lebar soal ke keypad, bukan konstanta 3', () => {
+    // g3-u1-m2 adalah korban nyatanya: "9 thousands 9 hundreds 9 tens = ?" = 9990.
+    const base = createSession(moduleById('g3-u1-m2'), 'quiz', 1, 0);
+    const i = base.pending.findIndex((p) => p.question.type === 'keypad');
+    expect(i).toBeGreaterThanOrEqual(0);
+    const s = { ...base, pending: base.pending.slice(i) };
+    const q = s.pending[0]!.question;
+    expect(q.maxDigits).toBe(4);
+
+    render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    type(String(q.answer));
+    expect(screen.getByText(String(q.answer))).toBeInTheDocument();
   });
 });
 

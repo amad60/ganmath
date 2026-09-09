@@ -1,7 +1,7 @@
 import { validateRegistry, type Registry } from '../engine/unlock';
-import { enumerate, generateSet } from '../engine/generator';
+import { answerDigits, enumerate, generateSet } from '../engine/generator';
 import { mulberry32 } from '../engine/rng';
-import type { QType } from '../engine/types';
+import { MAX_ANSWER_DIGITS, type QType } from '../engine/types';
 import type { ContentModule } from './types';
 
 export type LintProblem = { moduleId: string; rule: string; detail: string };
@@ -22,6 +22,12 @@ export const RENDERABLE_TYPES: QType[] = [
   'compare-symbol',
   'number-line-drop',
 ];
+
+/**
+ * Tipe soal yang dijawab dengan mengetik di keypad, bukan menekan tombol pilihan.
+ * Hanya tipe inilah yang dibatasi lebar input — sisanya dijawab dengan tap.
+ */
+export const TYPED_TYPES: QType[] = ['keypad', 'missing-number'];
 
 /**
  * Kosakata dasar yang boleh dipakai tanpa diperkenalkan. Sisanya harus dideklarasikan
@@ -163,7 +169,36 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
     }
 
-    // 7. Aturan soal benar-benar bisa menghasilkan soal yang sah
+    // 7. Jawaban soal ketik harus muat di keypad — dan benar-benar bisa diketik.
+    //    Keypad hanya punya 0–9: tidak ada tanda minus, tidak ada titik desimal, dan
+    //    lebarnya terbatas. Aturan yang jawabannya di luar itu menghasilkan soal buntu
+    //    yang baru ketahuan saat anak menyerah di depannya. Ini sudah terjadi sekali
+    //    (keypad terkunci 3 digit sementara g3-u1-m2 berjawaban 9990), jadi sekarang
+    //    dijaga di sini sebelum modul Grade 4–6 ditulis.
+    for (const r of m.rules) {
+      if (!TYPED_TYPES.includes(r.type)) continue;
+      const digits = answerDigits(r);
+      if (digits > MAX_ANSWER_DIGITS) {
+        add(
+          m.id,
+          'input-width',
+          `rule "${r.type}" (${r.skill}) berjawaban ${digits} digit — keypad hanya menampung ${MAX_ANSWER_DIGITS}`,
+        );
+      }
+      for (const c of enumerate(r)) {
+        const a = r.answer(c);
+        if (!Number.isInteger(a) || a < 0) {
+          add(
+            m.id,
+            'input-width',
+            `rule "${r.type}" (${r.skill}) berjawaban ${a} — keypad tidak punya tanda minus atau titik desimal`,
+          );
+          break;
+        }
+      }
+    }
+
+    // 8. Aturan soal benar-benar bisa menghasilkan soal yang sah
     try {
       const { questions } = generateSet(m, 12, mulberry32(1), { requireCoverage: true });
       if (questions.length < 8) {

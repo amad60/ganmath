@@ -79,6 +79,13 @@ type LearnStep = {
 utamakan `choose-number` (3 opsi) agar `totalMs` tidak didominasi waktu mengetik — `keypad`
 dipakai mulai Grade 3 atau untuk Master Round.
 
+**Lebar input keypad tidak perlu ditulis di konten.** Sejak 2026-09-09 lebarnya diturunkan
+otomatis dari jawaban TERBESAR yang mungkin dihasilkan aturannya (`answerDigits` di
+`src/engine/generator.ts`), lalu dipakai `QuestionScreen`. Diambil per aturan, bukan per soal,
+supaya panjang input tidak membocorkan jawaban. Batas atasnya `MAX_ANSWER_DIGITS = 6` —
+aturan yang minta lebih, atau berjawaban negatif/pecahan (keypad tidak punya minus maupun
+titik desimal), ditolak linter lewat aturan `input-width`.
+
 ## 3. Komponen visual (ID tetap, dipakai lintas grade)
 
 `ten-frame` · `number-bond` · `number-line` · `base10-blocks` · `bar-model` · `array-grid` ·

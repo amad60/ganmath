@@ -1,19 +1,26 @@
+import { MAX_ANSWER_DIGITS } from '../../engine/types';
 import { Button } from './Button';
 
 export type KeypadProps = {
   value: string;
   onChange: (next: string) => void;
   onSubmit: () => void;
-  maxLength?: number;
+  /**
+   * Lebar input, dalam digit. WAJIB diisi: default diam-diam adalah cara bug ini
+   * lahir pertama kali — keypad berhenti di 3 digit sementara soalnya berjawaban
+   * 9990, jadi soalnya buntu dan tidak ada yang tahu sampai anak mencobanya.
+   */
+  maxLength: number;
   disabled?: boolean;
 };
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9'] as const;
 
 /** Keypad besar di layar — anak tidak pernah memakai keyboard sistem untuk angka. */
-export function Keypad({ value, onChange, onSubmit, maxLength = 3, disabled }: KeypadProps) {
+export function Keypad({ value, onChange, onSubmit, maxLength, disabled }: KeypadProps) {
+  const cap = Math.min(MAX_ANSWER_DIGITS, Math.max(1, Math.trunc(maxLength)));
   const push = (d: string) => {
-    if (value.length >= maxLength) return;
+    if (value.length >= cap) return;
     onChange(value === '0' ? d : value + d);
   };
 

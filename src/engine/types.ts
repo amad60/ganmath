@@ -125,6 +125,14 @@ export type Question = {
   /** Label untuk `choose-text` — layar merender options[choice], bukan angkanya. */
   options?: string[];
   visual?: QuestionVisual;
+  /**
+   * Lebar maksimum yang boleh diketik anak untuk soal input angka.
+   *
+   * Diturunkan dari jawaban TERBESAR yang mungkin dihasilkan aturannya, bukan dari
+   * jawaban soal yang sedang tampil: kalau per soal, panjang input jadi bocoran —
+   * anak tahu jawabannya tiga digit sebelum menghitung apa pun.
+   */
+  maxDigits: number;
   params: Record<string, number>;
 };
 
@@ -213,6 +221,17 @@ export const GRADE_THRESHOLDS: Record<Grade, Thresholds> = {
   5: { accuracy: 0.9, sessions: 2, sameDayAllowed: false, speedMs: 5000 },
   6: { accuracy: 0.9, sessions: 3, sameDayAllowed: false, speedMs: 4000 },
 };
+
+/**
+ * Batas atas lebar input angka di keypad.
+ *
+ * Lebar sebenarnya diturunkan per aturan soal (lihat `answerDigits`); konstanta ini
+ * hanya pagar terakhir supaya aturan konten yang salah tulis tidak pernah meminta
+ * anak mengetik dua puluh digit. Enam digit menampung seluruh bilangan yang ditulis
+ * anak sampai Grade 6 (999.999) dan masih muat di kotak jawaban selebar layar 390px.
+ * Dijaga aturan lint `input-width`.
+ */
+export const MAX_ANSWER_DIGITS = 6;
 
 /** Soal yang lebih lama dari ini dianggap anak teralih: dibuang dari hitungan kecepatan. */
 export const SPEED_OUTLIER_MS = 30_000;

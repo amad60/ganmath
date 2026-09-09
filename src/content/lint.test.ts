@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { lintContent } from './lint';
 import { all, registry } from './index';
+import { generateSet } from '../engine/generator';
+import { mulberry32 } from '../engine/rng';
 import type { ContentModule } from './types';
 
 describe('linter konten', () => {
@@ -98,6 +100,55 @@ describe('linter konten', () => {
     });
     const problems = lintContent(mods, reg(mods));
     expect(problems.some((p) => p.rule === 'learn-target')).toBe(true);
+  });
+
+  /**
+   * Bug nyata: keypad terkunci 3 digit sementara g3-u1-m2 berjawaban sampai 9990,
+   * jadi soalnya tidak bisa dijawab sama sekali. Linter tidak menangkapnya karena
+   * tidak tahu batas UI — sekarang tahu.
+   */
+  it('setiap soal ketik muat di keypadnya sendiri, di seluruh konten', () => {
+    for (const m of all) {
+      const { questions } = generateSet(m, 12, mulberry32(9));
+      for (const q of questions) {
+        if (q.choices || q.type === 'number-line-drop') continue;
+        expect(String(q.answer).length).toBeLessThanOrEqual(q.maxDigits);
+      }
+    }
+  });
+
+  it('menolak rule ketik yang jawabannya lebih lebar dari keypad', () => {
+    const mods = broken({
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'too-wide',
+          params: { a: [1, 9] },
+          answer: (p) => (p.a as number) * 1_000_000,
+          text: (p) => `${p.a} millions = ?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'input-width')).toBe(true);
+  });
+
+  it('menolak rule ketik yang jawabannya pecahan — keypad tidak punya titik desimal', () => {
+    const mods = broken({
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'half',
+          params: { a: [1, 9] },
+          answer: (p) => (p.a as number) / 2,
+          text: (p) => `Half of ${p.a} = ?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'input-width')).toBe(true);
   });
 
   it('menolak modul yang aturan soalnya terlalu sempit untuk satu sesi', () => {

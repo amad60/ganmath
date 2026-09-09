@@ -1,4 +1,4 @@
-import type { ModuleDef, Question, QuestionRule } from './types';
+import { MAX_ANSWER_DIGITS, type ModuleDef, type Question, type QuestionRule } from './types';
 import { randInt, shuffle, type Rng } from './rng';
 
 /** Semua kombinasi parameter yang sah untuk satu aturan (sudah lewat exclude). */
@@ -16,6 +16,23 @@ export function enumerate(rule: QuestionRule): Record<string, number>[] {
     if (combos.length > 20_000) throw new Error('QuestionRule terlalu besar; persempit params');
   }
   return rule.exclude ? combos.filter((c) => !rule.exclude!(c)) : combos;
+}
+
+/**
+ * Banyak digit jawaban TERBESAR yang mungkin dihasilkan sebuah aturan.
+ *
+ * Inilah lebar keypad yang dibutuhkan soal-soal aturan ini. Diambil dari seluruh
+ * ruang parameter, bukan dari satu soal, supaya panjang input tidak membocorkan
+ * jawaban. Tidak dipotong di sini: linter (`input-width`) perlu tahu kalau sebuah
+ * aturan benar-benar minta lebih dari yang bisa diketik anak.
+ */
+export function answerDigits(rule: QuestionRule, combos = enumerate(rule)): number {
+  let max = 0;
+  for (const p of combos) {
+    const a = rule.answer(p);
+    if (Number.isFinite(a)) max = Math.max(max, Math.abs(Math.trunc(a)));
+  }
+  return String(max).length;
 }
 
 function nearDistractors(answer: number, rng: Rng, unit: number): number[] {
@@ -92,7 +109,16 @@ export function generateSet(
 ): GeneratedSet {
   if (def.rules.length === 0) throw new Error(`Modul ${def.id} tidak punya QuestionRule`);
 
-  const pools = def.rules.map((rule) => ({ rule, combos: shuffle(rng, enumerate(rule)) }));
+  const pools = def.rules.map((rule) => {
+    const combos = enumerate(rule);
+    return {
+      rule,
+      combos: shuffle(rng, combos),
+      // Dihitung sekali per aturan: menghitung ulang per soal berarti meng-enumerate
+      // ribuan kombinasi untuk setiap soal yang dibuat.
+      maxDigits: Math.min(MAX_ANSWER_DIGITS, Math.max(1, answerDigits(rule, combos))),
+    };
+  });
   const cursor = new Array(pools.length).fill(0) as number[];
   const questions: Question[] = [];
   const seen = new Set<string>();
@@ -119,6 +145,7 @@ export function generateSet(
         skill: pool.rule.skill,
         text,
         answer,
+        maxDigits: pool.maxDigits,
         params,
         ...(pool.rule.range ? { range: pool.rule.range } : {}),
         ...(visual ? { visual } : {}),
