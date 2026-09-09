@@ -54,6 +54,18 @@ sepadan di `src/content/grade3/`.
 
 ---
 
+## Lanjutan sesudah kurikulum lengkap (keputusan user 2026-09-09)
+
+User memilih dua perbaikan teknis, lalu push dan berhenti. **`add-plot-point-type` sengaja
+TIDAK dikerjakan** — ditunda sampai ada bukti dari pemakaian anak sungguhan (Fase 5b), karena
+itu pekerjaan besar yang alasannya masih tebakan kita.
+
+- [ ] `fix-bars-and-grid` · sumbu berangka pada `Bars` + mode kotak pada `ArrayGrid`
+- [ ] `split-content-per-grade` · lazy-load konten per grade (unduhan awal 154 KB → ±seperlima)
+- [ ] `wrap-up` · build hijau + `git push` ke origin, lalu loop berhenti
+
+---
+
 ## Definition of done per unit
 
 1. Semua modul unit ditulis ke `src/content/grade<N>/u<M>/m<k>-<slug>.ts`.
