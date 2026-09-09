@@ -5,10 +5,10 @@ Semua kode, materi, aset, dan dokumen proyek **wajib** disimpan di dalam folder 
 Baca file ini lebih dulu sebelum mengerjakan task apa pun di proyek ini.
 
 **Nama app: GanMath.**
-Status: **Grade 1–5 LENGKAP (201 modul) — app live dan sudah beberapa ronde perbaikan UX.**
+Status: **KURIKULUM LENGKAP — Grade 1–6, 240 modul. App live dan sudah beberapa ronde perbaikan UX.**
 - Live: https://ganmath.netlify.app · Repo: https://github.com/amad60/ganmath (private)
-- 295 test, PWA offline penuh.
-- Grade 6 dibangun satu unit per iterasi; status per unit di `docs/curriculum/BUILD-STATE.md`.
+- 340 test, PWA offline penuh.
+- Riwayat pembangunan Grade 4–6 + keputusan yang tertunda: `docs/curriculum/BUILD-STATE.md`.
 - Berikutnya **uji dengan anak** — checklist di `docs/tech/device-checklist.md`.
   Riwayat temuan & perbaikan UX: `docs/design/usability-review.md`.
 Terakhir diperbarui: 2026-09-08

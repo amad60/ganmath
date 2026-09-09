@@ -49,7 +49,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul → commit `a7d7b91`; jebakan volume = luas permukaan diajarkan di Learn lalu dipagari `exclude`
 - [x] `add-coordinate-visual` · `CoordinatePlane` + `coordinates.ts`, commit `07ebf11` — `VisualId 'coordinate-grid'` tak lagi label kosong
 - [x] `g6-u6` · Coordinates — sistem koordinat, memplot titik & bangun · 4 modul → commit `9812025`; soal kuadran pakai `choose-text`+`QUADRANT_NAMES`, bukan `choose-number` (pengecoh `near` akan memunculkan kuadran 0/5/6 yang mustahil)
-- [ ] `g6-u7` · Statistics & Chance — mean/median/modus, peluang percobaan acak · 6 modul
+- [x] `g6-u7` · Statistics & Chance — mean/median/modus, peluang percobaan acak · 6 modul → commit `93d8ca5`; rantai prereq G6 diverifikasi utuh (39 modul)
 - [ ] `g6-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
 
 ---

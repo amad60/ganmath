@@ -1,6 +1,10 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Grade 1–5 LENGKAP — 201 modul, 295 test.** Berikutnya Grade 6, kelas terakhir.
+Status keseluruhan: **KURIKULUM LENGKAP — Grade 1–6, 240 modul, 340 test.**
+
+G1 43 · G2 38 · G3 40 · G4 40 · G5 40 · G6 39. Rantai prasyarat tiap grade diverifikasi utuh:
+satu rantai lurus dari modul pertama grade itu, hanya modul pembuka yang `prereq: []`
+(tiap kelas bisa dimasuki langsung), tidak ada modul yang tak terjangkau di `pathOrder`.
 
 Grade 4 (40 modul) dibangun satu unit per iterasi lewat loop, dengan status per unit di
 [`docs/curriculum/BUILD-STATE.md`](curriculum/BUILD-STATE.md). Tiga perbaikan komponen lahir
@@ -14,6 +18,13 @@ Grade 5 (40 modul) menambah satu komponen lagi dengan alasan yang sama: `add-sol
 (`Solid3D` + `ShapeNet` + aturan murni `solids.ts`) — sebelumnya tidak ada satu pun visual
 bangun ruang yang benar-benar dirender, dan modul "Solid Shapes" Grade 1 mengakalinya dengan
 emoji 📦.
+
+Grade 6 (39 modul) menambah dua komponen terakhir: `add-circle-visual` (`Circle` + `circles.ts`
+dengan satu konstanta `PI = 3.14`) dan `add-coordinate-visual` (`CoordinatePlane` +
+`coordinates.ts`). Yang kedua menutup `VisualId 'coordinate-grid'` yang selama ini terdaftar
+tanpa renderer — jebakan yang sama dengan `shape-3d`. Status per unit dan seluruh keputusan
+yang diambil sepanjang jalan tercatat di
+[`docs/curriculum/BUILD-STATE.md`](curriculum/BUILD-STATE.md).
 
 - Live: **https://ganmath.netlify.app**
 - Repo: **https://github.com/amad60/ganmath** (private)
@@ -39,7 +50,7 @@ Baca `../CLAUDE.md` dulu untuk arahan produk.
 | 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, live di Netlify | ✅ selesai — 13/13 langkah |
 | 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | 🔜 berikutnya |
 | 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ✅ selesai — 43/43 |
-| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | 🟨 jalan — G2 ✅, G3 ✅, G4 ✅, G5 ✅, G6 belum |
+| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | ✅ selesai — G2–G6 lengkap |
 
 ## Catatan urutan
 - Fase 5 sengaja hanya Grade 1: lebih baik satu kelas yang benar-benar enak dipakai daripada
