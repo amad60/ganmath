@@ -168,6 +168,16 @@ import { frequencyTable } from './grade4/u7/m2-frequency-table';
 import { compareTheData } from './grade4/u7/m3-compare-the-data';
 import { findTheMean } from './grade4/u7/m4-find-the-mean';
 
+// ---- Grade 5
+import { makeBottomsMatch } from './grade5/u1/m1-make-bottoms-match';
+import { addUnlikeBottoms } from './grade5/u1/m2-add-unlike-bottoms';
+import { findACommonBottom } from './grade5/u1/m3-find-a-common-bottom';
+import { mixedNumberSums } from './grade5/u1/m4-mixed-number-sums';
+import { fractionTimesWhole } from './grade5/u1/m5-fraction-times-whole';
+import { fractionTimesFraction } from './grade5/u1/m6-fraction-times-fraction';
+import { divideByAFraction } from './grade5/u1/m7-divide-by-a-fraction';
+import { tidyUpTheAnswer } from './grade5/u1/m8-tidy-up-the-answer';
+
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
  * tidak ada migrasi data yang diperlukan, karena status `locked` tidak pernah disimpan.
@@ -381,6 +391,17 @@ export const all: ContentModule[] = [
   frequencyTable,
   compareTheData,
   findTheMean,
+
+  // ===== Grade 5 =====
+  // Unit 1 — Fraction Operations
+  makeBottomsMatch,
+  addUnlikeBottoms,
+  findACommonBottom,
+  mixedNumberSums,
+  fractionTimesWhole,
+  fractionTimesFraction,
+  divideByAFraction,
+  tidyUpTheAnswer,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -481,4 +502,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g4-u5': { title: 'Unit 5 · Decimals Begin', color: 'var(--c-unit-5)' },
   'g4-u6': { title: 'Unit 6 · Angles & Area', color: 'var(--c-unit-6)' },
   'g4-u7': { title: 'Unit 7 · Data', color: 'var(--c-unit-7)' },
+  'g5-u1': { title: 'Unit 1 · Fraction Operations', color: 'var(--c-unit-1)' },
 };
