@@ -175,3 +175,15 @@ body {
     transform: rotate(0deg);
   }
 }
+
+/* Batang bar chart yang tumbuh dari sumbu nol ke nilainya. Gerakannya SENDIRI yang
+   mengatakan bahwa panjang batang diukur dari nol — bukan dari tepi gambar. Skala
+   transform murni, tanpa layout yang dihitung ulang tiap frame. */
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

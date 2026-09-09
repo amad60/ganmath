@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
 import { ArrayGrid } from './ArrayGrid';
+import { Bars } from './Bars';
 import { Base10Blocks } from './Base10Blocks';
 import { TallyChart } from './TallyChart';
 import { RectShape } from './RectShape';
@@ -27,6 +28,7 @@ import {
   quadrantOf,
   rectCorners,
 } from './coordinates';
+import { maxTicksFor, stepFor, ticksFor } from './scale';
 import { ShapeNet } from './ShapeNet';
 import {
   NET_SOLIDS,
@@ -379,6 +381,11 @@ function drawnPoints(container: HTMLElement): [number, number][] {
     const cy = Number(el.getAttribute('cy'));
     const r = Number(el.getAttribute('r'));
     pts.push([cx - r, cy - r], [cx + r, cy + r]);
+  }
+  for (const el of container.querySelectorAll('rect')) {
+    const x = Number(el.getAttribute('x'));
+    const y = Number(el.getAttribute('y'));
+    pts.push([x, y], [x + Number(el.getAttribute('width')), y + Number(el.getAttribute('height'))]);
   }
   for (const el of container.querySelectorAll('text')) {
     pts.push([Number(el.getAttribute('x')), Number(el.getAttribute('y'))]);
@@ -1160,5 +1167,233 @@ describe('CoordinatePlane — dua angka untuk satu titik', () => {
       'coordinate grid, point A at (3, 2)',
     );
     expect(container.querySelectorAll('[data-part="guide"]')).toHaveLength(2);
+  });
+});
+
+describe('Bars — batang perbandingan dan batang bernilai', () => {
+  const bars = (c: HTMLElement) => [...c.querySelectorAll('[data-part="bar"]')];
+  const tickLabels = (c: HTMLElement) =>
+    [...c.querySelectorAll('[data-part="tick-label"]')].map((t) => Number(t.textContent));
+
+  it('tanpa `values` batang perbandingan tidak berubah sedikit pun', () => {
+    // Ratusan modul Grade 1–6 memakai jalur ini. Sumbu berangka yang datang
+    // diam-diam akan mengubah tampilan semuanya sekaligus tanpa ada yang meminta.
+    const { container } = render(<Bars lengths={[0.8, 0.4]} labels={['A', 'B']} />);
+    expect(container.querySelector('svg')).toBeNull();
+    const spans = [...container.querySelectorAll('span')];
+    expect(spans.map((s) => s.textContent)).toEqual(['A', '', 'B', '']);
+    const drawn = spans.filter((s) => s.style.background);
+    expect(drawn.map((s) => s.style.width)).toEqual(['80%', '40%']);
+    for (const s of drawn) {
+      expect(s.style.borderRadius).toBe('999px');
+      expect(s.style.height).toBe('26px');
+      expect(s.style.boxShadow).toBe('');
+    }
+    expect(container.querySelector('[aria-label="Compare lengths"]')).not.toBeNull();
+  });
+
+  it('materi lama memakai jalur render yang sama dan tetap tanpa sumbu', () => {
+    const { container } = render(
+      <LearnVisualView
+        visual={{ kind: 'bars', lengths: [0.9, 0.5, 0.3], labels: ['A', 'B', 'C'] }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    expect(container.querySelector('svg')).toBeNull();
+    expect(
+      [...container.querySelectorAll('span')]
+        .filter((s) => s.style.background)
+        .map((s) => s.style.width),
+    ).toEqual(['90%', '50%', '30%']);
+  });
+
+  it('`values` menyalakan sumbu berangka — itu yang membuat batang bisa DIBACA', () => {
+    const { container } = render(<Bars values={[8, 5, 12]} labels={['A', 'B', 'C']} />);
+    expect(container.querySelectorAll('[data-part="axis"]')).toHaveLength(2);
+    expect(bars(container)).toHaveLength(3);
+    expect(tickLabels(container).length).toBeGreaterThan(2);
+  });
+
+  it('angka sumbu memakai ulang aturan garis bilangan, bukan penomoran ketiga', () => {
+    // Sama seperti CoordinatePlane: setiap angka jatuh di kelipatan `stepFor`, dan
+    // jumlahnya tidak pernah melebihi anggaran `maxTicksFor`. Tanpa ini muncul lagi
+    // label 3125 / 6250 / 9375 yang dulu membuat garis bilangan tak terbaca.
+    for (const values of [[8, 5, 12], [3], [300, 150], [10000], [7, 7, 7], [0.5, 1.5]]) {
+      const { container } = render(<Bars values={values} />);
+      const labelled = tickLabels(container);
+      const top = labelled[labelled.length - 1] as number;
+      const step = stepFor(0, top);
+      expect(labelled[0]).toBe(0);
+      expect(top).toBeGreaterThanOrEqual(Math.max(...values));
+      expect(labelled.length).toBeLessThanOrEqual(maxTicksFor(0, top));
+      for (const t of labelled) {
+        expect(Math.abs(Math.round(t / step) - t / step)).toBeLessThan(1e-6);
+      }
+      // Jarak antar angka selalu sama — sumbu yang tidak rata tidak bisa dibaca.
+      const gaps = labelled.slice(1).map((t, i) => t - (labelled[i] as number));
+      for (const g of gaps) expect(g).toBeCloseTo(gaps[0] as number, 6);
+    }
+  });
+
+  it('data modul boleh menimpa langkahnya, seperti garis bilangan', () => {
+    const { container } = render(<Bars values={[1, 2]} max={2} step={0.5} />);
+    expect(tickLabels(container)).toEqual(ticksFor(0, 2, 0.5, 21));
+  });
+
+  it('panjang batang sebanding dengan nilainya — kalau tidak, gambarnya berbohong', () => {
+    const { container } = render(<Bars values={[4, 8, 2]} />);
+    const w = bars(container).map((b) => Number(b.getAttribute('width')));
+    expect((w[1] as number) / (w[0] as number)).toBeCloseTo(2, 2);
+    expect((w[0] as number) / (w[2] as number)).toBeCloseTo(2, 2);
+  });
+
+  it('batang bernilai nol tetap terlihat sebagai batang, bukan baris yang hilang', () => {
+    const { container } = render(<Bars values={[0, 5]} labels={['A', 'B']} />);
+    expect(bars(container)).toHaveLength(2);
+    expect(Number(bars(container)[0]?.getAttribute('width'))).toBeGreaterThan(0);
+  });
+
+  it('`max` dari data modul tidak pernah memotong batang yang lebih tinggi', () => {
+    const { container } = render(<Bars values={[12]} max={5} />);
+    const labelled = tickLabels(container);
+    expect(labelled[labelled.length - 1]).toBeGreaterThanOrEqual(12);
+  });
+
+  it('menulis nilai di ujung batang hanya kalau diminta — kalau tidak, jawaban bocor', () => {
+    const values = (c: HTMLElement) =>
+      [...c.querySelectorAll('[data-part="bar-value"]')].map((t) => t.textContent);
+    expect(values(render(<Bars values={[8, 5]} />).container)).toEqual([]);
+    expect(values(render(<Bars values={[8, 5]} showValues />).container)).toEqual(['8', '5']);
+  });
+
+  it('label pembaca layar menyebut nilai yang memang sudah terlihat di sumbu', () => {
+    const aria = (el: ReactElement) =>
+      render(el).container.querySelector('svg')?.getAttribute('aria-label');
+    expect(aria(<Bars values={[8, 5]} labels={['A', 'B']} />)).toBe(
+      'bar chart, A is 8, B is 5',
+    );
+    expect(aria(<Bars values={[8]} />)).toBe('bar chart, bar 1 is 8');
+  });
+
+  const BAR_CASES: { values: number[]; labels?: string[] }[] = [
+    { values: [8, 5, 12], labels: ['A', 'B', 'C'] },
+    { values: [3] },
+    { values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+    { values: [10000, 2500], labels: ['Mon', 'Tue'] },
+    { values: [0.5, 1.5, 2], labels: ['A', 'B', 'C'] },
+    { values: [7, 7, 7, 7], labels: ['Red', 'Blue', 'Green', 'Yellow'] },
+  ];
+  const BAR_OPTS = [{}, { showValues: true }, { max: 20 }, { step: 5, max: 25 }];
+
+  it('gambar tetap di dalam bingkai untuk semua data dan kombinasi label', () => {
+    for (const c of BAR_CASES) {
+      for (const opts of BAR_OPTS) {
+        expectInsideViewBox(render(<Bars {...c} {...opts} />).container);
+      }
+    }
+  });
+
+  it('LEBAR TEKS ikut menentukan viewBox, bukan cuma titik jangkarnya', () => {
+    // Regresi yang sama dengan Angle, Solid3D, Circle, dan CoordinatePlane: angka
+    // "10000" di ujung sumbu menonjol setengah lebarnya ke kanan, dan nama batang
+    // menonjol ke kiri nol — dua-duanya di luar kotak yang ditebak dari gambarnya.
+    for (const c of BAR_CASES) {
+      for (const opts of BAR_OPTS) {
+        const { container } = render(<Bars {...c} {...opts} />);
+        const svg = container.querySelector('svg') as SVGSVGElement;
+        const [vx, vy, vw, vh] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+        for (const t of container.querySelectorAll('text')) {
+          const font = Number(t.getAttribute('font-size'));
+          const w = (t.textContent ?? '').length * font * 0.6;
+          const x = Number(t.getAttribute('x'));
+          const y = Number(t.getAttribute('y'));
+          const anchor = t.getAttribute('text-anchor');
+          const left = anchor === 'end' ? x - w : anchor === 'start' ? x : x - w / 2;
+          expect(left).toBeGreaterThanOrEqual(vx as number);
+          expect(left + w).toBeLessThanOrEqual((vx as number) + (vw as number));
+          expect(y - font / 2).toBeGreaterThanOrEqual(vy as number);
+          expect(y + font / 2).toBeLessThanOrEqual((vy as number) + (vh as number));
+        }
+      }
+    }
+  });
+
+  it('gambar muat di layar 390px di setiap data dan kombinasi label', () => {
+    for (const c of BAR_CASES) {
+      for (const opts of BAR_OPTS) {
+        const svg = render(<Bars {...c} {...opts} />).container.querySelector(
+          'svg',
+        ) as SVGSVGElement;
+        expect(Number(svg.getAttribute('width'))).toBeLessThanOrEqual(342);
+        expect(Number(svg.getAttribute('height'))).toBeLessThanOrEqual(342);
+      }
+    }
+  });
+
+  it('materi memakai jalur render yang sama dengan manipulatif lain', () => {
+    const { container } = render(
+      <LearnVisualView
+        visual={{ kind: 'bars', values: [8, 5], labels: ['A', 'B'], showValues: true }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    expect(container.querySelector('svg')?.getAttribute('aria-label')).toBe(
+      'bar chart, A is 8, B is 5',
+    );
+    expect(container.querySelectorAll('[data-part="bar-value"]')).toHaveLength(2);
+  });
+});
+
+describe('ArrayGrid — penanda bulat untuk benda, petak persegi untuk luas', () => {
+  const cells = (c: HTMLElement) => [...c.querySelectorAll('span')];
+
+  it('penanda bulat tidak berubah — modul perkalian dan perseratusan masih benar', () => {
+    // `array-grid` dipakai dari g2 sampai g6; di sana yang dihitung BENDA, dan
+    // bulat masih bacaan yang benar. Mode kotak wajib diminta sendiri.
+    const { container } = render(<ArrayGrid rows={3} cols={4} />);
+    expect(container.querySelector('[aria-label="3 rows of 4"]')).not.toBeNull();
+    expect(container.querySelector('.gap-1\\.5')).not.toBeNull();
+    for (const s of cells(container)) {
+      expect(s.style.borderRadius).toBe('999px');
+      expect(s.style.boxShadow).toBe('');
+    }
+  });
+
+  it('mode kotak menggambar persegi yang berdempetan — itu ARTI menutup bidang', () => {
+    const { container } = render(<ArrayGrid rows={3} cols={4} square />);
+    expect(container.querySelector('[aria-label="3 rows of 4 squares"]')).not.toBeNull();
+    // Tidak ada celah antar petak: bidangnya harus tampak tertutup habis.
+    expect(container.querySelector('.gap-1\\.5')).toBeNull();
+    for (const s of cells(container)) {
+      expect(s.style.borderRadius).toBe('3px');
+      // Garis pemisah, kalau tidak seluruh bidang jadi satu blok yang tak terhitung.
+      expect(s.style.boxShadow).not.toBe('');
+    }
+  });
+
+  it('jumlah petak tetap baris × kolom, dan sorot baris tetap bekerja', () => {
+    const { container } = render(<ArrayGrid rows={3} cols={5} square highlightRow={0} />);
+    expect(cells(container)).toHaveLength(15);
+    const highlighted = cells(container).filter((s) =>
+      s.style.background.includes('--c-unit-3'),
+    );
+    expect(highlighted).toHaveLength(5);
+  });
+
+  it('materi memakai jalur render yang sama dengan manipulatif lain', () => {
+    const { container } = render(
+      <LearnVisualView
+        visual={{ kind: 'array', rows: 3, cols: 4, square: true }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    expect(container.querySelector('[aria-label="3 rows of 4 squares"]')).not.toBeNull();
+    expect(container.querySelectorAll('span')).toHaveLength(12);
   });
 });

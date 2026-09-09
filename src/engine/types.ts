@@ -86,13 +86,33 @@ export type QuestionVisual =
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
   | { kind: 'base10'; hundreds?: number; tens: number; ones: number }
   | { kind: 'shape2d'; name: ShapeName; showCorners?: boolean }
-  | { kind: 'bars'; lengths: number[]; labels?: string[] }
+  | {
+      kind: 'bars';
+      /** Panjang relatif 0..1 — batang perbandingan, tanpa sumbu. */
+      lengths?: number[];
+      /** Nilai tiap batang. Mengisinya menyalakan sumbu berangka. */
+      values?: number[];
+      /** Nilai tertinggi di sumbu. Kosong = diturunkan dari nilai terbesarnya. */
+      max?: number;
+      /** Menimpa langkah otomatis. Isi hanya untuk sumbu pecahan/desimal. */
+      step?: number;
+      /** Tulis nilai di ujung tiap batang. Matikan saat itu yang ditanyakan. */
+      showValues?: boolean;
+      labels?: string[];
+    }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
   | { kind: 'clock'; hour: number; minute: number }
   | { kind: 'money'; items: number[] }
   | { kind: 'tally'; count: number }
   | { kind: 'rect'; w: number; h: number; unit?: string; showCorners?: boolean }
-  | { kind: 'array'; rows: number; cols: number; highlightRow?: number }
+  | {
+      kind: 'array';
+      rows: number;
+      cols: number;
+      highlightRow?: number;
+      /** Gambar petak persegi berdempetan, bukan penanda bulat. Untuk luas. */
+      square?: boolean;
+    }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | {
       kind: 'number-line';

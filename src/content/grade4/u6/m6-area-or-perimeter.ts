@@ -63,8 +63,8 @@ export const areaOrPerimeter: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Area is all the parts inside.',
-      visual: { kind: 'array', rows: 3, cols: 5 },
+      prompt: 'Area is all the squares inside.',
+      visual: { kind: 'array', rows: 3, cols: 5, square: true },
       action: 'watch',
     },
     {

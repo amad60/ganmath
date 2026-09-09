@@ -17,13 +17,13 @@ export * from './circles';
 export * from './coordinates';
 
 export { Base10Blocks } from './Base10Blocks';
-export { Bars } from './Bars';
+export { Bars, type BarsProps } from './Bars';
 export { FractionShape } from './FractionShape';
 export { Clock } from './Clock';
 export { Money, formatRupiah } from './Money';
 export { TallyChart } from './TallyChart';
 export { Pictogram } from './Pictogram';
-export { ArrayGrid } from './ArrayGrid';
+export { ArrayGrid, type ArrayGridProps } from './ArrayGrid';
 export { RectShape } from './RectShape';
 export { useReducedMotion, teachingDuration } from './useReducedMotion';
 export * from './scale';

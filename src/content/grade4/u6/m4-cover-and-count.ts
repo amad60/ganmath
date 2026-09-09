@@ -11,9 +11,10 @@ const areaOf = (p: Record<string, number>) => (p.r as number) * (p.c as number);
  * dan menghitungnya. Rumusnya baru datang di m5, sebagai jalan pintas untuk sesuatu
  * yang sudah anak percaya.
  *
- * Catatan komponen: `array-grid` menggambar penanda BULAT, bukan kotak. Karena itu
- * teksnya memakai kata "parts" — menulis "squares" untuk gambar yang bulat membuat
- * kata dan gambar bertengkar, dan anak selalu memercayai gambar.
+ * Gambarnya memakai `array-grid` mode PERSEGI (`square`). Petak yang berdempetan
+ * itulah gagasannya: bidang tertutup habis tanpa celah. Penanda bulat — bentuk lama
+ * komponen ini — memaksa teksnya memakai kata "parts", dan kata itu justru menutupi
+ * yang sedang diajarkan.
  */
 export const coverAndCount: ContentModule = {
   id: 'g4-u6-m4',
@@ -40,14 +41,14 @@ export const coverAndCount: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Three rows of four parts.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      prompt: 'Three rows of four squares.',
+      visual: { kind: 'array', rows: 3, cols: 4, square: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
-      prompt: 'One row holds four parts.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0 },
+      prompt: 'One row holds four squares.',
+      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0, square: true },
       action: 'watch',
     },
     {
@@ -65,8 +66,8 @@ export const coverAndCount: ContentModule = {
       skill: 'area-count',
       params: { r: [2, 6], c: [2, 8] },
       answer: areaOf,
-      text: () => 'How many parts cover it?',
-      visual: (p) => ({ kind: 'array', rows: p.r as number, cols: p.c as number }),
+      text: () => 'How many squares cover it?',
+      visual: (p) => ({ kind: 'array', rows: p.r as number, cols: p.c as number, square: true }),
       distractors: 'near',
       // Miskonsepsi khas: menjumlah baris dan kolom alih-alih mengalikannya.
       misconception: (p) => (p.r as number) + (p.c as number),
@@ -79,7 +80,7 @@ export const coverAndCount: ContentModule = {
       params: { r: [2, 6], c: [2, 8] },
       answer: areaOf,
       text: (p) => `${p.r} rows of ${p.c}. What is the area?`,
-      visual: (p) => ({ kind: 'array', rows: p.r as number, cols: p.c as number }),
+      visual: (p) => ({ kind: 'array', rows: p.r as number, cols: p.c as number, square: true }),
     },
   ],
 };

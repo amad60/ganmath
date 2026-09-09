@@ -80,7 +80,16 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
         />
       );
     case 'bars':
-      return <Bars lengths={visual.lengths} labels={visual.labels} />;
+      return (
+        <Bars
+          lengths={visual.lengths}
+          values={visual.values}
+          max={visual.max}
+          step={visual.step}
+          showValues={visual.showValues}
+          labels={visual.labels}
+        />
+      );
     case 'fraction':
       return (
         <FractionShape
@@ -103,7 +112,12 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       );
     case 'array':
       return (
-        <ArrayGrid rows={visual.rows} cols={visual.cols} highlightRow={visual.highlightRow} />
+        <ArrayGrid
+          rows={visual.rows}
+          cols={visual.cols}
+          highlightRow={visual.highlightRow}
+          square={visual.square}
+        />
       );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;

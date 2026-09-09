@@ -38,8 +38,8 @@ export const areaOfARectangle: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Three rows of four parts.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      prompt: 'Three rows of four squares.',
+      visual: { kind: 'array', rows: 3, cols: 4, square: true },
       action: 'watch',
     },
     {

@@ -122,7 +122,16 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
         />
       );
     case 'bars':
-      return <Bars lengths={visual.lengths} labels={visual.labels} />;
+      return (
+        <Bars
+          lengths={visual.lengths}
+          values={visual.values}
+          max={visual.max}
+          step={visual.step}
+          showValues={visual.showValues}
+          labels={visual.labels}
+        />
+      );
     case 'fraction':
       return (
         <FractionShape
@@ -155,7 +164,12 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
       );
     case 'array':
       return (
-        <ArrayGrid rows={visual.rows} cols={visual.cols} highlightRow={visual.highlightRow} />
+        <ArrayGrid
+          rows={visual.rows}
+          cols={visual.cols}
+          highlightRow={visual.highlightRow}
+          square={visual.square}
+        />
       );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
