@@ -62,7 +62,7 @@ itu pekerjaan besar yang alasannya masih tebakan kita.
 
 - [x] `fix-bars-and-grid` · `Bars` prop `values` menyalakan sumbu (pakai ulang `scale.ts`), `ArrayGrid` prop `square` opt-in; commit `04643cf`. Konten yang ikut: `g4-u6-m4/m5/m6` ("parts" → "squares"). Unit data G4/G5/G6 **bisa** memakai batang bernilai sekarang — sengaja belum ditulis ulang.
 - [x] `split-content-per-grade` · **DISELIDIKI LALU DITOLAK** — tidak ada perubahan kode. Alasan di bawah.
-- [ ] `wrap-up` · build hijau + `git push` ke origin, lalu loop berhenti
+- [x] `wrap-up` · build hijau + `git push` ke origin, lalu loop berhenti
 
 ### Kenapa `split-content-per-grade` tidak dikerjakan (2026-09-09)
 
