@@ -224,6 +224,12 @@ import { shareByRatio } from './grade6/u2/m4-share-by-ratio';
 import { mapScale } from './grade6/u2/m5-map-scale';
 import { moreMeansMore } from './grade6/u2/m6-more-means-more';
 import { moreMeansLess } from './grade6/u2/m7-more-means-less';
+import { letterForANumber } from './grade6/u3/m1-letter-for-a-number';
+import { writeWithALetter } from './grade6/u3/m2-write-with-a-letter';
+import { findTheValue } from './grade6/u3/m3-find-the-value';
+import { undoPlusAndMinus } from './grade6/u3/m4-undo-plus-and-minus';
+import { undoTimesAndDivide } from './grade6/u3/m5-undo-times-and-divide';
+import { followTheRule } from './grade6/u3/m6-follow-the-rule';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -504,6 +510,13 @@ export const all: ContentModule[] = [
   mapScale,
   moreMeansMore,
   moreMeansLess,
+  // Unit 3 — Algebra Begins
+  letterForANumber,
+  writeWithALetter,
+  findTheValue,
+  undoPlusAndMinus,
+  undoTimesAndDivide,
+  followTheRule,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -613,4 +626,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g5-u7': { title: 'Unit 7 · Data & Speed', color: 'var(--c-unit-7)' },
   'g6-u1': { title: 'Unit 1 · Integers', color: 'var(--c-unit-1)' },
   'g6-u2': { title: 'Unit 2 · Ratio & Proportion', color: 'var(--c-unit-2)' },
+  'g6-u3': { title: 'Unit 3 · Algebra Begins', color: 'var(--c-unit-3)' },
 };
