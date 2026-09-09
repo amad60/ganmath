@@ -139,6 +139,12 @@ import { threeDigitsTimesOne } from './grade4/u2/m4-three-digits-times-one';
 import { divideTensFirst } from './grade4/u2/m5-divide-tens-first';
 import { divideWithRemainder } from './grade4/u2/m6-divide-with-remainder';
 import { longDivisionStart } from './grade4/u2/m7-long-division-start';
+import { findTheFactors } from './grade4/u3/m1-find-the-factors';
+import { countTheMultiples } from './grade4/u3/m2-count-the-multiples';
+import { dividesExactly } from './grade4/u3/m3-divides-exactly';
+import { primeOrNot } from './grade4/u3/m4-prime-or-not';
+import { commonFactors } from './grade4/u3/m5-common-factors';
+import { commonMultiples } from './grade4/u3/m6-common-multiples';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -320,6 +326,13 @@ export const all: ContentModule[] = [
   divideTensFirst,
   divideWithRemainder,
   longDivisionStart,
+  // Unit 3 — Factors & Multiples
+  findTheFactors,
+  countTheMultiples,
+  dividesExactly,
+  primeOrNot,
+  commonFactors,
+  commonMultiples,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -415,4 +428,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g3-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
   'g4-u1': { title: 'Unit 1 · Big Numbers', color: 'var(--c-unit-1)' },
   'g4-u2': { title: 'Unit 2 · Multiply & Divide Bigger', color: 'var(--c-unit-2)' },
+  'g4-u3': { title: 'Unit 3 · Factors & Multiples', color: 'var(--c-unit-3)' },
 };
