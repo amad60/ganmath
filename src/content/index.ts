@@ -210,6 +210,14 @@ import { howFarDidItGo } from './grade5/u7/m2-how-far-did-it-go';
 import { howLongDidItTake } from './grade5/u7/m3-how-long-did-it-take';
 import { readTheData } from './grade5/u7/m4-read-the-data';
 
+// ---- Grade 6
+import { belowZero } from './grade6/u1/m1-below-zero';
+import { leftOfZero } from './grade6/u1/m2-left-of-zero';
+import { colderOrWarmer } from './grade6/u1/m3-colder-or-warmer';
+import { addAcrossZero } from './grade6/u1/m4-add-across-zero';
+import { takeAwayAcrossZero } from './grade6/u1/m5-take-away-across-zero';
+import { howFarFromZero } from './grade6/u1/m6-how-far-from-zero';
+
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
  * tidak ada migrasi data yang diperlukan, karena status `locked` tidak pernah disimpan.
@@ -472,6 +480,15 @@ export const all: ContentModule[] = [
   howFarDidItGo,
   howLongDidItTake,
   readTheData,
+
+  // ================= Grade 6 =================
+  // Unit 1 — Integers
+  belowZero,
+  leftOfZero,
+  colderOrWarmer,
+  addAcrossZero,
+  takeAwayAcrossZero,
+  howFarFromZero,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -579,4 +596,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g5-u5': { title: 'Unit 5 · Volume & Measurement', color: 'var(--c-unit-5)' },
   'g5-u6': { title: 'Unit 6 · Shapes in Space', color: 'var(--c-unit-6)' },
   'g5-u7': { title: 'Unit 7 · Data & Speed', color: 'var(--c-unit-7)' },
+  'g6-u1': { title: 'Unit 1 · Integers', color: 'var(--c-unit-1)' },
 };
