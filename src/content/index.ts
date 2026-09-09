@@ -244,6 +244,12 @@ import { rightThenUp } from './grade6/u6/m1-right-then-up';
 import { sayThePair } from './grade6/u6/m2-say-the-pair';
 import { allFourQuadrants } from './grade6/u6/m3-all-four-quadrants';
 import { shapesOnTheGrid } from './grade6/u6/m4-shapes-on-the-grid';
+import { meanAgain } from './grade6/u7/m1-mean-again';
+import { theMiddleValue } from './grade6/u7/m2-the-middle-value';
+import { mostOften } from './grade6/u7/m3-most-often';
+import { pickTheRightOne } from './grade6/u7/m4-pick-the-right-one';
+import { chanceAsANumber } from './grade6/u7/m5-chance-as-a-number';
+import { tryItManyTimes } from './grade6/u7/m6-try-it-many-times';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -548,6 +554,13 @@ export const all: ContentModule[] = [
   sayThePair,
   allFourQuadrants,
   shapesOnTheGrid,
+  // Unit 7 — Statistics & Chance
+  meanAgain,
+  theMiddleValue,
+  mostOften,
+  pickTheRightOne,
+  chanceAsANumber,
+  tryItManyTimes,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -661,4 +674,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g6-u4': { title: 'Unit 4 · Circles', color: 'var(--c-unit-4)' },
   'g6-u5': { title: 'Unit 5 · Solids', color: 'var(--c-unit-5)' },
   'g6-u6': { title: 'Unit 6 · Coordinates', color: 'var(--c-unit-6)' },
+  'g6-u7': { title: 'Unit 7 · Statistics & Chance', color: 'var(--c-unit-7)' },
 };
