@@ -60,7 +60,7 @@ User memilih dua perbaikan teknis, lalu push dan berhenti. **`add-plot-point-typ
 TIDAK dikerjakan** — ditunda sampai ada bukti dari pemakaian anak sungguhan (Fase 5b), karena
 itu pekerjaan besar yang alasannya masih tebakan kita.
 
-- [ ] `fix-bars-and-grid` · sumbu berangka pada `Bars` + mode kotak pada `ArrayGrid`
+- [x] `fix-bars-and-grid` · `Bars` prop `values` menyalakan sumbu (pakai ulang `scale.ts`), `ArrayGrid` prop `square` opt-in; commit `04643cf`. Konten yang ikut: `g4-u6-m4/m5/m6` ("parts" → "squares"). Unit data G4/G5/G6 **bisa** memakai batang bernilai sekarang — sengaja belum ditulis ulang.
 - [ ] `split-content-per-grade` · lazy-load konten per grade (unduhan awal 154 KB → ±seperlima)
 - [ ] `wrap-up` · build hijau + `git push` ke origin, lalu loop berhenti
 
