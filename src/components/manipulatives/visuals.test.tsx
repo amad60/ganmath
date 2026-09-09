@@ -9,6 +9,7 @@ import { Angle, ANGLE_NAMES, angleKind } from './Angle';
 import { NumberLine } from './NumberLine';
 import { Solid3D } from './Solid3D';
 import { Circle } from './Circle';
+import { CoordinatePlane } from './CoordinatePlane';
 import { LearnVisualView } from '../../app/screens/LearnVisualView';
 import {
   PI,
@@ -18,6 +19,14 @@ import {
   diameterFromRadius,
   radiusFromDiameter,
 } from './circles';
+import {
+  axisDistance,
+  formatPoint,
+  fourthCorner,
+  quadrantName,
+  quadrantOf,
+  rectCorners,
+} from './coordinates';
 import { ShapeNet } from './ShapeNet';
 import {
   NET_SOLIDS,
@@ -840,5 +849,316 @@ describe('Circle — jari-jari, diameter, dan ukuran yang dinormalisasi', () => 
     expect(container.querySelector('svg')?.getAttribute('aria-label')).toBe(
       'circle, radius 5 cm, diameter 10 cm, circumference 31.4 cm',
     );
+  });
+});
+
+describe('coordinates — aturan yang dipakai bersama data modul dan gambar', () => {
+  it('pasangan koordinat ditulis satu bentuk saja: (x, y)', () => {
+    expect(formatPoint(3, 2)).toBe('(3, 2)');
+    expect(formatPoint(3, -2)).toBe('(3, -2)');
+    expect(formatPoint(0, 0)).toBe('(0, 0)');
+    // Urutannya materi, bukan gaya penulisan: (3, 2) tidak sama dengan (2, 3).
+    expect(formatPoint(3, 2)).not.toBe(formatPoint(2, 3));
+  });
+
+  it('kuadran: 1–4, dan titik di sumbu tidak dipaksa masuk kuadran', () => {
+    expect(quadrantOf(3, 2)).toBe(1);
+    expect(quadrantOf(-3, 2)).toBe(2);
+    expect(quadrantOf(-3, -2)).toBe(3);
+    expect(quadrantOf(3, -2)).toBe(4);
+    expect(quadrantOf(0, 5)).toBe(0);
+    expect(quadrantOf(5, 0)).toBe(0);
+    expect(quadrantOf(0, 0)).toBe(0);
+    expect(quadrantName(-3, 2)).toBe('quadrant II');
+    expect(quadrantName(0, 4)).toBe('on an axis');
+  });
+
+  it('jarak hanya dihitung untuk titik yang sejajar sumbu', () => {
+    expect(axisDistance({ x: 2, y: 5 }, { x: 7, y: 5 })).toBe(5);
+    expect(axisDistance({ x: -3, y: 4 }, { x: -3, y: -2 })).toBe(6);
+    expect(axisDistance({ x: 7, y: 5 }, { x: 2, y: 5 })).toBe(5);
+    // Miring: Pythagoras belum diajarkan, jadi soalnya tidak boleh bisa dibuat.
+    expect(axisDistance({ x: 1, y: 1 }, { x: 4, y: 5 })).toBeNull();
+  });
+
+  it('sudut keempat persegi panjang, dari urutan titik mana pun', () => {
+    const corners = [
+      { x: 1, y: 1 },
+      { x: 1, y: 4 },
+      { x: 5, y: 1 },
+    ];
+    for (const order of [
+      [0, 1, 2],
+      [1, 0, 2],
+      [2, 1, 0],
+      [1, 2, 0],
+    ]) {
+      const [a, b, c] = order.map((i) => corners[i] as { x: number; y: number });
+      expect(fourthCorner(a!, b!, c!)).toEqual({ x: 5, y: 4 });
+    }
+  });
+
+  it('tiga titik yang tidak bisa jadi persegi panjang mengembalikan null', () => {
+    // Segaris mendatar.
+    expect(fourthCorner({ x: 1, y: 1 }, { x: 3, y: 1 }, { x: 5, y: 1 })).toBeNull();
+    // Tidak ada yang jadi sudut siku.
+    expect(fourthCorner({ x: 1, y: 1 }, { x: 3, y: 4 }, { x: 6, y: 2 })).toBeNull();
+    // Titik kembar — persegi panjang berlebar nol bukan persegi panjang.
+    expect(fourthCorner({ x: 2, y: 2 }, { x: 2, y: 2 }, { x: 5, y: 5 })).toBeNull();
+  });
+
+  it('rectCorners dan fourthCorner tidak mungkin berbeda', () => {
+    const [a, b, c, d] = rectCorners({ x: -2, y: -1 }, { x: 3, y: 4 });
+    expect([a, b, c, d]).toEqual([
+      { x: -2, y: -1 },
+      { x: 3, y: -1 },
+      { x: 3, y: 4 },
+      { x: -2, y: 4 },
+    ]);
+    expect(fourthCorner(a, b, c)).toEqual(d);
+    // Sisinya sejajar sumbu, jadi panjangnya bisa dihitung dengan mengurangi.
+    expect(axisDistance(a, b)).toBe(5);
+    expect(axisDistance(b, c)).toBe(5);
+  });
+});
+
+describe('CoordinatePlane — dua angka untuk satu titik', () => {
+  const parts = (c: HTMLElement, name: string) => c.querySelectorAll(`[data-part="${name}"]`);
+  const texts = (c: HTMLElement, name: string) =>
+    [...parts(c, name)].map((t) => t.textContent);
+
+  it('grid selalu satu satuan per sel — itu yang bisa dihitung anak', () => {
+    // 4 kuadran, rentang 5: garis di -5..5 = 11 tegak + 11 mendatar.
+    const { container } = render(<CoordinatePlane range={5} />);
+    expect(parts(container, 'grid-line')).toHaveLength(22);
+    // Kuadran I saja, rentang 10: 0..10 = 11 + 11.
+    const one = render(<CoordinatePlane quadrants={1} range={10} />).container;
+    expect(parts(one, 'grid-line')).toHaveLength(22);
+  });
+
+  it('satu satuan x digambar sama panjang dengan satu satuan y', () => {
+    // Kalau tidak, persegi yang diplot anak tampil sebagai persegi panjang —
+    // gambarnya berbohong tentang bangun yang sedang dibaca.
+    const { container } = render(
+      <CoordinatePlane
+        points={[
+          { x: 1, y: 1 },
+          { x: 4, y: 1 },
+          { x: 4, y: 4 },
+          { x: 1, y: 4 },
+        ]}
+        shape
+      />,
+    );
+    const dots = [...parts(container, 'point')].map(
+      (c) => [Number(c.getAttribute('cx')), Number(c.getAttribute('cy'))] as [number, number],
+    );
+    const [p0, p1, p2] = dots as [
+      [number, number],
+      [number, number],
+      [number, number],
+    ];
+    expect(Math.abs(p1[0] - p0[0])).toBeCloseTo(Math.abs(p2[1] - p1[1]), 5);
+  });
+
+  it('kuadran I saja tidak pernah menampilkan angka negatif', () => {
+    const one = render(<CoordinatePlane quadrants={1} range={10} />).container;
+    expect(texts(one, 'tick-label').some((t) => t?.startsWith('-'))).toBe(false);
+    const four = render(<CoordinatePlane range={10} />).container;
+    expect(texts(four, 'tick-label').some((t) => t?.startsWith('-'))).toBe(true);
+  });
+
+  it('angka sumbu memakai ulang aturan garis bilangan, bukan penjarangan kedua', () => {
+    // 0..10 muat setiap satuan; -10..10 tidak, jadi ticksFor melompat ke 5.
+    const one = render(<CoordinatePlane quadrants={1} range={10} />).container;
+    const ONE_TO_TEN = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    expect(texts(one, 'tick-label')).toEqual([...ONE_TO_TEN, ...ONE_TO_TEN, '0']);
+    const four = render(<CoordinatePlane range={10} />).container;
+    expect(texts(four, 'tick-label')).toEqual([
+      '-10', '-5', '5', '10', // sumbu x
+      '-10', '-5', '5', '10', // sumbu y
+      '0',
+    ]);
+    // Setiap angka yang tertulis harus jatuh di garis grid yang benar-benar ada.
+    for (const t of texts(four, 'tick-label')) expect(Number.isInteger(Number(t))).toBe(true);
+  });
+
+  it('nol hanya ditulis sekali, di pojok antara kedua sumbu', () => {
+    const { container } = render(<CoordinatePlane range={5} />);
+    expect(texts(container, 'tick-label').filter((t) => t === '0')).toHaveLength(1);
+  });
+
+  it('titik asal bisa diberi nama, menggantikan angka nol', () => {
+    const { container } = render(<CoordinatePlane range={5} showOrigin />);
+    expect(texts(container, 'origin-label')).toEqual(['origin']);
+    expect(texts(container, 'tick-label')).not.toContain('0');
+    expect(parts(container, 'origin')).toHaveLength(1);
+    expect(parts(render(<CoordinatePlane range={5} />).container, 'origin')).toHaveLength(0);
+  });
+
+  it('menggambar tiap titik, dengan namanya kalau ada', () => {
+    const { container } = render(
+      <CoordinatePlane
+        points={[
+          { x: 3, y: 2, label: 'A' },
+          { x: -4, y: 1, label: 'B' },
+        ]}
+      />,
+    );
+    expect(parts(container, 'point')).toHaveLength(2);
+    expect(texts(container, 'point-label')).toEqual(['A', 'B']);
+  });
+
+  it('koordinat yang sengaja disembunyikan tidak bocor lewat label maupun aria', () => {
+    const aria = (el: ReactElement) =>
+      render(el).container.querySelector('svg')?.getAttribute('aria-label');
+    const hidden = render(
+      <CoordinatePlane points={[{ x: 3, y: 2, label: 'A' }]} guides />,
+    ).container;
+    expect(texts(hidden, 'point-label')).toEqual(['A']);
+    expect(aria(<CoordinatePlane points={[{ x: 3, y: 2, label: 'A' }]} />)).toBe(
+      'coordinate grid, point A',
+    );
+    expect(aria(<CoordinatePlane points={[{ x: 3, y: 2, label: 'A' }]} showCoords />)).toBe(
+      'coordinate grid, point A at (3, 2)',
+    );
+    const shown = render(
+      <CoordinatePlane points={[{ x: 3, y: -2, label: 'A' }]} showCoords />,
+    ).container;
+    expect(texts(shown, 'point-label')).toEqual(['A (3, -2)']);
+  });
+
+  it('label titik memakai formatPoint yang sama dengan teks soal', () => {
+    const { container } = render(<CoordinatePlane points={[{ x: -4, y: 3 }]} showCoords />);
+    expect(texts(container, 'point-label')).toEqual([formatPoint(-4, 3)]);
+  });
+
+  it('garis bantu: dua per titik, dari titik ke kedua sumbu', () => {
+    const pts = [
+      { x: 3, y: 2 },
+      { x: -1, y: 4 },
+    ];
+    expect(parts(render(<CoordinatePlane points={pts} />).container, 'guide')).toHaveLength(0);
+    const { container } = render(<CoordinatePlane points={pts} guides />);
+    expect(parts(container, 'guide')).toHaveLength(4);
+  });
+
+  it('bangun: 2 titik jadi ruas garis, 3+ jadi bangun tertutup', () => {
+    const two = render(
+      <CoordinatePlane points={[{ x: 1, y: 1 }, { x: 5, y: 1 }]} shape />,
+    ).container;
+    expect(parts(two, 'shape')[0]?.tagName.toLowerCase()).toBe('line');
+    const corners = rectCorners({ x: 1, y: 1 }, { x: 4, y: 3 });
+    const four = render(<CoordinatePlane points={corners} shape />).container;
+    const poly = parts(four, 'shape')[0] as SVGPolygonElement;
+    expect(poly.tagName.toLowerCase()).toBe('polygon');
+    expect((poly.getAttribute('points') ?? '').trim().split(/\s+/)).toHaveLength(4);
+    // Tanpa `shape` titiknya tetap titik lepas — bangun tidak muncul sendiri.
+    expect(parts(render(<CoordinatePlane points={corners} />).container, 'shape')).toHaveLength(0);
+  });
+
+  it('titik di luar rentang tidak keluar bingkai — sumbunya yang melebar', () => {
+    const { container } = render(<CoordinatePlane points={[{ x: 8, y: -7 }]} />);
+    expect(texts(container, 'tick-label')).toContain('-8');
+    expectInsideViewBox(container);
+  });
+
+  const PLANES = [
+    {},
+    { quadrants: 1 as const, range: 5 },
+    { quadrants: 1 as const, range: 10 },
+    { range: 2 },
+    { range: 6 },
+    { range: 10 },
+    { range: 10, size: 200 },
+    { range: 5, size: 342 },
+    { showAxisNames: false },
+    { showOrigin: true, range: 10 },
+  ];
+  const POINTS = [
+    undefined,
+    [{ x: 0, y: 0, label: 'O' }],
+    [{ x: 10, y: 10, label: 'A' }],
+    [{ x: -10, y: -10, label: 'B' }],
+    [
+      { x: -4, y: -3, label: 'A' },
+      { x: 4, y: 3, label: 'B' },
+    ],
+    rectCorners({ x: -3, y: -2 }, { x: 3, y: 4 }),
+  ];
+  const OPTS = [{}, { showCoords: true }, { guides: true }, { shape: true, showCoords: true }];
+
+  it('gambar tetap di dalam bingkai di setiap rentang, ukuran, dan kombinasi label', () => {
+    for (const plane of PLANES) {
+      for (const points of POINTS) {
+        for (const opts of OPTS) {
+          expectInsideViewBox(
+            render(<CoordinatePlane {...plane} {...opts} points={points} />).container,
+          );
+        }
+      }
+    }
+  });
+
+  it('LEBAR TEKS ikut menentukan viewBox, bukan cuma titik jangkarnya', () => {
+    // Regresi yang sama dengan Angle, Solid3D, dan Circle: "(-10, -10)" jauh lebih
+    // lebar daripada jangkarnya, dan "-10" di sumbu jatuh di tepi kiri grid.
+    for (const plane of PLANES) {
+      for (const points of POINTS) {
+        for (const opts of OPTS) {
+          const { container } = render(
+            <CoordinatePlane {...plane} {...opts} points={points} />,
+          );
+          const svg = container.querySelector('svg') as SVGSVGElement;
+          const [vx, vy, vw, vh] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+          for (const t of container.querySelectorAll('text')) {
+            const font = Number(t.getAttribute('font-size'));
+            const w = (t.textContent ?? '').length * font * 0.6;
+            const x = Number(t.getAttribute('x'));
+            const y = Number(t.getAttribute('y'));
+            const left = t.getAttribute('text-anchor') === 'end' ? x - w : x - w / 2;
+            expect(left).toBeGreaterThanOrEqual(vx as number);
+            expect(left + w).toBeLessThanOrEqual((vx as number) + (vw as number));
+            expect(y - font / 2).toBeGreaterThanOrEqual(vy as number);
+            expect(y + font / 2).toBeLessThanOrEqual((vy as number) + (vh as number));
+          }
+        }
+      }
+    }
+  });
+
+  it('gambar muat di layar 390px di setiap rentang dan kombinasi label', () => {
+    for (const plane of PLANES) {
+      for (const points of POINTS) {
+        for (const opts of OPTS) {
+          const svg = render(
+            <CoordinatePlane {...plane} {...opts} points={points} />,
+          ).container.querySelector('svg') as SVGSVGElement;
+          expect(Number(svg.getAttribute('width'))).toBeLessThanOrEqual(342);
+          expect(Number(svg.getAttribute('height'))).toBeLessThanOrEqual(342);
+        }
+      }
+    }
+  });
+
+  it('materi memakai jalur render yang sama dengan manipulatif lain', () => {
+    const { container } = render(
+      <LearnVisualView
+        visual={{
+          kind: 'coordinate-grid',
+          quadrants: 1,
+          points: [{ x: 3, y: 2, label: 'A' }],
+          showCoords: true,
+          guides: true,
+        }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    expect(container.querySelector('svg')?.getAttribute('aria-label')).toBe(
+      'coordinate grid, point A at (3, 2)',
+    );
+    expect(container.querySelectorAll('[data-part="guide"]')).toHaveLength(2);
   });
 });

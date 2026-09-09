@@ -1,4 +1,10 @@
-import type { CircleVisual, ModuleDef, NetVisual, SolidVisual } from '../engine/types';
+import type {
+  CircleVisual,
+  CoordinateVisual,
+  ModuleDef,
+  NetVisual,
+  SolidVisual,
+} from '../engine/types';
 
 /**
  * Materi layar Learn. Deklaratif — engine dan komponen tidak perlu tahu isi modulnya.
@@ -43,7 +49,8 @@ export type LearnVisual =
     }
   | ({ kind: 'solid' } & SolidVisual)
   | ({ kind: 'net' } & NetVisual)
-  | ({ kind: 'circle' } & CircleVisual);
+  | ({ kind: 'circle' } & CircleVisual)
+  | ({ kind: 'coordinate-grid' } & CoordinateVisual);
 
 export type LearnStep = {
   stage: 'concrete' | 'pictorial' | 'abstract';

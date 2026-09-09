@@ -3,6 +3,7 @@ import {
   Bars,
   Circle,
   ArrayGrid,
+  CoordinatePlane,
   RectShape,
   Base10Blocks,
   Clock,
@@ -143,6 +144,19 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
           showCircumference={visual.showCircumference}
           showArea={visual.showArea}
           unit={visual.unit}
+        />
+      );
+    case 'coordinate-grid':
+      return (
+        <CoordinatePlane
+          points={visual.points}
+          quadrants={visual.quadrants}
+          range={visual.range}
+          shape={visual.shape}
+          showCoords={visual.showCoords}
+          guides={visual.guides}
+          showAxisNames={visual.showAxisNames}
+          showOrigin={visual.showOrigin}
         />
       );
   }

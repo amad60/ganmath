@@ -15,6 +15,7 @@ import {
   Bars,
   Circle,
   ArrayGrid,
+  CoordinatePlane,
   RectShape,
   Base10Blocks,
   Clock,
@@ -196,6 +197,20 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
           showArea={visual.showArea}
           unit={visual.unit}
           size={170}
+        />
+      );
+    case 'coordinate-grid':
+      return (
+        <CoordinatePlane
+          points={visual.points}
+          quadrants={visual.quadrants}
+          range={visual.range}
+          shape={visual.shape}
+          showCoords={visual.showCoords}
+          guides={visual.guides}
+          showAxisNames={visual.showAxisNames}
+          showOrigin={visual.showOrigin}
+          size={280}
         />
       );
   }

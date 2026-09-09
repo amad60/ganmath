@@ -113,7 +113,8 @@ export type QuestionVisual =
     }
   | ({ kind: 'solid' } & SolidVisual)
   | ({ kind: 'net' } & NetVisual)
-  | ({ kind: 'circle' } & CircleVisual);
+  | ({ kind: 'circle' } & CircleVisual)
+  | ({ kind: 'coordinate-grid' } & CoordinateVisual);
 
 /**
  * Balok yang tersusun dari kubus satuan. Dipakai sama persis di Learn dan di soal,
@@ -175,6 +176,33 @@ export type NetVisual = {
   showName?: boolean;
   /** Beri nomor tiap sisi — dipakai saat mengajarkan "a cube has 6 faces". */
   numberFaces?: boolean;
+};
+
+/**
+ * Bidang koordinat. Aturannya (menulis pasangan koordinat, kuadran, jarak sejajar
+ * sumbu, sudut keempat persegi panjang) ada di
+ * `src/components/manipulatives/coordinates.ts` — satu tempat, dipakai bersama data
+ * modul dan gambar, supaya "(3, -2)" di soal tidak pernah beda dari yang di gambar.
+ *
+ * Gambarnya READ-ONLY: anak membaca titik yang sudah diplot, belum memplot sendiri.
+ */
+export type CoordinateVisual = {
+  /** Titik yang digambar; `label` = nama titik di buku, mis. "A". */
+  points?: { x: number; y: number; label?: string }[];
+  /** `1` = hanya kuadran I (modul pengenalan), `4` = keempatnya. Default 4. */
+  quadrants?: 1 | 4;
+  /** Nilai terbesar di sumbu. Kosong = diturunkan dari titiknya. */
+  range?: number;
+  /** Sambungkan titik jadi bangun. 2 titik = ruas garis, 3+ = bangun tertutup. */
+  shape?: boolean;
+  /** Tulis pasangan koordinat di sebelah titik. Dimatikan saat itu yang ditanyakan. */
+  showCoords?: boolean;
+  /** Garis bantu putus-putus dari titik ke kedua sumbu — cara membaca koordinat. */
+  guides?: boolean;
+  /** Tulis "x" dan "y" di ujung sumbu. Default ikut tampil. */
+  showAxisNames?: boolean;
+  /** Tandai titik asal dan namai "origin". */
+  showOrigin?: boolean;
 };
 
 /** Aturan pembuat soal. Soal dibuat dari aturan, bukan daftar tetap (anti-hafal). */

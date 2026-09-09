@@ -7,8 +7,14 @@ export { Angle, ANGLE_NAMES, angleKind, type AngleKind } from './Angle';
 export { Solid3D } from './Solid3D';
 export { Circle, type CircleMark, type CircleProps } from './Circle';
 export { ShapeNet } from './ShapeNet';
+export {
+  CoordinatePlane,
+  type CoordinatePlaneProps,
+  type PlotPoint,
+} from './CoordinatePlane';
 export * from './solids';
 export * from './circles';
+export * from './coordinates';
 
 export { Base10Blocks } from './Base10Blocks';
 export { Bars } from './Bars';
