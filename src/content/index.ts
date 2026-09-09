@@ -200,6 +200,11 @@ import { whichBoxHoldsMore } from './grade5/u5/m3-which-box-holds-more';
 import { changeTheLengthUnit } from './grade5/u5/m4-change-the-length-unit';
 import { gramsAndMillilitres } from './grade5/u5/m5-grams-and-millilitres';
 import { pickTheRightUnit } from './grade5/u5/m6-pick-the-right-unit';
+import { openItFlat } from './grade5/u6/m1-open-it-flat';
+import { foldItUp } from './grade5/u6/m2-fold-it-up';
+import { manyNetsOneSolid } from './grade5/u6/m3-many-nets-one-solid';
+import { facesEdgesCorners } from './grade5/u6/m4-faces-edges-corners';
+import { isItANet } from './grade5/u6/m5-is-it-a-net';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -452,6 +457,12 @@ export const all: ContentModule[] = [
   changeTheLengthUnit,
   gramsAndMillilitres,
   pickTheRightUnit,
+  // Unit 6 — Shapes in Space
+  openItFlat,
+  foldItUp,
+  manyNetsOneSolid,
+  facesEdgesCorners,
+  isItANet,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -557,4 +568,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g5-u3': { title: 'Unit 3 · Percent', color: 'var(--c-unit-3)' },
   'g5-u4': { title: 'Unit 4 · Multiply & Divide Fluently', color: 'var(--c-unit-4)' },
   'g5-u5': { title: 'Unit 5 · Volume & Measurement', color: 'var(--c-unit-5)' },
+  'g5-u6': { title: 'Unit 6 · Shapes in Space', color: 'var(--c-unit-6)' },
 };
