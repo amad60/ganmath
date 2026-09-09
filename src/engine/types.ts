@@ -55,6 +55,7 @@ export type VisualId =
   | 'pictogram'
   | 'bar-chart'
   | 'angle-arc'
+  | 'circle'
   | 'coordinate-grid'
   | 'counter-objects';
 
@@ -111,7 +112,8 @@ export type QuestionVisual =
       showScale?: boolean;
     }
   | ({ kind: 'solid' } & SolidVisual)
-  | ({ kind: 'net' } & NetVisual);
+  | ({ kind: 'net' } & NetVisual)
+  | ({ kind: 'circle' } & CircleVisual);
 
 /**
  * Balok yang tersusun dari kubus satuan. Dipakai sama persis di Learn dan di soal,
@@ -132,6 +134,30 @@ export type SolidVisual = {
   showName?: boolean;
   /** Sorot satu lapis (0 = lapis paling bawah) — jembatan luas alas → volume. */
   highlightLayer?: number;
+  /** Satuan panjang di label, mis. "cm". Kosong = "units". */
+  unit?: string;
+};
+
+/**
+ * Lingkaran dengan jari-jari / diameter bertanda. Aturannya (π, keliling, luas) ada di
+ * `src/components/manipulatives/circles.ts` — satu tempat, dipakai bersama data modul
+ * dan gambar, supaya angka di soal tidak pernah beda dari angka di gambar.
+ */
+export type CircleVisual = {
+  /** Jari-jari dalam SATUAN. Isi ini ATAU `d`. */
+  r?: number;
+  /** Diameter dalam satuan. Dipakai kalau `r` kosong. */
+  d?: number;
+  /** Ruas yang digambar di dalam lingkaran. Default `radius`. */
+  mark?: 'radius' | 'diameter' | 'both' | 'none';
+  /** Tulis panjang ruasnya. Matikan saat panjang itu yang ditanyakan. */
+  showValue?: boolean;
+  /** Titik pusat. Default: ikut kalau ada ruas yang digambar. */
+  showCenter?: boolean;
+  /** Tulis kelilingnya. Dimatikan saat kelilingnya yang ditanyakan. */
+  showCircumference?: boolean;
+  /** Tulis luasnya. Dimatikan saat luasnya yang ditanyakan. */
+  showArea?: boolean;
   /** Satuan panjang di label, mis. "cm". Kosong = "units". */
   unit?: string;
 };

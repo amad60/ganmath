@@ -8,6 +8,16 @@ import { RectShape } from './RectShape';
 import { Angle, ANGLE_NAMES, angleKind } from './Angle';
 import { NumberLine } from './NumberLine';
 import { Solid3D } from './Solid3D';
+import { Circle } from './Circle';
+import { LearnVisualView } from '../../app/screens/LearnVisualView';
+import {
+  PI,
+  areaOf,
+  circumferenceFromDiameter,
+  circumferenceOf,
+  diameterFromRadius,
+  radiusFromDiameter,
+} from './circles';
 import { ShapeNet } from './ShapeNet';
 import {
   NET_SOLIDS,
@@ -355,6 +365,12 @@ function drawnPoints(container: HTMLElement): [number, number][] {
     pts.push([Number(el.getAttribute('x1')), Number(el.getAttribute('y1'))]);
     pts.push([Number(el.getAttribute('x2')), Number(el.getAttribute('y2'))]);
   }
+  for (const el of container.querySelectorAll('circle')) {
+    const cx = Number(el.getAttribute('cx'));
+    const cy = Number(el.getAttribute('cy'));
+    const r = Number(el.getAttribute('r'));
+    pts.push([cx - r, cy - r], [cx + r, cy + r]);
+  }
   for (const el of container.querySelectorAll('text')) {
     pts.push([Number(el.getAttribute('x')), Number(el.getAttribute('y'))]);
   }
@@ -558,5 +574,271 @@ describe('ShapeNet — bentangan yang bisa dilipat kembali', () => {
       expect(vw as number).toBeLessThanOrEqual(330);
       expect(vh as number).toBeLessThanOrEqual(240);
     }
+  });
+});
+
+/**
+ * Aturan lingkaran dipakai DUA kali: sekali oleh data modul yang menyusun soal dan
+ * jawabannya, sekali oleh gambar yang menuliskannya di layar. Kalau keduanya
+ * menghitung sendiri, anak yang mengetik angka yang dia baca di gambar bisa disalahkan.
+ */
+describe('circles — aturan yang dipakai bersama data modul dan gambar', () => {
+  it('π satu konstanta, 3.14 — bukan 22/7 yang mengunci jari-jari ke kelipatan 7', () => {
+    expect(PI).toBe(3.14);
+    expect(PI).not.toBeCloseTo(22 / 7, 3);
+  });
+
+  it('diameter dua kali jari-jari, bolak-balik', () => {
+    expect(diameterFromRadius(5)).toBe(10);
+    expect(radiusFromDiameter(10)).toBe(5);
+    expect(radiusFromDiameter(9)).toBe(4.5);
+    expect(diameterFromRadius(radiusFromDiameter(7))).toBe(7);
+  });
+
+  it('keliling = 2 × π × r, dan keliling ÷ diameter = π — itu ARTI π', () => {
+    expect(circumferenceOf(5)).toBe(31.4);
+    expect(circumferenceOf(10)).toBe(62.8);
+    expect(circumferenceFromDiameter(10)).toBe(circumferenceOf(5));
+    for (const r of [1, 2, 3.5, 7, 12, 100]) {
+      expect(circumferenceOf(r) / diameterFromRadius(r)).toBeCloseTo(PI, 10);
+    }
+  });
+
+  it('luas = π × r × r', () => {
+    expect(areaOf(5)).toBe(78.5);
+    expect(areaOf(10)).toBe(314);
+    // Luas lingkaran berjari-jari dua kali lipat = empat kali luasnya, bukan dua.
+    expect(areaOf(6)).toBe(areaOf(3) * 4);
+  });
+
+  it('tidak ada sampah floating point yang sampai ke layar', () => {
+    // 3.14 × 49 dalam float = 153.86000000000001; angka itu tidak boleh ditulis di
+    // gambar, karena anak akan mengetik 153.86 dan dinyatakan salah.
+    expect(String(areaOf(7))).toBe('153.86');
+    expect(String(circumferenceOf(2.5))).toBe('15.7');
+    expect(String(areaOf(1.5))).toBe('7.065');
+  });
+});
+
+describe('Circle — jari-jari, diameter, dan ukuran yang dinormalisasi', () => {
+  const part = (c: HTMLElement, name: string) => c.querySelector(`[data-part="${name}"]`);
+  const lineLen = (el: Element | null) =>
+    Math.hypot(
+      Number(el?.getAttribute('x2')) - Number(el?.getAttribute('x1')),
+      Number(el?.getAttribute('y2')) - Number(el?.getAttribute('y1')),
+    );
+
+  it('menggambar lingkaran dengan jari-jari bertanda dari pusat ke tepi', () => {
+    const { container } = render(<Circle r={5} />);
+    const ring = part(container, 'ring');
+    const radius = part(container, 'radius');
+    expect(ring).not.toBeNull();
+    expect(lineLen(radius)).toBeCloseTo(Number(ring?.getAttribute('r')), 5);
+    // Ujung jari-jari mendarat DI tepi lingkaran, bukan di dalamnya.
+    const end = part(container, 'radius-end');
+    expect(Math.hypot(Number(end?.getAttribute('cx')), Number(end?.getAttribute('cy')))).toBeCloseTo(
+      Number(ring?.getAttribute('r')),
+      5,
+    );
+  });
+
+  it('diameter digambar tepat dua kali jari-jari dan menembus pusat', () => {
+    const { container } = render(<Circle r={5} mark="both" />);
+    expect(lineLen(part(container, 'diameter'))).toBeCloseTo(
+      lineLen(part(container, 'radius')) * 2,
+      5,
+    );
+    const dia = part(container, 'diameter');
+    expect(Number(dia?.getAttribute('x1'))).toBe(-Number(dia?.getAttribute('x2')));
+  });
+
+  it('menggambar hanya ruas yang diminta', () => {
+    const marks = ['none', 'radius', 'diameter', 'both'] as const;
+    const drawn = marks.map((mark) => {
+      const c = render(<Circle r={4} mark={mark} />).container;
+      return [Boolean(part(c, 'radius')), Boolean(part(c, 'diameter'))];
+    });
+    expect(drawn).toEqual([
+      [false, false],
+      [true, false],
+      [false, true],
+      [true, true],
+    ]);
+  });
+
+  it('`d` sendirian menandai DIAMETER-nya, bukan jari-jarinya', () => {
+    // Tanpa ini, <Circle d={10} /> menggambar ruas 5 cm untuk soal berdiameter 10 cm.
+    const c = render(<Circle d={10} />).container;
+    expect(part(c, 'diameter')).not.toBeNull();
+    expect(part(c, 'radius')).toBeNull();
+    expect(part(c, 'diameter-label')?.textContent).toBe('10 cm');
+    // Yang menulis `mark` sendiri tetap menang.
+    expect(part(render(<Circle d={10} mark="radius" />).container, 'radius')).not.toBeNull();
+  });
+
+  it('`d` dan `r` yang sepadan menghasilkan gambar dan label yang sama', () => {
+    const fromR = render(<Circle r={5} mark="both" />).container;
+    const fromD = render(<Circle d={10} mark="both" />).container;
+    const labels = (c: HTMLElement) => [...c.querySelectorAll('text')].map((t) => t.textContent);
+    expect(labels(fromD)).toEqual(labels(fromR));
+    expect(labels(fromR)).toEqual(['r = 5 cm', 'd = 10 cm']);
+  });
+
+  it('satu ruas dilabeli panjangnya saja — seperti RectShape melabeli sisinya', () => {
+    const { container } = render(<Circle r={3} mark="diameter" unit="m" />);
+    expect(part(container, 'diameter-label')?.textContent).toBe('6 m');
+    expect(part(container, 'radius-label')).toBeNull();
+    expect(part(render(<Circle r={3} />).container, 'radius-label')?.textContent).toBe('3 cm');
+  });
+
+  it('dua ruas sekaligus HARUS diberi nama — itu justru yang diajarkan', () => {
+    // "5 cm" dan "10 cm" berdampingan tanpa nama membuat anak menebak mana yang mana.
+    const { container } = render(<Circle r={5} mark="both" />);
+    expect(part(container, 'radius-label')?.textContent).toBe('r = 5 cm');
+    expect(part(container, 'diameter-label')?.textContent).toBe('d = 10 cm');
+  });
+
+  it('menulis panjangnya hanya kalau diminta — kalau tidak, jawaban soal bocor', () => {
+    const hidden = render(<Circle r={5} mark="both" showValue={false} />).container;
+    expect(hidden.querySelectorAll('text')).toHaveLength(0);
+    // Ruasnya tetap digambar: yang disembunyikan angkanya, bukan pelajarannya.
+    expect(part(hidden, 'radius')).not.toBeNull();
+  });
+
+  it('keliling dan luas diambil dari circles.ts, bukan dihitung ulang di komponen', () => {
+    const { container } = render(<Circle r={5} showCircumference showArea />);
+    expect(part(container, 'circumference')?.textContent).toBe(`C = ${circumferenceOf(5)} cm`);
+    expect(part(container, 'area')?.textContent).toBe(`A = ${areaOf(5)} cm²`);
+  });
+
+  it('keliling dan luas tidak pernah muncul sendiri — itu yang ditanyakan soal', () => {
+    const { container } = render(<Circle r={5} />);
+    expect(part(container, 'circumference')).toBeNull();
+    expect(part(container, 'area')).toBeNull();
+  });
+
+  it('tanpa satuan, labelnya tetap kalimat yang bisa dibaca', () => {
+    const { container } = render(<Circle r={2} unit="" showCircumference showArea />);
+    expect(part(container, 'radius-label')?.textContent).toBe('2');
+    expect(part(container, 'circumference')?.textContent).toBe('C = 12.56 units');
+    expect(part(container, 'area')?.textContent).toBe('A = 12.56 sq units');
+  });
+
+  it('label pembaca layar tidak membocorkan apa yang sengaja disembunyikan', () => {
+    const aria = (el: ReactElement) =>
+      render(el).container.querySelector('svg')?.getAttribute('aria-label');
+    expect(aria(<Circle r={5} showValue={false} />)).toBe('circle');
+    expect(aria(<Circle r={5} />)).toBe('circle, radius 5 cm');
+    expect(aria(<Circle r={5} mark="both" showCircumference />)).toBe(
+      'circle, radius 5 cm, diameter 10 cm, circumference 31.4 cm',
+    );
+    expect(aria(<Circle r={5} mark="none" showArea />)).toBe('circle, area 78.5 square cm');
+  });
+
+  it('titik pusat ikut kalau ada ruas yang digambar, dan bisa dipaksa', () => {
+    expect(part(render(<Circle r={5} />).container, 'center')).not.toBeNull();
+    expect(part(render(<Circle r={5} mark="none" />).container, 'center')).toBeNull();
+    expect(part(render(<Circle r={5} mark="none" showCenter />).container, 'center')).not.toBeNull();
+  });
+
+  it('r=2 dan r=100 digambar sama besar — yang berubah angkanya, bukan gambarnya', () => {
+    // Tanpa normalisasi, r=2 jadi titik dan r=100 meledak keluar layar 390px.
+    const radiusPx = (el: ReactElement) => {
+      const svg = render(el).container.querySelector('svg') as SVGSVGElement;
+      const [, , vw] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+      const ring = (svg.querySelector('[data-part="ring"]') as SVGCircleElement) ?? null;
+      return (Number(ring.getAttribute('r')) * Number(svg.getAttribute('width'))) / (vw as number);
+    };
+    const base = radiusPx(<Circle r={2} />);
+    expect(base).toBeGreaterThan(80);
+    for (const r of [0.5, 2, 7, 12.5, 100, 500]) {
+      expect(radiusPx(<Circle r={r} />)).toBeCloseTo(base, 0);
+    }
+    // Dan label yang panjang tidak boleh ikut menciutkan lingkarannya.
+    for (const opts of [
+      { showCircumference: true },
+      { showCircumference: true, showArea: true, unit: '' },
+      { mark: 'both' as const, showCircumference: true, showArea: true },
+    ]) {
+      expect(radiusPx(<Circle r={12.5} {...opts} />)).toBeCloseTo(base, 0);
+    }
+  });
+
+  const CASES = [
+    { r: 0.5 },
+    { r: 3 },
+    { r: 7, unit: 'm' },
+    { r: 12.5 },
+    { r: 500 },
+    { d: 9 },
+  ] as const;
+  const OPTS = [
+    {},
+    { mark: 'none' as const },
+    { mark: 'diameter' as const },
+    { mark: 'both' as const },
+    { showCircumference: true },
+    { showArea: true },
+    { mark: 'both' as const, showCircumference: true, showArea: true },
+    { mark: 'both' as const, showCircumference: true, showArea: true, unit: '' },
+    { showValue: false, showCircumference: true },
+  ];
+
+  it('gambar tetap di dalam bingkai untuk semua ukuran dan semua kombinasi label', () => {
+    for (const c of CASES) {
+      for (const opts of OPTS) {
+        expectInsideViewBox(render(<Circle {...c} {...opts} />).container);
+      }
+    }
+  });
+
+  it('LEBAR TEKS label ikut menentukan viewBox, bukan cuma titik jangkarnya', () => {
+    // Regresi yang sama dengan Solid3D: baris "A = 12.56 sq units" lebih lebar
+    // daripada lingkarannya sendiri, jadi kotak pembatas tidak boleh ditebak dari
+    // gambarnya saja — dulu ini yang memotong label sisi kanan RectShape.
+    const CHAR_W = 9;
+    for (const c of CASES) {
+      for (const opts of OPTS) {
+        const { container } = render(<Circle {...c} {...opts} />);
+        const svg = container.querySelector('svg') as SVGSVGElement;
+        const [vx, vy, vw, vh] = (svg.getAttribute('viewBox') ?? '').split(' ').map(Number);
+        for (const t of container.querySelectorAll('text')) {
+          const w = (t.textContent ?? '').length * CHAR_W;
+          const x = Number(t.getAttribute('x'));
+          const y = Number(t.getAttribute('y'));
+          const left = t.getAttribute('text-anchor') === 'start' ? x : x - w / 2;
+          expect(left).toBeGreaterThanOrEqual(vx as number);
+          expect(left + w).toBeLessThanOrEqual((vx as number) + (vw as number));
+          expect(y - 8).toBeGreaterThanOrEqual(vy as number);
+          expect(y + 8).toBeLessThanOrEqual((vy as number) + (vh as number));
+        }
+      }
+    }
+  });
+
+  it('gambar muat di layar 390px di setiap kombinasi label', () => {
+    for (const c of CASES) {
+      for (const opts of OPTS) {
+        const svg = render(<Circle {...c} {...opts} />).container.querySelector(
+          'svg',
+        ) as SVGSVGElement;
+        expect(Number(svg.getAttribute('width'))).toBeLessThanOrEqual(342);
+        expect(Number(svg.getAttribute('height'))).toBeLessThanOrEqual(300);
+      }
+    }
+  });
+
+  it('materi memakai jalur render yang sama dengan manipulatif lain', () => {
+    const { container } = render(
+      <LearnVisualView
+        visual={{ kind: 'circle', r: 5, mark: 'both', showCircumference: true }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    expect(container.querySelector('svg')?.getAttribute('aria-label')).toBe(
+      'circle, radius 5 cm, diameter 10 cm, circumference 31.4 cm',
+    );
   });
 });

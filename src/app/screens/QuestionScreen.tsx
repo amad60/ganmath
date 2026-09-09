@@ -13,6 +13,7 @@ import type { DotState } from '../../components/ui/SessionDots';
 import {
   Angle,
   Bars,
+  Circle,
   ArrayGrid,
   RectShape,
   Base10Blocks,
@@ -181,6 +182,20 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
           h={visual.h}
           showName={visual.showName}
           numberFaces={visual.numberFaces}
+        />
+      );
+    case 'circle':
+      return (
+        <Circle
+          r={visual.r}
+          d={visual.d}
+          mark={visual.mark}
+          showValue={visual.showValue}
+          showCenter={visual.showCenter}
+          showCircumference={visual.showCircumference}
+          showArea={visual.showArea}
+          unit={visual.unit}
+          size={170}
         />
       );
   }
