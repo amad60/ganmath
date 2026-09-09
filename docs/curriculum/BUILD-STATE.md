@@ -21,7 +21,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g4-u4` · Equivalent Fractions — senilai, menyederhanakan, +/− penyebut sama · 7 modul → commit `56a9760`
 - [x] `g4-u5` · Decimals Begin — persepuluhan & perseratusan, hubungan dengan pecahan · 5 modul → commit `2a44e12` (perseratusan pakai `array-grid` 10×10, bukan `fraction-shape`)
 - [x] `add-angle-visual` · **penghalang g4-u6** — komponen `Angle` + `angleKind()`, commit `ef42c62`
-- [ ] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul
+- [x] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul → commit `8060399`
 - [ ] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul
 - [ ] `fix-numberline-step` · **keputusan user 2026-09-09** — step otomatis dari rentang + override eksplisit; betulkan `g3-u1-m5` yang sudah live
 - [ ] `fix-keypad-input` · **keputusan user 2026-09-09** — tombol `.` dan `−`, dimunculkan per-rule (bukan per-soal, supaya tidak bocor); longgarkan lint `input-width`
@@ -84,6 +84,13 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
   teksnya konstan dan tanpa visual akan menyusut jadi **satu** soal dan gagal syarat minimal 8.
   Teks soal harus memuat angkanya (lihat `g4-u4-m5`).
 - **`number-line-drop` jangan dipakai untuk rentang lebar** selama bug `step` masih terbuka.
+
+### Utang kualitas kecil (bukan penghalang, menunggu keputusan user)
+
+- **`array-grid` menggambar penanda bulat, bukan kotak.** Di `g4-u6` (luas) teksnya terpaksa
+  memakai kata "parts", bukan "squares". Padahal inti gagasan luas justru **menutup bidang
+  dengan persegi**. Perbaikannya kecil (mode kotak pada `ArrayGrid`) tapi menyentuh komponen
+  yang dipakai banyak modul — belum dikerjakan.
 
 ### Komponen visual yang ditambahkan sambil jalan
 
