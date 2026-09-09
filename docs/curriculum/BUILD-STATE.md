@@ -47,7 +47,7 @@ sepadan di `src/content/grade3/`.
 - [x] `add-circle-visual` · `Circle` + `circles.ts` (`PI = 3.14`), commit `826e55e`
 - [x] `g6-u4` · Circles — keliling & luas lingkaran, π · 5 modul → commit `01969f4`; `m5` mulai dari r=3 karena pada r=2 keliling & luas sama-sama 12.56
 - [x] `g6-u5` · Solids — volume & luas permukaan bangun ruang · 5 modul → commit `a7d7b91`; jebakan volume = luas permukaan diajarkan di Learn lalu dipagari `exclude`
-- [ ] `add-coordinate-visual` · **penghalang g6-u6** — `VisualId 'coordinate-grid'` ada tapi tak punya renderer (jebakan yang sama dengan `shape-3d` dulu)
+- [x] `add-coordinate-visual` · `CoordinatePlane` + `coordinates.ts`, commit `07ebf11` — `VisualId 'coordinate-grid'` tak lagi label kosong
 - [ ] `g6-u6` · Coordinates — sistem koordinat, memplot titik & bangun · 4 modul
 - [ ] `g6-u7` · Statistics & Chance — mean/median/modus, peluang percobaan acak · 6 modul
 - [ ] `g6-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
@@ -93,6 +93,17 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
   menghindarinya dengan tidak memakai pola penjumlahan sama sekali di soal jenis itu.
 - **`number-line-drop` jangan dipakai untuk rentang lebar** selama bug `step` masih terbuka.
 
+### Keputusan sesudah kurikulum lengkap — tipe soal `plot-point`
+
+`CoordinatePlane` sengaja read-only. Membaca koordinat, mengenali kuadran, dan mencari sudut
+keempat semuanya bisa ditanyakan dengan tipe soal yang ada. Yang benar-benar hilang cuma satu:
+**anak tidak pernah memplot titiknya sendiri**, padahal itu aksi inti unit koordinat — analogi
+`drop-on-line` pada garis bilangan.
+
+Menambalnya butuh **tipe soal baru** `plot-point` di `RENDERABLE_TYPES` plus jalur jawaban
+berpasangan (x, y) — bukan tambalan di data modul. Itu pekerjaan tersendiri, di luar lingkup
+membangun kurikulum, dan sengaja tidak dikerjakan loop.
+
 ### Utang kualitas kecil (bukan penghalang, menunggu keputusan user)
 
 - **`Solid3D` + `ShapeNet`** (`894a2b7`) — dua komponen terpisah karena prop-nya tidak
@@ -115,6 +126,14 @@ _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke 
   `circumferenceOf`, `circumferenceFromDiameter`, `areaOf` — semuanya membersihkan sampah float
   (3.14×49 tidak boleh muncul sebagai 153.86000000000001). **Data modul wajib ambil dari sini.**
   Dipakai lewat `kind: 'circle'`.
+
+- **`CoordinatePlane`** (`07ebf11`) — `<CoordinatePlane points quadrants={1|4} range shape
+  showCoords guides showAxisNames showOrigin size color />`. Grid selalu persegi (satu satuan x =
+  satu satuan y) supaya persegi tidak tampil sebagai persegi panjang. Angka sumbu dijarangkan
+  lewat `ticksFor`/`maxTicksFor` dari `scale.ts` — tanpa logika penjarangan kedua.
+  Aturan bersama di `coordinates.ts`: `formatPoint`, `quadrantOf`/`QUADRANT_NAMES`/`quadrantName`,
+  `axisDistance` (null kalau miring — Pythagoras belum diajarkan), `fourthCorner`, `rectCorners`.
+  Dipakai lewat `kind: 'coordinate-grid'`. **Read-only** — lihat catatan di bawah.
 
 - **`Bars` tidak punya sumbu berangka.** Di `g4-u7` batang mulus hanya bisa dipakai untuk soal
   *perbandingan*; setiap soal yang butuh nilai tepat terpaksa digambar sebagai baris blok
