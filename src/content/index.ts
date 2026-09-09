@@ -230,6 +230,11 @@ import { findTheValue } from './grade6/u3/m3-find-the-value';
 import { undoPlusAndMinus } from './grade6/u3/m4-undo-plus-and-minus';
 import { undoTimesAndDivide } from './grade6/u3/m5-undo-times-and-divide';
 import { followTheRule } from './grade6/u3/m6-follow-the-rule';
+import { radiusAndDiameter } from './grade6/u4/m1-radius-and-diameter';
+import { meetPi } from './grade6/u4/m2-meet-pi';
+import { aroundACircle } from './grade6/u4/m3-around-a-circle';
+import { insideACircle } from './grade6/u4/m4-inside-a-circle';
+import { aroundOrInside } from './grade6/u4/m5-around-or-inside';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -517,6 +522,12 @@ export const all: ContentModule[] = [
   undoPlusAndMinus,
   undoTimesAndDivide,
   followTheRule,
+  // Unit 4 — Circles
+  radiusAndDiameter,
+  meetPi,
+  aroundACircle,
+  insideACircle,
+  aroundOrInside,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -627,4 +638,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g6-u1': { title: 'Unit 1 · Integers', color: 'var(--c-unit-1)' },
   'g6-u2': { title: 'Unit 2 · Ratio & Proportion', color: 'var(--c-unit-2)' },
   'g6-u3': { title: 'Unit 3 · Algebra Begins', color: 'var(--c-unit-3)' },
+  'g6-u4': { title: 'Unit 4 · Circles', color: 'var(--c-unit-4)' },
 };
