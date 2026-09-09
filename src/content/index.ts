@@ -132,6 +132,13 @@ import { numbersTo1000000 } from './grade4/u1/m2-numbers-to-1000000';
 import { readBigNumbers } from './grade4/u1/m3-read-big-numbers';
 import { compareBigNumbers } from './grade4/u1/m4-compare-big-numbers';
 import { nearestThousand } from './grade4/u1/m5-nearest-thousand';
+import { timesTenAndHundred } from './grade4/u2/m1-times-ten-and-hundred';
+import { splitToMultiply } from './grade4/u2/m2-split-to-multiply';
+import { twoDigitsTimesOne } from './grade4/u2/m3-two-digits-times-one';
+import { threeDigitsTimesOne } from './grade4/u2/m4-three-digits-times-one';
+import { divideTensFirst } from './grade4/u2/m5-divide-tens-first';
+import { divideWithRemainder } from './grade4/u2/m6-divide-with-remainder';
+import { longDivisionStart } from './grade4/u2/m7-long-division-start';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -305,6 +312,14 @@ export const all: ContentModule[] = [
   readBigNumbers,
   compareBigNumbers,
   nearestThousand,
+  // Unit 2 — Multiply & Divide Bigger
+  timesTenAndHundred,
+  splitToMultiply,
+  twoDigitsTimesOne,
+  threeDigitsTimesOne,
+  divideTensFirst,
+  divideWithRemainder,
+  longDivisionStart,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -399,4 +414,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g3-u6': { title: 'Unit 6 · Shapes & Perimeter', color: 'var(--c-unit-6)' },
   'g3-u7': { title: 'Unit 7 · Time, Money & Data', color: 'var(--c-unit-7)' },
   'g4-u1': { title: 'Unit 1 · Big Numbers', color: 'var(--c-unit-1)' },
+  'g4-u2': { title: 'Unit 2 · Multiply & Divide Bigger', color: 'var(--c-unit-2)' },
 };
