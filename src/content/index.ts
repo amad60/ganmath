@@ -235,6 +235,11 @@ import { meetPi } from './grade6/u4/m2-meet-pi';
 import { aroundACircle } from './grade6/u4/m3-around-a-circle';
 import { insideACircle } from './grade6/u4/m4-inside-a-circle';
 import { aroundOrInside } from './grade6/u4/m5-around-or-inside';
+import { boxesAndCubes } from './grade6/u5/m1-boxes-and-cubes';
+import { addEveryFace } from './grade6/u5/m2-add-every-face';
+import { sixEqualFaces } from './grade6/u5/m3-six-equal-faces';
+import { volumeOrSurface } from './grade6/u5/m4-volume-or-surface';
+import { fillOrCover } from './grade6/u5/m5-fill-or-cover';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -528,6 +533,12 @@ export const all: ContentModule[] = [
   aroundACircle,
   insideACircle,
   aroundOrInside,
+  // Unit 5 — Solids
+  boxesAndCubes,
+  addEveryFace,
+  sixEqualFaces,
+  volumeOrSurface,
+  fillOrCover,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -639,4 +650,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g6-u2': { title: 'Unit 2 · Ratio & Proportion', color: 'var(--c-unit-2)' },
   'g6-u3': { title: 'Unit 3 · Algebra Begins', color: 'var(--c-unit-3)' },
   'g6-u4': { title: 'Unit 4 · Circles', color: 'var(--c-unit-4)' },
+  'g6-u5': { title: 'Unit 5 · Solids', color: 'var(--c-unit-5)' },
 };
