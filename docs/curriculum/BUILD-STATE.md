@@ -37,7 +37,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g5-u5` · Volume & Measurement — volume kubus & balok, konversi satuan · 6 modul → commit `133a180`; data modul memakai `volumeOf`/`layerOf`/`solidFromDims`, `m4`/`m5` jawaban desimal diketik
 - [x] `g5-u6` · Shapes in Space — jaring-jaring, visualisasi spasial · 5 modul → commit `00cff20`; `netLayoutCount` dipakai sebagai variasi, **bukan jawaban** (app gambar 3 jaring kubus, matematika punya 11)
 - [x] `g5-u7` · Data & Speed — kecepatan, jarak, waktu; interpretasi data · 4 modul → commit `58f3edf`; rantai prereq G5 diverifikasi utuh (40 modul, hanya `g5-u1-m1` yang `prereq: []`)
-- [ ] `g5-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
+- [x] `g5-DONE` · ROADMAP + CLAUDE.md diperbarui (`b5cf52d`); build 552 KB / **137 KB gzip**; deploy prod `6aa0cdaf` ✅
 
 ## Grade 6 — ±40 modul
 
