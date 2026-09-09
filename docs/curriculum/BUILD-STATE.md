@@ -24,7 +24,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul → commit `8060399`
 - [x] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul → commit `927d42b`; rantai prereq G4 diverifikasi utuh (40 modul, hanya `g4-u1-m1` yang `prereq: []`)
 - [x] `fix-numberline-step` · `stepFor()` deret 1/2/5×10ⁿ + override `step?`; lint `number-line-step`; commit `178a9f6` — `g3-u1-m5` sembuh tanpa disunting
-- [ ] `fix-keypad-input` · **keputusan user 2026-09-09** — tombol `.` dan `−`, dimunculkan per-rule (bukan per-soal, supaya tidak bocor); longgarkan lint `input-width`
+- [x] `fix-keypad-input` · `answerCaps()` per rule → `allowDecimal`/`allowNegative`; keypad 4 kolom saat perlu; `answer.ts` normalisasi desimal; commit `dae385c`
 - [ ] `g4-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
 
 ## Grade 5 — ±40 modul
@@ -122,7 +122,7 @@ menimpanya lewat `step` opsional. Alasan memilih ini di atas alternatifnya:
 - Override tetap ada karena pecahan & desimal butuh step yang bukan bilangan bulat.
 `ticksFor` juga harus ikut step, supaya label tidak lagi jatuh di 3125/6250/9375.
 
-**`fix-keypad-input` — tombol `.` dan `−`.** Kuncinya: kemunculan tombol diturunkan **per rule**,
+**`fix-keypad-input` — SELESAI (`dae385c`).** Kuncinya: kemunculan tombol diturunkan **per rule**,
 bukan per soal — sama seperti `maxDigits`. Kalau per soal, ada-tidaknya tombol minus langsung
 membocorkan tanda jawabannya. Termasuk: validasi satu titik desimal, minus hanya di depan,
 dan `input-width` dilonggarkan supaya desimal/negatif tidak lagi ditolak. Di luar lingkup:
