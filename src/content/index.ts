@@ -157,6 +157,12 @@ import { writeADecimal } from './grade4/u5/m2-write-a-decimal';
 import { hundredths } from './grade4/u5/m3-hundredths';
 import { tenthsOnALine } from './grade4/u5/m4-tenths-on-a-line';
 import { compareDecimals } from './grade4/u5/m5-compare-decimals';
+import { meetAngles } from './grade4/u6/m1-meet-angles';
+import { acuteAndObtuse } from './grade4/u6/m2-acute-and-obtuse';
+import { measureAngles } from './grade4/u6/m3-measure-angles';
+import { coverAndCount } from './grade4/u6/m4-cover-and-count';
+import { areaOfARectangle } from './grade4/u6/m5-area-of-a-rectangle';
+import { areaOrPerimeter } from './grade4/u6/m6-area-or-perimeter';
 
 /**
  * Registry konten. Modul baru cukup ditambahkan ke `all` dan ke `pathOrder` —
@@ -359,6 +365,13 @@ export const all: ContentModule[] = [
   hundredths,
   tenthsOnALine,
   compareDecimals,
+  // Unit 6 — Angles & Area
+  meetAngles,
+  acuteAndObtuse,
+  measureAngles,
+  coverAndCount,
+  areaOfARectangle,
+  areaOrPerimeter,
 ];
 
 export const modules: Record<string, ContentModule> = Object.fromEntries(
@@ -457,4 +470,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g4-u3': { title: 'Unit 3 · Factors & Multiples', color: 'var(--c-unit-3)' },
   'g4-u4': { title: 'Unit 4 · Equivalent Fractions', color: 'var(--c-unit-4)' },
   'g4-u5': { title: 'Unit 5 · Decimals Begin', color: 'var(--c-unit-5)' },
+  'g4-u6': { title: 'Unit 6 · Angles & Area', color: 'var(--c-unit-6)' },
 };
