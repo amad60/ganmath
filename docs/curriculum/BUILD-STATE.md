@@ -23,7 +23,7 @@ sepadan di `src/content/grade3/`.
 - [x] `add-angle-visual` · **penghalang g4-u6** — komponen `Angle` + `angleKind()`, commit `ef42c62`
 - [x] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul → commit `8060399`
 - [x] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul → commit `927d42b`; rantai prereq G4 diverifikasi utuh (40 modul, hanya `g4-u1-m1` yang `prereq: []`)
-- [ ] `fix-numberline-step` · **keputusan user 2026-09-09** — step otomatis dari rentang + override eksplisit; betulkan `g3-u1-m5` yang sudah live
+- [x] `fix-numberline-step` · `stepFor()` deret 1/2/5×10ⁿ + override `step?`; lint `number-line-step`; commit `178a9f6` — `g3-u1-m5` sembuh tanpa disunting
 - [ ] `fix-keypad-input` · **keputusan user 2026-09-09** — tombol `.` dan `−`, dimunculkan per-rule (bukan per-soal, supaya tidak bocor); longgarkan lint `input-width`
 - [ ] `g4-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
 
@@ -148,15 +148,14 @@ Grade 3. Bug 1 sudah diperbaiki di tick tersendiri. Bug 2 masih terbuka.
    (keypad tidak punya minus maupun titik desimal) — ini yang akan menjaga g5-u2 desimal dan
    g6-u1 bilangan bulat. Ternyata tidak ada modul yang perlu diubah; `g3-u1-m2` lolos sendiri.
 
-2. **`NumberLine` tidak pernah menerima `step`** dari `QuestionScreen`/`LearnScreen` — selalu
-   `step = 1`. **MASIH TERBUKA, perlu keputusan user.** Dua akibatnya di `g3-u1-m5` (0–10.000),
-   yang **sudah live**: `number-line-drop` tidak bisa dijawab tepat, dan label tick jatuh di
-   angka ganjil (3125 / 6250 / 9375) karena `ticksFor` mengalikan step 1 dengan 5.
-   → Perbaikannya **tidak sepele**: butuh `step` di `QuestionRule` dan `LearnVisual`, plus
-     mengubah tampilan tick pada komponen yang dipakai ratusan modul. Karena itu tidak
-     dikerjakan diam-diam oleh loop.
-   → Siasat sementara: unit G4 ke atas tidak memakai `number-line-drop` untuk rentang lebar.
-     Langkah Learn `drop-on-line` aman (gerbangnya `value >= target`).
+2. ~~**`NumberLine` tidak pernah menerima `step`.**~~ **SELESAI** (commit `178a9f6`).
+   `stepFor(min,max)` di `scale.ts` memilih langkah dari deret 1/2/5 × pangkat sepuluh yang
+   memberi ±10 selang; `step?` opsional di `QuestionRule`/`LearnVisual` bisa menimpanya.
+   `ticksFor` mengalikan step efektif (bukan step 1), `maxTicksFor` menghitung berapa label
+   yang muat di 390px. `g3-u1-m5` sembuh **tanpa disunting**; 11 rule `number-line-drop` lain
+   kini terjawab tepat dan tampilan semua modul garis bilangan membaik (0–1000 dulu hanya
+   berlabel 0 dan 625). Delapan langkah Learn diberi `step` eksplisit.
+   Lint baru `number-line-step` menolak target yang tak bisa didaratkan.
 
-Keduanya lolos `npm test` karena linter konten tidak tahu batas UI — **pertimbangkan menambah
-aturan lint** yang menolak rule keypad dengan jawaban melebihi `maxLength`.
+Kedua bug ini dulu lolos `npm test` karena linter konten tidak tahu batas UI. Sekarang
+masing-masing punya aturan lint penjaganya sendiri: `input-width` dan `number-line-step`.
