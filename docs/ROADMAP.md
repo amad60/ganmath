@@ -1,6 +1,6 @@
 # Roadmap — GanMath
 
-Status keseluruhan: **Grade 1–4 LENGKAP — 161 modul, 270 test.** Berikutnya Grade 5.
+Status keseluruhan: **Grade 1–5 LENGKAP — 201 modul, 295 test.** Berikutnya Grade 6, kelas terakhir.
 
 Grade 4 (40 modul) dibangun satu unit per iterasi lewat loop, dengan status per unit di
 [`docs/curriculum/BUILD-STATE.md`](curriculum/BUILD-STATE.md). Tiga perbaikan komponen lahir
@@ -9,6 +9,11 @@ dari proses itu karena konten Grade 4 menabrak batas alat yang ada:
 `fix-numberline-step` (step diturunkan dari rentang — sekaligus menyembuhkan 12 soal garis
 bilangan Grade 2–3 yang selama ini tidak bisa dijawab), dan `fix-keypad-input`
 (tombol `.` dan `−`, disiapkan untuk desimal & bilangan bulat negatif di Grade 5–6).
+
+Grade 5 (40 modul) menambah satu komponen lagi dengan alasan yang sama: `add-solid-visual`
+(`Solid3D` + `ShapeNet` + aturan murni `solids.ts`) — sebelumnya tidak ada satu pun visual
+bangun ruang yang benar-benar dirender, dan modul "Solid Shapes" Grade 1 mengakalinya dengan
+emoji 📦.
 
 - Live: **https://ganmath.netlify.app**
 - Repo: **https://github.com/amad60/ganmath** (private)
@@ -34,7 +39,7 @@ Baca `../CLAUDE.md` dulu untuk arahan produk.
 | 5a | Build vertical slice | Engine + peta + gamifikasi + **modul #1–16 Grade 1**, live di Netlify | ✅ selesai — 13/13 langkah |
 | 5b | Uji dengan anak | Pakai betulan ±2 minggu, catat titik bingung, perbaiki pola sebelum konten diperbanyak | 🔜 berikutnya |
 | 5c | Lengkapi Grade 1 | 27 modul sisanya (#17–43) | ✅ selesai — 43/43 |
-| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | 🟨 jalan — G2 ✅, G3 ✅, G4 ✅, G5–G6 belum |
+| 6 | Isi konten | Grade 2–6 menyusul, satu grade per iterasi, dirinci saat gilirannya | 🟨 jalan — G2 ✅, G3 ✅, G4 ✅, G5 ✅, G6 belum |
 
 ## Catatan urutan
 - Fase 5 sengaja hanya Grade 1: lebih baik satu kelas yang benar-benar enak dipakai daripada
