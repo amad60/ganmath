@@ -25,7 +25,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul → commit `927d42b`; rantai prereq G4 diverifikasi utuh (40 modul, hanya `g4-u1-m1` yang `prereq: []`)
 - [x] `fix-numberline-step` · `stepFor()` deret 1/2/5×10ⁿ + override `step?`; lint `number-line-step`; commit `178a9f6` — `g3-u1-m5` sembuh tanpa disunting
 - [x] `fix-keypad-input` · `answerCaps()` per rule → `allowDecimal`/`allowNegative`; keypad 4 kolom saat perlu; `answer.ts` normalisasi desimal; commit `dae385c`
-- [ ] `g4-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
+- [x] `g4-DONE` · ROADMAP + CLAUDE.md diperbarui (`b662e9d`); build 471 KB / **122 KB gzip**; deploy prod `6aa0b69e` ✅
 
 ## Grade 5 — ±40 modul
 
