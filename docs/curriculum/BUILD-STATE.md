@@ -32,7 +32,8 @@ sepadan di `src/content/grade3/`.
 - [x] `g5-u1` · Fraction Operations — +/− penyebut beda, × dan ÷ pecahan · 8 modul → commit `07ad431` (`m3` pakai `step: 1` eksplisit; opsi `choose-text` dicek unik brute-force)
 - [x] `g5-u2` · Decimals — operasi desimal, konversi pecahan↔desimal · 6 modul · ⏱ fact → commit `ae60132`; **9 rule jawaban desimal diketik** (bukti `fix-keypad-input` terpakai), `m1`/`m2` override `speedTargetMs`
 - [x] `g5-u3` · Percent — persen, hubungan dengan pecahan & desimal, diskon · 5 modul → commit `a8f4c30`; 6 rule ketik desimal, harga Rp10.000–90.000 (jawaban ≤5 digit)
-- [ ] `g5-u4` · Multiply & Divide Fluently — bilangan besar, pangkat dua & akar · 6 modul · ⏱ fact
+- [x] `g5-u4` · Multiply & Divide Fluently — bilangan besar, pangkat dua & akar · 6 modul · ⏱ fact → commit `a6f245d`; `m1` override 15000 ms, `m4`/`m5` tetap ketat 5000 (hafalan)
+- [ ] `add-solid-visual` · **penghalang g5-u5 DAN g5-u6** — belum ada visual bangun ruang / jaring-jaring (15 jenis visual yang dirender, tak satu pun 3D)
 - [ ] `g5-u5` · Volume & Measurement — volume kubus & balok, konversi satuan · 6 modul
 - [ ] `g5-u6` · Shapes in Space — jaring-jaring, visualisasi spasial · 5 modul
 - [ ] `g5-u7` · Data & Speed — kecepatan, jarak, waktu; interpretasi data · 4 modul
