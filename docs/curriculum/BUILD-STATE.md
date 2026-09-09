@@ -34,7 +34,7 @@ sepadan di `src/content/grade3/`.
 - [x] `g5-u3` · Percent — persen, hubungan dengan pecahan & desimal, diskon · 5 modul → commit `a8f4c30`; 6 rule ketik desimal, harga Rp10.000–90.000 (jawaban ≤5 digit)
 - [x] `g5-u4` · Multiply & Divide Fluently — bilangan besar, pangkat dua & akar · 6 modul · ⏱ fact → commit `a6f245d`; `m1` override 15000 ms, `m4`/`m5` tetap ketat 5000 (hafalan)
 - [x] `add-solid-visual` · `Solid3D` + `ShapeNet` + `solids.ts` (aturan murni bersama), commit `894a2b7`
-- [ ] `g5-u5` · Volume & Measurement — volume kubus & balok, konversi satuan · 6 modul
+- [x] `g5-u5` · Volume & Measurement — volume kubus & balok, konversi satuan · 6 modul → commit `133a180`; data modul memakai `volumeOf`/`layerOf`/`solidFromDims`, `m4`/`m5` jawaban desimal diketik
 - [ ] `g5-u6` · Shapes in Space — jaring-jaring, visualisasi spasial · 5 modul
 - [ ] `g5-u7` · Data & Speed — kecepatan, jarak, waktu; interpretasi data · 4 modul
 - [ ] `g5-DONE` · update `docs/ROADMAP.md` + Status di `CLAUDE.md`
