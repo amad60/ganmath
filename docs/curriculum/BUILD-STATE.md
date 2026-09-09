@@ -18,7 +18,7 @@ sepadan di `src/content/grade3/`.
 - [x] `fix-input-limits` · **penghalang g4-u2** — lebar input diturunkan per rule (pagar 6 digit), lint `input-width`, commit `e945cc3`
 - [x] `g4-u2` · Multiply & Divide Bigger — 2–3 digit × 1 digit, pembagian panjang awal · 7 modul · ⏱ fact → commit `b6b5e54` (`m3` pakai `speedTargetMs: 9000`, hitung dua langkah)
 - [x] `g4-u3` · Factors & Multiples — faktor, kelipatan, prima, KPK & FPB awal · 6 modul → commit `03e19cc` (KPK/FPB dibatasi metode mendaftar, tanpa faktorisasi prima)
-- [ ] `g4-u4` · Equivalent Fractions — senilai, menyederhanakan, +/− penyebut sama · 7 modul
+- [x] `g4-u4` · Equivalent Fractions — senilai, menyederhanakan, +/− penyebut sama · 7 modul → commit `56a9760`
 - [ ] `g4-u5` · Decimals Begin — persepuluhan & perseratusan, hubungan dengan pecahan · 5 modul
 - [ ] `g4-u6` · Angles & Area — jenis sudut, mengukur sudut, luas & keliling · 6 modul
 - [ ] `g4-u7` · Data — diagram batang, tabel frekuensi, rata-rata sederhana · 4 modul
@@ -70,6 +70,25 @@ sepadan di `src/content/grade3/`.
 ## Catatan
 
 _(diisi loop: unit yang gagal + alasan, atau keputusan yang perlu ditanyakan ke user)_
+
+### Gotcha penulisan konten (dikumpulkan sambil jalan)
+
+- **Jawaban ketik harus bilangan bulat positif.** Lint `input-width` menolak `keypad`/
+  `missing-number` yang jawabannya pecahan atau negatif — keypad tidak punya titik desimal
+  maupun minus. Siasat yang dipakai `g4-u4`: yang diketik adalah pembilang/penyebut/pengali
+  yang hilang; pecahan utuh selalu lewat `choose-text`/`choose-number`/`compare-symbol`.
+- **Generator men-dedupe soal** dengan kunci `tipe + teks + visual`. Jadi `choose-text` yang
+  teksnya konstan dan tanpa visual akan menyusut jadi **satu** soal dan gagal syarat minimal 8.
+  Teks soal harus memuat angkanya (lihat `g4-u4-m5`).
+- **`number-line-drop` jangan dipakai untuk rentang lebar** selama bug `step` masih terbuka.
+
+### Keputusan yang akan datang — keypad desimal & minus
+
+`g5-u2` (operasi desimal), `g5-u3` (persen) dan `g6-u1` (bilangan bulat negatif) adalah unit
+yang **inti materinya** justru jawaban desimal/negatif. Dengan keypad sekarang, unit-unit itu
+hanya bisa dibangun lewat soal pilihan — bisa jalan, tapi anak tidak pernah menuliskan sendiri
+jawaban desimal, padahal itu keterampilannya. Perlu keputusan user sebelum G5 U2:
+tambah tombol `.` dan `−` di keypad (plus longgarkan lint), atau terima batasan soal pilihan.
 
 ### Bug lama yang ditemukan saat membangun g4-u1 (2026-09-09) — perlu keputusan user
 
