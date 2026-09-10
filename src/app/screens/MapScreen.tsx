@@ -134,14 +134,23 @@ export function MapScreen(props: MapScreenProps) {
                 Bentuknya pil berwarna aksen, jadi ia TERLIHAT bisa ditekan — dan
                 "bagaimana cara pindah kelas?" memang pertanyaan pertama orang tua.
                 Menekannya membuka gerbang orang tua, tempat kelas bisa diganti. */}
+            {/* Pilnya kecil karena memang harus kecil — ia keterangan, bukan tombol
+                utama. Yang diperbesar SASARAN SENTUHNYA, lewat padding yang
+                dibatalkan margin negatif: 44×44 sesuai §2 tanpa menggeser satu
+                piksel pun di baris ini. Ini satu-satunya sasaran di bawah 44px
+                yang tersisa di seluruh app (audit 240 modul). */}
             <button
               type="button"
               onClick={onParent}
               aria-label={`Grade ${grade} — change grade`}
-              className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px] font-black"
-              style={{ background: 'var(--c-primary-soft)', color: 'var(--c-primary)' }}
+              className="-mx-1.5 -my-2.5 flex min-h-11 min-w-11 items-center justify-center px-1.5 py-2.5"
             >
-              G{grade}
+              <span
+                className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px] font-black"
+                style={{ background: 'var(--c-primary-soft)', color: 'var(--c-primary)' }}
+              >
+                G{grade}
+              </span>
             </button>
           </div>
           <div className="-mr-2 flex items-center gap-1">
