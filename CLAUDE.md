@@ -350,7 +350,11 @@ modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
 ### Deployment
 - Deploy sebagai **situs statis ke Netlify**, akun pribadi user (tim "My Project").
   **Sudah live di https://ganmath.netlify.app.**
-- Deploy ulang: `npm run build && netlify deploy --prod --dir dist` (folder sudah ter-link).
+- **Deploy otomatis dari git.** Repo publik `github.com/amad60/ganmath` tersambung ke Netlify
+  lewat deploy key + webhook; setiap push ke `main` memicu build (`npm run build`, publish
+  `dist`). Karena `npm run build` menjalankan seluruh tes lebih dulu, **tes yang merah
+  menghentikan deploy** — itu pagar terakhir sebelum perubahan sampai ke anak.
+- Deploy manual masih bisa kalau perlu: `npm run build && netlify deploy --prod --dir dist`.
 - Sediakan `netlify.toml` (build command, publish dir, SPA redirect) supaya sekali klik jadi.
 - Link bersifat privat (tidak dibagikan/diindeks); tidak ada data sensitif di sisi server karena
   memang tidak ada server.
