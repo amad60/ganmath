@@ -13,7 +13,8 @@
     "shots": "node scripts/shots.mjs",
     "icons": "node scripts/icons.mjs",
     "pathorder": "node scripts/pathorder.mjs",
-    "audit:layout": "node scripts/layout-audit.mjs"
+    "audit:layout": "node scripts/layout-audit.mjs",
+    "audit:hint": "node scripts/hint-audit.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

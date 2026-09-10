@@ -260,6 +260,20 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const [feedback, setFeedback] = useState<{ value: number; correct: boolean } | null>(null);
   const [hintUsed, setHintUsed] = useState(false);
   const hint = hintStep(session.moduleId);
+  const hintRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!hintUsed) return;
+    // Ditunda satu frame: manipulatif punya animasi masuk, dan menggulung sebelum
+    // tingginya final membuat browser menghitung dari tinggi yang salah — hasilnya
+    // bantuan justru terlempar ke luar area gulung. Terukur di Chrome sungguhan.
+    const t = setTimeout(() => {
+      const el = hintRef.current;
+      // jsdom tidak punya scrollIntoView; app tidak boleh jatuh karenanya.
+      if (typeof el?.scrollIntoView === 'function') el.scrollIntoView({ block: 'nearest' });
+    }, 120);
+    return () => clearTimeout(t);
+  }, [hintUsed]);
 
   const shownAt = useRef(0);
   const firstInputAt = useRef<number | null>(null);
@@ -393,6 +407,13 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             Ten-frame didahulukan kalau ada, karena ia dibangun dari angka SOAL INI —
             lebih menolong daripada materi umum. Kalau tidak ada, materi Learn modul
             itu yang dipanggil ulang, sehingga setiap modul punya bantuan yang nyata. */}
+        {/* Bantuan digulung ke tampilan begitu muncul. Manipulatif materi bisa
+            setinggi 300px lebih, dan di layar 393×873 sebagian modul mendorongnya
+            ke bawah lipatan: anak menekan Hint, layarnya tidak berubah, dan dari
+            tempat duduknya tombol itu tetap terasa rusak. Diukur di Chrome
+            sungguhan — g6-u4-m3 gambarnya berakhir di 638px sementara area
+            gulungnya habis di 473px. */}
+        <div ref={hintRef} className="flex w-full flex-col items-center">
         {!isQuiz && hintUsed ? (
           question.params.n != null ? (
             <TenFrame value={question.params.n as number} animate />
@@ -403,6 +424,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             </div>
           ) : null
         ) : null}
+        </div>
 
         {!isQuiz ? (
           <Button
