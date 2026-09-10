@@ -139,8 +139,27 @@ makin tinggi grade makin ketat menuju benar-benar otomatis.
 | 5 | ≥ 90% | 2 sesi lulus, beda hari | ≤ 5 detik/soal |
 | 6 | ≥ 90% | 3 sesi lulus, beda hari | ≤ 4 detik/soal |
 
-**Nilai sempurna melewati aturan konsistensi.** Kuis 100% benar (dengan cakupan dan
-kecepatan terpenuhi) langsung menguasai modul, tanpa perlu sesi kedua. Menyuruh anak
+**Bintang mengukur kebenaran, kecepatan mengukur status.** Ini pembagian tugas yang
+tidak boleh dikaburkan lagi:
+
+| | Ditentukan oleh |
+|---|---|
+| ★ | akurasi lolos ambang |
+| ★★ | akurasi ≥ 95% |
+| ★★★ | otomatis — Master Round, median `thinkMs` ≤ 3 detik |
+| status `practiced` vs `mastered` | kecepatan |
+
+Anak yang menjawab **100% benar tapi lambat mendapat dua bintang**, sama persis dengan
+anak yang cepat; yang membedakan hanya statusnya (`practiced`, masih ditawari Speed
+Round). Versi pertama mengikat bintang ke ambang kecepatan, dan hasilnya anak yang
+teliti mengerjakan modul yang sama berkali-kali dengan nilai 100% tanpa pernah
+mendapat satu bintang pun — dari tempat duduknya itu terbaca "aku salah", padahal
+tidak satu pun jawabannya salah. Bintang tidak pernah bisa dicabut oleh nilai yang
+lebih rendah di pengulangan berikutnya.
+
+**Nilai sempurna melewati aturan konsistensi.** Kuis 100% benar (dengan cakupan
+terpenuhi) langsung menyelesaikan modul, tanpa perlu sesi kedua — berlaku baik anak
+itu cepat maupun lambat, karena alasannya sama. Menyuruh anak
 mengulang kuis yang baru saja dia jawab sempurna tidak mengajarkan apa pun — itu hanya
 membosankan, dan kebosanan adalah cara tercepat kehilangan dia. Modul yang memang
 menuntut lebih dari satu sesi menyatakannya lewat `masteryOverride.sessions`.
@@ -160,6 +179,13 @@ Berlaku di semua grade:
 - **Kecepatan tidak pernah menggagalkan modul.** Akurasi + konsistensi + cakupan lolos tapi
   kecepatan belum → status `practiced`, **modul berikutnya tetap terbuka**, dan app menawarkan
   **Speed Round** pendek. Mengunci anak yang berpikir hati-hati adalah hukuman yang salah sasaran.
+- **Speed Round harus punya tombol.** Node `practiced` di peta membuka Speed Round langsung —
+  ia BUKAN modul "sudah selesai", meski ikut membuka modul berikutnya. Pernah putus di sini:
+  `practiced` dikirim ke lembar "sudah selesai" bersama modul `mastered`, jadi satu-satunya
+  sesi yang bisa meluluskannya tidak punya tombol di mana pun dan anak terjebak di nol bintang.
+- **Master Round hanya untuk modul yang sudah `mastered`.** Ambangnya 3 detik — lebih ketat
+  daripada ambang kelulusan modul itu sendiri, jadi menawarkannya ke modul `practiced` berarti
+  memberi anak satu-satunya tombol yang dijamin tidak bisa dia menangkan.
 - `thinkMs` median ≤3 detik = penanda internal "otomatis", dipakai untuk bintang ke-3.
 
 **Retensi / spaced repetition — 4 titik review:**
@@ -174,6 +200,10 @@ Berlaku di semua grade:
 - **Maksimal 2 modul review per hari** supaya sesi tetap 5–10 menit dan tidak menumpuk jadi
   hukuman setelah berbulan-bulan.
 - Gagal review → `needs_review`, jadwal mundur ke R1. **Tidak mengunci ulang** modul berikutnya.
+- **Review tidak pernah meluluskan modul.** Ia menaikkan tahap retensi modul yang sudah
+  dikuasai, titik. Modul `practiced` yang lulus review tetap `practiced` — kalau tidak, anak
+  mendapat `mastered` tanpa `masteredAt`: nol bintang, dan modulnya hilang selamanya dari
+  antrean ulangan karena `nextReviewDate()` tidak punya titik jangkar.
 - Review dihitung sebagai sesi sah untuk streak — kalau tidak, anak tidak akan mau mengerjakannya.
 - **Kalau gagal:** app tidak bilang "gagal". App mengarahkan balik ke bagian materi yang salah,
   lalu tawarkan coba lagi. Tidak ada batas jumlah percobaan.

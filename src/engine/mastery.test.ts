@@ -88,12 +88,50 @@ describe('mastery check — tabel keputusan', () => {
   });
 
   it('paham tapi lambat → practiced, BUKAN gagal, dan modul berikutnya tetap terbuka', () => {
-    const a = evaluate(def, state(), session({ thinkMs: 12_000 }));
-    const b = evaluate(def, a.next, session({ thinkMs: 12_000 }));
+    const a = evaluate(def, state(), session({ thinkMs: 12_000, correct: 9 }));
+    const b = evaluate(def, a.next, session({ thinkMs: 12_000, correct: 9 }));
     expect(b.detail.accuracyPass).toBe(true);
     expect(b.detail.speedPass).toBe(false);
     expect(b.next.status).toBe('practiced');
     expect(b.events.map((x) => x.type)).toContain('speed-round-offered');
+  });
+
+  /**
+   * Keluhan nyata dari orang tua: anaknya menjawab 100% benar berkali-kali di modul
+   * yang sama dan tidak pernah dapat satu bintang pun, karena dia berpikir lama.
+   * Kecepatan boleh menahan STATUS (`practiced`, belum otomatis) — ia tidak boleh
+   * menghapus pengakuan atas jawaban yang semuanya benar.
+   */
+  it('100% benar tapi lambat tetap dapat DUA bintang, dan tetap dalam satu sesi', () => {
+    const e = evaluate(def, state(), session({ n: 10, correct: 10, thinkMs: 12_000 }));
+    expect(e.detail.accuracy).toBe(1);
+    expect(e.detail.speedPass).toBe(false);
+    expect(e.next.stars).toBe(2);
+    expect(e.next.status).toBe('practiced');
+    expect(e.events.map((x) => x.type)).toContain('speed-round-offered');
+  });
+
+  it('lulus tapi belum sempurna dan lambat tetap dapat satu bintang', () => {
+    const a = evaluate(def, state(), session({ correct: 9, thinkMs: 12_000 }));
+    const b = evaluate(def, a.next, session({ correct: 9, thinkMs: 12_000 }));
+    expect(b.next.status).toBe('practiced');
+    expect(b.next.stars).toBe(1);
+  });
+
+  it('mengulang kuis dengan nilai lebih rendah tidak mencabut bintang yang sudah didapat', () => {
+    const first = evaluate(def, state(), session({ correct: 10 }));
+    expect(first.next.stars).toBe(2);
+    const again = evaluate(def, first.next, session({ correct: 9 }));
+    expect(again.next.stars).toBe(2);
+  });
+
+  it('bintang tidak pernah bergantung pada kecepatan — cepat dan lambat sama nilainya', () => {
+    const fast = evaluate(def, state(), session({ correct: 10, thinkMs: 1500 }));
+    const slow = evaluate(def, state(), session({ correct: 10, thinkMs: 20_000 }));
+    expect(slow.next.stars).toBe(fast.next.stars);
+    // Yang membedakan hanya STATUS: cepat = otomatis, lambat = masih perlu Speed Round.
+    expect(fast.next.status).toBe('mastered');
+    expect(slow.next.status).toBe('practiced');
   });
 
   it('modul concept tidak pernah dinilai kecepatan', () => {
@@ -183,9 +221,14 @@ describe('tes-lewat (jump level)', () => {
     expect(e.next.status).toBe('available');
   });
 
-  it('melompat sambil lambat tidak diizinkan untuk modul hafalan', () => {
+  it('melompat sambil lambat tetap LEWAT, tapi mendarat di practiced — bukan mastered', () => {
+    // Anak yang membuktikan dia menguasai isinya tidak disuruh mengulang modulnya
+    // dari nol hanya karena lambat; yang tersisa cuma kecepatan.
     const e = evaluate(def, state(), session({ kind: 'testout', correct: 10, thinkMs: 12_000 }));
-    expect(e.next.status).not.toBe('mastered');
+    expect(e.next.status).toBe('practiced');
+    expect(e.next.stars).toBe(2);
+    expect(e.next.masteredAt).toBeUndefined();
+    expect(e.events.map((x) => x.type)).toContain('speed-round-offered');
   });
 });
 
@@ -206,5 +249,27 @@ describe('review', () => {
     const e = evaluate(def, s, session({ kind: 'review', n: 5, correct: 1 }));
     expect(e.next.status).toBe('needs_review');
     expect(e.next.reviewStage).toBe(1);
+  });
+
+  /**
+   * Bug nyata: modul `practiced` (100% benar tapi belum cepat) diluluskan oleh sesi
+   * review. Anak mendapat `mastered` tanpa `masteredAt` — nol bintang, dan karena
+   * `nextReviewDate()` butuh `masteredAt`, modul itu hilang selamanya dari antrean
+   * ulangan. Ambang kecepatan yang belum pernah dia lewati terlewati begitu saja.
+   */
+  it('review TIDAK pernah meluluskan modul yang belum pernah dikuasai', () => {
+    const s = state({ status: 'practiced', stars: 0 });
+    const e = evaluate(def, s, session({ kind: 'review', n: 5, correct: 5 }));
+    expect(e.next.status).toBe('practiced');
+    expect(e.next.masteredAt).toBeUndefined();
+    expect(e.events.map((x) => x.type)).not.toContain('review-passed');
+  });
+
+  it('satu-satunya pintu keluar dari practiced adalah Speed Round', () => {
+    const s = state({ status: 'practiced', stars: 2 });
+    const e = evaluate(def, s, session({ kind: 'speed', n: 8, correct: 8, thinkMs: 2000 }));
+    expect(e.next.status).toBe('mastered');
+    expect(e.next.masteredAt).toBe('2026-09-08');
+    expect(e.next.stars).toBe(2);
   });
 });

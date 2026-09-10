@@ -267,6 +267,19 @@ export function MapScreen(props: MapScreenProps) {
                 const st = states[id];
                 const unlocked = isUnlocked(id, states, registry);
                 const isCleared = CLEARED.includes(st?.status ?? '');
+                /**
+                 * `practiced` = paham tapi belum cepat. Statusnya memang "boleh lanjut"
+                 * (ikut CLEARED, modul berikutnya terbuka), TAPI modulnya belum selesai:
+                 * satu-satunya sesi yang bisa menaikkannya ke `mastered` adalah Speed
+                 * Round, dan Speed Round hanya dicapai lewat onOpen → nextStepFor.
+                 *
+                 * Versi sebelumnya mengirim node ini ke lembar "sudah selesai" bersama
+                 * modul mastered, jadi tombol Speed Round tidak pernah ada di mana pun:
+                 * anak yang jawabannya 100% benar tapi lambat terjebak di nol bintang,
+                 * ditawari Master Round yang ambangnya (3 detik) justru lebih ketat
+                 * daripada ambang yang belum dia lewati (8 detik).
+                 */
+                const needsSpeed = st?.status === 'practiced';
                 const isNext = id === nextId;
                 const needsReview =
                   st?.status === 'needs_review' || reviews.some((r) => r.moduleId === id);
@@ -297,7 +310,7 @@ export function MapScreen(props: MapScreenProps) {
                       <button
                         type="button"
                         disabled={!unlocked}
-                        onClick={() => (isCleared ? setChosen(id) : onOpen(id))}
+                        onClick={() => (isCleared && !needsSpeed ? setChosen(id) : onOpen(id))}
                         aria-label={`${def.title}${unlocked ? '' : ', locked'}`}
                         className="flex items-center justify-center rounded-full"
                         style={{
@@ -315,7 +328,7 @@ export function MapScreen(props: MapScreenProps) {
                           animation: isNext ? 'node-pulse 1.8s ease-in-out infinite' : undefined,
                         }}
                       >
-                        {isCleared ? (
+                        {isCleared && !needsSpeed ? (
                           '⭐'
                         ) : unlocked ? (
                           def.icon
@@ -335,31 +348,36 @@ export function MapScreen(props: MapScreenProps) {
 
                       {/*
                         Setiap node menjelaskan apa yang terjadi kalau ditekan, DAN
-                        warnanya menyatakan jenisnya. Empat arti, empat warna:
+                        warnanya menyatakan jenisnya. Lima arti, lima warna:
                         biru = bisa dikerjakan sekarang, hijau = sudah selesai,
-                        biru muda = minta diulang, abu = terkunci.
+                        emas = tinggal kecepatannya, biru muda = minta diulang,
+                        abu = terkunci.
                       */}
                       <span
                         className="mt-0.5 text-center text-[12px] font-bold"
                         style={{
                           color: needsReview
                             ? 'var(--c-review)'
-                            : isCleared
-                              ? 'var(--c-correct)'
-                              : unlocked
-                                ? 'var(--c-primary)'
-                                : 'var(--c-locked)',
+                            : needsSpeed
+                              ? 'var(--c-star)'
+                              : isCleared
+                                ? 'var(--c-correct)'
+                                : unlocked
+                                  ? 'var(--c-primary)'
+                                  : 'var(--c-locked)',
                         }}
                       >
                         {needsReview
                           ? en.map.tapReview
-                          : isCleared
-                            ? en.map.tapDone
-                            : unlocked
-                              ? en.map.tapStart
-                              : id === firstLockedId
-                                ? en.map.lockedHint
-                                : ''}
+                          : needsSpeed
+                            ? en.map.tapSpeed
+                            : isCleared
+                              ? en.map.tapDone
+                              : unlocked
+                                ? en.map.tapStart
+                                : id === firstLockedId
+                                  ? en.map.lockedHint
+                                  : ''}
                       </span>
                     </div>
                   </div>
@@ -467,7 +485,11 @@ export function MapScreen(props: MapScreenProps) {
           >
             {en.map.doReview}
           </Button>
-          {(chosenState?.stars ?? 0) < 3 ? (
+          {/* Master Round mengejar bintang ke-3 (ambang 3 detik). Menawarkannya ke
+              modul yang belum mastered adalah tombol yang dijamin tidak bisa
+              dimenangkan — lembar ini hanya untuk modul yang sudah lewat. */}
+          {(chosenState?.stars ?? 0) < 3 &&
+          (chosenState?.status === 'mastered' || chosenState?.status === 'retained') ? (
             <Button
               variant="answer"
               textSize={17}

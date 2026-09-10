@@ -33,6 +33,8 @@ type Screen =
   | {
       name: 'result';
       moduleId: string;
+      /** Jenis sesi yang menghasilkan layar ini — layar hasil butuh tahu. */
+      kind: SessionKind;
       evaluation: Evaluation;
       xpGained: number;
       earnedBadges: string[];
@@ -162,6 +164,7 @@ export function App() {
       setScreen({
         name: 'result',
         moduleId: final.moduleId,
+        kind: final.kind,
         evaluation,
         xpGained: 0,
         earnedBadges: [],
@@ -176,6 +179,7 @@ export function App() {
     setScreen({
       name: 'result',
       moduleId: final.moduleId,
+      kind: final.kind,
       evaluation: outcome,
       xpGained: outcome.xpGained,
       earnedBadges: outcome.earnedBadges,
@@ -244,6 +248,7 @@ export function App() {
               ? unitTestDef(screen.moduleId.slice('unit:'.length))
               : moduleById(screen.moduleId)
           }
+          kind={screen.kind}
           evaluation={screen.evaluation}
           xpGained={screen.xpGained}
           earnedBadges={screen.earnedBadges}

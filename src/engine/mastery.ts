@@ -78,6 +78,27 @@ function countPassingSessions(attempts: Attempt[], sameDayAllowed: boolean): num
 }
 
 /**
+ * Bintang mengukur KEBENARAN, bukan kecepatan.
+ *
+ * Versi pertama mengikat bintang ke ambang kecepatan: anak yang menjawab 100% benar
+ * tapi berpikir lama mendapat NOL bintang — berkali-kali, di modul yang sama. Dari
+ * tempat duduknya itu tidak terbaca sebagai "belum otomatis"; itu terbaca sebagai
+ * "aku salah", padahal tidak satu pun jawabannya salah. Anak yang teliti dihukum
+ * karena teliti, lalu berhenti mencoba. Itu kegagalan produk, bukan kegagalan anak.
+ *
+ * Sekarang pembagian tugasnya tegas:
+ *  - **bintang ← akurasi.** ★ = kamu bisa, ★★ = mulus, ★★★ = hafal di luar kepala.
+ *  - **status ← akurasi + konsistensi + cakupan + kecepatan** (`practiced` vs `mastered`).
+ *
+ * Kecepatan tetap dituntut dan tetap punya arti — ia menentukan status, jadwal
+ * retensi, dan bintang ke-3 lewat Master Round. Yang dicabut hanya kuasanya untuk
+ * menghapus pengakuan atas jawaban yang benar.
+ */
+export function starsFor(accuracy: number): 1 | 2 {
+  return accuracy >= 0.95 ? 2 : 1;
+}
+
+/**
  * Evaluator penguasaan — fungsi murni, satu-satunya tempat keputusan
  * "lulus / bintang / perlu diajar ulang" dibuat.
  */
@@ -140,15 +161,24 @@ export function evaluate(
   //     Lulus = langsung mastered tanpa harus dua sesi. Gagal TIDAK menghukum apa pun:
   //     anak cuma kembali ke jalur normal dan mempelajarinya.
   if (result.kind === 'testout') {
-    const strongEnough = accuracy >= TESTOUT_ACCURACY && coveragePass && speedPass;
+    const strongEnough = accuracy >= TESTOUT_ACCURACY && coveragePass;
     if (strongEnough) {
-      next.status = 'mastered';
-      next.masteredAt = result.date;
-      next.reviewStage = 1;
-      next.stars = accuracy === 1 ? 2 : 1;
+      next.stars = starsFor(accuracy);
       next.consecutiveFails = 0;
       events.push({ type: 'tested-out', moduleId: def.id });
-      events.push({ type: 'mastered', moduleId: def.id });
+      events.push({ type: 'star', moduleId: def.id, stars: next.stars });
+      // Tahu isinya tapi belum cepat tetap LEWAT. Menyuruhnya mengulang seluruh
+      // modul yang barusan dia buktikan dikuasai hanya membuang waktunya; yang
+      // tersisa cuma kecepatan, dan itu urusan Speed Round.
+      if (speedPass) {
+        next.status = 'mastered';
+        next.masteredAt = result.date;
+        next.reviewStage = 1;
+        events.push({ type: 'mastered', moduleId: def.id });
+      } else {
+        next.status = 'practiced';
+        events.push({ type: 'speed-round-offered', moduleId: def.id });
+      }
     } else {
       next.status = state.status === 'available' ? 'available' : state.status;
       next.consecutiveFails = state.consecutiveFails; // tidak dihitung sebagai kegagalan
@@ -159,6 +189,14 @@ export function evaluate(
 
   // --- Sesi review: jalur terpisah, tidak pernah mengunci ulang modul berikutnya.
   if (result.kind === 'review') {
+    // Review menaikkan TAHAP RETENSI modul yang sudah dikuasai — ia bukan pintu
+    // kelulusan. Modul `practiced` belum pernah melewati ambang kecepatan, dan
+    // membiarkan review meluluskannya memberi anak `mastered` tanpa `masteredAt`:
+    // nol bintang, lalu `nextReviewDate()` mengembalikan null sehingga modul itu
+    // hilang selamanya dari antrean ulangan. Satu-satunya pintu keluar dari
+    // `practiced` adalah Speed Round.
+    if (!state.masteredAt) return { next, events, detail };
+
     if (sessionPassed) {
       const stage = Math.min(4, state.reviewStage + 1) as ModuleState['reviewStage'];
       next.reviewStage = stage;
@@ -196,7 +234,8 @@ export function evaluate(
     if (state.status === 'practiced' && speedPass && accuracyPass) {
       next.status = 'mastered';
       next.masteredAt = result.date;
-      next.stars = next.stars || 1;
+      next.reviewStage = Math.max(1, state.reviewStage) as ModuleState['reviewStage'];
+      next.stars = Math.max(state.stars, starsFor(accuracy)) as ModuleState['stars'];
       events.push({ type: 'mastered', moduleId: def.id });
     }
     return { next, events, detail };
@@ -208,15 +247,24 @@ export function evaluate(
   // baru saja dia jawab 100% benar tidak mengajarkan apa pun — itu cuma membosankan,
   // dan kebosanan adalah cara tercepat kehilangan dia. Modul yang memang menuntut
   // lebih dari satu sesi harus menyatakannya lewat `masteryOverride.sessions`.
-  const perfect = accuracy === 1 && coveragePass && speedPass;
+  const perfect = accuracy === 1 && coveragePass;
   const requiresRepeats = def.masteryOverride?.sessions != null;
   if (perfect && !requiresRepeats) {
-    next.status = 'mastered';
-    next.masteredAt = result.date;
-    next.reviewStage = Math.max(1, state.reviewStage) as ModuleState['reviewStage'];
     next.stars = 2;
-    events.push({ type: 'mastered', moduleId: def.id });
-    events.push({ type: 'star', moduleId: def.id, stars: 2 });
+    if (speedPass) {
+      next.status = 'mastered';
+      next.masteredAt = result.date;
+      next.reviewStage = Math.max(1, state.reviewStage) as ModuleState['reviewStage'];
+      events.push({ type: 'mastered', moduleId: def.id });
+      events.push({ type: 'star', moduleId: def.id, stars: 2 });
+    } else {
+      // Sempurna tapi belum cepat: dua bintang tetap DIDAPAT, dan alasan melewati
+      // aturan konsistensi persis sama seperti pada anak yang cepat — mengulang
+      // kuis yang baru saja dijawab 100% benar tidak mengajarkan apa pun.
+      next.status = 'practiced';
+      events.push({ type: 'star', moduleId: def.id, stars: 2 });
+      events.push({ type: 'speed-round-offered', moduleId: def.id });
+    }
     return { next, events, detail };
   }
 
@@ -227,9 +275,11 @@ export function evaluate(
   }
 
   if (!speedPass) {
-    // Paham tapi belum cepat: modul berikutnya TETAP terbuka. Kecepatan tidak
-    // pernah mengunci kemajuan — lihat CLAUDE.md §6.
+    // Paham tapi belum cepat: modul berikutnya TETAP terbuka, dan bintangnya tetap
+    // didapat. Kecepatan tidak pernah mengunci kemajuan — lihat CLAUDE.md §6.
     next.status = 'practiced';
+    next.stars = Math.max(state.stars, starsFor(accuracy)) as ModuleState['stars'];
+    events.push({ type: 'star', moduleId: def.id, stars: next.stars as 1 | 2 | 3 });
     events.push({ type: 'speed-round-offered', moduleId: def.id });
     return { next, events, detail };
   }
@@ -237,9 +287,11 @@ export function evaluate(
   next.status = 'mastered';
   next.masteredAt = result.date;
   next.reviewStage = Math.max(1, state.reviewStage) as ModuleState['reviewStage'];
-  next.stars = accuracy >= 0.95 ? 2 : 1;
+  // Math.max: mengulang kuis yang sudah berbintang dua dengan nilai lebih rendah
+  // tidak boleh MENCABUT bintang yang sudah didapat.
+  next.stars = Math.max(state.stars, starsFor(accuracy)) as ModuleState['stars'];
   events.push({ type: 'mastered', moduleId: def.id });
-  events.push({ type: 'star', moduleId: def.id, stars: next.stars as 1 | 2 });
+  events.push({ type: 'star', moduleId: def.id, stars: next.stars as 1 | 2 | 3 });
   return { next, events, detail };
 }
 

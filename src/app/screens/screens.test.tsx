@@ -387,6 +387,7 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
     const { container } = render(
       <ResultScreen
         module={def}
+        kind="quiz"
         evaluation={failing}
         xpGained={20}
         earnedBadges={[]}
@@ -401,11 +402,66 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
     for (const s of spans) expect((s as HTMLElement).style.color).toContain('--c-star');
   });
 
+  /**
+   * Master Round tidak pernah mengubah status modul — ia hanya menentukan bintang
+   * ke-3. Layar ini dulu menyusun pesannya dari `next.status`, jadi anak yang baru
+   * saja bermain Master Round dijawab "Almost! Just be a bit quicker.": kalimat
+   * tentang kecepatan KUIS, bukan tentang ronde yang barusan dia mainkan — dan
+   * kalimat yang sama muncul entah dia menang atau kalah.
+   */
+  const practiced: ModuleState = {
+    status: 'practiced',
+    stars: 0,
+    reviewStage: 0,
+    consecutiveFails: 0,
+    attempts: [],
+    totals: { sessions: 3, questions: 28, correct: 28 },
+  };
+
+  it('Master Round yang kalah tidak dijawab dengan kalimat tentang kecepatan kuis', () => {
+    const round = evaluate(def, practiced, fakeSession({ kind: 'master', thinkMs: 9000 }));
+    render(
+      <ResultScreen
+        module={def}
+        kind="master"
+        evaluation={round}
+        xpGained={10}
+        earnedBadges={[]}
+        sessionsNeeded={2}
+        nextTitle={null}
+        onBackToMap={() => {}}
+      />,
+    );
+    expect(screen.queryByText(/be a bit quicker/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/come back for the third star/i)).toBeInTheDocument();
+    // Master Round bukan langkah menuju kelulusan modul: bar "sesi lulus" tidak berlaku.
+    expect(screen.queryByText('1/2')).not.toBeInTheDocument();
+  });
+
+  it('Master Round yang menang merayakan bintang ke-3', () => {
+    const round = evaluate(def, practiced, fakeSession({ kind: 'master', thinkMs: 2000 }));
+    render(
+      <ResultScreen
+        module={def}
+        kind="master"
+        evaluation={round}
+        xpGained={10}
+        earnedBadges={[]}
+        sessionsNeeded={2}
+        nextTitle={null}
+        onBackToMap={() => {}}
+      />,
+    );
+    expect(screen.getByText(/you know these by heart/i)).toBeInTheDocument();
+    expect(within(screen.getByLabelText(/of 3 stars/)).queryAllByText('★')).toHaveLength(3);
+  });
+
   it('hanya punya SATU tombol, supaya arahnya tidak pernah ambigu', () => {
     const onBackToMap = vi.fn();
     render(
       <ResultScreen
         module={def}
+        kind="quiz"
         evaluation={failing}
         xpGained={0}
         earnedBadges={[]}
@@ -424,6 +480,7 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
     render(
       <ResultScreen
         module={def}
+        kind="quiz"
         evaluation={failing}
         xpGained={0}
         earnedBadges={[]}
@@ -574,6 +631,73 @@ describe('MapScreen — pintu jump level', () => {
     onParent: () => {},
     onBadges: () => {},
     ...over,
+  });
+
+  /**
+   * Bug nyata yang sampai ke tangan anak: dia menjawab 100% benar di "Add to 10"
+   * tapi lambat, jadi statusnya `practiced`. Karena `practiced` ikut dihitung
+   * "cleared", menekan nodenya membuka lembar "sudah selesai" — isinya Quick Review
+   * dan Master Round. Padahal Master Round menuntut ≤3 detik, LEBIH ketat daripada
+   * ambang 8 detik yang belum dia lewati, dan Speed Round (satu-satunya sesi yang
+   * bisa menaikkan practiced → mastered) tidak punya tombol di mana pun.
+   *
+   * Enginenya benar sejak awal: `nextStepFor` mengembalikan 'speed'. Yang putus
+   * navigasinya — dan tidak ada satu pun test yang menekan node itu.
+   */
+  const practicedState: ModuleState = {
+    status: 'practiced',
+    stars: 0,
+    reviewStage: 0,
+    consecutiveFails: 0,
+    attempts: [],
+    totals: { sessions: 3, questions: 28, correct: 28 },
+  };
+
+  it('modul practiced membuka Speed Round, bukan lembar "sudah selesai"', () => {
+    const onOpen = vi.fn();
+    const onMaster = vi.fn();
+    const first = pathOrder[0] as string;
+    render(
+      <MapScreen
+        {...mapProps({
+          states: { [first]: practicedState },
+          nextId: pathOrder[1] as string,
+          onOpen,
+          onMaster,
+        })}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: moduleById(first).title }));
+    expect(onOpen).toHaveBeenCalledWith(first);
+    // Lembar yang menawarkan Master Round tidak boleh terbuka sama sekali.
+    expect(screen.queryByRole('button', { name: /Master Round/i })).not.toBeInTheDocument();
+    expect(onMaster).not.toHaveBeenCalled();
+  });
+
+  it('node practiced mengatakan yang sebenarnya: belum selesai, dan belum berbintang', () => {
+    const first = pathOrder[0] as string;
+    render(
+      <MapScreen
+        {...mapProps({ states: { [first]: practicedState }, nextId: pathOrder[1] as string })}
+      />,
+    );
+    expect(screen.getByText(/Speed Round/i)).toBeInTheDocument();
+    // Nol bintang: node tidak boleh memasang ⭐ seolah sudah didapat.
+    const node = screen.getByRole('button', { name: moduleById(first).title });
+    expect(node.textContent).not.toContain('⭐');
+  });
+
+  it('Master Round hanya ditawarkan ke modul yang benar-benar sudah dikuasai', () => {
+    const first = pathOrder[0] as string;
+    const mastered: ModuleState = { ...practicedState, status: 'mastered', stars: 2 };
+    render(
+      <MapScreen
+        {...mapProps({ states: { [first]: mastered }, nextId: pathOrder[1] as string })}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: moduleById(first).title }));
+    expect(screen.getByRole('button', { name: /Master Round/i })).toBeInTheDocument();
   });
 
   it('pintu melompat dijelaskan dulu, tidak langsung menembak', () => {

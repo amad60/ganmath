@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Evaluation } from '../../engine/mastery';
+import type { SessionKind } from '../../engine/types';
 import type { ContentModule } from '../../content/types';
 import type { BadgeId } from '../../engine/gamification';
 import { BadgeCard, Button, Celebration, ProgressBar, StarRow } from '../../components/ui';
@@ -9,6 +10,8 @@ import { sfx } from '../sfx';
 
 export type ResultScreenProps = {
   module: ContentModule;
+  /** Sesi APA yang baru saja selesai. Wajib: pesan hasil berbeda per jenis sesi. */
+  kind: SessionKind;
   evaluation: Evaluation;
   xpGained: number;
   earnedBadges: string[];
@@ -34,6 +37,7 @@ export type ResultScreenProps = {
  */
 export function ResultScreen({
   module,
+  kind,
   evaluation,
   xpGained,
   earnedBadges,
@@ -44,12 +48,34 @@ export function ResultScreen({
   const { next, detail } = evaluation;
   const mastered = next.status === 'mastered' || next.status === 'retained';
   const practiced = next.status === 'practiced';
-  const [celebrating, setCelebrating] = useState(mastered || earnedBadges.length > 0);
+
+  /**
+   * Master Round tidak pernah MENGUBAH status — ia hanya menentukan bintang ke-3.
+   * Membaca `next.status` untuk menyusun pesannya berarti melaporkan keadaan yang
+   * sudah ada SEBELUM sesi ini: anak yang baru saja mengerjakan Master Round
+   * dijawab "Almost! Just be a bit quicker.", kalimat tentang kecepatan kuis yang
+   * tidak ada hubungannya dengan ronde yang barusan dia mainkan — dan kalimat itu
+   * muncul sama persis entah dia menang atau tidak.
+   */
+  const masterRound = kind === 'master';
+  const thirdStar = evaluation.events.some((e) => e.type === 'star' && e.stars === 3);
+  const gotStar = evaluation.events.some((e) => e.type === 'star');
+
+  /**
+   * `practiced` sekarang berarti LEWAT dengan bintang di tangan — tinggal
+   * kecepatannya. Layar ini dulu memperlakukannya sebagai "belum": judul
+   * "Keep going!", bar sesi, dan tidak ada perayaan. Anak yang benar semua
+   * pantas dirayakan meski dia lambat.
+   */
+  const cleared = mastered || practiced;
+  const [celebrating, setCelebrating] = useState(
+    cleared || gotStar || earnedBadges.length > 0,
+  );
 
   useEffect(() => {
     if (earnedBadges.length > 0) sfx.badge();
-    else if (mastered) sfx.star();
-  }, [earnedBadges.length, mastered]);
+    else if (cleared || gotStar) sfx.star();
+  }, [earnedBadges.length, cleared, gotStar]);
 
   const testedOut = evaluation.events.some((e) => e.type === 'tested-out');
   const testoutFailed = evaluation.events.some((e) => e.type === 'testout-failed');
@@ -58,13 +84,17 @@ export function ResultScreen({
     ? en.result.testedOut
     : testoutFailed
       ? en.result.testoutFailed
-      : mastered
-        ? en.result.mastered
-        : practiced
-          ? en.result.almost
-          : detail.accuracyPass
-            ? en.result.oneMore
-            : en.result.keepPractising;
+      : masterRound
+        ? thirdStar
+          ? en.result.masterWon
+          : en.result.masterMissed
+        : mastered
+          ? en.result.mastered
+          : practiced
+            ? en.result.almost
+            : detail.accuracyPass
+              ? en.result.oneMore
+              : en.result.keepPractising;
 
   return (
     <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col items-center gap-4 px-6">
@@ -74,7 +104,7 @@ export function ResultScreen({
 
       <div className="text-center">
         <h1 className="text-2xl font-black">
-          {mastered ? en.result.niceWork : en.result.keepGoing}
+          {cleared || thirdStar ? en.result.niceWork : en.result.keepGoing}
         </h1>
         {/* Nama modul sebagai keterangan di ATAS, bukan teks nyasar di paling bawah
             yang terbaca seperti tombol. */}
@@ -103,7 +133,9 @@ export function ResultScreen({
       <div className="w-full">
         {/* Bar kemajuan hanya masuk akal SELAMA modul belum tuntas. Menampilkan
             "1/2" di samping tulisan "Module mastered!" saling bertentangan. */}
-        {!mastered ? (
+        {/* Master Round tidak dihitung sebagai langkah menuju kelulusan modul, jadi
+            bar "sesi lulus" di sini hanya angka yang membingungkan. */}
+        {!cleared && !masterRound ? (
           <ProgressBar
             value={Math.min(detail.passingSessions, sessionsNeeded)}
             max={sessionsNeeded}
@@ -113,11 +145,11 @@ export function ResultScreen({
         ) : null}
         <p
           className="mt-2 text-center text-[18px] font-bold"
-          style={{ color: mastered ? 'var(--c-correct)' : 'var(--c-ink-soft)' }}
+          style={{ color: cleared || thirdStar ? 'var(--c-correct)' : 'var(--c-ink-soft)' }}
         >
           {message}
         </p>
-        {mastered && nextTitle ? (
+        {cleared && nextTitle ? (
           <p className="mt-1 text-center text-[16px] font-bold">
             {en.result.nextUpIs(nextTitle)}
           </p>

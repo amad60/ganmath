@@ -1,4 +1,6 @@
 import { CURRENT_SCHEMA_VERSION, createInitialState, type ProgressState } from './schema';
+import { starsFor } from '../engine/mastery';
+import type { ModuleState } from '../engine/types';
 
 /**
  * Migrasi HANYA menambah — tidak pernah menghapus data anak.
@@ -9,8 +11,57 @@ import { CURRENT_SCHEMA_VERSION, createInitialState, type ProgressState } from '
  */
 type Migration = (s: Record<string, unknown>) => Record<string, unknown>;
 
+/** Akurasi terbaik yang PERNAH dibuktikan anak di modul ini. */
+function bestAccuracy(m: ModuleState): number | null {
+  const passed = (m.attempts ?? []).filter((a) => a.passed).map((a) => a.accuracy);
+  if (passed.length > 0) return Math.max(...passed);
+  const { questions, correct } = m.totals ?? { questions: 0, correct: 0 };
+  return questions > 0 ? correct / questions : null;
+}
+
+const CLEARED_STATUSES = ['practiced', 'mastered', 'retained'];
+
 export const migrations: Record<number, Migration> = {
-  // 2: (s) => ({ ...s, schemaVersion: 2, fieldBaru: nilaiAman }),
+  // 3: (s) => ({ ...s, schemaVersion: 3, fieldBaru: nilaiAman }),
+
+  /**
+   * v2 — bintang dibayarkan surut.
+   *
+   * Sampai v1 bintang terikat pada ambang kecepatan, jadi anak yang menjawab 100%
+   * benar tapi berpikir lama menyelesaikan modul dengan NOL bintang. Aturannya sudah
+   * diperbaiki (bintang ← akurasi), tapi evaluator hanya berjalan pada sesi BARU —
+   * tanpa migrasi ini anak harus mengulang modul yang sudah dia lewati hanya untuk
+   * mendapat pengakuan yang sebenarnya sudah dia hasilkan. Itu persis hukuman yang
+   * sedang kita cabut.
+   *
+   * Sekalian menambal kerusakan dari bug lama: sesi review pernah bisa meluluskan
+   * modul `practiced` menjadi `mastered` TANPA `masteredAt`, dan modul seperti itu
+   * hilang selamanya dari antrean ulangan karena `nextReviewDate()` tidak punya
+   * titik jangkar. Di sini jangkarnya dikembalikan.
+   *
+   * Hanya MENAMBAH: tidak ada bintang yang diturunkan dan tidak ada status yang
+   * diubah.
+   */
+  2: (s) => {
+    const modules = (s.modules ?? {}) as Record<string, ModuleState>;
+    const healed = Object.fromEntries(
+      Object.entries(modules).map(([id, m]) => {
+        if (!m || typeof m !== 'object' || !CLEARED_STATUSES.includes(m.status)) return [id, m];
+
+        let next = m;
+        if (!(m.stars > 0)) {
+          const acc = bestAccuracy(m);
+          if (acc != null) next = { ...next, stars: starsFor(acc) };
+        }
+        if (m.status !== 'practiced' && !m.masteredAt) {
+          const anchor = (m.attempts ?? []).filter((a) => a.passed).at(-1)?.date;
+          if (anchor) next = { ...next, masteredAt: anchor };
+        }
+        return [id, next];
+      }),
+    );
+    return { ...s, schemaVersion: 2, modules: healed };
+  },
 };
 
 export type LoadResult =

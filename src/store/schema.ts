@@ -1,6 +1,6 @@
 import type { ModuleState } from '../engine/types';
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 2;
 
 export const STORAGE_KEY = 'ganmath.v1.progress';
 export const SESSION_KEY = 'ganmath.v1.session';

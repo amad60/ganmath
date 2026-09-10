@@ -83,6 +83,94 @@ describe('migrasi', () => {
     expect(r.ok && r.state.settings.sound).toBe(true);
     expect(r.ok && r.state.streak.freezes).toBe(2);
   });
+
+  /**
+   * v1 mengikat bintang ke ambang kecepatan, jadi anak yang benar semua tapi lambat
+   * menyelesaikan modul dengan nol bintang. Aturannya sudah diperbaiki, tapi
+   * evaluator hanya jalan pada sesi BARU — tanpa migrasi ini anak harus mengulang
+   * modul yang sudah dia lewati hanya untuk mendapat yang sudah dia hasilkan.
+   */
+  const v1 = (modules: Record<string, unknown>) => ({ schemaVersion: 1, modules });
+  const attempt = (accuracy: number, date = '2026-09-09') => ({
+    date,
+    kind: 'quiz',
+    accuracy,
+    medianThinkMs: 12_000,
+    medianTotalMs: 13_000,
+    passed: true,
+  });
+
+  it('bintang dibayarkan surut ke modul lama yang lulus tapi nol bintang', () => {
+    const r = migrate(
+      v1({
+        'g1-u2-m5': {
+          status: 'practiced',
+          stars: 0,
+          reviewStage: 0,
+          consecutiveFails: 0,
+          attempts: [attempt(1)],
+          totals: { sessions: 3, questions: 28, correct: 28 },
+        },
+        'g1-u2-m6': {
+          status: 'practiced',
+          stars: 0,
+          reviewStage: 0,
+          consecutiveFails: 0,
+          attempts: [attempt(0.85)],
+          totals: { sessions: 2, questions: 20, correct: 17 },
+        },
+      }),
+    );
+    expect(r.ok && r.state.modules['g1-u2-m5']?.stars).toBe(2);
+    expect(r.ok && r.state.modules['g1-u2-m6']?.stars).toBe(1);
+    // Status tidak pernah diubah — migrasi hanya menambah.
+    expect(r.ok && r.state.modules['g1-u2-m5']?.status).toBe('practiced');
+  });
+
+  it('bintang yang sudah ada tidak pernah diturunkan, modul yang belum lulus tidak diberi', () => {
+    const r = migrate(
+      v1({
+        sudah: {
+          status: 'mastered',
+          stars: 2,
+          reviewStage: 1,
+          masteredAt: '2026-09-01',
+          consecutiveFails: 0,
+          attempts: [attempt(0.8)],
+          totals: { sessions: 2, questions: 20, correct: 16 },
+        },
+        belum: {
+          status: 'learning',
+          stars: 0,
+          reviewStage: 0,
+          consecutiveFails: 1,
+          attempts: [attempt(1)],
+          totals: { sessions: 1, questions: 10, correct: 10 },
+        },
+      }),
+    );
+    expect(r.ok && r.state.modules['sudah']?.stars).toBe(2);
+    expect(r.ok && r.state.modules['belum']?.stars).toBe(0);
+  });
+
+  it('modul yang dirusak bug review lama dikembalikan ke antrean ulangan', () => {
+    // Bug lama: review meluluskan modul `practiced` → `mastered` TANPA masteredAt,
+    // dan nextReviewDate() tidak punya jangkar sehingga modulnya hilang selamanya.
+    const r = migrate(
+      v1({
+        rusak: {
+          status: 'mastered',
+          stars: 0,
+          reviewStage: 1,
+          consecutiveFails: 0,
+          attempts: [attempt(1, '2026-09-05')],
+          totals: { sessions: 3, questions: 30, correct: 30 },
+        },
+      }),
+    );
+    expect(r.ok && r.state.modules['rusak']?.masteredAt).toBe('2026-09-05');
+    expect(r.ok && r.state.modules['rusak']?.stars).toBe(2);
+  });
 });
 
 describe('backup file', () => {
