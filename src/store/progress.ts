@@ -1,7 +1,15 @@
 import { create, type StoreApi, type UseBoundStore } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { evaluate, type Evaluation } from '../engine/mastery';
-import { levelForXp, newBadges, updateStreak, xpForSession } from '../engine/gamification';
+import {
+  depthBadges,
+  levelForXp,
+  newBadges,
+  summarizeDepth,
+  updateStreak,
+  xpForSession,
+  type CurriculumIndex,
+} from '../engine/gamification';
 import type { ModuleDef, ModuleState, SessionResult } from '../engine/types';
 import { emptyModuleState } from '../engine/types';
 import { migrate } from './migrations';
@@ -20,12 +28,13 @@ export type ProgressStore = {
   moduleState: (id: string) => ModuleState;
   setProfile: (name: string, avatar: Avatar) => void;
   setGrade: (grade: number) => void;
-  masterModules: (ids: string[], date: string) => void;
+  masterModules: (ids: string[], date: string, curriculum?: CurriculumIndex) => string[];
   markLearnComplete: (moduleId: string, date: string) => void;
   recordSession: (
     def: ModuleDef,
     result: SessionResult,
-    ctx?: { unitModuleIds?: string[] },
+    /** `curriculum` dikirim App: store dan engine tidak pernah mengimpor konten. */
+    ctx?: { unitModuleIds?: string[]; curriculum?: CurriculumIndex },
   ) => Evaluation & { xpGained: number; earnedBadges: string[] };
   updateSettings: (patch: Partial<Settings>) => void;
   replaceAll: (state: ProgressState) => void;
@@ -134,24 +143,32 @@ export function createProgressStore(
           set((s) => ({ data: touch({ ...s.data, profile: { ...s.data.profile, grade } }) })),
 
         /** Dipakai saat anak lolos tes satu unit: seluruh modulnya ditandai dikuasai. */
-        masterModules: (ids, date) =>
-          set((s) => {
-            const modules = { ...s.data.modules };
-            for (const id of ids) {
-              const prev = modules[id] ?? emptyModuleState();
-              if (prev.status === 'mastered' || prev.status === 'retained') continue;
-              modules[id] = {
-                ...prev,
-                status: 'mastered',
-                stars: prev.stars || 1,
-                masteredAt: date,
-                learnCompletedAt: prev.learnCompletedAt ?? date,
-                reviewStage: Math.max(1, prev.reviewStage) as typeof prev.reviewStage,
-                consecutiveFails: 0,
-              };
-            }
-            return { data: touch({ ...s.data, modules }) };
-          }),
+        masterModules: (ids, date, curriculum) => {
+          const s = get().data;
+          const modules = { ...s.modules };
+          for (const id of ids) {
+            const prev = modules[id] ?? emptyModuleState();
+            if (prev.status === 'mastered' || prev.status === 'retained') continue;
+            modules[id] = {
+              ...prev,
+              status: 'mastered',
+              stars: prev.stars || 1,
+              masteredAt: date,
+              learnCompletedAt: prev.learnCompletedAt ?? date,
+              reviewStage: Math.max(1, prev.reviewStage) as typeof prev.reviewStage,
+              consecutiveFails: 0,
+            };
+          }
+          // Melompati satu unit adalah bukti penguasaan, jadi ia berhak atas tonggak
+          // yang sama dengan menempuhnya modul demi modul.
+          const earned = curriculum
+            ? depthBadges(s.badges, summarizeDepth(modules, curriculum))
+            : [];
+          set({
+            data: touch({ ...s, modules, badges: [...s.badges, ...earned] }),
+          });
+          return earned;
+        },
 
         markLearnComplete: (moduleId, date) =>
           set((s) => {
@@ -201,6 +218,9 @@ export function createProgressStore(
             streakCurrent: streak.current,
             unitComplete: (ctx?.unitModuleIds ?? []).length > 0
               && (ctx?.unitModuleIds ?? []).every(cleared),
+            // Dihitung dari `modules` YANG SUDAH memuat hasil sesi ini — kalau dari
+            // state lama, tonggak terakhir selalu telat satu sesi.
+            depth: summarizeDepth(modules, ctx?.curriculum ?? { units: [], grades: [] }),
           });
 
           set({

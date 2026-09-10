@@ -6,7 +6,8 @@ import { nextStepFor, type ModuleStep } from '../engine/steps';
 import { dueReviews } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
-import { all, moduleById, registryFor, unitModules, unitTestDef } from '../content';
+import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
+import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
 import { toDateString } from '../engine/review';
@@ -80,6 +81,27 @@ export function App() {
    * (3 / 7 / 30 / 60 hari) tidak pernah terjadi: modul yang sudah dikuasai
    * dilewati oleh nextModule, jadi tidak akan pernah muncul lagi di peta.
    */
+  /**
+   * Peta kurikulum untuk badge kedalaman (Grade Graduate, tingkatan unit).
+   *
+   * Dirakit DI SINI karena hanya App yang boleh tahu isi kurikulum: store dan engine
+   * menerimanya sebagai data. Mencakup SELURUH grade, bukan hanya yang sedang
+   * ditempuh — anak yang pindah ke Grade 2 tidak boleh kehilangan Grade 1 Graduate
+   * hanya karena registry aktifnya berganti.
+   */
+  const curriculum = useMemo<CurriculumIndex>(() => {
+    const byUnit = new Map<string, string[]>();
+    for (const m of all) {
+      const list = byUnit.get(m.unitId);
+      if (list) list.push(m.id);
+      else byUnit.set(m.unitId, [m.id]);
+    }
+    return {
+      units: [...byUnit.values()],
+      grades: GRADES.map((g) => ({ grade: g, moduleIds: [...pathOrderFor(g)] })),
+    };
+  }, []);
+
   const reviews = useMemo(
     () =>
       dueReviews(data.modules, today)
@@ -154,12 +176,14 @@ export function App() {
       const virtualDef = unitTestDef(unitId);
       const result = toSessionResult(final, today);
       const evaluation = evaluate(virtualDef, emptyModuleState(), result);
-      if (evaluation.next.status === 'mastered') {
-        masterModules(
-          unitModules(unitId).map((m) => m.id),
-          today,
-        );
-      }
+      const earnedBadges =
+        evaluation.next.status === 'mastered'
+          ? masterModules(
+              unitModules(unitId).map((m) => m.id),
+              today,
+              curriculum,
+            )
+          : [];
       setSession(null);
       setScreen({
         name: 'result',
@@ -167,14 +191,17 @@ export function App() {
         kind: final.kind,
         evaluation,
         xpGained: 0,
-        earnedBadges: [],
+        earnedBadges,
       });
       return;
     }
 
     const def = moduleById(final.moduleId);
     const unitModuleIds = all.filter((m) => m.unitId === def.unitId).map((m) => m.id);
-    const outcome = recordSession(def, toSessionResult(final, today), { unitModuleIds });
+    const outcome = recordSession(def, toSessionResult(final, today), {
+      unitModuleIds,
+      curriculum,
+    });
     setSession(null);
     setScreen({
       name: 'result',

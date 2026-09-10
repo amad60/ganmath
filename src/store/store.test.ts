@@ -61,6 +61,34 @@ describe('store + persist', () => {
   });
 });
 
+describe('badge lewat jalur melompat', () => {
+  const curriculum = {
+    units: [['a1', 'a2']],
+    grades: [{ grade: 1, moduleIds: ['a1', 'a2'] }],
+  };
+
+  /**
+   * "Lompati satu unit" menandai seluruh modul unit itu dikuasai tanpa pernah lewat
+   * recordSession — jalur satu-satunya yang dulu memberi badge. Anak yang membuktikan
+   * dia menguasai satu unit penuh tidak diberi apa pun, dan anak yang melompati unit
+   * TERAKHIR sebuah grade tidak akan pernah mendapat Grade Graduate-nya karena tidak
+   * ada sesi berikutnya yang menyusulkannya.
+   */
+  it('melompati satu unit memberi tonggak yang sama dengan menempuhnya', () => {
+    const store = createProgressStore(memoryStorage());
+    const earned = store.getState().masterModules(['a1', 'a2'], '2026-09-10', curriculum);
+    expect(earned).toContain('graduate-1');
+    expect(store.getState().data.badges).toContain('graduate-1');
+  });
+
+  it('badge yang sama tidak diberikan dua kali kalau unitnya diulang', () => {
+    const store = createProgressStore(memoryStorage());
+    store.getState().masterModules(['a1', 'a2'], '2026-09-10', curriculum);
+    const again = store.getState().masterModules(['a1', 'a2'], '2026-09-11', curriculum);
+    expect(again).toEqual([]);
+  });
+});
+
 describe('migrasi', () => {
   it('state versi sekarang lewat tanpa perubahan', () => {
     const r = migrate(createInitialState());

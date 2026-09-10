@@ -354,6 +354,42 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'number-line-step')).toBe(true);
   });
 
+  /**
+   * Bug nyata: `unitTestDef` menyusun `questionTypes` dari gabungan SELURUH modul unit
+   * tapi `rules`-nya hanya satu per modul, jadi tes unit menuntut cakupan atas tipe
+   * soal yang tidak punya aturan untuk memunculkannya. 41 dari 43 tes unit tidak
+   * pernah bisa lulus meski anak menjawab 100% benar — seluruh fitur "lompati satu
+   * unit" mati. Lolos dari test karena flow.test.ts hanya menguji g1-u1, satu dari
+   * dua unit yang kebetulan tidak kena.
+   */
+  it('SETIAP tes unit bisa dilulusi anak yang menjawab semuanya benar', async () => {
+    const { unitTestDef, unitTitles } = await import('./index');
+    const { createSession, currentQuestion, isFinished, submitAnswer, toSessionResult } =
+      await import('../engine/session');
+    const { evaluate } = await import('../engine/mastery');
+    const { emptyModuleState } = await import('../engine/types');
+
+    const gagal: string[] = [];
+    for (const unitId of Object.keys(unitTitles)) {
+      const def = unitTestDef(unitId);
+      let s = createSession(def, 'testout', 5, 0);
+      let i = 0;
+      while (currentQuestion(s) && !isFinished(s, 0)) {
+        s = submitAnswer(s, {
+          correct: true,
+          thinkMs: 1500,
+          totalMs: 2000,
+          hintUsed: false,
+          nowMs: i * 1000,
+        });
+        if (++i > 40) break;
+      }
+      const ev = evaluate(def, emptyModuleState(), toSessionResult(s, '2026-09-10'));
+      if (ev.next.status !== 'mastered') gagal.push(`${unitId} (coverage=${ev.detail.coveragePass})`);
+    }
+    expect(gagal).toEqual([]);
+  });
+
   it('menolak modul yang aturan soalnya terlalu sempit untuk satu sesi', () => {
     const base = all[0] as ContentModule;
     const mods = broken({

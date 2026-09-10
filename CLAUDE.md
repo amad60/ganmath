@@ -231,10 +231,28 @@ Berlaku di semua grade:
 
 ## 8. Gamifikasi & Reward
 
-- **Stars** per modul (1–3, dari akurasi + kecepatan).
-- **XP** per sesi; level pemain naik dari akumulasi XP.
-- **Badges** untuk pencapaian: modul dikuasai, unit selesai, grade selesai, streak, perfect
-  session, fast thinker, dsb.
+- **Stars** per modul (1–3, dari **akurasi**; bintang ke-3 dari kecepatan — lihat §6).
+- **XP** per sesi; level naik dari akumulasi XP. **Kurva melambat setelah level 10** —
+  sepuluh level pertama tetap 100 XP rata supaya tidak ada anak yang turun level, lalu
+  biayanya naik sampai 1200 XP. Dengan kurva rata yang lama, tamat Grade 6 mendarat di
+  level 432; angka itu tidak berarti apa-apa bagi anak, dan ia dipajang di peta.
+- **Badges punya DUA sumbu**, dan ini tidak boleh kembali jadi satu:
+
+  | Sumbu | Contoh | Kapan didapat |
+  |---|---|---|
+  | Momen pertama | First Step, Perfect Round, Comeback | sekali, biasanya Grade 1 |
+  | **Kedalaman** | Grade Graduate ×6, tingkatan unit / modul / bintang-3 / retensi | tersebar sampai Grade 6 |
+
+  Versi pertama hanya punya sumbu pertama: sebelas badge yang semuanya bisa didapat di
+  Grade 1, badge terakhir jatuh di sekitar modul ke-30 dari 240, lalu **210 modul
+  berikutnya tanpa satu pun hadiah baru**. Anak yang bertahan paling lama justru yang
+  paling lama tidak diberi apa-apa. Setiap grade sekarang wajib punya minimal satu
+  tonggak baru — kalau menambah kurikulum, cek ulang sebarannya.
+
+  Ambang tingkatan dibaca `>=`, tidak pernah sama-dengan: anak yang maju dua tingkat
+  sekaligus mendapat keduanya, dan tonggak yang telat selalu menyusul di aksi
+  berikutnya. Badge kedalaman juga diberikan lewat **"lompati satu unit"** — melompat
+  adalah bukti penguasaan, jadi ia berhak atas tonggak yang sama.
 - **Daily streak** yang ramah anak: tidak menghakimi kalau putus, ada "freeze".
 - **Progress bar** di tiga level: dalam sesi, per modul, per grade.
 - **Rayakan kemenangan:** confetti, suara, maskot bereaksi.

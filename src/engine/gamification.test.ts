@@ -1,13 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import {
+  BADGES,
+  GRADES,
+  MODULE_TIERS,
+  UNIT_TIERS,
+  depthBadges,
   isoWeek,
   levelForXp,
   newBadges,
+  summarizeDepth,
   updateStreak,
   xpForSession,
+  xpIntoLevel,
+  type BadgeId,
+  type CurriculumIndex,
   type StreakInput,
 } from './gamification';
 import { session, state } from './fixtures';
+import type { ModuleState } from './types';
 
 describe('XP & level', () => {
   it('XP lahir dari jawaban benar dan penguasaan, bukan dari waktu di app', () => {
@@ -84,6 +94,7 @@ describe('badge', () => {
     medianThinkMs: 2000,
     streakCurrent: 1,
     unitComplete: false,
+    depth: { modulesCleared: 0, unitsCleared: 0, gradesCleared: [] as number[], thirdStars: 0, retained: 0 },
     ...over,
   });
 
@@ -114,5 +125,129 @@ describe('badge', () => {
 
   it('cepat tapi banyak salah tidak dapat Fast Thinker', () => {
     expect(newBadges(ctx({ medianThinkMs: 1000, accuracy: 0.5 }))).not.toContain('fast-thinker');
+  });
+});
+
+/**
+ * Sebelas badge pertama semuanya bertipe "pertama kali" dan semuanya bisa didapat di
+ * Grade 1 — badge terakhir jatuh sekitar modul ke-30 dari 240, lalu rak hadiahnya
+ * tidak berubah lagi selama 210 modul. Anak yang bertahan paling lama justru yang
+ * paling lama tidak diberi apa-apa. Tes di bawah menjaga sumbu kedua: KEDALAMAN.
+ */
+describe('badge kedalaman', () => {
+  const mod = (over: Partial<ModuleState> = {}): ModuleState =>
+    state({ status: 'mastered', stars: 1, ...over });
+
+  const index: CurriculumIndex = {
+    units: [
+      ['a1', 'a2'],
+      ['b1', 'b2'],
+    ],
+    grades: [
+      { grade: 1, moduleIds: ['a1', 'a2'] },
+      { grade: 2, moduleIds: ['b1', 'b2'] },
+    ],
+  };
+
+  it('menghitung kedalaman dari state, bukan dari sesi yang barusan', () => {
+    const d = summarizeDepth(
+      {
+        a1: mod(),
+        a2: mod({ stars: 3 }),
+        b1: mod({ status: 'retained', stars: 3 }),
+        b2: mod({ status: 'learning' }),
+      },
+      index,
+    );
+    expect(d.modulesCleared).toBe(3);
+    expect(d.unitsCleared).toBe(1); // unit b belum utuh
+    expect(d.gradesCleared).toEqual([1]);
+    expect(d.thirdStars).toBe(2);
+    expect(d.retained).toBe(1);
+  });
+
+  it('modul practiced ikut dihitung lewat — kecepatan tidak menahan kemajuan', () => {
+    const d = summarizeDepth({ a1: mod({ status: 'practiced' }), a2: mod() }, index);
+    expect(d.unitsCleared).toBe(1);
+    expect(d.gradesCleared).toEqual([1]);
+  });
+
+  it('tamat satu grade memberi Grade Graduate grade ITU, bukan yang lain', () => {
+    const ids = depthBadges([], {
+      modulesCleared: 2,
+      unitsCleared: 1,
+      gradesCleared: [3],
+      thirdStars: 0,
+      retained: 0,
+    });
+    expect(ids).toContain('graduate-3');
+    expect(ids).not.toContain('graduate-2');
+    expect(ids).not.toContain('graduate-4');
+  });
+
+  it('setiap grade punya Grade Graduate-nya sendiri, satu sampai enam', () => {
+    for (const g of GRADES) {
+      expect(BADGES[`graduate-${g}` as BadgeId]).toBeDefined();
+    }
+  });
+
+  /**
+   * Ambang dibaca `>=`, bukan sama dengan. Anak yang libur lalu kembali dan menuntaskan
+   * dua tingkat dalam satu sesi harus mendapat keduanya — kalau tidak, tonggak yang
+   * terlewat hilang selamanya dan tidak ada cara memperbaikinya.
+   */
+  it('melompati dua tingkat sekaligus memberi kedua badge', () => {
+    const ids = depthBadges([], {
+      modulesCleared: 80,
+      unitsCleared: 16,
+      gradesCleared: [],
+      thirdStars: 0,
+      retained: 0,
+    });
+    expect(ids).toContain('unit-champion-5');
+    expect(ids).toContain('unit-champion-15');
+    expect(ids).toContain('modules-25');
+    expect(ids).toContain('modules-75');
+  });
+
+  it('badge yang sudah dipegang tidak diberikan dua kali', () => {
+    const depth = {
+      modulesCleared: 30,
+      unitsCleared: 6,
+      gradesCleared: [1],
+      thirdStars: 0,
+      retained: 0,
+    };
+    expect(depthBadges(['unit-champion-5', 'graduate-1'], depth)).toEqual(['modules-25']);
+  });
+
+  it('tonggak tersebar sampai Grade 6, tidak menumpuk di Grade 1', () => {
+    // 240 modul, 43 unit: ambang tertinggi tiap tingkatan harus JAUH di atas Grade 1
+    // (43 modul, 8 unit), kalau tidak sumbu kedalamannya percuma.
+    expect(Math.max(...MODULE_TIERS)).toBeGreaterThan(43);
+    expect(Math.max(...UNIT_TIERS)).toBeGreaterThan(8);
+  });
+});
+
+describe('kurva level', () => {
+  it('sepuluh level pertama TIDAK berubah — tidak ada anak yang turun level', () => {
+    for (const xp of [0, 99, 100, 250, 400, 899]) {
+      expect(levelForXp(xp)).toBe(Math.floor(xp / 100) + 1);
+    }
+  });
+
+  it('melambat setelah level 10, supaya angkanya tetap berarti', () => {
+    // Tamat seluruh kurikulum dulu mendarat di level 432 — angka yang tidak berarti
+    // bagi siapa pun, dan ia dipajang di peta sepanjang waktu.
+    expect(levelForXp(43_135)).toBeLessThan(100);
+    expect(levelForXp(43_135)).toBeGreaterThan(20);
+  });
+
+  it('sisa XP yang ditampilkan selalu di dalam level yang sedang berjalan', () => {
+    for (const xp of [0, 150, 900, 5000, 43_135]) {
+      const { into, needed } = xpIntoLevel(xp);
+      expect(into).toBeGreaterThanOrEqual(0);
+      expect(into).toBeLessThan(needed);
+    }
   });
 });

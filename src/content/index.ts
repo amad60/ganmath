@@ -606,6 +606,7 @@ export function unitTestDef(unitId: string): ContentModule {
   const mods = unitModules(unitId);
   const first = mods[0];
   if (!first) throw new Error(`Unit tidak ada: ${unitId}`);
+  const rules = mods.flatMap((m) => m.rules.slice(0, 1));
   return {
     ...first,
     id: `unit:${unitId}`,
@@ -615,13 +616,21 @@ export function unitTestDef(unitId: string): ContentModule {
     fluencyTracked: false,
     masteryOverride: undefined,
     skills: [...new Set(mods.flatMap((m) => m.skills))],
-    questionTypes: [...new Set(mods.flatMap((m) => m.questionTypes))],
     visuals: [...new Set(mods.flatMap((m) => m.visuals))],
     vocab: [],
     learn: [],
     // Satu aturan pertama dari tiap modul: cakupannya merata ke seluruh unit,
     // bukan menumpuk di modul yang aturannya paling banyak.
-    rules: mods.flatMap((m) => m.rules.slice(0, 1)),
+    rules,
+    /**
+     * Diturunkan dari `rules` DI ATAS, bukan dari gabungan questionTypes seluruh
+     * modul. Versi pertama memakai gabungan itu, sehingga tes unit menuntut cakupan
+     * atas tipe soal yang tidak punya satu pun aturan untuk memunculkannya — syarat
+     * yang mustahil dipenuhi. Akibatnya 41 dari 43 tes unit TIDAK PERNAH bisa lulus
+     * meski anak menjawab 100% benar. Lolos dari test karena `flow.test.ts` hanya
+     * menguji `g1-u1`, satu dari dua unit yang kebetulan tidak kena.
+     */
+    questionTypes: [...new Set(rules.map((r) => r.type))],
   };
 }
 

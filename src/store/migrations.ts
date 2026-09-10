@@ -1,5 +1,6 @@
 import { CURRENT_SCHEMA_VERSION, createInitialState, type ProgressState } from './schema';
 import { starsFor } from '../engine/mastery';
+import { levelForXp } from '../engine/gamification';
 import type { ModuleState } from '../engine/types';
 
 /**
@@ -22,7 +23,22 @@ function bestAccuracy(m: ModuleState): number | null {
 const CLEARED_STATUSES = ['practiced', 'mastered', 'retained'];
 
 export const migrations: Record<number, Migration> = {
-  // 3: (s) => ({ ...s, schemaVersion: 3, fieldBaru: nilaiAman }),
+  // 4: (s) => ({ ...s, schemaVersion: 4, fieldBaru: nilaiAman }),
+
+  /**
+   * v3 — level dihitung ulang mengikuti kurva baru.
+   *
+   * `level` disimpan, dan hanya ditulis ulang saat sesi berikutnya selesai. Tanpa
+   * migrasi ini anak akan melihat level lama di peta sampai dia bermain lagi, lalu
+   * angkanya melompat tanpa sebab yang bisa dilihat. Sepuluh level pertama biayanya
+   * tidak berubah, jadi bagi anak yang masih di bawah level 10 ini tidak menggeser
+   * apa pun — ia hanya menyamakan angka yang tersimpan dengan XP yang dia punya.
+   */
+  3: (s) => ({
+    ...s,
+    schemaVersion: 3,
+    level: levelForXp(typeof s.xp === 'number' ? s.xp : 0),
+  }),
 
   /**
    * v2 — bintang dibayarkan surut.
