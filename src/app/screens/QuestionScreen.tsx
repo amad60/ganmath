@@ -104,7 +104,7 @@ function QuestionText({ text }: { text: string }) {
   );
 }
 
-function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']> }) {
+export function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']> }) {
   switch (visual.kind) {
     case 'ten-frame':
       return <TenFrame value={visual.value} capacity={visual.capacity ?? 10} split={visual.split} />;

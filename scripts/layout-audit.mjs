@@ -106,7 +106,9 @@ for (const id of targets) {
     rec.screens.push({ screen: 'map', ...(await page.evaluate(MEASURE)) });
     if (!(await clickText('Learn|Start|Practice|Mastery|Review'))) throw new Error('CTA tidak ada di peta');
 
-    for (let step = 0; step < 6; step++) {
+    // 6 -> 8: modul terpanjang punya 6 langkah materi, plus satu pengecekan pemahaman
+    // di akhir (engine/learnCheck.ts), plus satu cadangan.
+    for (let step = 0; step < 8; step++) {
       // buka kunci Next: sentuh apa pun yang bisa disentuh di manipulatif
       await page.evaluate(() => {
         const next = [...document.querySelectorAll('button')].find((b) => /next|start/i.test(b.textContent ?? ''));
@@ -127,6 +129,25 @@ for (const id of targets) {
           if (ok) break;
         }
       }
+      // Pengecekan pemahaman di akhir materi: Next baru terbuka setelah anak memilih
+      // jawaban yang benar. Coba pilihannya satu per satu — yang diaudit tata letak,
+      // bukan apakah skrip ini pandai berhitung.
+      for (let pick = 0; pick < 5; pick++) {
+        const done = await page.evaluate(() => {
+          const n = [...document.querySelectorAll('button')].find((b) => /next|start/i.test(b.textContent ?? ''));
+          return !!n && !n.disabled;
+        });
+        if (done) break;
+        const clicked = await page.evaluate((i) => {
+          const opts = [...document.querySelectorAll('button[data-feedback]')].filter((b) => !/next|start/i.test(b.textContent ?? ''));
+          if (!opts[i]) return false;
+          opts[i].click();
+          return true;
+        }, pick);
+        if (!clicked) break;
+        await wait(120);
+      }
+
       await wait(160);
       const m2 = await page.evaluate(MEASURE);
       const blocked = await page.evaluate(() => {

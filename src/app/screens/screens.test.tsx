@@ -11,6 +11,7 @@ import { LearnVisualView } from './LearnVisualView';
 import { Button, Keypad } from '../../components/ui';
 import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
+import { learnCheck } from '../../engine/learnCheck';
 import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
 import { ACTION_VISUALS } from '../../content/lint';
@@ -1068,6 +1069,59 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     // Menyentuh sudut yang sama dua kali tidak boleh menghitung dua kali.
     fireEvent.click(corners[0]!);
     expect(screen.getAllByRole('button', { name: /Corner \d, counted/ })).toHaveLength(3);
+  });
+
+  /**
+   * Materi tidak boleh bisa dilewati dengan mengetuk Next berulang kali. Untuk
+   * langkah `watch` tombol Next aktif seketika, dan 72% langkah di app ini `watch` —
+   * jadi tanpa pengecekan di akhir, anak bisa sampai di ujung materi dalam tiga detik
+   * tanpa pernah menyentuh idenya.
+   */
+  it('materi ditutup pengecekan: Next terkunci sampai anak menjawab benar', () => {
+    const done = vi.fn();
+    const mod = moduleById('g1-u1-m1');
+    const SEED = 20260910;
+    const check = learnCheck(mod, SEED);
+    render(<LearnScreen module={mod} seed={SEED} onDone={done} onExit={() => {}} />);
+
+    // Tembus seluruh langkah materi.
+    for (let i = 0; i < mod.learn.length; i++) {
+      const next = screen.getByRole('button', { name: /next|start/i });
+      if (next.hasAttribute('disabled')) {
+        for (const b of screen.getAllByRole('button')) {
+          if (/^(Object|Cell|Corner|Side)/.test(b.getAttribute('aria-label') ?? '')) fireEvent.click(b);
+        }
+      }
+      fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+    }
+
+    // Sekarang di pengecekan — dan materi BELUM selesai.
+    expect(screen.getByText(/Now you try/i)).toBeInTheDocument();
+    expect(done).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+
+    const opsi = screen
+      .getAllByRole('button')
+      .filter((b) => b.dataset.feedback != null && !/next|start/i.test(b.textContent ?? ''));
+    expect(opsi.length).toBeGreaterThanOrEqual(2);
+
+    // Seed dikunci, jadi jawaban benarnya diketahui — tidak ada tebak-tebakan yang
+    // membuat test lulus atau gagal tergantung nasib.
+    const benar = String(check!.options ? check!.options[check!.question.answer] : check!.question.answer);
+    const salah = opsi.find((b) => b.textContent !== benar);
+
+    // Pilihan salah tidak pernah mengunci anak keluar: ia diberi tahu, lalu boleh lagi.
+    fireEvent.click(salah!);
+    expect(screen.getByText(/Try again/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+    expect(done).not.toHaveBeenCalled();
+
+    fireEvent.click(opsi.find((b) => b.textContent === benar)!);
+
+    const start = screen.getByRole('button', { name: /next|start/i });
+    expect(start).not.toBeDisabled();
+    fireEvent.click(start);
+    expect(done).toHaveBeenCalled();
   });
 
   it('sisi persegi di g1-u6-m3 dihitung per sisi, bukan per sudut', () => {

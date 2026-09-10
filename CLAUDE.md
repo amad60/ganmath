@@ -58,6 +58,22 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
 
 1. **Self-learning.** Setiap konsep diajarkan lebih dulu di dalam app (mode Learn), baru diuji.
    Tidak pernah ada kuis tentang materi yang belum diajarkan.
+   - **Setiap modul ditutup satu pengecekan pemahaman.** Untuk langkah `watch` tombol Next
+     aktif seketika, dan 72% langkah Learn bertipe `watch` — anak bisa mengetuk Next empat
+     kali dalam tiga detik dan sampai di ujung materi tanpa pernah menyentuh idenya. Angka
+     yang mendasari: dari **252 langkah Learn yang menuntut aksi, 240 ada di tahap
+     `concrete`**, dan **nol dari 314 langkah `abstract`** meminta apa pun. Sebabnya bukan
+     penulis konten — `LearnStep.action` cuma punya tap-count / tap-fill / drop-on-line,
+     ketiganya soal menghitung dan menempatkan, semuanya untuk tahap concrete.
+
+     Soalnya **dibuat dari aturan modul itu sendiri** (`engine/learnCheck.ts`), bukan
+     ditulis ulang 240 kali: aturan yang sama yang dipakai kuis, sudah dilint, sudah punya
+     pengecoh berbasis miskonsepsi. Jadi ia tidak pernah bisa melenceng dari materinya, dan
+     tidak ada 240 kunci jawaban tulisan tangan yang bisa salah.
+
+     Ini **bukan kuis**: tidak dinilai, tidak masuk hitungan apa pun, boleh diulang tanpa
+     batas, dan salah tidak pernah mengunci anak keluar. Ia pintu — anak meninggalkan materi
+     dengan menerapkan idenya sekali, selagi gambarnya masih di layar.
    - **Tombol Hint wajib benar-benar menampilkan sesuatu, di SETIAP modul.** Ia satu-satunya
      pertolongan dalam sesi untuk anak yang macet sendirian. Isinya: ten-frame dari angka soal
      itu kalau ada, kalau tidak materi Learn modul itu dipanggil ulang (langkah pictorial

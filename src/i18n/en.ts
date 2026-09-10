@@ -63,6 +63,9 @@ export const en = {
     start: 'Start practice',
     stepOf: (i: number, n: number) => `Step ${i} of ${n}`,
     tapToContinue: 'Do it to continue.',
+    checkPrompt: 'Now you try.',
+    checkRetry: 'Not that one. Try again.',
+    checkHint: 'Pick the right answer to continue.',
   },
 
   question: {
