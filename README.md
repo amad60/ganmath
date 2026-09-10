@@ -15,7 +15,7 @@ berikutnya kalau benar-benar menguasai**.
 ```bash
 npm install
 npm run dev      # buka alamat Network dari HP di WiFi yang sama
-npm run test     # 125 test
+npm run test     # 407 test
 npm run build    # menjalankan test dulu, lalu typecheck, lalu build
 npm run preview  # menjalankan hasil build (service worker aktif di sini)
 
@@ -40,8 +40,20 @@ Mulai dari [`CLAUDE.md`](CLAUDE.md) untuk arahan produk, lalu
 
 ## Status
 
-Fase 5a (vertical slice): **16 modul Grade 1** — Unit 1 (Numbers to 10), dua modul bentuk,
-Unit 2 (Add & Subtract within 10). Grade 1 lengkap 43 modul menyusul setelah diuji dengan anak.
+**Kurikulum lengkap Grade 1–6: 240 modul, 43 unit**, semuanya punya materi Learn, bank soal,
+dan progresi concrete → pictorial → abstract.
+
+Dipakai anak sungguhan, dan perubahan didorong oleh apa yang terjadi waktu dia memakainya —
+bukan oleh daftar fitur. Beberapa keputusan yang lahir dari situ, semuanya tercatat lengkap
+dengan alasannya di [`CLAUDE.md`](CLAUDE.md):
+
+- **Bintang mengukur kebenaran, kecepatan mengukur status.** Anak yang menjawab 100% benar
+  tapi berpikir lama tetap mendapat dua bintang.
+- **Kecepatan tidak pernah mengunci kemajuan.** Paham tapi belum cepat → modul berikutnya
+  tetap terbuka, dan Speed Round ditawarkan.
+- **Badge punya sumbu kedalaman**, tersebar sampai Grade 6 — bukan hanya "pertama kali".
+- **Hint wajib benar-benar menampilkan sesuatu di setiap modul**; ia satu-satunya pertolongan
+  untuk anak yang macet sendirian.
 
 ## Deploy
 

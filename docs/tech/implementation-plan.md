@@ -20,7 +20,7 @@ langkah bisa dilihat hasilnya (tidak ada langkah yang "belum kelihatan apa-apa")
 | **S9** ✅ | Onboarding, layar Badges, **Parent Area** (gerbang + diagnosis + backup) | ✅ onboarding 2 input; Parent Area menampilkan 3 topik dengan akurasi terendah, setelan, save/load file dengan konfirmasi perbandingan, dan peringatan kalau browser tidak menyimpan data |
 | **S10** ✅ | PWA: manifest, ikon, precache, prompt Add to Home Screen, `navigator.storage.persist()` | ✅ 14 entri di-precache (319KB) termasuk font & seluruh konten; update ditawarkan, tidak pernah reload otomatis. **Verifikasi mode pesawat di HP sungguhan menyusul di S11** |
 | **S11** ◐ | Uji perangkat + performa: Poco F3 & iPhone 17 | ✅ yang bisa diverifikasi tanpa HP: build, manifest, service worker, bundle **81KB gzip**. ⬜ 12 poin yang butuh HP sungguhan ada di [`device-checklist.md`](device-checklist.md) |
-| **S12** ✅ | Deploy | ✅ **https://ganmath.netlify.app** (akun rahmad.id60@gmail.com, tim My Project). index/manifest/sw/ikon/SPA-fallback semua 200 |
+| **S12** ✅ | Deploy | ✅ **https://ganmath.netlify.app** (akun pribadi user, tim My Project). index/manifest/sw/ikon/SPA-fallback semua 200 |
 
 ## Kenapa urutannya begini
 

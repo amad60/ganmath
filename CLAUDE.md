@@ -348,8 +348,8 @@ modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
 - Aturan: setiap dependensi baru harus dibenarkan; target bundle awal < 200KB gzip.
 
 ### Deployment
-- Deploy sebagai **situs statis ke Netlify**, akun pribadi user (`rahmad.id60@gmail.com`,
-  tim "My Project"). **Sudah live di https://ganmath.netlify.app.**
+- Deploy sebagai **situs statis ke Netlify**, akun pribadi user (tim "My Project").
+  **Sudah live di https://ganmath.netlify.app.**
 - Deploy ulang: `npm run build && netlify deploy --prod --dir dist` (folder sudah ter-link).
 - Sediakan `netlify.toml` (build command, publish dir, SPA redirect) supaya sekali klik jadi.
 - Link bersifat privat (tidak dibagikan/diindeks); tidak ada data sensitif di sisi server karena
