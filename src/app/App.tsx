@@ -347,6 +347,7 @@ export function App() {
             onTestOut={(id) => startSession(id, 'testout')}
             onSkipUnit={startUnitTest}
             onMaster={(id) => startSession(id, 'master')}
+            onNextGrade={setGrade}
             grade={grade}
             nextStepLabel={next ? en.step[stepFor(next)] : en.step.done}
             reviews={reviews}

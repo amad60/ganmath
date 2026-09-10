@@ -58,6 +58,11 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
 
 1. **Self-learning.** Setiap konsep diajarkan lebih dulu di dalam app (mode Learn), baru diuji.
    Tidak pernah ada kuis tentang materi yang belum diajarkan.
+   - **Tombol Hint wajib benar-benar menampilkan sesuatu, di SETIAP modul.** Ia satu-satunya
+     pertolongan dalam sesi untuk anak yang macet sendirian. Isinya: ten-frame dari angka soal
+     itu kalau ada, kalau tidak materi Learn modul itu dipanggil ulang (langkah pictorial
+     terakhir). Pernah putus di sini: Hint hanya punya cabang ten-frame, jadi di 163 dari 240
+     modul ia hanya menulis "Look at the picture." tanpa ada gambar apa pun di layar.
 2. **Mastery-based, bukan completion-based.** Lanjut hanya kalau lulus ambang penguasaan.
 3. **"Di luar kepala".** Untuk fakta dasar, penguasaan diukur juga dari **kecepatan &
    konsistensi**, bukan cuma benar/salah. Detail di §6.
@@ -215,6 +220,11 @@ Berlaku di semua grade:
 
 - **Keputusan user: gating ketat.** Kalau anak belum menguasai sebuah modul, dia **ditahan di
   modul itu** — tidak ada jalur alternatif untuk melompatinya.
+- **Tamat satu grade membuka grade berikutnya, untuk ANAK, di tombol utama peta.** Menempuh
+  seluruh grade adalah hak naik kelas, bukan melompat — tidak ada yang perlu dijaga orang tua.
+  ("Jump to level" di Parent Area tetap ada, itu untuk melompat TANPA menempuh.) Pernah jadi
+  jalan buntu: anak yang menyelesaikan 43 modul Grade 1 hanya diberi tulisan "All done for
+  now!" dan berhenti di situ, tepat di momen yang paling pantas dirayakan.
 - **Dua pintu melompat**, untuk anak yang levelnya sudah di atas: **lompati satu modul**
   (kuis singkat, ambang 90%) dan **lompati satu unit penuh** (satu tes yang menjangkau
   seluruh modul unit itu; lulus = seluruh unit ditandai dikuasai). Gagal tidak menghukum
@@ -258,6 +268,15 @@ Berlaku di semua grade:
 - **Rayakan kemenangan:** confetti, suara, maskot bereaksi.
 - Hindari mekanik menekan: tidak ada hearts/nyawa yang menghentikan belajar, tidak ada
   leaderboard kompetitif, tidak ada timer menakutkan (kecepatan diukur diam-diam).
+
+### Gagal dengan suara, bukan diam-diam
+
+App dibungkus **error boundary**. Tanpa itu, satu error render di mana pun berarti layar putih
+untuk anak 6 tahun yang sedang sendirian — tanpa pesan, tanpa jalan keluar, dan karena ini PWA
+yang ter-cache, menutup lalu membuka app mengulang error yang sama. Layar gagalnya menyebut
+lebih dulu hal yang paling ingin diketahui anak: **bintangnya aman**. Pemulihan bertingkat —
+"coba lagi", lalu (kalau gagal lagi) buang sesi yang sedang berjalan dan muat ulang. Progres
+modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
 
 ## 9. Animasi & Interaksi
 

@@ -9,6 +9,9 @@ import {
   type SessionState,
 } from '../../engine/session';
 import { Button, Header, Keypad, SessionDots, type Feedback } from '../../components/ui';
+import { LearnVisualView } from './LearnVisualView';
+import { modules as moduleRegistry } from '../../content';
+import type { LearnStep } from '../../content/types';
 import type { DotState } from '../../components/ui/SessionDots';
 import {
   Angle,
@@ -230,12 +233,33 @@ function QuestionVisualView({ visual }: { visual: NonNullable<Question['visual']
   }
 }
 
+/**
+ * Materi yang dipanggil ulang saat anak menekan Hint.
+ *
+ * Hint dulu hanya punya SATU cabang: ten-frame, dan hanya kalau soalnya kebetulan
+ * punya parameter bernama `n` — 68 dari 240 modul. Untuk sisanya app menulis
+ * "Look at the picture." padahal tidak ada gambar apa pun di layar. Anak yang macet
+ * menekan satu-satunya tombol bantuan yang dia punya, tidak terjadi apa-apa, dan dia
+ * tetap macet. Di app yang prinsip pertamanya belajar mandiri, itu lubang terbesar.
+ *
+ * Perbaikannya tidak menulis 240 teks bantuan baru: materinya SUDAH ada di mode
+ * Learn modul itu. Yang dipilih adalah langkah bergambar terakhir — tahap pictorial
+ * kalau ada, karena di situlah idenya terlihat sebagai gambar, bukan sebagai lambang.
+ */
+function hintStep(moduleId: string): LearnStep | null {
+  const steps = moduleRegistry[moduleId]?.learn ?? [];
+  if (steps.length === 0) return null;
+  const pictorial = steps.filter((l) => l.stage === 'pictorial');
+  return (pictorial.at(-1) ?? steps.at(-1)) ?? null;
+}
+
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
   const question = currentQuestion(session);
   const [typed, setTyped] = useState('');
   const [linePick, setLinePick] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<{ value: number; correct: boolean } | null>(null);
   const [hintUsed, setHintUsed] = useState(false);
+  const hint = hintStep(session.moduleId);
 
   const shownAt = useRef(0);
   const firstInputAt = useRef<number | null>(null);
@@ -363,10 +387,21 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           <QuestionText text={question.text} />
         </div>
 
-        {/* Ten-frame hanya muncul SETELAH hint ditekan. Sebelumnya layar menampilkan
-            grid kosong tanpa makna di sebelah soal. */}
-        {!isQuiz && hintUsed && question.params.n != null ? (
-          <TenFrame value={question.params.n as number} animate />
+        {/* Bantuan hanya muncul SETELAH hint ditekan. Sebelumnya layar menampilkan
+            grid kosong tanpa makna di sebelah soal.
+
+            Ten-frame didahulukan kalau ada, karena ia dibangun dari angka SOAL INI —
+            lebih menolong daripada materi umum. Kalau tidak ada, materi Learn modul
+            itu yang dipanggil ulang, sehingga setiap modul punya bantuan yang nyata. */}
+        {!isQuiz && hintUsed ? (
+          question.params.n != null ? (
+            <TenFrame value={question.params.n as number} animate />
+          ) : hint ? (
+            <div className="flex w-full flex-col items-center gap-2">
+              <LearnVisualView visual={hint.visual} value={0} onValue={() => {}} interactive={false} />
+              <p className="text-ink-soft text-center text-[18px] font-bold">{hint.prompt}</p>
+            </div>
+          ) : null
         ) : null}
 
         {!isQuiz ? (
@@ -382,7 +417,11 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           </Button>
         ) : null}
 
-        {hintUsed ? <p className="text-ink-soft text-[18px]">{en.question.showMe}</p> : null}
+        {/* Kalimat ini dulu muncul sendirian, menyuruh anak melihat gambar yang tidak
+            pernah ada. Sekarang ia hanya muncul kalau memang ADA yang bisa dilihat. */}
+        {hintUsed && (question.params.n != null || hint) ? (
+          <p className="text-ink-soft text-[18px]">{en.question.showMe}</p>
+        ) : null}
 
         </div>
       </main>

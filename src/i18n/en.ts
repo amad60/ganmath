@@ -52,6 +52,9 @@ export const en = {
     collapse: 'Hide',
     unitDone: (n: number) => `All ${n} done`,
     allDone: 'All done for now!',
+    gradeDone: (g: number) => `You finished Grade ${g}!`,
+    startGrade: (g: number) => `Start Grade ${g}`,
+    everythingDone: 'You finished every grade. Amazing.',
     gradeProgress: (done: number, total: number) => `${done}/${total}`,
   },
 
@@ -103,6 +106,13 @@ export const en = {
     testedOut: 'Skipped — you already knew it!',
     testoutFailed: 'Let us learn this one properly.',
     moduleProgress: 'Module',
+  },
+
+  crash: {
+    title: 'Oops! Something broke.',
+    progressSafe: 'Your stars are safe.',
+    tryAgain: 'Try again',
+    startFresh: 'Go back to the map',
   },
 
   common: {

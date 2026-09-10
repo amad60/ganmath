@@ -19,6 +19,8 @@ export type MapScreenProps = {
   onOpen: (moduleId: string) => void;
   onReview: (moduleId: string) => void;
   onMaster: (moduleId: string) => void;
+  /** Naik ke grade berikutnya setelah grade ini tamat. */
+  onNextGrade: (grade: number) => void;
   onTestOut: (moduleId: string) => void;
   onSkipUnit: (unitId: string) => void;
   onParent: () => void;
@@ -27,6 +29,7 @@ export type MapScreenProps = {
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
+const LAST_GRADE = 6;
 
 export function MapScreen(props: MapScreenProps) {
   const {
@@ -41,6 +44,7 @@ export function MapScreen(props: MapScreenProps) {
     onOpen,
     onReview,
     onMaster,
+    onNextGrade,
     onTestOut,
     onSkipUnit,
     onParent,
@@ -75,6 +79,12 @@ export function MapScreen(props: MapScreenProps) {
   const pathOrder = registry.pathOrder;
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
   const nextDef = nextId ? moduleById(nextId) : null;
+  /**
+   * `nextId` kosong TIDAK selalu berarti tamat — bisa juga modul berikutnya terkunci.
+   * Yang menentukan naik kelas adalah seluruh path benar-benar dilewati.
+   */
+  const gradeComplete = pathOrder.length > 0 && done === pathOrder.length;
+  const hasNextGrade = gradeComplete && grade < LAST_GRADE;
 
   /**
    * Peta dikelompokkan per UNIT, tapi mengikuti **potongan berurutan** di path order —
@@ -404,17 +414,27 @@ export function MapScreen(props: MapScreenProps) {
           </div>
         ) : null}
 
+        {/* Tamat satu grade dulu berarti JALAN BUNTU: maskot, tulisan "All done for
+            now!", dan tidak ada satu pun jalan ke grade berikutnya — satu-satunya
+            pintunya ada di Parent Area, di balik gerbang orang tua. Anak yang baru
+            menyelesaikan 43 modul justru berhenti di situ. Menempuh seluruh grade
+            adalah HAK naik kelas, bukan melompat: tidak ada yang perlu dijaga. */}
         {!nextId ? (
           <div className="flex flex-col items-center gap-3 py-8">
             <Mascot mood="celebrate" size={100} />
-            <p className="text-ink-soft text-center font-bold">{en.map.allDone}</p>
+            <p className="text-center text-[20px] font-black">
+              {gradeComplete ? en.map.gradeDone(grade) : en.map.allDone}
+            </p>
+            {gradeComplete && !hasNextGrade ? (
+              <p className="text-ink-soft text-center font-bold">{en.map.everythingDone}</p>
+            ) : null}
           </div>
         ) : null}
       </main>
 
       {/* SATU tombol utama. Pintu melompat dipindah ke dalam lembar terpisah supaya
           tidak ada tiga tombol bersaing di tempat yang sama. */}
-      {nextDef ? (
+      {nextDef || hasNextGrade ? (
         <div
           className="safe-bottom sticky bottom-0 z-20 flex flex-col gap-1 px-6 pt-3"
           style={{
@@ -422,12 +442,22 @@ export function MapScreen(props: MapScreenProps) {
               'linear-gradient(to top, var(--c-bg) 72%, color-mix(in srgb, var(--c-bg) 0%, transparent))',
           }}
         >
-          <Button full onClick={() => onOpen(nextDef.id)}>
-            {nextStepLabel}: {nextDef.title}
-          </Button>
-          <Button variant="ghost" full textSize={15} onClick={() => setSkipOpen(true)}>
-            {en.map.skipAhead}
-          </Button>
+          {nextDef ? (
+            <>
+              <Button full onClick={() => onOpen(nextDef.id)}>
+                {nextStepLabel}: {nextDef.title}
+              </Button>
+              <Button variant="ghost" full textSize={15} onClick={() => setSkipOpen(true)}>
+                {en.map.skipAhead}
+              </Button>
+            </>
+          ) : (
+            // Langkah berikutnya bukan lagi sebuah modul, tapi sebuah kelas. Ia
+            // menempati tombol utama yang sama supaya anak tidak perlu mencarinya.
+            <Button full onClick={() => onNextGrade(grade + 1)}>
+              {en.map.startGrade(grade + 1)}
+            </Button>
+          )}
         </div>
       ) : null}
 

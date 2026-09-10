@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import { QuestionScreen } from './QuestionScreen';
+import { ErrorBoundary } from '../ErrorBoundary';
 import { ResultScreen } from './ResultScreen';
 import { OnboardingScreen } from './OnboardingScreen';
 import { MapScreen } from './MapScreen';
@@ -613,6 +614,94 @@ describe('pilihan berupa kata', () => {
   });
 });
 
+/**
+ * Tanpa jaring ini, satu error render di mana pun berarti layar putih untuk anak yang
+ * sedang sendirian — tanpa pesan dan tanpa jalan keluar.
+ */
+describe('ErrorBoundary — app tidak boleh gagal tanpa suara', () => {
+  const Boom = ({ throwNow }: { throwNow: boolean }) => {
+    if (throwNow) throw new Error('ledakan uji');
+    return <p>Peta</p>;
+  };
+
+  it('menangkap error, menenangkan anak, dan tetap memberi jalan keluar', () => {
+    const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
+    render(
+      <ErrorBoundary>
+        <Boom throwNow />
+      </ErrorBoundary>,
+    );
+    expect(screen.getByText(/Something broke/i)).toBeInTheDocument();
+    // Yang paling ingin diketahui anak: bintangnya tidak hilang.
+    expect(screen.getByText(/stars are safe/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Try again/i })).toBeInTheDocument();
+    quiet.mockRestore();
+  });
+
+  it('"Coba lagi" benar-benar memulihkan, bukan sekadar tombol', () => {
+    const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { rerender } = render(
+      <ErrorBoundary>
+        <Boom throwNow />
+      </ErrorBoundary>,
+    );
+    expect(screen.getByText(/Something broke/i)).toBeInTheDocument();
+
+    // Penyebabnya hilang (mis. sesi rusak sudah lewat), lalu anak menekan Coba lagi.
+    rerender(
+      <ErrorBoundary>
+        <Boom throwNow={false} />
+      </ErrorBoundary>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /Try again/i }));
+    expect(screen.getByText('Peta')).toBeInTheDocument();
+    quiet.mockRestore();
+  });
+});
+
+/**
+ * Hint adalah satu-satunya pertolongan dalam sesi untuk anak yang macet sendirian.
+ * Dulu ia hanya punya satu cabang — ten-frame, dan hanya kalau soalnya kebetulan
+ * punya parameter `n`. Di 163 dari 240 modul menekannya hanya memunculkan kalimat
+ * "Look at the picture." tanpa gambar apa pun di layar.
+ */
+describe('QuestionScreen — Hint harus benar-benar menolong', () => {
+  const play = (moduleId: string, kind: 'practice' | 'quiz') => {
+    const def = moduleById(moduleId);
+    return createSession(def, kind, 5, 0);
+  };
+
+  it('menekan Hint di modul tanpa param "n" tetap memunculkan materi, bukan kalimat kosong', () => {
+    // g1-u2-m2 "Add to 5": aturannya berparameter a & b — dulu Hint-nya nihil.
+    render(
+      <QuestionScreen
+        session={play('g1-u2-m2', 'practice')}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
+    // Materi Learn modul itu dipanggil ulang: ada gambar (svg) DAN kalimat pengantarnya.
+    const learn = moduleById('g1-u2-m2').learn;
+    const step = learn.filter((l) => l.stage === 'pictorial').at(-1) ?? learn.at(-1);
+    expect(screen.getByText(step?.prompt ?? '###')).toBeInTheDocument();
+    expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+  });
+
+  it('Hint tidak pernah ditawarkan di sesi yang diperlakukan sebagai ujian', () => {
+    render(
+      <QuestionScreen
+        session={play('g1-u2-m2', 'quiz')}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    expect(screen.queryByRole('button', { name: /Hint/ })).not.toBeInTheDocument();
+  });
+});
+
 describe('MapScreen — pintu jump level', () => {
   const mapProps = (over: Partial<Parameters<typeof MapScreen>[0]> = {}) => ({
     states: {},
@@ -626,6 +715,7 @@ describe('MapScreen — pintu jump level', () => {
     onOpen: () => {},
     onReview: () => {},
     onMaster: () => {},
+    onNextGrade: () => {},
     onTestOut: () => {},
     onSkipUnit: () => {},
     onParent: () => {},
@@ -698,6 +788,57 @@ describe('MapScreen — pintu jump level', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: moduleById(first).title }));
     expect(screen.getByRole('button', { name: /Master Round/i })).toBeInTheDocument();
+  });
+
+  /**
+   * Tamat satu grade dulu berarti jalan buntu: "All done for now!" dan tidak ada satu
+   * pun jalan ke grade berikutnya — pintunya cuma ada di Parent Area, di balik gerbang
+   * orang tua. Anak yang baru menyelesaikan 43 modul berhenti di situ, tepat di momen
+   * yang paling pantas dirayakan.
+   */
+  it('tamat satu grade membuka jalan ke grade berikutnya, di tombol utama', async () => {
+    const { pathOrderFor } = await import('../../content');
+    const onNextGrade = vi.fn();
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      masteredAt: '2026-09-01',
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states = Object.fromEntries(pathOrderFor(1).map((id) => [id, done]));
+    render(<MapScreen {...mapProps({ states, nextId: null, grade: 1, onNextGrade })} />);
+
+    expect(screen.getByText(/You finished Grade 1/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Start Grade 2/ }));
+    expect(onNextGrade).toHaveBeenCalledWith(2);
+  });
+
+  it('grade terakhir tidak menawarkan grade ke-7 yang tidak ada', async () => {
+    const { pathOrderFor } = await import('../../content');
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      masteredAt: '2026-09-01',
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states = Object.fromEntries(pathOrderFor(6).map((id) => [id, done]));
+    render(<MapScreen {...mapProps({ states, nextId: null, grade: 6 })} />);
+
+    expect(screen.queryByRole('button', { name: /Start Grade 7/ })).not.toBeInTheDocument();
+    expect(screen.getByText(/finished every grade/i)).toBeInTheDocument();
+  });
+
+  it('nextId kosong karena modul TERKUNCI bukan berarti naik kelas', () => {
+    // nextModule() juga mengembalikan null kalau modul berikutnya terkunci. Kalau itu
+    // dibaca sebagai "tamat", anak dilempar ke grade berikutnya tanpa menempuh apa pun.
+    render(<MapScreen {...mapProps({ states: {}, nextId: null, grade: 1 })} />);
+    expect(screen.queryByRole('button', { name: /Start Grade 2/ })).not.toBeInTheDocument();
   });
 
   it('pintu melompat dijelaskan dulu, tidak langsung menembak', () => {
@@ -863,6 +1004,7 @@ describe('MapScreen — pintu jump level', () => {
         reviews={[]}
         onReview={() => {}}
         onMaster={() => {}}
+        onNextGrade={() => {}}
         onSkipUnit={() => {}}
         onOpen={() => {}}
         onTestOut={() => {}}
