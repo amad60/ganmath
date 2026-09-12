@@ -61,5 +61,23 @@ export const bondsOf10: ContentModule = {
       answer: (p) => 10 - (p.a as number),
       text: (p) => `${p.a} + ? = 10`,
     },
+    {
+      type: 'choose-number',
+      skill: 'bonds-of-10',
+      story: true,
+      params: { a: [1, 9] },
+      answer: (p) => 10 - (p.a as number),
+      text: (p) => `Ana needs 10 stickers. She has ${p.a}. How many more?`,
+      distractors: 'near',
+    },
+    {
+      type: 'choose-number',
+      skill: 'bonds-of-10',
+      story: true,
+      params: { a: [1, 9] },
+      answer: (p) => 10 - (p.a as number),
+      text: (p) => `A box needs 10 eggs. Budi puts in ${p.a}. How many more?`,
+      distractors: 'near',
+    },
   ],
 };

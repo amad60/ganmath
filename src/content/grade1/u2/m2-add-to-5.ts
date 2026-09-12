@@ -57,5 +57,23 @@ export const addTo5: ContentModule = {
       text: (p) => `${p.a} + ${p.b} = ?`,
       exclude: (p) => (p.a as number) + (p.b as number) > 5,
     },
+    {
+      type: 'keypad',
+      skill: 'add-within-5',
+      story: true,
+      params: { a: [1, 4], b: [1, 4] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+      exclude: (p) => (p.a as number) + (p.b as number) > 5,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-within-5',
+      story: true,
+      params: { a: [1, 4], b: [1, 4] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `Budi picks ${p.a} flowers. Then ${p.b} more. How many flowers?`,
+      exclude: (p) => (p.a as number) + (p.b as number) > 5,
+    },
   ],
 };

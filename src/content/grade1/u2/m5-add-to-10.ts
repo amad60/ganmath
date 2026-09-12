@@ -56,5 +56,23 @@ export const addTo10: ContentModule = {
       text: (p) => `${p.a} + ${p.b} = ?`,
       exclude: (p) => (p.a as number) + (p.b as number) > 10,
     },
+    {
+      type: 'keypad',
+      skill: 'add-within-10',
+      story: true,
+      params: { a: [2, 8], b: [2, 8] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `Ana has ${p.a} stickers. Budi gives her ${p.b}. How many now?`,
+      exclude: (p) => (p.a as number) + (p.b as number) > 10,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-within-10',
+      story: true,
+      params: { a: [2, 8], b: [2, 8] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `${p.a} birds sit. ${p.b} more land. How many birds?`,
+      exclude: (p) => (p.a as number) + (p.b as number) > 10,
+    },
   ],
 };

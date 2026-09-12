@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { lintContent } from './lint';
 import { all, registry } from './index';
-import { generateSet } from '../engine/generator';
+import { enumerate, generateSet } from '../engine/generator';
+import { createSession } from '../engine/session';
 import { mulberry32 } from '../engine/rng';
 import { answerDigitCount } from '../engine/answer';
 import type { ContentModule } from './types';
@@ -463,5 +464,54 @@ describe('linter konten', () => {
     });
     const problems = lintContent(mods, reg(mods));
     expect(problems.some((p) => p.rule === 'generator' || p.rule === 'question-types')).toBe(true);
+  });
+});
+
+/**
+ * Pilot soal cerita: janji yang dibuat ke anak harus benar-benar ditepati di
+ * SETIAP modul yang memakainya, bukan rata-rata.
+ */
+describe('modul bersoal cerita', () => {
+  const storyModules = all.filter((m) => m.rules.some((r) => r.story));
+
+  // Teks yang hanya bisa lahir dari aturan bercerita — dikenali dari identitas
+  // aturannya, bukan dari tebakan atas bentuk kalimatnya. Tebakan "dua kata
+  // berurutan" sempat menuduh "Ten more than 24 = ?" sebagai soal cerita.
+  const storyTextsOf = (m: ContentModule) => {
+    const story = new Set<string>();
+    const plain = new Set<string>();
+    for (const r of m.rules) {
+      for (const c of enumerate(r)) (r.story ? story : plain).add(r.text(c));
+    }
+    for (const t of plain) story.delete(t);
+    return story;
+  };
+
+  it('ada modul yang memakainya — kalau tidak, test ini hanya hiasan', () => {
+    expect(storyModules.length).toBeGreaterThan(0);
+  });
+
+  it('latihan berisi PERSIS 4 soal cerita dari 12, di setiap modul dan setiap seed', () => {
+    for (const m of storyModules) {
+      const texts = storyTextsOf(m);
+      for (let seed = 0; seed < 12; seed++) {
+        const s = createSession(m, 'practice', seed, 0);
+        const n = s.pending.filter((q) => texts.has(q.question.text)).length;
+        expect(`${m.id}:${s.pending.length}/${n}`).toBe(`${m.id}:12/4`);
+      }
+    }
+  });
+
+  it('kuis dan speed tetap bersih dari soal cerita — di situ kecepatan yang diukur', () => {
+    for (const m of storyModules) {
+      const texts = storyTextsOf(m);
+      for (const kind of ['quiz', 'master', 'speed', 'review', 'testout'] as const) {
+        for (let seed = 0; seed < 6; seed++) {
+          const s = createSession(m, kind, seed, 0);
+          const n = s.pending.filter((q) => texts.has(q.question.text)).length;
+          expect(`${m.id}/${kind}:${n}`).toBe(`${m.id}/${kind}:0`);
+        }
+      }
+    }
   });
 });

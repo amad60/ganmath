@@ -88,6 +88,20 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      dibuka-tutup, `hintUsed` sekali jadi dan itulah yang masuk ke riwayat; jalan keluarnya
      ada di dalam bantuannya sendiri (silang di baris atas) supaya tidak ikut tergulung
      hilang. Diukur oleh `npm run audit:hint` — kolom `tutup` dan `buka-lagi`.
+   - **Soal cerita adalah bagian dari latihan, bukan hiasan.** Anak bisa hafal 3 + 2 = 5 tanpa
+     pernah mengenali bahwa membeli dua kue lagi ADALAH soal itu; pengenalan itulah yang dipakai
+     di luar layar. Aturannya ditandai `story: true`, dan mesin yang menjamin jumlahnya —
+     `generateSet(..., { story: 4 })` — bukan undian. Tiga pagar yang tidak boleh dilepas:
+     (a) **hanya di latihan.** Kuis, master, speed, dan ulangan tetap lambang saja, karena
+     penguasaan di sini ikut diukur dari KECEPATAN dan waktu membaca kalimat akan tercatat
+     sebagai waktu berpikir — anak yang paham tapi membaca pelan akan gagal ambang kecepatan
+     karena membacanya;
+     (b) **panjang kalimat dibatasi per grade** (`MAX_STORY_WORDS`, kelas 1 = 12 kata) dan
+     kosakatanya dijaga (`STORY_VOCAB` + vocab modul). Tanpa ini yang diukur app berubah diam-diam
+     jadi kelancaran membaca;
+     (c) **latihan jadi 12 soal HANYA di modul yang punya soal cerita.** Modul lain tetap 8.
+     Panjang sesi tetap pasti — dipatok di `SessionState.total` saat sesi dibuat, jadi garis
+     finisnya tidak bisa mundur saat anak salah (soal salah masuk antrean lagi).
 2. **Mastery-based, bukan completion-based.** Lanjut hanya kalau lulus ambang penguasaan.
 3. **"Di luar kepala".** Untuk fakta dasar, penguasaan diukur juga dari **kecepatan &
    konsistensi**, bukan cuma benar/salah. Detail di §6.
@@ -97,6 +111,15 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
    + kuis). Panjang tiap sesi soal tetap dan diketahui sejak awal — latihan 8 soal, kuis 10,
    ulangan 5 — supaya bar kemajuan tidak pernah memundurkan garis finisnya sendiri.
 7. **Gagal itu aman.** Tidak ada skor merah. Salah = coba lagi dengan petunjuk visual.
+   - **Jawaban yang ditandai benar HARUS benar.** Pernah putus di sini: g1-u6-m4 menunjukkan
+     pizza 4 bagian dengan 2 diarsir, anak menjawab "half" — yang BENAR — dinyatakan salah, lalu
+     diberi tahu jawabannya "three fourths". Penyebabnya satu cabang `answer()` yang lupa
+     memeriksa berapa yang diarsir. Bug yang MENGAJARKAN matematika salah lebih buruk daripada
+     bug yang membuat app jatuh: app jatuh terlihat, yang ini dipercaya. Dua lint menjaganya
+     sekarang — `fraction-answer` (nilai label harus sama dengan gambarnya, dan tidak boleh ada
+     dua tombol sama-sama benar) dan `answer-matches-text` (soal yang teksnya perhitungan utuh
+     dibaca ulang dan dihitung sendiri, lalu dibandingkan dengan jawaban yang dipakai menilai).
+     Turunkan jawaban dari NILAI-nya, jangan dari rantai cabang yang bisa lupa satu kasus.
 8. **Offline-first.** Harus jalan tanpa internet setelah dibuka sekali.
 
 ## 4b. Lensa Keputusan: B = M · A · T (+ 2 sumbu produk ini)

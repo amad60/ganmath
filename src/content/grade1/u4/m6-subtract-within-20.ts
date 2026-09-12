@@ -54,5 +54,21 @@ export const subtractWithin20: ContentModule = {
       answer: (p) => (p.a as number) - (p.b as number),
       text: (p) => `${p.a} - ${p.b} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'sub-within-20',
+      story: true,
+      params: { a: [12, 20], b: [3, 9] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `Ana has ${p.a} stickers. She gives ${p.b} away. How many left?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'sub-within-20',
+      story: true,
+      params: { a: [12, 20], b: [3, 9] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `${p.a} cookies on a plate. Budi eats ${p.b}. How many left?`,
+    },
   ],
 };

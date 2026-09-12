@@ -54,5 +54,21 @@ export const doubles: ContentModule = {
       answer: (p) => (p.n as number) * 2,
       text: (p) => `Double ${p.n} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'doubles',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 2,
+      text: (p) => `Ana has ${p.n} marbles. Budi has the same. How many altogether?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'doubles',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 2,
+      text: (p) => `Two plates. ${p.n} cookies on each. How many cookies?`,
+    },
   ],
 };

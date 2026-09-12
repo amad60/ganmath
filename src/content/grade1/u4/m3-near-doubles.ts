@@ -54,5 +54,21 @@ export const nearDoubles: ContentModule = {
       answer: (p) => (p.n as number) * 2 - 1,
       text: (p) => `${p.n} + ${(p.n as number) - 1} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'near-doubles',
+      story: true,
+      params: { n: [2, 9] },
+      answer: (p) => (p.n as number) * 2 - 1,
+      text: (p) => `Ana has ${p.n} shells. Budi has ${(p.n as number) - 1}. How many altogether?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'near-doubles',
+      story: true,
+      params: { n: [2, 9] },
+      answer: (p) => (p.n as number) * 2 - 1,
+      text: (p) => `${p.n} red cards and ${(p.n as number) - 1} blue cards. How many cards?`,
+    },
   ],
 };

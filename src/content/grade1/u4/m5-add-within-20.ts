@@ -56,5 +56,23 @@ export const addWithin20: ContentModule = {
       text: (p) => `${p.a} + ${p.b} = ?`,
       exclude: (p) => (p.a as number) + (p.b as number) <= 10,
     },
+    {
+      type: 'keypad',
+      skill: 'add-within-20',
+      story: true,
+      params: { a: [3, 9], b: [3, 9] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `Ana picks ${p.a} apples. Budi picks ${p.b}. How many altogether?`,
+      exclude: (p) => (p.a as number) + (p.b as number) <= 10,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-within-20',
+      story: true,
+      params: { a: [3, 9], b: [3, 9] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `${p.a} birds sit. ${p.b} more land. How many birds now?`,
+      exclude: (p) => (p.a as number) + (p.b as number) <= 10,
+    },
   ],
 };

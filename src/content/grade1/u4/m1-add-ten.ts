@@ -54,5 +54,21 @@ export const addTen: ContentModule = {
       answer: (p) => (p.n as number) + 10,
       text: (p) => `${p.n} + 10 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'add-ten',
+      story: true,
+      params: { n: [1, 9] },
+      answer: (p) => (p.n as number) + 10,
+      text: (p) => `Ana has 10 cards. Budi gives her ${p.n}. How many now?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-ten',
+      story: true,
+      params: { n: [1, 9] },
+      answer: (p) => (p.n as number) + 10,
+      text: (p) => `A box has 10 books. Siti puts in ${p.n}. How many books?`,
+    },
   ],
 };

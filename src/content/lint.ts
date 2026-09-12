@@ -58,7 +58,8 @@ export const STORY_VOCAB = new Set(
    were was will be are there here own second third
    day days week weeks morning night
    red blue green yellow
-   money coin coins rupiah`
+   money coin coins rupiah
+   ana budi siti rudi dewi`
     .split(/\s+/)
     .filter(Boolean),
 );

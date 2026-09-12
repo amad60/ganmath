@@ -57,5 +57,23 @@ export const takeAwayFrom5: ContentModule = {
       text: (p) => `${p.a} - ${p.b} = ?`,
       exclude: (p) => (p.b as number) > (p.a as number),
     },
+    {
+      type: 'keypad',
+      skill: 'sub-within-5',
+      story: true,
+      params: { a: [2, 5], b: [1, 4] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `Ana has ${p.a} sweets. She eats ${p.b}. How many left?`,
+      exclude: (p) => (p.b as number) > (p.a as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'sub-within-5',
+      story: true,
+      params: { a: [2, 5], b: [1, 4] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `Budi has ${p.a} balls. He gives ${p.b} away. How many left?`,
+      exclude: (p) => (p.b as number) > (p.a as number),
+    },
   ],
 };

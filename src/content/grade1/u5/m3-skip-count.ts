@@ -56,5 +56,23 @@ export const skipCount: ContentModule = {
       text: (p) => `Skip by ${p.step}, ${p.n} times. How many?`,
       exclude: (p) => ![2, 5, 10].includes(p.step as number),
     },
+    {
+      type: 'keypad',
+      skill: 'skip-count',
+      story: true,
+      params: { step: [2, 10], n: [2, 9] },
+      answer: (p) => (p.step as number) * (p.n as number),
+      text: (p) => `${p.n} bags. ${p.step} apples in each bag. How many apples?`,
+      exclude: (p) => ![2, 5, 10].includes(p.step as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'skip-count',
+      story: true,
+      params: { step: [2, 10], n: [2, 9] },
+      answer: (p) => (p.step as number) * (p.n as number),
+      text: (p) => `${p.n} plates. ${p.step} cookies on each plate. How many cookies?`,
+      exclude: (p) => ![2, 5, 10].includes(p.step as number),
+    },
   ],
 };
