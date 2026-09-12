@@ -209,6 +209,9 @@ export function evalExpression(text: string): number | null {
   }
 }
 
+/** Kata yang bentuk TUNGGALNYA sudah berakhiran -s, jadi "1 bus" itu benar. */
+const SINGULAR_S = new Set(['bus', 'glass', 'class', 'dress', 'is', 'was', 'cms', 'this']);
+
 export function fractionValue(label: string): number | null {
   const t = label.trim().toLowerCase();
   const numeric = t.match(/^(\d+)\s*\/\s*(\d+)$/);
@@ -354,6 +357,24 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
           'story-length',
           `soal cerita ${worstN} kata (maks ${maxStory} di grade ${m.grade}): "${worst}"`,
         );
+      }
+    }
+
+    //     Tata bahasa juga dijaga, bukan cuma panjang dan kosakata. Satu kalimat
+    //     berparameter harus benar untuk SEMUA nilainya, termasuk 1 — kalau tidak,
+    //     lahir "Ana has 1 apples" dan yang membacanya justru anak kelas 1 yang
+    //     sedang belajar membaca. Angka yang salah ketahuan dari jawabannya; tata
+    //     bahasa yang salah tidak ketahuan siapa pun. Pakai `pl()` dari ./plural.
+    for (const r of m.rules) {
+      if (!r.story) continue;
+      for (const combo of enumerate(r).slice(0, 300)) {
+        // `(?<!, )`: dalam daftar ("4, 6, 2, 1 eggs") angka terakhir tidak
+        // membuat bendanya tunggal — yang jamak adalah daftarnya.
+        const hit = r.text(combo).match(/(?<!, )\b1 (?:more )?([a-z]+s)\b/);
+        // Kata yang memang berakhiran -s dalam bentuk tunggal.
+        if (hit && !SINGULAR_S.has(hit[1] as string)) {
+          add(m.id, 'story-grammar', `"${r.text(combo)}" — 1 dengan bentuk jamak`);
+        }
       }
     }
 

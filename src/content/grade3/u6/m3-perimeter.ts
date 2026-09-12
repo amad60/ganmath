@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 /**
  * Keliling diperkenalkan sebagai "jalan mengelilingi tepi", bukan sebagai rumus.
@@ -69,7 +70,7 @@ export const perimeter: ContentModule = {
       story: true,
       params: { w: [2, 9], h: [1, 8] },
       answer: (p) => 2 * ((p.w as number) + (p.h as number)),
-      text: (p) => `A garden is ${p.w} metres by ${p.h} metres. What is the perimeter?`,
+      text: (p) => `A garden is ${pl(p.w as number, 'metre')} by ${pl(p.h as number, 'metre')}. What is the perimeter?`,
       exclude: (p) => (p.h as number) > (p.w as number),
     },
     {
@@ -78,7 +79,7 @@ export const perimeter: ContentModule = {
       story: true,
       params: { w: [2, 9], h: [1, 8] },
       answer: (p) => 2 * ((p.w as number) + (p.h as number)),
-      text: (p) => `A table is ${p.w} metres by ${p.h} metres. What is the perimeter?`,
+      text: (p) => `A table is ${pl(p.w as number, 'metre')} by ${pl(p.h as number, 'metre')}. What is the perimeter?`,
       exclude: (p) => (p.h as number) > (p.w as number),
     },
   ],

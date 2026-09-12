@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 export const addTo5: ContentModule = {
   id: 'g1-u2-m2',
@@ -63,7 +64,7 @@ export const addTo5: ContentModule = {
       story: true,
       params: { a: [1, 4], b: [1, 4] },
       answer: (p) => (p.a as number) + (p.b as number),
-      text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+      text: (p) => `Ana has ${pl(p.a as number, 'apple')}. She gets ${p.b} more. How many now?`,
       exclude: (p) => (p.a as number) + (p.b as number) > 5,
     },
     {
@@ -72,7 +73,7 @@ export const addTo5: ContentModule = {
       story: true,
       params: { a: [1, 4], b: [1, 4] },
       answer: (p) => (p.a as number) + (p.b as number),
-      text: (p) => `Budi picks ${p.a} flowers. Then ${p.b} more. How many flowers?`,
+      text: (p) => `Budi picks ${pl(p.a as number, 'flower')}. Then ${p.b} more. How many flowers?`,
       exclude: (p) => (p.a as number) + (p.b as number) > 5,
     },
   ],

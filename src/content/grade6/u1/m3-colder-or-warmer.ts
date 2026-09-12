@@ -3,6 +3,8 @@ import type { ContentModule } from '../../types';
 /** Tanda minus yang DILIHAT anak: U+2212, sama dengan tombol `−` di keypad. */
 const MINUS = '−';
 const sgn = (n: number) => (n < 0 ? MINUS + String(-n) : String(n));
+// "1 degrees" salah, dan −1 pun tetap tunggal ("minus one degree").
+const deg = (n: number) => `${sgn(n)} ${Math.abs(n) === 1 ? 'degree' : 'degrees'}`;
 
 /**
  * Satu miskonsepsi, dan seluruh modul ini dibangun untuk menabraknya:
@@ -127,7 +129,7 @@ export const colderOrWarmer: ContentModule = {
       story: true,
       params: { a: [-9, 9], b: [-9, 9] },
       answer: (p) => Math.min(p.a as number, p.b as number),
-      text: (p) => `One day is ${sgn(p.a as number)} degrees. The next day is ${sgn(p.b as number)} degrees. Write the colder one.`,
+      text: (p) => `One day is ${deg(p.a as number)}. The next day is ${deg(p.b as number)}. Write the colder one.`,
       exclude: (p) => (p.a as number) === (p.b as number),
     },
     {
@@ -136,7 +138,7 @@ export const colderOrWarmer: ContentModule = {
       story: true,
       params: { a: [-9, 9], b: [-9, 9] },
       answer: (p) => Math.min(p.a as number, p.b as number),
-      text: (p) => `Ana sees ${sgn(p.a as number)} degrees at night. Budi sees ${sgn(p.b as number)} degrees. Write the colder one.`,
+      text: (p) => `Ana sees ${deg(p.a as number)} at night. Budi sees ${deg(p.b as number)}. Write the colder one.`,
       exclude: (p) => (p.a as number) === (p.b as number),
     },
   ],

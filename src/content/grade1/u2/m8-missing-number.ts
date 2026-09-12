@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 export const missingNumber: ContentModule = {
   id: 'g1-u2-m8',
@@ -62,7 +63,7 @@ export const missingNumber: ContentModule = {
       story: true,
       params: { b: [1, 8], c: [2, 10] },
       answer: (p) => (p.c as number) - (p.b as number),
-      text: (p) => `Ana gets ${p.b} more pens. Now she has ${p.c}. How many before?`,
+      text: (p) => `Ana gets ${pl(p.b as number, 'more pen', 'more pens')}. Now she has ${p.c}. How many before?`,
       exclude: (p) => (p.b as number) >= (p.c as number),
       distractors: 'near',
     },
@@ -72,7 +73,7 @@ export const missingNumber: ContentModule = {
       story: true,
       params: { b: [1, 8], c: [2, 10] },
       answer: (p) => (p.c as number) - (p.b as number),
-      text: (p) => `Budi buys ${p.b} more books. Now he has ${p.c}. How many before?`,
+      text: (p) => `Budi buys ${pl(p.b as number, 'more book', 'more books')}. Now he has ${p.c}. How many before?`,
       exclude: (p) => (p.b as number) >= (p.c as number),
       distractors: 'near',
     },
