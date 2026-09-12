@@ -64,6 +64,26 @@ const TITLES: Record<SessionKind, string> = {
  * tampil raksasa dan berat. Sekarang kalimatnya lebih kecil, simbolnya jadi
  * baris tersendiri yang bisa membungkus rapi.
  */
+/**
+ * Ukuran huruf soal mengikuti PANJANGNYA.
+ *
+ * 34px/900 dipatok mati sejak awal, dan itu benar selama soalnya "7 × 8 = ?".
+ * Untuk soal cerita ia jadi bencana: di layar 393px hanya muat ~10 karakter per
+ * baris, jadi satu kalimat 16 kata jatuh jadi sepuluh baris — sekitar 400px teks
+ * saja, sebelum gambarnya. Anak harus menggulung untuk membaca satu soal.
+ *
+ * Beratnya ikut turun dari 900 ke 700 untuk kalimat panjang. Huruf setebal itu
+ * bagus untuk ANGKA yang dibaca sekilas, dan melelahkan untuk kalimat yang
+ * benar-benar harus dibaca kata per kata.
+ */
+function textStyle(text: string): { fontSize: number; fontWeight: number } {
+  const n = text.length;
+  if (n <= 24) return { fontSize: 34, fontWeight: 900 };
+  if (n <= 44) return { fontSize: 28, fontWeight: 900 };
+  if (n <= 72) return { fontSize: 24, fontWeight: 700 };
+  return { fontSize: 21, fontWeight: 700 };
+}
+
 function QuestionText({ text }: { text: string }) {
   const match = text.match(/^(.*?[?:.]?)\s*([^\w\s.,?!=+×÷/-]+)$/u);
   const words = match ? match[1] : text;
@@ -71,7 +91,12 @@ function QuestionText({ text }: { text: string }) {
 
   return (
     <div className="flex w-full flex-col items-center gap-3">
-      <p className="text-center text-[34px] leading-tight font-black text-balance">{words}</p>
+      {/* Ukuran lewat `style`, BUKAN className: `text-[34px]` bertabrakan dengan
+          utility ukuran lain dan pemenangnya ditentukan urutan di file CSS —
+          bug yang sama yang dulu membuat warna umpan balik jawaban tidak muncul. */}
+      <p className="text-center leading-tight text-balance" style={textStyle(words ?? text)}>
+        {words}
+      </p>
       {symbols.length > 0 ? (
         <div className="flex max-w-full flex-wrap items-center justify-center gap-2">
           {symbols.map((sym, i) => {

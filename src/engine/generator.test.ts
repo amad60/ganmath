@@ -263,3 +263,86 @@ describe('kemampuan input diturunkan per rule', () => {
     }
   });
 });
+
+/**
+ * Soal cerita: matematika yang sama, dibungkus kejadian sehari-hari. Anak bisa
+ * hafal 3 + 2 = 5 tanpa pernah mengenali bahwa membeli dua kue lagi ADALAH soal
+ * itu — dan pengenalan itulah yang dipakai di luar layar.
+ *
+ * Yang dijaga di sini: jumlahnya PASTI (bukan hasil undian), dan ia tidak bocor
+ * ke sesi yang mengukur kecepatan.
+ */
+describe('kuota soal cerita', () => {
+  const storyModule = () =>
+    addModule({
+      rules: [
+        ...addModule().rules,
+        {
+          type: 'keypad',
+          skill: 'add-within-10',
+          story: true,
+          params: { a: [1, 5], b: [1, 4] },
+          answer: (p) => (p.a as number) + (p.b as number),
+          text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+        },
+        {
+          type: 'keypad',
+          skill: 'add-within-10',
+          story: true,
+          params: { a: [1, 5], b: [1, 4] },
+          answer: (p) => (p.a as number) + (p.b as number),
+          text: (p) => `${p.a} birds sit. ${p.b} more land. How many birds?`,
+        },
+      ],
+    });
+
+  const storyCount = (qs: { text: string }[]) =>
+    qs.filter((q) => /[a-z]{3,}\s+[a-z]{3,}/i.test(q.text)).length;
+
+  it('memberi persis sebanyak yang diminta, bukan sebanyak yang kebetulan terundi', () => {
+    // Diulang dengan banyak seed: undian yang "biasanya cukup" akan lolos sekali
+    // dan gagal di tangan anak. Yang dijamin harus jalan di setiap seed.
+    for (let seed = 0; seed < 40; seed++) {
+      const { questions } = generateSet(storyModule(), 12, mulberry32(seed), { story: 4 });
+      expect(questions).toHaveLength(12);
+      expect(storyCount(questions)).toBe(4);
+    }
+  });
+
+  it('mengambil bergiliran antar aturan cerita — satu sesi bukan empat soal apel', () => {
+    const { questions } = generateSet(storyModule(), 12, mulberry32(3), { story: 4 });
+    const apples = questions.filter((q) => q.text.includes('apples')).length;
+    const birds = questions.filter((q) => q.text.includes('birds')).length;
+    expect(apples).toBe(2);
+    expect(birds).toBe(2);
+  });
+
+  it('soal cerita tidak menumpuk di awal sesi', () => {
+    // Kalau semuanya selalu jadi soal 1–4, sesi terasa dua babak: "babak membaca"
+    // lalu "babak berhitung".
+    const positions = new Set<number>();
+    for (let seed = 0; seed < 30; seed++) {
+      const { questions } = generateSet(storyModule(), 12, mulberry32(seed), { story: 4 });
+      questions.forEach((q, i) => {
+        if (/[a-z]{3,}\s+[a-z]{3,}/i.test(q.text)) positions.add(i);
+      });
+    }
+    // Muncul juga di paruh kedua sesi, bukan cuma di empat slot pertama.
+    expect([...positions].some((i) => i >= 6)).toBe(true);
+  });
+
+  it('TIDAK bocor ke sesi tanpa kuota — di situ kecepatan yang diukur, bukan membaca', () => {
+    for (let seed = 0; seed < 20; seed++) {
+      const { questions } = generateSet(storyModule(), 10, mulberry32(seed), {
+        requireCoverage: true,
+      });
+      expect(storyCount(questions)).toBe(0);
+    }
+  });
+
+  it('modul tanpa aturan cerita tidak terpengaruh sama sekali', () => {
+    const { questions } = generateSet(addModule(), 8, mulberry32(1), { story: 4 });
+    expect(questions).toHaveLength(8);
+    expect(storyCount(questions)).toBe(0);
+  });
+});

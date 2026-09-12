@@ -264,6 +264,21 @@ export type QuestionRule = {
   visual?: (p: Record<string, number>) => QuestionVisual;
   /** Pengecoh yang mencerminkan miskonsepsi khas modul ini. Wajib untuk modul `fact`. */
   misconception?: (p: Record<string, number>) => number | null;
+  /**
+   * Aturan ini membuat SOAL CERITA — matematika yang sama, tapi dibungkus kejadian
+   * sehari-hari ("Ana punya 3 apel, dia dapat 2 lagi") alih-alih lambang telanjang
+   * ("3 + 2 = ?").
+   *
+   * Ini bukan hiasan. Anak bisa hafal 3 + 2 = 5 tanpa pernah mengenali bahwa membeli
+   * dua kue lagi ADALAH soal itu; yang diuji di sini justru pengenalannya — bagian
+   * yang benar-benar dipakai di luar layar.
+   *
+   * Penandanya dipakai mesin, bukan cuma catatan: `generateSet` menjamin sejumlah
+   * soal bercerita per sesi latihan (lihat `opts.story`), dan lint memberlakukan
+   * batas panjang kalimat serta kosakata khusus untuk aturan bertanda ini —
+   * beban BACA yang tidak dijaga akan mengukur kemampuan membaca, bukan matematika.
+   */
+  story?: true;
 };
 
 export type Question = {

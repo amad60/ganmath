@@ -158,7 +158,7 @@ export function generateSet(
   def: ModuleDef,
   count: number,
   rng: Rng,
-  opts: { requireCoverage?: boolean } = {},
+  opts: { requireCoverage?: boolean; story?: number } = {},
 ): GeneratedSet {
   if (def.rules.length === 0) throw new Error(`Modul ${def.id} tidak punya QuestionRule`);
 
@@ -229,9 +229,59 @@ export function generateSet(
     return null;
   };
 
-  // 1. Cakupan dulu: satu soal dari setiap aturan (= setiap questionType modul).
+  const storyIdx = pools.map((p, i) => (p.rule.story ? i : -1)).filter((i) => i >= 0);
+  const plainIdx = pools.map((p, i) => (p.rule.story ? -1 : i)).filter((i) => i >= 0);
+  const storyWanted = Math.min(opts.story ?? 0, count);
+
+  /**
+   * Aturan bercerita HANYA ikut kalau sesi ini memang meminta kuotanya.
+   *
+   * Sesi tanpa kuota (kuis, master, speed, ulangan) dibiarkan persis seperti dulu:
+   * lambang saja. Bukan karena penerapan tidak penting, tapi karena penguasaan di
+   * sini ikut diukur dari KECEPATAN — waktu membaca kalimat akan tercatat sebagai
+   * waktu berpikir, dan anak yang paham tapi membaca pelan akan gagal ambang
+   * kecepatan karena membacanya. Ambang dan riwayat lama juga tetap berarti sama.
+   *
+   * Cadangan `plainIdx.length === 0` ada supaya modul yang (keliru) hanya berisi
+   * aturan cerita tidak menghasilkan sesi kosong; lint `story-mix` yang melarangnya.
+   */
+  const usable = storyWanted > 0 ? plainIdx : plainIdx.length > 0 ? plainIdx : storyIdx;
+
+  /**
+   * 0. Kuota soal cerita — dijamin di sini, BUKAN diserahkan ke undian di langkah 2.
+   *
+   * Dengan pengambilan acak seragam, modul bercerita 1 dari 3 aturan akan kadang
+   * memberi nol soal cerita dalam satu sesi — dan "kadang ada, kadang tidak" membuat
+   * bagian yang justru menghubungkan pelajaran dengan hidup jadi tidak bisa
+   * diandalkan.
+   *
+   * Diambil bergiliran antar aturan cerita supaya satu sesi tidak berisi empat soal
+   * tentang apel; kalau ruang soalnya habis, sisanya dibiarkan diisi soal biasa —
+   * lebih baik sesi kurang satu soal cerita daripada sesi buntu.
+   */
+  let storyGot = 0;
+  if (storyWanted > 0 && storyIdx.length > 0) {
+    let guard = 0;
+    while (storyGot < storyWanted && guard++ < storyWanted * 20) {
+      const i = storyIdx[storyGot % storyIdx.length] as number;
+      const q = take(i);
+      if (q) {
+        questions.push(q);
+        storyGot++;
+      } else if (
+        storyIdx.every(
+          (j) => (cursor[j] as number) >= (pools[j] as { combos: unknown[] }).combos.length,
+        )
+      ) {
+        break; // ruang soal cerita habis
+      }
+    }
+  }
+
+  // 1. Cakupan: satu soal dari setiap aturan (= setiap questionType modul).
   if (opts.requireCoverage) {
-    for (let i = 0; i < pools.length && questions.length < count; i++) {
+    for (const i of usable) {
+      if (questions.length >= count) break;
       const q = take(i);
       if (q) questions.push(q);
     }
@@ -240,12 +290,26 @@ export function generateSet(
   // 2. Sisanya diambil bergiliran antar aturan supaya proporsinya seimbang.
   let guard = 0;
   while (questions.length < count && guard++ < count * 50) {
-    const i = randInt(rng, 0, pools.length - 1);
+    const i = usable[randInt(rng, 0, usable.length - 1)] as number;
     const q = take(i);
     if (q) questions.push(q);
-    else if (cursor.every((c, idx) => c >= (pools[idx] as { combos: unknown[] }).combos.length)) {
+    else if (usable.every((j) => (cursor[j] as number) >= (pools[j] as { combos: unknown[] }).combos.length)) {
       break; // seluruh ruang soal habis — modul terlalu kecil untuk `count`
     }
+  }
+
+  /**
+   * Diacak di akhir HANYA kalau ada kuota cerita.
+   *
+   * Tanpa ini soal cerita selalu jadi soal nomor 1–4: anak belajar bahwa bagian
+   * membaca sudah lewat dan sisanya tinggal hitung, dan sesi jadi terasa
+   * dua babak alih-alih satu. Sesi tanpa cerita tidak disentuh supaya urutan
+   * cakupan (yang sudah diandalkan kuis dan lint) tetap apa adanya.
+   */
+  if (storyGot > 0) {
+    const mixed = shuffle(rng, questions);
+    questions.length = 0;
+    questions.push(...mixed);
   }
 
   return { questions };

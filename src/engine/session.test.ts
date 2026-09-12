@@ -106,3 +106,58 @@ describe('session runner', () => {
     expect(result.questions).toHaveLength(s.results.length);
   });
 });
+
+/**
+ * Latihan jadi 12 soal HANYA di modul yang punya soal cerita.
+ *
+ * Menaikkan semua modul jadi 12 sekaligus akan memanjangkan latihan 50% di ratusan
+ * modul demi soal cerita yang belum ada isinya — dan panjang sesi adalah janji yang
+ * dipegang anak sejak soal pertama.
+ */
+describe('panjang sesi mengikuti isi modul', () => {
+  const storyDef = addModule({
+    rules: [
+      ...addModule().rules,
+      {
+        type: 'keypad',
+        skill: 'add-within-10',
+        story: true,
+        params: { a: [1, 5], b: [1, 4] },
+        answer: (p) => (p.a as number) + (p.b as number),
+        text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+      },
+    ],
+  });
+
+  it('modul tanpa soal cerita: latihan tetap 8 soal, persis seperti sebelumnya', () => {
+    expect(progressOf(createSession(def, 'practice', 1, T0)).total).toBe(8);
+  });
+
+  it('modul dengan soal cerita: latihan jadi 12 soal', () => {
+    expect(progressOf(createSession(storyDef, 'practice', 1, T0)).total).toBe(12);
+  });
+
+  it('kuis, master, dan speed tidak ikut berubah panjangnya', () => {
+    expect(progressOf(createSession(storyDef, 'quiz', 1, T0)).total).toBe(10);
+    expect(progressOf(createSession(storyDef, 'master', 1, T0)).total).toBe(10);
+    expect(progressOf(createSession(storyDef, 'speed', 1, T0)).total).toBe(8);
+    expect(progressOf(createSession(storyDef, 'review', 1, T0)).total).toBe(5);
+  });
+
+  it('garis finis tidak bergerak selama sesi berjalan', () => {
+    // Prinsip yang sama yang dulu membuat panjang sesi dipatok: bar kemajuan tidak
+    // boleh memundurkan garis finisnya sendiri saat anak sedang mengerjakan.
+    let s = createSession(storyDef, 'practice', 5, T0);
+    const total = progressOf(s).total;
+    for (let i = 0; i < 4; i++) {
+      s = submitAnswer(s, {
+        correct: true,
+        thinkMs: 900,
+        totalMs: 1500,
+        hintUsed: false,
+        nowMs: T0 + i * 2000,
+      });
+      expect(progressOf(s).total).toBe(total);
+    }
+  });
+});
