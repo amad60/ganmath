@@ -9,6 +9,7 @@ import { stepFor } from '../components/manipulatives/scale';
 // salinan akan berbeda diam-diam begitu ada bangun baru.
 import { SHAPE_SIDES } from '../components/manipulatives/Shape2D';
 import type { ContentModule, LearnStep, LearnVisual } from './types';
+import { spread, storyShape } from './storyShape';
 
 export type LintProblem = { moduleId: string; rule: string; detail: string };
 
@@ -368,13 +369,41 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
     for (const r of m.rules) {
       if (!r.story) continue;
       for (const combo of enumerate(r).slice(0, 300)) {
+        const text = r.text(combo);
         // `(?<!, )`: dalam daftar ("4, 6, 2, 1 eggs") angka terakhir tidak
         // membuat bendanya tunggal — yang jamak adalah daftarnya.
-        const hit = r.text(combo).match(/(?<!, )\b1 (?:more )?([a-z]+s)\b/);
+        // `(?:[a-z]+ )?`: satu kata sifat boleh menyela. Tanpa itu "1 blue cards"
+        // lolos, dan memang lolos sekali.
+        const hit = text.match(/(?<!, )\b1 (?:[a-z]+ )?([a-z]+s)\b/);
         // Kata yang memang berakhiran -s dalam bentuk tunggal.
         if (hit && !SINGULAR_S.has(hit[1] as string)) {
-          add(m.id, 'story-grammar', `"${r.text(combo)}" — 1 dengan bentuk jamak`);
+          add(m.id, 'story-grammar', `"${text}" — 1 dengan bentuk jamak`);
         }
+        // "1 are red" — kata kerjanya juga harus ikut tunggal.
+        if (/(?<!, )\b1 (?:[a-z]+ )?(?:are|were|have)\b/.test(text)) {
+          add(m.id, 'story-grammar', `"${text}" — 1 dengan kata kerja jamak`);
+        }
+      }
+    }
+
+    //     Terakhir: jawabannya harus BERHUBUNGAN dengan angka di kalimatnya.
+    //
+    //     Kalimat dan fungsi `answer` ditulis terpisah, jadi tidak ada yang memaksa
+    //     keduanya bicara tentang hitungan yang sama — lubang yang tidak dipunyai
+    //     soal lambang, karena di sana teksnya ADALAH hitungannya. Lihat
+    //     `storyShape` untuk cara kerjanya dan untuk batas jujurnya.
+    for (const [ri, r] of m.rules.entries()) {
+      if (!r.story) continue;
+      const samples = spread(enumerate(r), 60).map((c) => ({
+        text: r.text(c),
+        answer: r.answer(c),
+      }));
+      if (storyShape(samples) == null) {
+        add(
+          m.id,
+          'story-answer-shape',
+          `rule#${ri}: tidak ada satu rumus pun atas angka di kalimat yang menjelaskan jawabannya — "${samples[0]?.text}"`,
+        );
       }
     }
 

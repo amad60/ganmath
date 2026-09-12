@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 export const nearDoubles: ContentModule = {
   id: 'g1-u4-m3',
@@ -68,7 +69,7 @@ export const nearDoubles: ContentModule = {
       story: true,
       params: { n: [2, 9] },
       answer: (p) => (p.n as number) * 2 - 1,
-      text: (p) => `${p.n} red cards and ${(p.n as number) - 1} blue cards. How many cards?`,
+      text: (p) => `${p.n} red cards and ${pl((p.n as number) - 1, 'blue card')}. How many cards?`,
     },
   ],
 };

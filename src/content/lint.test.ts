@@ -140,6 +140,73 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'answer-matches-text')).toBe(true);
   });
 
+  /**
+   * Soal cerita punya lubang yang tidak dipunyai soal lambang: kalimat dan fungsi
+   * `answer`-nya ditulis terpisah, jadi tidak ada yang memaksa keduanya bicara
+   * tentang hitungan yang sama. Ini bug yang sama dengan pizza 2/4 — jawaban yang
+   * ditandai benar ternyata bukan jawabannya.
+   */
+  it('menolak soal cerita yang jawabannya tidak berhubungan dengan angka di kalimatnya', () => {
+    const mods = broken({
+      questionTypes: ['keypad', 'choose-number'],
+      rules: [
+        (all[0] as ContentModule).rules[0] as ContentModule['rules'][number],
+        {
+          type: 'keypad',
+          skill: 'add-within-5',
+          story: true,
+          params: { a: [1, 9], b: [1, 9] },
+          // Jawabannya tidak menghitung apa pun dari kalimatnya.
+          answer: (p) => ((p.a as number) * 7919) % 13,
+          text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'story-answer-shape')).toBe(true);
+  });
+
+  it('menolak soal cerita yang hubungannya putus di sebagian parameter saja', () => {
+    // Bentuknya benar (a + b) untuk hampir semua nilai, dan meleset di sebagian —
+    // persis bentuk bug cabang yang lupa satu kasus, seperti pecahan 2/4.
+    const mods = broken({
+      questionTypes: ['keypad', 'choose-number'],
+      rules: [
+        (all[0] as ContentModule).rules[0] as ContentModule['rules'][number],
+        {
+          type: 'keypad',
+          skill: 'add-within-5',
+          story: true,
+          params: { a: [1, 9], b: [1, 9] },
+          answer: (p) =>
+            (p.a as number) > 6 ? (p.a as number) - (p.b as number) : (p.a as number) + (p.b as number),
+          text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'story-answer-shape')).toBe(true);
+  });
+
+  it('menolak "1 apples" dan "1 are red"', () => {
+    const mods = broken({
+      questionTypes: ['keypad', 'choose-number'],
+      rules: [
+        (all[0] as ContentModule).rules[0] as ContentModule['rules'][number],
+        {
+          type: 'keypad',
+          skill: 'add-within-5',
+          story: true,
+          params: { a: [1, 1], b: [1, 4] },
+          answer: (p) => (p.a as number) + (p.b as number),
+          text: (p) => `Ana has ${p.a} apples. She gets ${p.b} more. How many now?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'story-grammar')).toBe(true);
+  });
+
   it('menolak modul fakta tanpa pengecoh miskonsepsi', () => {
     const base = all[0] as ContentModule;
     const mods = broken({
