@@ -120,6 +120,20 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      dua tombol sama-sama benar) dan `answer-matches-text` (soal yang teksnya perhitungan utuh
      dibaca ulang dan dihitung sendiri, lalu dibandingkan dengan jawaban yang dipakai menilai).
      Turunkan jawaban dari NILAI-nya, jangan dari rantai cabang yang bisa lupa satu kasus.
+   - **Soal cerita punya lubang yang sama, dan penjaganya sendiri.** Di soal lambang teksnya
+     ADALAH hitungannya, jadi bisa dibaca ulang dan dibandingkan. Di soal cerita, kalimat dan
+     `answer` ditulis TERPISAH — tidak ada yang memaksa keduanya bicara tentang hitungan yang
+     sama. `story-answer-shape` mencari satu rumus, atas angka yang benar-benar muncul di
+     kalimat, yang menjelaskan jawabannya di SELURUH kombinasi parameter; kalau tidak ada satu
+     pun, jawabannya melayang lepas dari soalnya. Ia memeriksa KONSISTENSI, bukan makna —
+     tidak bisa membedakan "diberi 3 lagi" dari "diberikan 3", dan itu ditulis terang di
+     kodenya. Jangan menebak operasi dari kata kerjanya: percobaan pertama begitu dan langsung
+     salah menuduh soal yang benar, dan penjaga yang meneriaki soal benar akan dimatikan orang.
+   - **Tata bahasa soal cerita ikut dijaga** (`story-grammar`). Satu kalimat berparameter harus
+     benar untuk SEMUA nilainya, termasuk 1 — kalau tidak lahir "Ana has 1 apples" dan
+     "1 are red", dan yang membacanya justru anak yang sedang belajar membaca. Pakai `pl()`
+     dari `src/content/plural.ts`, jangan membuang nilai 1 dari rentang parameter: yang dibuang
+     justru soal termudah, yang paling dibutuhkan anak yang sedang tertatih.
 8. **Offline-first.** Harus jalan tanpa internet setelah dibuka sekali.
 
 ## 4b. Lensa Keputusan: B = M · A · T (+ 2 sumbu produk ini)
