@@ -13,8 +13,17 @@
  *   npm run audit:hint                     # sampel bawaan
  *   ONLY=g6-u4-m3,g1-u1-m1 npm run audit:hint
  *
- * Yang dilaporkan: apakah gambar bantuan benar-benar berada di dalam area yang
- * terlihat, bukan sekadar ada di DOM.
+ * Yang dilaporkan: apakah bantuan benar-benar berada di dalam area yang terlihat
+ * (bukan sekadar ada di DOM), DAN apakah bantuan itu bisa ditutup lagi.
+ *
+ * Ukurannya dulu "svg terakhir di dalam main" — tebakan, dan tebakan yang salah:
+ * sebagian bantuan sama sekali tidak berisi svg, sehingga yang terukur justru
+ * gambar SOAL atau maskotnya, dan laporannya jadi berisik tanpa ada yang rusak.
+ * Sekarang yang diukur elemen bantuannya sendiri lewat #hint-panel.
+ *
+ * Kolom `tutup` adalah yang menangkap bug terlapor: dulu tombolnya dimatikan
+ * begitu ditekan, jadi bantuan setinggi 300px lebih menempel di layar sampai
+ * soalnya berganti dan anak tidak punya jalan keluar sama sekali.
  */
 import puppeteer from 'puppeteer-core';
 const CHROME='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -30,13 +39,32 @@ const MEASURE=()=>{const vw=innerWidth,vh=innerHeight,bad=[];const nm=e=>`${e.ta
  // Apakah tombol jawaban terdorong keluar layar?
  const keys=[...document.querySelectorAll('button')].filter(b=>/^\d$|Check|Yes/.test(b.textContent??''));
  const lowest=keys.length?Math.max(...keys.map(b=>b.getBoundingClientRect().bottom)):0;
- const svgs=[...document.querySelectorAll('main svg')];
- const last=svgs.length?svgs[svgs.length-1].getBoundingClientRect():null;
- const mr=m?m.getBoundingClientRect():null;
+ // Bantuannya sendiri, bukan tebakan "svg terakhir": isi #hint-panel kosong
+ // selama bantuan tertutup, jadi elemen inilah satu-satunya jawaban jujur atas
+ // "apakah bantuan sedang tampil".
+ const panel=document.getElementById('hint-panel')?.firstElementChild??null;
+ // Yang wajib tetap terlihat adalah KALIMAT soalnya (anak terakhir di blok soal),
+ // bukan ilustrasinya — sisi atas gambar boleh terpotong, pertanyaannya tidak.
+ const soal=document.querySelector('#question-block > :last-child');
+ const close=[...document.querySelectorAll('button')].find(b=>b.getAttribute('aria-label')==='Hide hint')??null;
+ const toggle=document.querySelector('button[aria-controls="hint-panel"]');
+ const r=e=>e?e.getBoundingClientRect():null;
+ const pr=r(panel), mr=r(m), cr=r(close);
+ const inside=x=>x&&mr? (x.bottom<=mr.bottom+1 && x.top>=mr.top-1) : null;
  return {scrollX:document.documentElement.scrollWidth>vw+1, mainNeedsScroll:m?m.scrollHeight>m.clientHeight+1:false, offscreen:bad, jawabanTerpotong: lowest>vh+1, vh,
-   hintBottom: last?Math.round(last.bottom):null, hintTop:last?Math.round(last.top):null,
+   adaBantuan: panel!=null, hintTop:pr?Math.round(pr.top):null, hintBottom:pr?Math.round(pr.bottom):null,
    mainBottom: mr?Math.round(mr.bottom):null, mainTop: mr?Math.round(mr.top):null,
-   hintTerlihat: last&&mr? (last.bottom <= mr.bottom+1 && last.top >= mr.top-1) : null};};
+   hintTerlihat: inside(pr),
+   // Soal yang tergulung habis dari layar: anak melihat bantuannya tapi lupa
+   // pertanyaannya. Boleh terjadi HANYA kalau bantuannya memang tidak muat.
+   soalTerlihat: inside(r(soal)),
+   // Muat BERDUA, bukan bantuannya saja: yang menentukan apakah soal boleh tetap
+   // terlihat adalah tinggi bantuan + tinggi kalimat soal, bukan salah satunya.
+   muatBerdua: pr&&soal ? pr.height+soal.getBoundingClientRect().height<=m.clientHeight : null,
+   // Jalan keluar harus TERJANGKAU, bukan sekadar ada: silang yang terdorong ke
+   // atas batas gulung sama saja dengan tidak ada silang.
+   silangTerjangkau: inside(cr),
+   togglePadam: toggle?toggle.disabled:null, toggleTeks:(toggle?.textContent??'').trim()};};
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const browser=await puppeteer.launch({executablePath:CHROME,headless:'new',args:['--hide-scrollbars']});
 for(const id of targets){
@@ -47,13 +75,29 @@ for(const id of targets){
  await p.evaluateOnNewDocument(d=>{localStorage.clear();localStorage.setItem('ganmath.v1.progress',JSON.stringify(d));localStorage.setItem('ganmath.meta',JSON.stringify({everUsed:true,installPromptShown:true,lastBackupAt:null}));},seedFor(id));
  await p.goto(BASE,{waitUntil:'domcontentloaded'}); await wait(400);
  const click=async re=>{const h=await p.evaluateHandle(t=>[...document.querySelectorAll('button')].filter(n=>new RegExp(t,'i').test(n.textContent??'')&&!n.disabled).pop()??null,re);const el=h.asElement(); if(!el)return false; await el.click(); await wait(300); return true;};
- const ok = await click('Practice|Learn|Start');
- const before = await p.evaluate(MEASURE);
+ await click('Practice|Learn|Start');
  const pressed = await click('Hint');
  await wait(500);
  const after = await p.evaluate(MEASURE);
- const flag = a => [a.scrollX?'SCROLL-X':'', a.mainNeedsScroll?'perlu-digulung':'', a.jawabanTerpotong?'JAWABAN-TERPOTONG':'', a.offscreen.length?`keluar-layar:${a.offscreen.length}`:''].filter(Boolean).join(' ') || 'bersih';
- console.log(`${id.padEnd(11)} | ${flag(after).padEnd(16)} | terlihat=${after.hintTerlihat===true?'YA ':'TIDAK'} | gambar ${after.hintTop}..${after.hintBottom} | main ${after.mainTop}..${after.mainBottom}`);
+
+ // Ditutup lewat silang di dalam bantuannya, lalu dipastikan bantuan BENAR-BENAR
+ // hilang dan tombolnya hidup lagi — bisa dibuka ulang kalau anak berubah pikiran.
+ let closed = null, reopened = null;
+ if (after.adaBantuan) {
+   await p.evaluate(()=>{const b=[...document.querySelectorAll('button')].find(x=>x.getAttribute('aria-label')==='Hide hint'); b?.click();});
+   await wait(300);
+   const shut = await p.evaluate(MEASURE);
+   closed = shut.adaBantuan===false && shut.togglePadam===false;
+   await click('Hint'); await wait(300);
+   reopened = (await p.evaluate(MEASURE)).adaBantuan===true;
+ }
+
+ const flag = a => [a.scrollX?'SCROLL-X':'', a.jawabanTerpotong?'JAWABAN-TERPOTONG':'', a.offscreen.length?`keluar-layar:${a.offscreen.length}`:''].filter(Boolean).join(' ') || 'bersih';
+ const ya = v => v===true?'YA   ':v===false?'TIDAK':'  -  ';
+ // Soal boleh hilang dari pandangan hanya kalau bantuannya tidak muat — di situ
+ // memang harus dipilih salah satu, dan yang dipilih adalah bantuannya.
+ const soalOk = after.soalTerlihat===true || after.muatBerdua===false;
+ console.log(`${id.padEnd(11)} | ${flag(after).padEnd(16)} | ada=${ya(pressed?after.adaBantuan:null)} terlihat=${ya(after.hintTerlihat)} soal=${ya(soalOk)} silang=${ya(after.silangTerjangkau)} tutup=${ya(closed)} buka-lagi=${ya(reopened)} | bantuan ${after.hintTop}..${after.hintBottom} | main ${after.mainTop}..${after.mainBottom}`);
  if (after.offscreen.length) console.log('   ', JSON.stringify(after.offscreen.slice(0,2)));
  await p.close();
 }

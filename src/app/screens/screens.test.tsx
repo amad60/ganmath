@@ -690,6 +690,90 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
   });
 
+  /**
+   * Bug yang dilaporkan: bantuan yang sudah dibuka TIDAK BISA DITUTUP. Tombolnya
+   * mati (`disabled`) begitu ditekan, dan manipulatif setinggi 300px lebih menempel
+   * di layar sampai soalnya berganti — mendorong soalnya sendiri ke luar pandangan.
+   */
+  it('bantuan yang dibuka bisa ditutup lagi, lewat tombol maupun tanda silangnya', () => {
+    render(
+      <QuestionScreen
+        session={play('g1-u2-m2', 'practice')}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    // Satu-satunya tombol berlabel aria-expanded di layar ini adalah tombol bantuan,
+    // jadi keadaannya sendiri yang dipakai untuk menemukannya — bukan teksnya.
+    const opener = () => screen.getByRole('button', { expanded: false });
+    const closer = () => screen.getByRole('button', { expanded: true });
+
+    fireEvent.click(opener());
+    expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+    expect(closer()).not.toBeDisabled();
+
+    // 1. lewat tombol yang sama
+    fireEvent.click(closer());
+    expect(screen.queryByText(/Look at the picture/)).not.toBeInTheDocument();
+    expect(opener()).toBeInTheDocument();
+
+    // 2. dibuka lagi — sekali tutup bukan berarti bantuan hilang selamanya
+    fireEvent.click(opener());
+    expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+
+    // 3. lewat silang di dalam bantuannya sendiri
+    fireEvent.click(screen.getByRole('button', { name: 'Hide hint' }));
+    expect(screen.queryByText(/Look at the picture/)).not.toBeInTheDocument();
+    expect(opener()).toBeInTheDocument();
+  });
+
+  it('Escape menutup bantuan', () => {
+    render(
+      <QuestionScreen
+        session={play('g1-u2-m2', 'practice')}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { expanded: false }));
+    expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByText(/Look at the picture/)).not.toBeInTheDocument();
+  });
+
+  /**
+   * Menutup bantuan tidak boleh MENGHAPUS JEJAK bahwa anak pernah dibantu — kalau
+   * iya, mesin mastery mengira soal itu dijawab sendiri dan menaikkan bintangnya
+   * atas dasar yang salah.
+   */
+  it('menutup bantuan tetap tercatat sebagai soal yang dibantu', () => {
+    const seen: boolean[] = [];
+    const session = play('g1-u2-m2', 'practice');
+    render(
+      <QuestionScreen
+        session={session}
+        onSession={(next) => seen.push(next.results.at(-1)?.hintUsed ?? false)}
+        onFinish={(next) => seen.push(next.results.at(-1)?.hintUsed ?? false)}
+        onExit={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { expanded: false }));
+    fireEvent.click(screen.getByRole('button', { name: 'Hide hint' }));
+
+    // g1-u2-m2 dijawab lewat keypad: ketik angkanya, lalu Check.
+    vi.useFakeTimers();
+    const q = session.pending[0]!.question;
+    for (const digit of String(q.answer)) {
+      fireEvent.click(screen.getByRole('button', { name: digit }));
+    }
+    fireEvent.click(screen.getByRole('button', { name: /Check/i }));
+    vi.runAllTimers();
+    vi.useRealTimers();
+    expect(seen).toEqual([true]);
+  });
+
   it('Hint tidak pernah ditawarkan di sesi yang diperlakukan sebagai ujian', () => {
     render(
       <QuestionScreen

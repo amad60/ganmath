@@ -258,22 +258,68 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const [typed, setTyped] = useState('');
   const [linePick, setLinePick] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<{ value: number; correct: boolean } | null>(null);
+  /**
+   * Dua state, bukan satu — dan inilah inti perbaikannya.
+   *
+   * Dulu hanya ada `hintUsed`, dipakai sekaligus sebagai "bantuan sedang tampil"
+   * DAN sebagai catatan "anak pernah dibantu". Karena catatan itu tidak boleh
+   * dicabut, tombolnya dimatikan begitu ditekan: bantuan setinggi 300px lebih
+   * menempel di layar sampai soalnya berganti, mendorong soalnya sendiri ke luar
+   * pandangan, dan satu-satunya tombol yang bisa menutupnya justru redup 40%
+   * sehingga terbaca sebagai rusak. Anak yang sudah paham tidak punya jalan keluar.
+   *
+   * `hintOpen` bisa dibuka-tutup sesuka anak. `hintUsed` SEKALI JADI: begitu
+   * bantuan pernah dibuka ia tetap true dan ikut ke `submitAnswer`, jadi menutup
+   * bantuan tidak memalsukan riwayat — mesin mastery tetap tahu soal ini dijawab
+   * dengan pertolongan.
+   */
+  const [hintOpen, setHintOpen] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
   const hint = hintStep(session.moduleId);
   const hintRef = useRef<HTMLDivElement | null>(null);
 
+  // Escape menutup bantuan — kebiasaan baku untuk apa pun yang menimpa layar,
+  // dan satu-satunya jalan keluar buat anak yang memakai papan ketik.
   useEffect(() => {
-    if (!hintUsed) return;
+    if (!hintOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setHintOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [hintOpen]);
+
+  useEffect(() => {
+    // Hanya saat MEMBUKA. Menutup membuat halaman menyusut; menggulung setelahnya
+    // akan melompat ke tempat yang tidak diminta siapa pun.
+    if (!hintOpen) return;
     // Ditunda satu frame: manipulatif punya animasi masuk, dan menggulung sebelum
     // tingginya final membuat browser menghitung dari tinggi yang salah — hasilnya
     // bantuan justru terlempar ke luar area gulung. Terukur di Chrome sungguhan.
     const t = setTimeout(() => {
       const el = hintRef.current;
       // jsdom tidak punya scrollIntoView; app tidak boleh jatuh karenanya.
-      if (typeof el?.scrollIntoView === 'function') el.scrollIntoView({ block: 'nearest' });
+      if (typeof el?.scrollIntoView !== 'function') return;
+
+      /**
+       * Ke mana digulung TERGANTUNG apakah bantuannya muat.
+       *
+       * 'nearest' menggulung seminimal mungkin, jadi SOALNYA ikut tetap terlihat
+       * di atas bantuan — dan anak yang macet butuh melihat keduanya sekaligus.
+       * Itu pilihan yang benar selama bantuan muat di area gulung.
+       *
+       * Kalau bantuan lebih tinggi daripada area gulungnya, 'nearest' memilih
+       * merapatkan sisi BAWAH: pangkal gambar berikut baris tutupnya terdorong ke
+       * atas batas atas, dan anak melihat potongan tengah gambar tanpa tanda ✕ di
+       * mana pun. Di kasus itu sisi ATAS yang dirapatkan — soalnya memang hilang
+       * dari pandangan, tapi bantuan terbaca dari awal dan jalan keluarnya ada.
+       */
+      const scroller = el.closest('main');
+      const tooTall = scroller != null && el.getBoundingClientRect().height > scroller.clientHeight;
+      el.scrollIntoView({ block: tooTall ? 'start' : 'nearest' });
     }, 120);
     return () => clearTimeout(t);
-  }, [hintUsed]);
+  }, [hintOpen]);
 
   const shownAt = useRef(0);
   const firstInputAt = useRef<number | null>(null);
@@ -292,12 +338,21 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     });
     setTyped('');
     setLinePick(null);
+    setHintOpen(false);
     setHintUsed(false);
     setFeedback(null);
     return () => cancelAnimationFrame(id);
   }, [question?.id]);
 
   if (!question) return null;
+
+  /**
+   * Ada yang bisa ditunjukkan atau tidak. Kalau tidak ada, tombolnya TIDAK
+   * ditampilkan sama sekali: menawarkan pertolongan yang ternyata kosong persis
+   * kegagalan yang dulu bikin anak macet — dia menekan satu-satunya tombol
+   * bantuan yang dia punya, tidak terjadi apa-apa, dan dia tetap macet.
+   */
+  const hasHint = question.params.n != null || hint != null;
 
   const touch = () => {
     unlockAudio();
@@ -394,6 +449,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             jadi pergantian soal terasa sebagai perpindahan, bukan teks yang berkedip. */}
         <div
           key={question.id}
+          id="question-block"
           className="flex w-full flex-col items-center gap-4"
           style={{ animation: 'question-in 260ms var(--ease-std)' }}
         >
@@ -401,48 +457,90 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           <QuestionText text={question.text} />
         </div>
 
-        {/* Bantuan hanya muncul SETELAH hint ditekan. Sebelumnya layar menampilkan
-            grid kosong tanpa makna di sebelah soal.
+        {/* Bantuan hanya muncul SETELAH hint ditekan, dan hilang lagi begitu ditutup.
+            Sebelumnya layar menampilkan grid kosong tanpa makna di sebelah soal.
 
-            Ten-frame didahulukan kalau ada, karena ia dibangun dari angka SOAL INI —
-            lebih menolong daripada materi umum. Kalau tidak ada, materi Learn modul
-            itu yang dipanggil ulang, sehingga setiap modul punya bantuan yang nyata. */}
-        {/* Bantuan digulung ke tampilan begitu muncul. Manipulatif materi bisa
+            Bantuan digulung ke tampilan begitu muncul: manipulatif materi bisa
             setinggi 300px lebih, dan di layar 393×873 sebagian modul mendorongnya
-            ke bawah lipatan: anak menekan Hint, layarnya tidak berubah, dan dari
+            ke bawah lipatan — anak menekan Hint, layarnya tidak berubah, dan dari
             tempat duduknya tombol itu tetap terasa rusak. Diukur di Chrome
-            sungguhan — g6-u4-m3 gambarnya berakhir di 638px sementara area
-            gulungnya habis di 473px. */}
-        <div ref={hintRef} className="flex w-full flex-col items-center">
-        {!isQuiz && hintUsed ? (
-          question.params.n != null ? (
-            <TenFrame value={question.params.n as number} animate />
-          ) : hint ? (
-            <div className="flex w-full flex-col items-center gap-2">
-              <LearnVisualView visual={hint.visual} value={0} onValue={() => {}} interactive={false} />
-              <p className="text-ink-soft text-center text-[18px] font-bold">{hint.prompt}</p>
+            sungguhan lewat `npm run audit:hint`.
+
+            Pembungkusnya tetap ada walau isinya kosong: `aria-controls` di tombol
+            harus menunjuk elemen yang benar-benar ada, kalau tidak pembaca layar
+            mengumumkan tombol yang mengendalikan ketiadaan. */}
+        <div ref={hintRef} id="hint-panel" className="flex w-full flex-col items-center">
+        {!isQuiz && hintOpen && hasHint ? (
+          <div
+            role="group"
+            aria-label={en.question.hint}
+            className="flex w-full flex-col items-center gap-2 rounded-[var(--r-md)] px-3 py-2"
+            // Berlatar dan berbingkai: bantuan harus terbaca sebagai lapisan yang
+            // MENIMPA soal — sesuatu yang datang dan bisa pergi — bukan sebagai
+            // bagian baru dari soalnya yang tiba-tiba tumbuh di tengah layar.
+            style={{ background: 'var(--c-surface-sunk)', border: '3px solid var(--c-line)' }}
+          >
+            {/* Jalan keluar menempel di bantuannya sendiri, di baris paling atas.
+                Manipulatif materi bisa setinggi 300px lebih; kalau satu-satunya
+                tombol tutup ada di BAWAH gambar, anak harus menggulung dulu untuk
+                menemukan cara menutup — yang dari tempat duduknya sama saja dengan
+                tidak bisa ditutup. */}
+            <div className="flex w-full items-center justify-between gap-2">
+              <p className="text-ink-soft text-[18px] font-bold">{en.question.showMe}</p>
+              <button
+                type="button"
+                aria-label={en.question.hintHide}
+                onClick={() => {
+                  touch();
+                  sfx.tap();
+                  setHintOpen(false);
+                }}
+                // 44x44: sasaran sentuh minimum, jempol anak bukan kursor tetikus.
+                className="-mr-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[20px] font-black"
+                style={{ color: 'var(--c-ink-soft)' }}
+              >
+                ✕
+              </button>
             </div>
-          ) : null
+
+            {/* Ten-frame didahulukan kalau ada, karena ia dibangun dari angka SOAL
+                INI — lebih menolong daripada materi umum. Kalau tidak ada, materi
+                Learn modul itu yang dipanggil ulang. */}
+            {question.params.n != null ? (
+              <TenFrame value={question.params.n as number} animate />
+            ) : hint ? (
+              <>
+                <LearnVisualView visual={hint.visual} value={0} onValue={() => {}} interactive={false} />
+                <p className="text-ink-soft text-center text-[18px] font-bold">{hint.prompt}</p>
+              </>
+            ) : null}
+          </div>
         ) : null}
         </div>
 
-        {!isQuiz ? (
+        {!isQuiz && hasHint ? (
           <Button
             variant="ghost"
-            disabled={hintUsed || feedback != null}
+            aria-expanded={hintOpen}
+            aria-controls="hint-panel"
+            // MENUTUP boleh kapan saja — termasuk setelah jawaban masuk, supaya
+            // layar tidak terkunci penuh gambar di detik-detik terakhir soal.
+            // MEMBUKA tidak lagi setelah dijawab: jawaban benarnya sudah tampil.
+            disabled={feedback != null && !hintOpen}
             onClick={() => {
               touch();
+              sfx.tap();
+              if (hintOpen) {
+                setHintOpen(false);
+                return;
+              }
+              setHintOpen(true);
+              // Sengaja TIDAK pernah dikembalikan ke false: lihat catatan di state.
               setHintUsed(true);
             }}
           >
-            💡 {en.question.hint}
+            {hintOpen ? `✕ ${en.question.hintHide}` : `💡 ${en.question.hint}`}
           </Button>
-        ) : null}
-
-        {/* Kalimat ini dulu muncul sendirian, menyuruh anak melihat gambar yang tidak
-            pernah ada. Sekarang ia hanya muncul kalau memang ADA yang bisa dilihat. */}
-        {hintUsed && (question.params.n != null || hint) ? (
-          <p className="text-ink-soft text-[18px]">{en.question.showMe}</p>
         ) : null}
 
         </div>

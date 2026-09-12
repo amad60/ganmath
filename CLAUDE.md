@@ -79,6 +79,15 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      itu kalau ada, kalau tidak materi Learn modul itu dipanggil ulang (langkah pictorial
      terakhir). Pernah putus di sini: Hint hanya punya cabang ten-frame, jadi di 163 dari 240
      modul ia hanya menulis "Look at the picture." tanpa ada gambar apa pun di layar.
+   - **Bantuan yang bisa dibuka wajib bisa DITUTUP lagi, dan dibuka lagi.** Pernah putus di
+     sini juga: tombolnya dimatikan begitu ditekan (satu state `hintUsed` dipakai sekaligus
+     sebagai "sedang tampil" dan sebagai catatan "pernah dibantu"), jadi manipulatif setinggi
+     300px lebih menempel di layar sampai soalnya berganti dan mendorong soalnya sendiri ke
+     luar pandangan. Yang terlihat anak: satu-satunya tombol bantuan yang dia punya jadi redup
+     dan tidak bisa ditekan lagi — persis seperti rusak. Aturannya sekarang: `hintOpen` boleh
+     dibuka-tutup, `hintUsed` sekali jadi dan itulah yang masuk ke riwayat; jalan keluarnya
+     ada di dalam bantuannya sendiri (silang di baris atas) supaya tidak ikut tergulung
+     hilang. Diukur oleh `npm run audit:hint` — kolom `tutup` dan `buka-lagi`.
 2. **Mastery-based, bukan completion-based.** Lanjut hanya kalau lulus ambang penguasaan.
 3. **"Di luar kepala".** Untuk fakta dasar, penguasaan diukur juga dari **kecepatan &
    konsistensi**, bukan cuma benar/salah. Detail di §6.

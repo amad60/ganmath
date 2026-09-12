@@ -70,6 +70,7 @@ export const en = {
 
   question: {
     hint: 'Hint',
+    hintHide: 'Hide hint',
     check: 'Check',
     correct: 'Yes!',
     retry: 'Try again',
