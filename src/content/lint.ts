@@ -15,6 +15,55 @@ export type LintProblem = { moduleId: string; rule: string; detail: string };
 export const MAX_PROMPT_WORDS = 8;
 
 /**
+ * Batas panjang KALIMAT SOAL CERITA, per grade.
+ *
+ * Teks soal biasa tidak dibatasi siapa pun ("7 × 8 = ?" tidak perlu dijaga), tapi
+ * soal cerita memindahkan beban ke MEMBACA. Kalau kalimatnya terlalu panjang untuk
+ * umurnya, yang diukur app ini bukan lagi matematika melainkan kelancaran membaca
+ * — dan penguasaan di sini ikut diukur dari kecepatan, jadi anak yang paham tapi
+ * membaca pelan akan tercatat belum menguasai.
+ *
+ * Angkanya naik seiring grade dengan alasan yang sama seperti angkanya naik:
+ * kalimat 25 kata pantas untuk anak kelas 6, dan tidak pantas untuk kelas 1.
+ */
+export const MAX_STORY_WORDS: Record<number, number> = {
+  1: 12,
+  2: 14,
+  3: 18,
+  4: 20,
+  5: 22,
+  6: 25,
+};
+
+/**
+ * Kosakata sehari-hari yang boleh dipakai soal cerita tanpa dideklarasikan.
+ *
+ * Terpisah dari `BASE_VOCAB` dan sengaja dijaga PENDEK. Daftar ini adalah
+ * satu-satunya hal yang menahan soal cerita berubah jadi karangan bebas: tiap kata
+ * baru di sini adalah kata yang harus bisa dibaca anak kelas 1, jadi menambahnya
+ * adalah keputusan, bukan formalitas.
+ */
+export const STORY_VOCAB = new Set(
+  `apple apples book books pencil pencils pen pens candy candies cookie cookies
+   marble marbles sticker stickers toy toys ball balls flower flowers bird birds
+   fish cat cats dog dogs egg eggs cake cakes bread sweet sweets shell shells
+   stone stones card cards block blocks seat seats bag bags basket baskets
+   plate plates cup cups jar jars shelf shelves table tables
+   mom dad friend friends class teacher shop school park home garden
+   buys buy bought gets got gives gave eats ate finds found loses lost
+   picks picked puts shares shared brings brought needs need costs cost
+   pays paid wants sits sit stand walk run reads reading
+   her his their its him she he they them
+   altogether total rest still already just after before
+   were was will be are there here own second third
+   day days week weeks morning night
+   red blue green yellow
+   money coin coins rupiah`
+    .split(/\s+/)
+    .filter(Boolean),
+);
+
+/**
  * Manipulatif yang benar-benar bisa MENERIMA tiap aksi di layar Learn.
  *
  * Layar Learn mengunci tombol Next sampai anak mencapai `target`. Kalau aksinya
@@ -107,6 +156,74 @@ export const BASE_VOCAB = new Set(
     .filter(Boolean),
 );
 
+/**
+ * Nilai pecahan yang DIMAKSUD sebuah label jawaban, atau null kalau labelnya bukan
+ * nama pecahan ("yes", "there are no parts").
+ */
+const FRACTION_WORDS: Record<string, number> = {
+  whole: 1,
+  half: 1 / 2,
+  third: 1 / 3,
+  fourth: 1 / 4,
+  quarter: 1 / 4,
+  fifth: 1 / 5,
+  sixth: 1 / 6,
+  seventh: 1 / 7,
+  eighth: 1 / 8,
+  tenth: 1 / 10,
+};
+const COUNT_WORDS: Record<string, number> = {
+  one: 1, a: 1, an: 1, two: 2, three: 3, four: 4, five: 5,
+  six: 6, seven: 7, eight: 8, nine: 9,
+};
+
+/**
+ * Menghitung sendiri soal yang teksnya memang perhitungan utuh ("7 × 8 = ?"),
+ * atau null kalau teksnya bukan itu. Sengaja KETAT: lebih baik melewatkan soal
+ * daripada salah menuduh soal yang sebenarnya benar.
+ */
+export function evalExpression(text: string): number | null {
+  const t = text
+    .replace(/\s+/g, ' ')
+    .replace(/[−–—]/g, '-')
+    .replace(/[×✕]/g, '*')
+    .replace(/[÷]/g, '/')
+    .trim();
+  const m = t.match(/^(-?\d+(?:\.\d+)?)\s*([+\-*/])\s*(-?\d+(?:\.\d+)?)\s*(?:=\s*)?\??$/);
+  if (!m) return null;
+  const a = Number(m[1]);
+  const b = Number(m[3]);
+  switch (m[2]) {
+    case '+':
+      return a + b;
+    case '-':
+      return a - b;
+    case '*':
+      return a * b;
+    case '/':
+      return b === 0 ? null : a / b;
+    default:
+      return null;
+  }
+}
+
+export function fractionValue(label: string): number | null {
+  const t = label.trim().toLowerCase();
+  const numeric = t.match(/^(\d+)\s*\/\s*(\d+)$/);
+  if (numeric) return Number(numeric[1]) / Number(numeric[2]);
+  const w = t.split(/\s+/);
+  if (w.length === 1) {
+    const single = FRACTION_WORDS[(w[0] ?? '').replace(/s$/, '')];
+    return single ?? null;
+  }
+  if (w.length === 2) {
+    const n = COUNT_WORDS[w[0] ?? ''];
+    const unit = FRACTION_WORDS[(w[1] ?? '').replace(/s$/, '')];
+    if (n != null && unit != null) return n * unit;
+  }
+  return null;
+}
+
 function words(text: string): string[] {
   return text
     .toLowerCase()
@@ -192,6 +309,129 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
     for (const r of m.rules) {
       if (!m.questionTypes.includes(r.type)) {
         add(m.id, 'question-types', `rule bertipe "${r.type}" tidak terdaftar di questionTypes`);
+      }
+    }
+
+    // 4b. Soal cerita: beban BACA-nya dijaga, teks soal lain tidak.
+    //
+    //     Ini satu-satunya tempat teks `rules[].text()` diperiksa sama sekali.
+    //     Sengaja hanya untuk aturan bertanda `story`: 635 teks soal yang sudah ada
+    //     adalah lambang dan potongan pendek yang tidak butuh — dan tidak akan lolos —
+    //     pemeriksaan kosakata prosa.
+    const maxStory = MAX_STORY_WORDS[m.grade] ?? MAX_STORY_WORDS[6] ?? 25;
+    for (const r of m.rules) {
+      if (!r.story) continue;
+      // Diperiksa pada teks yang BENAR-BENAR dirender, bukan pada templatnya:
+      // parameter ikut jadi kata, dan kombinasi terpanjanglah yang dibaca anak.
+      let worst = '';
+      let worstN = 0;
+      for (const combo of enumerate(r).slice(0, 200)) {
+        const text = r.text(combo);
+        const n = words(text).length;
+        if (n > worstN) {
+          worstN = n;
+          worst = text;
+        }
+        for (const w of words(text)) {
+          const isKnown =
+            known.has(w) ||
+            STORY_VOCAB.has(w) ||
+            (w.endsWith('s') && (known.has(w.slice(0, -1)) || STORY_VOCAB.has(w.slice(0, -1))));
+          if (!isKnown && !/^\d+$/.test(w)) {
+            add(
+              m.id,
+              'story-vocab',
+              `kata "${w}" di soal cerita belum diperkenalkan — tambahkan ke vocab modul atau STORY_VOCAB`,
+            );
+          }
+        }
+      }
+      if (worstN > maxStory) {
+        add(
+          m.id,
+          'story-length',
+          `soal cerita ${worstN} kata (maks ${maxStory} di grade ${m.grade}): "${worst}"`,
+        );
+      }
+    }
+
+    // 4c. Soal cerita itu PENERAPAN, jadi tidak boleh jadi satu-satunya isi modul:
+    //     anak tetap butuh latihan lambangnya juga, dan kuis memang tanpa cerita.
+    if (m.rules.some((r) => r.story) && !m.rules.some((r) => !r.story)) {
+      add(m.id, 'story-mix', 'semua aturan bercerita — modul butuh aturan hitung biasa juga');
+    }
+
+    // 4d. Label jawaban pecahan harus cocok dengan GAMBARNYA.
+    //
+    //     Ini lahir dari bug yang sampai ke tangan anak: g1-u6-m4 menunjukkan pizza
+    //     4 bagian dengan 2 diarsir, anak menjawab "half" (benar), dinyatakan SALAH,
+    //     lalu diberi tahu jawabannya "three fourths". Penyebabnya cabang yang lupa
+    //     satu kasus — jenis kesalahan yang tidak bisa dilihat dengan membaca kode,
+    //     tapi langsung terlihat kalau nilai labelnya dibandingkan dengan gambarnya.
+    //
+    //     Bug yang MENGAJARKAN matematika salah lebih buruk daripada bug yang
+    //     membuat app jatuh: app jatuh terlihat, ini dipercaya.
+    for (const [ri, r] of m.rules.entries()) {
+      if (r.type !== 'choose-text' || !r.visual || !r.options) continue;
+      for (const combo of enumerate(r).slice(0, 300)) {
+        const v = r.visual(combo) as { kind?: string; parts?: number; shaded?: number; unequal?: boolean };
+        // `unequal` = soalnya bukan "berapa yang diarsir" melainkan "bagiannya sama
+        // besar atau tidak", jadi nilai pecahannya memang tidak berlaku.
+        if (v?.kind !== 'fraction' || v.parts == null || v.shaded == null || v.unequal) continue;
+        const labels = r.options(combo);
+        const shown = v.shaded / v.parts;
+        const picked = fractionValue(labels[r.answer(combo) as number] ?? '');
+        if (picked == null) continue; // label bukan nama pecahan — soal jenis lain
+        if (Math.abs(picked - shown) > 1e-9) {
+          add(
+            m.id,
+            'fraction-answer',
+            `rule#${ri}: gambar ${v.shaded}/${v.parts} tapi jawabannya "${labels[r.answer(combo) as number]}" (${JSON.stringify(combo)})`,
+          );
+        }
+        // Dua pilihan yang sama-sama benar membuat anak yang benar tetap salah.
+        //
+        // Diperiksa pada tombol yang BENAR-BENAR dirender: `uniqueChoices` sudah
+        // membuang label kembar sebelum sampai ke layar, jadi memeriksa daftar
+        // mentahnya akan melaporkan tiga modul yang sebenarnya tidak apa-apa.
+        // Yang lolos dari `uniqueChoices` justru yang berbahaya: dua tulisan
+        // BERBEDA yang nilainya sama ("2/4" dan "1/2").
+        const shownLabels = uniqueChoices(labels, r.answer(combo) as number).map((i) => labels[i] ?? '');
+        const alsoRight = shownLabels.filter(
+          (l) =>
+            l !== labels[r.answer(combo) as number] &&
+            Math.abs((fractionValue(l) ?? NaN) - shown) <= 1e-9,
+        );
+        if (alsoRight.length > 0) {
+          add(
+            m.id,
+            'fraction-answer',
+            `rule#${ri}: "${alsoRight.join('", "')}" juga benar untuk ${v.shaded}/${v.parts} — pilihannya ambigu`,
+          );
+        }
+      }
+    }
+
+    // 4e. Soal dan jawabannya harus setuju.
+    //
+    //     `answer()` adalah satu-satunya sumber kebenaran saat menilai, jadi kalau
+    //     ia meleset dari soal yang tertulis, tidak ada yang protes — anaknya yang
+    //     dinyatakan salah. Di sini soalnya DIBACA ULANG dan dihitung sendiri, jadi
+    //     ada dua sumber yang harus cocok, bukan satu yang harus dipercaya.
+    //
+    //     Hanya berlaku untuk soal yang teksnya memang sebuah perhitungan utuh
+    //     ("7 × 8 = ?"); soal bergambar dan soal cerita dilewati karena teksnya
+    //     bukan seluruh pertanyaannya.
+    for (const [ri, r] of m.rules.entries()) {
+      if (r.type === 'choose-text' || r.type === 'compare-symbol') continue;
+      for (const combo of enumerate(r).slice(0, 300)) {
+        const text = r.text(combo);
+        const want = evalExpression(text);
+        if (want == null) continue;
+        const got = r.answer(combo);
+        if (Math.abs(want - got) > 1e-9) {
+          add(m.id, 'answer-matches-text', `rule#${ri}: soal "${text}" = ${want}, dinilai benar = ${got}`);
+        }
       }
     }
 

@@ -74,6 +74,71 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'renderable')).toBe(true);
   });
 
+  /**
+   * Bug yang sampai ke tangan anak: pizza 4 bagian, 2 diarsir, anak menjawab
+   * "half" (BENAR), dinyatakan salah, lalu diberi tahu jawabannya "three fourths".
+   * Sebuah cabang di `answer()` lupa memeriksa berapa yang diarsir.
+   *
+   * Bug yang mengajarkan matematika yang salah lebih buruk daripada bug yang
+   * membuat app jatuh: app jatuh terlihat, yang ini dipercaya.
+   */
+  it('menolak jawaban pecahan yang tidak cocok dengan gambarnya', () => {
+    const mods = broken({
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: 'halves-fourths',
+          params: { p: [4, 4], s: [2, 2] },
+          answer: () => 2, // "three fourths" untuk gambar 2/4 — persis bug aslinya
+          text: () => 'How much is shaded?',
+          visual: (p) => ({ kind: 'fraction', parts: p.p as number, shaded: p.s as number }),
+          options: () => ['half', 'one fourth', 'three fourths', 'whole'],
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'fraction-answer')).toBe(true);
+  });
+
+  it('menolak dua pilihan yang sama-sama benar untuk gambar yang sama', () => {
+    // Anak yang menekan "2/4" untuk gambar 2/4 benar, tapi dinilai salah karena
+    // yang ditandai benar cuma "1/2". Dua tombol benar = satu tombol jebakan.
+    const mods = broken({
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: 'halves-fourths',
+          params: { p: [4, 4], s: [2, 2] },
+          answer: () => 0,
+          text: () => 'How much is shaded?',
+          visual: (p) => ({ kind: 'fraction', parts: p.p as number, shaded: p.s as number }),
+          options: () => ['1/2', '1/4', '2/4', 'whole'],
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'fraction-answer')).toBe(true);
+  });
+
+  it('menolak jawaban yang tidak sama dengan hasil hitung soalnya sendiri', () => {
+    const mods = broken({
+      questionTypes: ['keypad'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'add-within-10',
+          params: { a: [3, 3], b: [4, 4] },
+          answer: () => 12, // 3 + 4 bukan 12
+          text: (p) => `${p.a} + ${p.b} = ?`,
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'answer-matches-text')).toBe(true);
+  });
+
   it('menolak modul fakta tanpa pengecoh miskonsepsi', () => {
     const base = all[0] as ContentModule;
     const mods = broken({

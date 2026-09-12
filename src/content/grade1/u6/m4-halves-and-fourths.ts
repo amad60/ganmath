@@ -40,6 +40,14 @@ export const halvesAndFourths: ContentModule = {
       visual: { kind: 'fraction', parts: 4, shaded: 1 },
       action: 'watch',
     },
+    {
+      // Soal menanyakan 2 dari 4 bagian, jadi materinya harus menunjukkannya dulu.
+      // Sebelum ini modulnya menguji hal yang tidak pernah diajarkannya.
+      stage: 'abstract',
+      prompt: 'Two of four equal parts is half.',
+      visual: { kind: 'fraction', parts: 4, shaded: 2 },
+      action: 'watch',
+    },
   ],
 
   rules: [
@@ -47,12 +55,25 @@ export const halvesAndFourths: ContentModule = {
       type: 'choose-text',
       skill: 'halves-fourths',
       params: { p: [2, 4], s: [1, 3] },
+      /**
+       * Jawaban diturunkan dari NILAI pecahannya, bukan dari pola cabang.
+       *
+       * Versi sebelumnya bercabang: kalau bukan utuh dan bukan dua bagian, maka
+       * "satu bagian = seperempat, selain itu = tiga perempat". Cabang terakhir itu
+       * tidak pernah memeriksa berapa yang diarsir, jadi 2 dari 4 bagian dijawab
+       * "three fourths" — anak yang menjawab "half" (yang BENAR) dinyatakan salah,
+       * lalu diberi tahu bahwa setengah pizza itu tiga perempat. Bug yang mengajarkan
+       * matematika yang salah lebih buruk daripada bug yang membuat app jatuh.
+       *
+       * Dihitung dari shaded/parts, kesalahan seperti itu tidak bisa lahir lagi:
+       * tidak ada cabang yang bisa lupa satu kasus.
+       */
       answer: (p) => {
-        const parts = p.p as number;
-        const shaded = p.s as number;
-        if (shaded === parts) return 3; // whole
-        if (parts === 2) return 0; // half
-        return shaded === 1 ? 1 : 2; // one fourth / three fourths
+        const value = (p.s as number) / (p.p as number);
+        if (value === 1) return 3; // whole
+        if (value === 0.5) return 0; // half — termasuk 2 dari 4 bagian
+        if (value === 0.25) return 1; // one fourth
+        return 2; // three fourths
       },
       text: () => 'How much is shaded?',
       visual: (p) => ({ kind: 'fraction', parts: p.p as number, shaded: p.s as number }),
