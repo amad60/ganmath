@@ -57,5 +57,23 @@ export const equalGroups: ContentModule = {
       answer: (p) => p.c as number,
       text: (p) => `${p.r} groups of ? = ${(p.r as number) * (p.c as number)}`,
     },
+    {
+      type: 'choose-number',
+      skill: 'equal-groups',
+      story: true,
+      params: { r: [2, 6], c: [2, 6] },
+      answer: (p) => (p.r as number) * (p.c as number),
+      text: (p) => `${p.r} baskets. ${p.c} apples in each basket. How many apples?`,
+      distractors: 'near',
+    },
+    {
+      type: 'choose-number',
+      skill: 'equal-groups',
+      story: true,
+      params: { r: [2, 6], c: [2, 6] },
+      answer: (p) => (p.r as number) * (p.c as number),
+      text: (p) => `${p.r} plates. ${p.c} cookies on each plate. How many cookies?`,
+      distractors: 'near',
+    },
   ],
 };

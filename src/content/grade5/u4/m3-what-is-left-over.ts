@@ -100,5 +100,23 @@ export const whatIsLeftOver: ContentModule = {
         `${p.d} × ? + ${p.r} = ${(p.d as number) * (p.q as number) + (p.r as number)}`,
       exclude: (p) => (p.r as number) >= (p.d as number),
     },
+    {
+      type: 'keypad',
+      skill: 'divide-remainder-2-digit',
+      story: true,
+      params: { d: [11, 29], q: [3, 9], r: [1, 28] },
+      answer: (p) => p.q as number,
+      text: (p) => `${(p.d as number) * (p.q as number) + (p.r as number)} cookies in bags of ${p.d}. How many full bags?`,
+      exclude: (p) => (p.r as number) >= (p.d as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'divide-remainder-2-digit',
+      story: true,
+      params: { d: [11, 29], q: [3, 9], r: [1, 28] },
+      answer: (p) => p.q as number,
+      text: (p) => `Ana puts ${(p.d as number) * (p.q as number) + (p.r as number)} books in boxes of ${p.d}. How many boxes are full?`,
+      exclude: (p) => (p.r as number) >= (p.d as number),
+    },
   ],
 };

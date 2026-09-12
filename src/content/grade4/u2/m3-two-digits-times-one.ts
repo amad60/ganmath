@@ -68,5 +68,21 @@ export const twoDigitsTimesOne: ContentModule = {
       answer: (p) => ((p.t as number) * 10 + (p.o as number)) * (p.b as number),
       text: (p) => `${p.b} × ${(p.t as number) * 10 + (p.o as number)} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'multiply-2x1',
+      story: true,
+      params: { t: [1, 9], o: [0, 9], b: [2, 9] },
+      answer: (p) => ((p.t as number) * 10 + (p.o as number)) * (p.b as number),
+      text: (p) => `A shop has ${(p.t as number) * 10 + (p.o as number)} boxes. Each box has ${p.b} pencils. How many pencils?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'multiply-2x1',
+      story: true,
+      params: { t: [1, 9], o: [0, 9], b: [2, 9] },
+      answer: (p) => ((p.t as number) * 10 + (p.o as number)) * (p.b as number),
+      text: (p) => `${(p.t as number) * 10 + (p.o as number)} baskets. ${p.b} apples in each basket. How many apples?`,
+    },
   ],
 };

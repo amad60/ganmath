@@ -128,5 +128,23 @@ export const mapScale: ContentModule = {
       options: (p) => scaleOptions(p.s as number),
       exclude: (p) => !allUnique(scaleOptions(p.s as number)),
     },
+    {
+      type: 'keypad',
+      skill: 'map-scale',
+      story: true,
+      params: { s: [2, 9], d: [1, 9] },
+      answer: (p) => (p.s as number) * (p.d as number),
+      text: (p) => `On a map 1 cm is ${p.s} km. Ana walks ${p.d} cm on the map. How far in km?`,
+      exclude: (p) => (p.d as number) === 1,
+    },
+    {
+      type: 'keypad',
+      skill: 'map-scale',
+      story: true,
+      params: { s: [2, 9], d: [1, 9] },
+      answer: (p) => (p.s as number) * (p.d as number),
+      text: (p) => `A map shows 1 cm for ${p.s} km. Budi sees ${p.d} cm. How far in km?`,
+      exclude: (p) => (p.d as number) === 1,
+    },
   ],
 };

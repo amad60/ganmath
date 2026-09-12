@@ -121,5 +121,23 @@ export const colderOrWarmer: ContentModule = {
         (p.a as number) === (p.c as number),
       options: (p) => [sgn(p.a as number), sgn(p.b as number), sgn(p.c as number)],
     },
+    {
+      type: 'keypad',
+      skill: 'compare-integers',
+      story: true,
+      params: { a: [-9, 9], b: [-9, 9] },
+      answer: (p) => Math.min(p.a as number, p.b as number),
+      text: (p) => `One day is ${sgn(p.a as number)} degrees. The next day is ${sgn(p.b as number)} degrees. Write the colder one.`,
+      exclude: (p) => (p.a as number) === (p.b as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'compare-integers',
+      story: true,
+      params: { a: [-9, 9], b: [-9, 9] },
+      answer: (p) => Math.min(p.a as number, p.b as number),
+      text: (p) => `Ana sees ${sgn(p.a as number)} degrees at night. Budi sees ${sgn(p.b as number)} degrees. Write the colder one.`,
+      exclude: (p) => (p.a as number) === (p.b as number),
+    },
   ],
 };

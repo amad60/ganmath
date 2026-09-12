@@ -54,5 +54,21 @@ export const timesNine: ContentModule = {
       answer: (p) => (p.n as number) * 9,
       text: (p) => `${p.n} × 9 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-9',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 9,
+      text: (p) => `${p.n} plates. 9 sweets on each plate. How many sweets?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-9',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 9,
+      text: (p) => `Ana has ${p.n} bags. Each bag has 9 marbles. How many marbles?`,
+    },
   ],
 };

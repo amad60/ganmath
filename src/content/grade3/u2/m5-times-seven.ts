@@ -54,5 +54,21 @@ export const timesSeven: ContentModule = {
       answer: (p) => (p.n as number) * 7,
       text: (p) => `${p.n} × 7 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-7',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 7,
+      text: (p) => `${p.n} weeks. 7 days in each week. How many days?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-7',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 7,
+      text: (p) => `Budi gets 7 coins each day for ${p.n} days. How many coins?`,
+    },
   ],
 };

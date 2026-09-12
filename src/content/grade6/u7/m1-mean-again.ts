@@ -137,5 +137,23 @@ export const meanAgain: ContentModule = {
       distractors: 'near',
       misconception: (p) => p.m as number,
     },
+    {
+      type: 'keypad',
+      skill: 'find-mean',
+      story: true,
+      params: { m: [12, 25], d: [1, 6], e: [1, 7] },
+      answer: (p) => p.m as number,
+      text: (p) => `Four boxes have ${fourValues(p).join(', ')} books. What is the mean?`,
+      exclude: (p) => (p.d as number) === (p.e as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'find-mean',
+      story: true,
+      params: { m: [12, 25], d: [1, 6], e: [1, 7] },
+      answer: (p) => p.m as number,
+      text: (p) => `Ana reads ${fourValues(p).join(', ')} books in four weeks. What is the mean?`,
+      exclude: (p) => (p.d as number) === (p.e as number),
+    },
   ],
 };

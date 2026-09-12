@@ -63,5 +63,23 @@ export const perimeter: ContentModule = {
       visual: (p) => ({ kind: 'rect', w: p.w as number, h: p.h as number }),
       exclude: (p) => (p.h as number) > (p.w as number),
     },
+    {
+      type: 'keypad',
+      skill: 'perimeter',
+      story: true,
+      params: { w: [2, 9], h: [1, 8] },
+      answer: (p) => 2 * ((p.w as number) + (p.h as number)),
+      text: (p) => `A garden is ${p.w} metres by ${p.h} metres. What is the perimeter?`,
+      exclude: (p) => (p.h as number) > (p.w as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'perimeter',
+      story: true,
+      params: { w: [2, 9], h: [1, 8] },
+      answer: (p) => 2 * ((p.w as number) + (p.h as number)),
+      text: (p) => `A table is ${p.w} metres by ${p.h} metres. What is the perimeter?`,
+      exclude: (p) => (p.h as number) > (p.w as number),
+    },
   ],
 };

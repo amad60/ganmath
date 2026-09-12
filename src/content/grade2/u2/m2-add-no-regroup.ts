@@ -61,5 +61,27 @@ export const addNoRegroup: ContentModule = {
         ((p.a as number) % 10) + ((p.b as number) % 10) > 9 ||
         Math.floor((p.a as number) / 10) + Math.floor((p.b as number) / 10) > 9,
     },
+    {
+      type: 'keypad',
+      skill: 'add-2digit',
+      story: true,
+      params: { a: [12, 77], b: [11, 22] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `Ana has ${p.a} stickers. Budi gives her ${p.b}. How many now?`,
+      exclude: (p) =>
+        ((p.a as number) % 10) + ((p.b as number) % 10) > 9 ||
+        Math.floor((p.a as number) / 10) + Math.floor((p.b as number) / 10) > 9,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-2digit',
+      story: true,
+      params: { a: [12, 77], b: [11, 22] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `${p.a} books on a shelf. Siti puts ${p.b} more. How many books?`,
+      exclude: (p) =>
+        ((p.a as number) % 10) + ((p.b as number) % 10) > 9 ||
+        Math.floor((p.a as number) / 10) + Math.floor((p.b as number) / 10) > 9,
+    },
   ],
 };

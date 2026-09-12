@@ -89,5 +89,23 @@ export const fractionTimesWhole: ContentModule = {
       text: (p) => `${p.a}/${p.b} × ${p.n} = ?/${p.b}`,
       exclude: (p) => (p.a as number) >= (p.b as number),
     },
+    {
+      type: 'keypad',
+      skill: 'fraction-times-whole',
+      story: true,
+      params: { b: [2, 6], m: [2, 8], a: [1, 5] },
+      answer: (p) => (p.a as number) * (p.m as number),
+      text: (p) => `Ana has ${(p.b as number) * (p.m as number)} sweets. She eats ${p.a}/${p.b} of them. How many?`,
+      exclude: (p) => (p.a as number) >= (p.b as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'fraction-times-whole',
+      story: true,
+      params: { b: [2, 6], m: [2, 8], a: [1, 5] },
+      answer: (p) => (p.a as number) * (p.m as number),
+      text: (p) => `${(p.b as number) * (p.m as number)} books on a shelf. ${p.a}/${p.b} are red. How many are red?`,
+      exclude: (p) => (p.a as number) >= (p.b as number),
+    },
   ],
 };

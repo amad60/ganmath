@@ -146,5 +146,23 @@ export const shareByRatio: ContentModule = {
         (p.a as number) === (p.b as number) ||
         !allUnique(shareOptions(p.a as number, p.b as number, p.u as number)),
     },
+    {
+      type: 'keypad',
+      skill: 'share-by-ratio',
+      story: true,
+      params: { a: [1, 5], b: [1, 5], u: [2, 12] },
+      answer: (p) => (p.a as number) * (p.u as number),
+      text: (p) => `Ana and Budi share ${((p.a as number) + (p.b as number)) * (p.u as number)} sweets in the ratio ${p.a} to ${p.b}. How many for Ana?`,
+      exclude: (p) => gcd(p.a as number, p.b as number) !== 1,
+    },
+    {
+      type: 'keypad',
+      skill: 'share-by-ratio',
+      story: true,
+      params: { a: [1, 5], b: [1, 5], u: [2, 12] },
+      answer: (p) => (p.a as number) * (p.u as number),
+      text: (p) => `${((p.a as number) + (p.b as number)) * (p.u as number)} marbles are shared in the ratio ${p.a} to ${p.b}. How many in the first part?`,
+      exclude: (p) => gcd(p.a as number, p.b as number) !== 1,
+    },
   ],
 };

@@ -54,5 +54,21 @@ export const timesFour: ContentModule = {
       answer: (p) => (p.n as number) * 4,
       text: (p) => `${p.n} × 4 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-4',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 4,
+      text: (p) => `${p.n} tables. 4 seats at each table. How many seats?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-4',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 4,
+      text: (p) => `A garden has ${p.n} rows. 4 flowers in each row. How many flowers?`,
+    },
   ],
 };

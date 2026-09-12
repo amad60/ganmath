@@ -70,5 +70,27 @@ export const addWithRegrouping: ContentModule = {
         ((p.a as number) % 10) + ((p.b as number) % 10) < 10 ||
         (p.a as number) + (p.b as number) > 99,
     },
+    {
+      type: 'keypad',
+      skill: 'add-regroup',
+      story: true,
+      params: { a: [16, 79], b: [16, 79] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `Ana picks ${p.a} flowers. Budi picks ${p.b}. How many altogether?`,
+      exclude: (p) =>
+        ((p.a as number) % 10) + ((p.b as number) % 10) < 10 ||
+        (p.a as number) + (p.b as number) > 99,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-regroup',
+      story: true,
+      params: { a: [16, 79], b: [16, 79] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `${p.a} birds sit. ${p.b} more land. How many birds now?`,
+      exclude: (p) =>
+        ((p.a as number) % 10) + ((p.b as number) % 10) < 10 ||
+        (p.a as number) + (p.b as number) > 99,
+    },
   ],
 };

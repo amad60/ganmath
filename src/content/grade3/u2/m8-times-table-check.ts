@@ -58,5 +58,21 @@ export const timesTableCheck: ContentModule = {
       answer: (p) => (p.a as number) * (p.b as number),
       text: (p) => `${p.b} × ${p.a} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-check',
+      story: true,
+      params: { a: [2, 10], b: [2, 10] },
+      answer: (p) => (p.a as number) * (p.b as number),
+      text: (p) => `${p.a} baskets. ${p.b} apples in each basket. How many apples?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-check',
+      story: true,
+      params: { a: [2, 10], b: [2, 10] },
+      answer: (p) => (p.a as number) * (p.b as number),
+      text: (p) => `${p.a} rows of seats. ${p.b} seats in each row. How many seats?`,
+    },
   ],
 };

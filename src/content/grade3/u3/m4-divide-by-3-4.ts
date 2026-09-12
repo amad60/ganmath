@@ -54,5 +54,21 @@ export const divideBy34: ContentModule = {
       answer: (p) => p.n as number,
       text: (p) => `Share ${(p.n as number) * (p.d as number)} between ${p.d}.`,
     },
+    {
+      type: 'keypad',
+      skill: 'divide-3-4',
+      story: true,
+      params: { d: [3, 4], n: [2, 10] },
+      answer: (p) => p.n as number,
+      text: (p) => `Ana shares ${(p.n as number) * (p.d as number)} marbles between ${p.d} friends. How many each?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'divide-3-4',
+      story: true,
+      params: { d: [3, 4], n: [2, 10] },
+      answer: (p) => p.n as number,
+      text: (p) => `${(p.n as number) * (p.d as number)} seats in ${p.d} equal rows. How many in each row?`,
+    },
   ],
 };

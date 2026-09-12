@@ -126,5 +126,21 @@ export const twoDigitsTimesTwo: ContentModule = {
       answer: (p) => p.b as number,
       text: (p) => `${p.a} × ? = ${(p.a as number) * (p.b as number)}`,
     },
+    {
+      type: 'keypad',
+      skill: 'multiply-by-tens',
+      story: true,
+      params: { a: [12, 49], t: [2, 9] },
+      answer: (p) => (p.a as number) * (p.t as number) * 10,
+      text: (p) => `A shop has ${(p.t as number) * 10} boxes. Each box has ${p.a} pencils. How many pencils?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'multiply-by-tens',
+      story: true,
+      params: { a: [12, 49], t: [2, 9] },
+      answer: (p) => (p.a as number) * (p.t as number) * 10,
+      text: (p) => `${(p.t as number) * 10} baskets. ${p.a} apples in each basket. How many apples?`,
+    },
   ],
 };

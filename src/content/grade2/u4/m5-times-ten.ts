@@ -55,5 +55,21 @@ export const timesTen: ContentModule = {
       answer: (p) => (p.n as number) * 10,
       text: (p) => `${p.n} × 10 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-10',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 10,
+      text: (p) => `${p.n} baskets. 10 apples in each basket. How many apples?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-10',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 10,
+      text: (p) => `Ana has ${p.n} notes. Each note is 10 coins. How many coins?`,
+    },
   ],
 };

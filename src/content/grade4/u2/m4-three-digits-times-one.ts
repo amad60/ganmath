@@ -67,5 +67,21 @@ export const threeDigitsTimesOne: ContentModule = {
       text: (p) =>
         `${p.b} × ${(p.h as number) * 100 + (p.t as number) * 10 + (p.o as number)} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'multiply-3x1',
+      story: true,
+      params: { h: [1, 9], t: [0, 9], o: [0, 9], b: [2, 9] },
+      answer: (p) => ((p.h as number) * 100 + (p.t as number) * 10 + (p.o as number)) * (p.b as number),
+      text: (p) => `${p.b} boxes. ${(p.h as number) * 100 + (p.t as number) * 10 + (p.o as number)} eggs in each box. How many eggs?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'multiply-3x1',
+      story: true,
+      params: { h: [1, 9], t: [0, 9], o: [0, 9], b: [2, 9] },
+      answer: (p) => ((p.h as number) * 100 + (p.t as number) * 10 + (p.o as number)) * (p.b as number),
+      text: (p) => `A shop has ${p.b} shelves. ${(p.h as number) * 100 + (p.t as number) * 10 + (p.o as number)} books on each shelf. How many books?`,
+    },
   ],
 };

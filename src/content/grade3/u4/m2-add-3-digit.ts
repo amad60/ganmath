@@ -57,5 +57,21 @@ export const add3Digit: ContentModule = {
       answer: (p) => (p.a as number) * 10 + (p.b as number),
       text: (p) => `${(p.a as number) * 10} + ${p.b} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'add-3-digit',
+      story: true,
+      params: { a: [11, 49], b: [11, 40] },
+      answer: (p) => (p.a as number) * 10 + (p.b as number),
+      text: (p) => `Ana has ${(p.a as number) * 10} stickers. Budi gives her ${p.b}. How many now?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-3-digit',
+      story: true,
+      params: { a: [11, 49], b: [11, 40] },
+      answer: (p) => (p.a as number) * 10 + (p.b as number),
+      text: (p) => `A shop has ${(p.a as number) * 10} pens. Siti brings ${p.b} more. How many pens?`,
+    },
   ],
 };

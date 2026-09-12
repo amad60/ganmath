@@ -54,5 +54,21 @@ export const timesSix: ContentModule = {
       answer: (p) => (p.n as number) * 6,
       text: (p) => `${p.n} × 6 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-6',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 6,
+      text: (p) => `${p.n} boxes. 6 cookies in each box. How many cookies?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-6',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 6,
+      text: (p) => `Ana reads 6 books each week for ${p.n} weeks. How many books?`,
+    },
   ],
 };

@@ -97,5 +97,21 @@ export const howLongDidItTake: ContentModule = {
       answer: (p) => p.t as number,
       text: (p) => `${speedOf(p)} km each hour × ? = ${distanceOf(p)} km`,
     },
+    {
+      type: 'keypad',
+      skill: 'find-time',
+      story: true,
+      params: { u: [2, 18], t: [2, 8] },
+      answer: (p) => p.t as number,
+      text: (p) => `A car goes ${speedOf(p)} km each hour. How many hours for ${distanceOf(p)} km?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'find-time',
+      story: true,
+      params: { u: [2, 18], t: [2, 8] },
+      answer: (p) => p.t as number,
+      text: (p) => `Ana walks ${speedOf(p)} km each hour. How many hours for ${distanceOf(p)} km?`,
+    },
   ],
 };

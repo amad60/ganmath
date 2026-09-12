@@ -135,5 +135,21 @@ export const changeTheLengthUnit: ContentModule = {
       answer: (p) => Math.sign(2 - (p.d as number)),
       text: (p) => `${p.a} cm ? ${(p.a as number) * 10 + (p.d as number) - 2} mm`,
     },
+    {
+      type: 'keypad',
+      skill: 'length-to-smaller',
+      story: true,
+      params: { n: [2, 60] },
+      answer: (p) => (p.n as number) * 100,
+      text: (p) => `A table is ${p.n} metres long. How long in centimetres?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'length-to-smaller',
+      story: true,
+      params: { n: [2, 60] },
+      answer: (p) => (p.n as number) * 100,
+      text: (p) => `A book shelf is ${p.n} metres long. How long in centimetres?`,
+    },
   ],
 };

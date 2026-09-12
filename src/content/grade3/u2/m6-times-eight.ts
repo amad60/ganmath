@@ -54,5 +54,21 @@ export const timesEight: ContentModule = {
       answer: (p) => (p.n as number) * 8,
       text: (p) => `${p.n} × 8 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-8',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 8,
+      text: (p) => `${p.n} boxes. 8 pencils in each box. How many pencils?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-8',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 8,
+      text: (p) => `A shop has ${p.n} shelves. 8 books on each shelf. How many books?`,
+    },
   ],
 };

@@ -105,5 +105,21 @@ export const divideByTwoDigits: ContentModule = {
       answer: (p) => p.d as number,
       text: (p) => `${(p.d as number) * (p.q as number)} ÷ ? = ${p.q}`,
     },
+    {
+      type: 'keypad',
+      skill: 'divide-2-digit-divisor',
+      story: true,
+      params: { d: [11, 25], q: [11, 39] },
+      answer: (p) => p.q as number,
+      text: (p) => `Ana shares ${(p.d as number) * (p.q as number)} marbles between ${p.d} friends. How many each?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'divide-2-digit-divisor',
+      story: true,
+      params: { d: [11, 25], q: [11, 39] },
+      answer: (p) => p.q as number,
+      text: (p) => `${(p.d as number) * (p.q as number)} eggs in boxes of ${p.d}. How many boxes?`,
+    },
   ],
 };

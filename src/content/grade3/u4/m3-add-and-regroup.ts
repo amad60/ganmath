@@ -58,5 +58,23 @@ export const addAndRegroup: ContentModule = {
       text: (p) => `${(p.b as number) * 10} + ${(p.a as number) * 10} = ?`,
       exclude: (p) => ((p.a as number) % 10) + ((p.b as number) % 10) < 10,
     },
+    {
+      type: 'keypad',
+      skill: 'add-regroup-1000',
+      story: true,
+      params: { a: [11, 60], b: [5, 39] },
+      answer: (p) => ((p.a as number) + (p.b as number)) * 10,
+      text: (p) => `Ana picks ${(p.a as number) * 10} flowers. Budi picks ${(p.b as number) * 10}. How many altogether?`,
+      exclude: (p) => ((p.a as number) % 10) + ((p.b as number) % 10) < 10,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-regroup-1000',
+      story: true,
+      params: { a: [11, 60], b: [5, 39] },
+      answer: (p) => ((p.a as number) + (p.b as number)) * 10,
+      text: (p) => `${(p.a as number) * 10} birds sit. ${(p.b as number) * 10} more land. How many birds now?`,
+      exclude: (p) => ((p.a as number) % 10) + ((p.b as number) % 10) < 10,
+    },
   ],
 };

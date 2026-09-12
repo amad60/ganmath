@@ -55,5 +55,21 @@ export const makeGroups: ContentModule = {
       answer: (p) => p.g as number,
       text: (p) => `${(p.g as number) * (p.each as number)} ÷ ${p.each} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'group-divide',
+      story: true,
+      params: { g: [2, 9], each: [2, 6] },
+      answer: (p) => p.g as number,
+      text: (p) => `${(p.g as number) * (p.each as number)} apples in bags of ${p.each}. How many bags?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'group-divide',
+      story: true,
+      params: { g: [2, 9], each: [2, 6] },
+      answer: (p) => p.g as number,
+      text: (p) => `Ana puts ${(p.g as number) * (p.each as number)} eggs in boxes of ${p.each}. How many boxes?`,
+    },
   ],
 };

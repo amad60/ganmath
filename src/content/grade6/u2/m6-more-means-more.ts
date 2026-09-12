@@ -130,5 +130,23 @@ export const moreMeansMore: ContentModule = {
       options: (p) => doubleOptions(p.n as number, p.u as number),
       exclude: (p) => !allUnique(doubleOptions(p.n as number, p.u as number)),
     },
+    {
+      type: 'keypad',
+      skill: 'direct-proportion',
+      story: true,
+      params: { u: [2, 9], n: [2, 9], m: [2, 9] },
+      answer: (p) => (p.m as number) * (p.u as number),
+      text: (p) => `${p.n} cakes cost ${(p.n as number) * (p.u as number)} coins. What do ${p.m} cakes cost?`,
+      exclude: (p) => (p.n as number) === (p.m as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'direct-proportion',
+      story: true,
+      params: { u: [2, 9], n: [2, 9], m: [2, 9] },
+      answer: (p) => (p.m as number) * (p.u as number),
+      text: (p) => `${p.n} bags cost ${(p.n as number) * (p.u as number)} coins. What do ${p.m} bags cost?`,
+      exclude: (p) => (p.n as number) === (p.m as number),
+    },
   ],
 };

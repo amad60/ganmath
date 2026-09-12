@@ -58,5 +58,25 @@ export const subtractNoRegroup: ContentModule = {
       exclude: (p) =>
         (p.b as number) > (p.a as number) || ((p.a as number) % 10) < ((p.b as number) % 10),
     },
+    {
+      type: 'keypad',
+      skill: 'sub-2digit',
+      story: true,
+      params: { a: [25, 99], b: [11, 44] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `Ana has ${p.a} stickers. She gives ${p.b} away. How many left?`,
+      exclude: (p) =>
+        (p.b as number) > (p.a as number) || ((p.a as number) % 10) < ((p.b as number) % 10),
+    },
+    {
+      type: 'keypad',
+      skill: 'sub-2digit',
+      story: true,
+      params: { a: [25, 99], b: [11, 44] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `${p.a} eggs in a shop. Budi buys ${p.b}. How many left?`,
+      exclude: (p) =>
+        (p.b as number) > (p.a as number) || ((p.a as number) % 10) < ((p.b as number) % 10),
+    },
   ],
 };

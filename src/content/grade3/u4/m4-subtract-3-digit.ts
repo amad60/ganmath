@@ -57,5 +57,23 @@ export const subtract3Digit: ContentModule = {
       text: (p) => `${(p.a as number) * 10} - ${p.b} = ?`,
       exclude: (p) => (p.b as number) >= (p.a as number),
     },
+    {
+      type: 'keypad',
+      skill: 'sub-3-digit',
+      story: true,
+      params: { a: [30, 99], b: [11, 60] },
+      answer: (p) => (p.a as number) * 10 - (p.b as number),
+      text: (p) => `Ana has ${(p.a as number) * 10} stickers. She gives ${p.b} away. How many left?`,
+      exclude: (p) => (p.b as number) >= (p.a as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'sub-3-digit',
+      story: true,
+      params: { a: [30, 99], b: [11, 60] },
+      answer: (p) => (p.a as number) * 10 - (p.b as number),
+      text: (p) => `${(p.a as number) * 10} eggs in a shop. Budi buys ${p.b}. How many left?`,
+      exclude: (p) => (p.b as number) >= (p.a as number),
+    },
   ],
 };

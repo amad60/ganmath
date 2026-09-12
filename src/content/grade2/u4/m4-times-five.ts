@@ -54,5 +54,21 @@ export const timesFive: ContentModule = {
       answer: (p) => (p.n as number) * 5,
       text: (p) => `${p.n} × 5 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-5',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 5,
+      text: (p) => `${p.n} plates. 5 cookies on each plate. How many cookies?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-5',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 5,
+      text: (p) => `Ana buys ${p.n} bags. Each bag costs 5 coins. How many coins?`,
+    },
   ],
 };

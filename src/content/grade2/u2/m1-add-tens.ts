@@ -57,5 +57,23 @@ export const addTens: ContentModule = {
       text: (p) => `${(p.a as number) * 10} + ${(p.b as number) * 10} = ?`,
       exclude: (p) => (p.a as number) + (p.b as number) > 10,
     },
+    {
+      type: 'keypad',
+      skill: 'add-tens',
+      story: true,
+      params: { a: [2, 8], b: [2, 8] },
+      answer: (p) => ((p.a as number) + (p.b as number)) * 10,
+      text: (p) => `Ana has ${(p.a as number) * 10} marbles. Budi has ${(p.b as number) * 10}. How many altogether?`,
+      exclude: (p) => (p.a as number) + (p.b as number) > 10,
+    },
+    {
+      type: 'keypad',
+      skill: 'add-tens',
+      story: true,
+      params: { a: [2, 8], b: [2, 8] },
+      answer: (p) => ((p.a as number) + (p.b as number)) * 10,
+      text: (p) => `A shop has ${(p.a as number) * 10} red pens and ${(p.b as number) * 10} blue pens. How many pens?`,
+      exclude: (p) => (p.a as number) + (p.b as number) > 10,
+    },
   ],
 };

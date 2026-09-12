@@ -122,5 +122,21 @@ export const howFastIsIt: ContentModule = {
       // bentuknya, bukan dari kecepatannya.
       exclude: (p) => (p.a as number) === (p.b as number) && (p.t1 as number) === (p.t2 as number),
     },
+    {
+      type: 'keypad',
+      skill: 'find-speed',
+      story: true,
+      params: { u: [2, 18], t: [2, 6] },
+      answer: (p) => speedOf(p),
+      text: (p) => `A car goes ${distanceOf(p)} km in ${p.t} hours. How many km each hour?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'find-speed',
+      story: true,
+      params: { u: [2, 18], t: [2, 6] },
+      answer: (p) => speedOf(p),
+      text: (p) => `Ana walks ${distanceOf(p)} km in ${p.t} hours. How many km each hour?`,
+    },
   ],
 };

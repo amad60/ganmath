@@ -58,5 +58,23 @@ export const subtractAndRegroup: ContentModule = {
       text: (p) => `Take ${(p.b as number) * 10} from ${(p.a as number) * 10}.`,
       exclude: (p) => (p.a as number) % 10 >= (p.b as number) % 10,
     },
+    {
+      type: 'keypad',
+      skill: 'sub-regroup-1000',
+      story: true,
+      params: { a: [31, 99], b: [5, 29] },
+      answer: (p) => ((p.a as number) - (p.b as number)) * 10,
+      text: (p) => `Ana has ${(p.a as number) * 10} marbles. She loses ${(p.b as number) * 10}. How many left?`,
+      exclude: (p) => (p.a as number) % 10 >= (p.b as number) % 10,
+    },
+    {
+      type: 'keypad',
+      skill: 'sub-regroup-1000',
+      story: true,
+      params: { a: [31, 99], b: [5, 29] },
+      answer: (p) => ((p.a as number) - (p.b as number)) * 10,
+      text: (p) => `${(p.a as number) * 10} books in a shop. The class buys ${(p.b as number) * 10}. How many left?`,
+      exclude: (p) => (p.a as number) % 10 >= (p.b as number) % 10,
+    },
   ],
 };

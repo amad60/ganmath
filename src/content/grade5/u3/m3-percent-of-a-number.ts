@@ -126,5 +126,21 @@ export const percentOfANumber: ContentModule = {
       distractorUnit: 5,
       misconception: (p) => (100 - (PARTS_ASYM[p.i as number] as number)) * (p.k as number),
     },
+    {
+      type: 'keypad',
+      skill: 'percent-of-number',
+      story: true,
+      params: { i: [0, 4], k: [1, 20] },
+      answer: (p) => ((PARTS[p.i as number] as number) * (p.k as number) * 20) / 100,
+      text: (p) => `A shop has ${(p.k as number) * 20} books. ${PARTS[p.i as number]}% are red. How many are red?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'percent-of-number',
+      story: true,
+      params: { i: [0, 4], k: [1, 20] },
+      answer: (p) => ((PARTS[p.i as number] as number) * (p.k as number) * 20) / 100,
+      text: (p) => `${(p.k as number) * 20} apples in a shop. ${PARTS[p.i as number]}% are green. How many are green?`,
+    },
   ],
 };

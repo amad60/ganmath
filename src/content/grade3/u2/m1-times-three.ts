@@ -54,5 +54,21 @@ export const timesThree: ContentModule = {
       answer: (p) => (p.n as number) * 3,
       text: (p) => `${p.n} × 3 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-3',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 3,
+      text: (p) => `${p.n} baskets. 3 eggs in each basket. How many eggs?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-3',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 3,
+      text: (p) => `Ana buys ${p.n} bags. Each bag has 3 apples. How many apples?`,
+    },
   ],
 };

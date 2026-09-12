@@ -65,5 +65,21 @@ export const divideTensFirst: ContentModule = {
       text: (p) =>
         `${((p.t as number) * 10 + (p.o as number)) * (p.d as number)} ÷ ${p.d} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'divide-tens-first',
+      story: true,
+      params: { t: [1, 9], o: [1, 9], d: [2, 9] },
+      answer: (p) => (p.t as number) * 10 + (p.o as number),
+      text: (p) => `Ana shares ${((p.t as number) * 10 + (p.o as number)) * (p.d as number)} marbles between ${p.d} friends. How many each?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'divide-tens-first',
+      story: true,
+      params: { t: [1, 9], o: [1, 9], d: [2, 9] },
+      answer: (p) => (p.t as number) * 10 + (p.o as number),
+      text: (p) => `${((p.t as number) * 10 + (p.o as number)) * (p.d as number)} eggs in ${p.d} equal boxes. How many in each box?`,
+    },
   ],
 };

@@ -55,5 +55,21 @@ export const shareEqually: ContentModule = {
       answer: (p) => p.each as number,
       text: (p) => `${(p.g as number) * (p.each as number)} ÷ ${p.g} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'share',
+      story: true,
+      params: { g: [2, 6], each: [2, 9] },
+      answer: (p) => p.each as number,
+      text: (p) => `Ana shares ${(p.g as number) * (p.each as number)} sweets between ${p.g} friends. How many each?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'share',
+      story: true,
+      params: { g: [2, 6], each: [2, 9] },
+      answer: (p) => p.each as number,
+      text: (p) => `${(p.g as number) * (p.each as number)} cookies on ${p.g} plates. How many on each plate?`,
+    },
   ],
 };

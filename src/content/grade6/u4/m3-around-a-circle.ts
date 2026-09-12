@@ -130,5 +130,21 @@ export const aroundACircle: ContentModule = {
         `Radius ${p.r} cm, so diameter ${diameterFromRadius(p.r as number)} cm. C ? ${p.x} cm`,
       visual: (p) => ({ kind: 'circle', r: p.r as number, mark: 'both' }),
     },
+    {
+      type: 'keypad',
+      skill: 'circumference-from-radius',
+      story: true,
+      params: { d: [2, 30] },
+      answer: (p) => circumferenceFromDiameter(p.d as number),
+      text: (p) => `A round plate has diameter ${p.d} cm. Find the circumference.`,
+    },
+    {
+      type: 'keypad',
+      skill: 'circumference-from-radius',
+      story: true,
+      params: { d: [2, 30] },
+      answer: (p) => circumferenceFromDiameter(p.d as number),
+      text: (p) => `A round cake has diameter ${p.d} cm. Find the circumference.`,
+    },
   ],
 };

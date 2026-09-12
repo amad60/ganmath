@@ -67,5 +67,21 @@ export const countTheMultiples: ContentModule = {
       answer: (p) => p.k as number,
       text: (p) => `How many ${p.n}s make ${(p.n as number) * (p.k as number)}?`,
     },
+    {
+      type: 'keypad',
+      skill: 'multiples',
+      story: true,
+      params: { n: [2, 9], k: [2, 9] },
+      answer: (p) => p.k as number,
+      text: (p) => `Ana buys bags of ${p.n} apples. She needs ${(p.n as number) * (p.k as number)} apples. How many bags?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'multiples',
+      story: true,
+      params: { n: [2, 9], k: [2, 9] },
+      answer: (p) => p.k as number,
+      text: (p) => `${(p.n as number) * (p.k as number)} seats in rows of ${p.n}. How many rows?`,
+    },
   ],
 };

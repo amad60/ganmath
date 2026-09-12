@@ -54,5 +54,21 @@ export const doublesTo100: ContentModule = {
       answer: (p) => (p.n as number) * 2,
       text: (p) => `Double ${p.n} = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'doubles-100',
+      story: true,
+      params: { n: [11, 49] },
+      answer: (p) => (p.n as number) * 2,
+      text: (p) => `Ana has ${p.n} shells. Budi has the same. How many altogether?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'doubles-100',
+      story: true,
+      params: { n: [11, 49] },
+      answer: (p) => (p.n as number) * 2,
+      text: (p) => `Two boxes. ${p.n} eggs in each box. How many eggs?`,
+    },
   ],
 };

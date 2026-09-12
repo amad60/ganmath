@@ -60,5 +60,23 @@ export const fractionOfANumber: ContentModule = {
       text: (p) => `${p.s}/${p.d} of ${(p.d as number) * (p.n as number)} = ?`,
       exclude: (p) => (p.s as number) >= (p.d as number),
     },
+    {
+      type: 'keypad',
+      skill: 'fraction-of',
+      story: true,
+      params: { d: [2, 5], n: [2, 9], s: [2, 4] },
+      answer: (p) => (p.n as number) * (p.s as number),
+      text: (p) => `Ana has ${(p.d as number) * (p.n as number)} sweets. She eats ${p.s}/${p.d} of them. How many?`,
+      exclude: (p) => (p.s as number) >= (p.d as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'fraction-of',
+      story: true,
+      params: { d: [2, 5], n: [2, 9], s: [2, 4] },
+      answer: (p) => (p.n as number) * (p.s as number),
+      text: (p) => `${(p.d as number) * (p.n as number)} books on a shelf. ${p.s}/${p.d} are red. How many are red?`,
+      exclude: (p) => (p.s as number) >= (p.d as number),
+    },
   ],
 };

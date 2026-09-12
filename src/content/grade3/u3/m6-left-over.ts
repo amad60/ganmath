@@ -58,5 +58,23 @@ export const leftOver: ContentModule = {
         `Share ${(p.d as number) * (p.q as number) + (p.r as number)} between ${p.d}. How many each?`,
       exclude: (p) => (p.r as number) >= (p.d as number),
     },
+    {
+      type: 'keypad',
+      skill: 'remainder',
+      story: true,
+      params: { d: [2, 5], q: [2, 6], r: [1, 4] },
+      answer: (p) => p.q as number,
+      text: (p) => `${(p.d as number) * (p.q as number) + (p.r as number)} cookies in bags of ${p.d}. How many full bags?`,
+      exclude: (p) => (p.r as number) >= (p.d as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'remainder',
+      story: true,
+      params: { d: [2, 5], q: [2, 6], r: [1, 4] },
+      answer: (p) => p.q as number,
+      text: (p) => `Ana puts ${(p.d as number) * (p.q as number) + (p.r as number)} eggs in boxes of ${p.d}. How many boxes are full?`,
+      exclude: (p) => (p.r as number) >= (p.d as number),
+    },
   ],
 };

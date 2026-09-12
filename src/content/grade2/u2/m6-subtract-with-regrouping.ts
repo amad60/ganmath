@@ -62,5 +62,25 @@ export const subtractWithRegrouping: ContentModule = {
       exclude: (p) =>
         (p.b as number) > (p.a as number) || ((p.a as number) % 10) >= ((p.b as number) % 10),
     },
+    {
+      type: 'keypad',
+      skill: 'sub-regroup',
+      story: true,
+      params: { a: [31, 95], b: [13, 68] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `Ana has ${p.a} marbles. She loses ${p.b}. How many left?`,
+      exclude: (p) =>
+        (p.b as number) > (p.a as number) || ((p.a as number) % 10) >= ((p.b as number) % 10),
+    },
+    {
+      type: 'keypad',
+      skill: 'sub-regroup',
+      story: true,
+      params: { a: [31, 95], b: [13, 68] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) => `${p.a} cookies on a plate. The class eats ${p.b}. How many left?`,
+      exclude: (p) =>
+        (p.b as number) > (p.a as number) || ((p.a as number) % 10) >= ((p.b as number) % 10),
+    },
   ],
 };

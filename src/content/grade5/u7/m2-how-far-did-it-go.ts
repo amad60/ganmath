@@ -98,5 +98,21 @@ export const howFarDidItGo: ContentModule = {
       range: [0, 200],
       step: 10,
     },
+    {
+      type: 'keypad',
+      skill: 'find-distance',
+      story: true,
+      params: { u: [2, 18], t: [2, 6] },
+      answer: (p) => speedOf(p) * (p.t as number),
+      text: (p) => `A bus goes ${speedOf(p)} km each hour. How far in ${p.t} hours?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'find-distance',
+      story: true,
+      params: { u: [2, 18], t: [2, 6] },
+      answer: (p) => speedOf(p) * (p.t as number),
+      text: (p) => `Ana walks ${speedOf(p)} km each hour. How far in ${p.t} hours?`,
+    },
   ],
 };

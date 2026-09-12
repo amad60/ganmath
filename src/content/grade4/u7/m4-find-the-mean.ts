@@ -129,5 +129,29 @@ export const findTheMean: ContentModule = {
       text: (p) =>
         `${(p.n as number) * (p.m as number)} votes shared equally by ${p.n}. How many each?`,
     },
+    {
+      type: 'keypad',
+      skill: 'simple-mean',
+      story: true,
+      params: { m: [4, 11], d: [1, 4], e: [1, 5] },
+      answer: (p) => p.m as number,
+      text: (p) => `Four boxes have ${fourValues(p).join(', ')} eggs. What is the mean?`,
+      exclude: (p) =>
+        (p.d as number) === (p.e as number) ||
+        (p.m as number) <= (p.d as number) ||
+        (p.m as number) <= (p.e as number),
+    },
+    {
+      type: 'keypad',
+      skill: 'simple-mean',
+      story: true,
+      params: { m: [4, 11], d: [1, 4], e: [1, 5] },
+      answer: (p) => p.m as number,
+      text: (p) => `Ana reads ${fourValues(p).join(', ')} books in four weeks. What is the mean?`,
+      exclude: (p) =>
+        (p.d as number) === (p.e as number) ||
+        (p.m as number) <= (p.d as number) ||
+        (p.m as number) <= (p.e as number),
+    },
   ],
 };

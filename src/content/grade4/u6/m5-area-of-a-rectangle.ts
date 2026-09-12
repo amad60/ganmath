@@ -89,5 +89,23 @@ export const areaOfARectangle: ContentModule = {
       // Mengurangi alih-alih membagi — kesalahan khas soal luas terbalik.
       misconception: (p) => areaOf(p) - (p.w as number),
     },
+    {
+      type: 'keypad',
+      skill: 'area-rectangle',
+      story: true,
+      params: { w: [2, 9], h: [2, 9] },
+      answer: areaOf,
+      text: (p) => `A card is ${p.w} cm by ${p.h} cm. What is the area?`,
+      exclude: tallerThanWide,
+    },
+    {
+      type: 'keypad',
+      skill: 'area-rectangle',
+      story: true,
+      params: { w: [2, 9], h: [2, 9] },
+      answer: areaOf,
+      text: (p) => `A table is ${p.w} cm by ${p.h} cm. What is the area?`,
+      exclude: tallerThanWide,
+    },
   ],
 };

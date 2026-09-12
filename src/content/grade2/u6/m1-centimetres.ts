@@ -12,7 +12,7 @@ export const centimetres: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['bar-model', 'counter-objects'],
-  vocab: ['centimetre', 'centimetres', 'ruler', 'exactly'],
+  vocab: ['centimetre', 'centimetres', 'cm', 'ruler', 'exactly'],
 
   learn: [
     {
@@ -56,6 +56,22 @@ export const centimetres: ContentModule = {
       params: { a: [2, 9], b: [2, 9] },
       answer: (p) => (p.a as number) + (p.b as number),
       text: (p) => `${p.a} cm and ${p.b} cm together = ?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'measure-cm',
+      story: true,
+      params: { a: [2, 9], b: [2, 9] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `A pencil is ${p.a} cm long. A pen is ${p.b} cm. How long together?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'measure-cm',
+      story: true,
+      params: { a: [2, 9], b: [2, 9] },
+      answer: (p) => (p.a as number) + (p.b as number),
+      text: (p) => `A book is ${p.a} cm tall. A box is ${p.b} cm. How tall together?`,
     },
   ],
 };

@@ -54,5 +54,21 @@ export const timesTwo: ContentModule = {
       answer: (p) => (p.n as number) * 2,
       text: (p) => `${p.n} × 2 = ?`,
     },
+    {
+      type: 'keypad',
+      skill: 'times-2',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 2,
+      text: (p) => `${p.n} bags. 2 apples in each bag. How many apples?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'times-2',
+      story: true,
+      params: { n: [2, 10] },
+      answer: (p) => (p.n as number) * 2,
+      text: (p) => `Ana has ${p.n} books. Budi has twice as many. How many?`,
+    },
   ],
 };

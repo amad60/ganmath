@@ -54,5 +54,22 @@ export const tenMoreLess100: ContentModule = {
       answer: (p) => (p.n as number) - 10,
       text: (p) => `Ten less than ${p.n} = ?`,
     },
+    {
+      type: 'choose-number',
+      skill: 'mental-ten',
+      story: true,
+      params: { n: [15, 89] },
+      answer: (p) => (p.n as number) + 10,
+      text: (p) => `Budi has ${p.n} cards. He gets 10 more. How many now?`,
+      distractors: 'near',
+    },
+    {
+      type: 'keypad',
+      skill: 'mental-ten',
+      story: true,
+      params: { n: [25, 99] },
+      answer: (p) => (p.n as number) - 10,
+      text: (p) => `Ana has ${p.n} stickers. She gives 10 away. How many left?`,
+    },
   ],
 };

@@ -28,7 +28,7 @@ export const gramsAndMillilitres: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'compare-symbol'],
   visuals: ['counter-objects', 'bar-model'],
-  vocab: ['millilitre', 'millilitres', 'ml', 'litre', 'litres', 'bottle', 'bottles'],
+  vocab: ['millilitre', 'millilitres', 'ml', 'litre', 'litres', 'bottle', 'bottles', 'kg'],
 
   learn: [
     {
@@ -118,6 +118,22 @@ export const gramsAndMillilitres: ContentModule = {
       params: { a: [1, 9], d: [0, 4] },
       answer: (p) => Math.sign(2 - (p.d as number)),
       text: (p) => `${p.a} L ? ${(p.a as number) * 1000 + ((p.d as number) - 2) * 100} ml`,
+    },
+    {
+      type: 'keypad',
+      skill: 'mass-units',
+      story: true,
+      params: { n: [1, 99] },
+      answer: (p) => (p.n as number) * 1000,
+      text: (p) => `A box of apples is ${p.n} kg. How many grams?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'mass-units',
+      story: true,
+      params: { n: [1, 99] },
+      answer: (p) => (p.n as number) * 1000,
+      text: (p) => `Ana buys ${p.n} kg of apples. How many grams?`,
     },
   ],
 };

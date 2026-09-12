@@ -82,5 +82,21 @@ export const coverAndCount: ContentModule = {
       text: (p) => `${p.r} rows of ${p.c}. What is the area?`,
       visual: (p) => ({ kind: 'array', rows: p.r as number, cols: p.c as number, square: true }),
     },
+    {
+      type: 'keypad',
+      skill: 'area-count',
+      story: true,
+      params: { r: [2, 6], c: [2, 8] },
+      answer: areaOf,
+      text: (p) => `A box has ${p.r} rows of ${p.c} eggs. How many eggs?`,
+    },
+    {
+      type: 'keypad',
+      skill: 'area-count',
+      story: true,
+      params: { r: [2, 6], c: [2, 8] },
+      answer: areaOf,
+      text: (p) => `${p.r} rows of ${p.c} seats. How many seats?`,
+    },
   ],
 };
