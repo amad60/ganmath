@@ -209,6 +209,7 @@ export function generateSet(
         ...(pool.rule.range ? { range: pool.rule.range } : {}),
         ...(pool.rule.step != null ? { step: pool.rule.step } : {}),
         ...(visual ? { visual } : {}),
+        ...(pool.rule.story ? { story: true as const } : {}),
       };
       if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];

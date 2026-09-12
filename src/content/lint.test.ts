@@ -569,15 +569,42 @@ describe('modul bersoal cerita', () => {
     }
   });
 
-  it('kuis dan speed tetap bersih dari soal cerita — di situ kecepatan yang diukur', () => {
+  it('ujian menguji PENERAPAN juga: 2 dari 10, tanpa memanjangkan sesinya', () => {
     for (const m of storyModules) {
       const texts = storyTextsOf(m);
-      for (const kind of ['quiz', 'master', 'speed', 'review', 'testout'] as const) {
+      for (const kind of ['quiz', 'master', 'testout'] as const) {
+        for (let seed = 0; seed < 6; seed++) {
+          const s = createSession(m, kind, seed, 0);
+          const n = s.pending.filter((q) => texts.has(q.question.text)).length;
+          expect(`${m.id}/${kind}:${s.pending.length}/${n}`).toBe(`${m.id}/${kind}:10/2`);
+        }
+      }
+    }
+  });
+
+  it('Speed Round dan ulangan tetap MURNI lambang', () => {
+    // Speed Round mengukur kecepatan mengingat; satu-satunya jawaban jujur untuk
+    // "seberapa cepat kamu ingat 7 × 8" adalah soal yang tidak perlu dibaca dulu.
+    for (const m of storyModules) {
+      const texts = storyTextsOf(m);
+      for (const kind of ['speed', 'review'] as const) {
         for (let seed = 0; seed < 6; seed++) {
           const s = createSession(m, kind, seed, 0);
           const n = s.pending.filter((q) => texts.has(q.question.text)).length;
           expect(`${m.id}/${kind}:${n}`).toBe(`${m.id}/${kind}:0`);
         }
+      }
+    }
+  });
+
+  it('setiap soal cerita di sesi ditandai, supaya bisa dikecualikan dari ukuran kecepatan', () => {
+    for (const m of storyModules.slice(0, 8)) {
+      const texts = storyTextsOf(m);
+      const s = createSession(m, 'quiz', 3, 0);
+      for (const p of s.pending) {
+        expect(`${p.question.text} => ${p.question.story === true}`).toBe(
+          `${p.question.text} => ${texts.has(p.question.text)}`,
+        );
       }
     }
   });

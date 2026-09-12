@@ -4,10 +4,9 @@ import type { ModuleDef, Question, QuestionResult, SessionKind, SessionResult } 
 
 export type SessionLimits = {
   length: number;
-  /**
-   * Berapa soal cerita yang DIJAMIN ada di sesi ini — dan sekaligus berapa soal
-   * TAMBAHAN yang dipasang di atas `length`. Lihat `lengthFor`.
-   */
+  /** Panjang sesi kalau modulnya PUNYA soal cerita. Kosong = sama saja. */
+  storyLength?: number;
+  /** Berapa soal cerita yang dijamin ada di sesi ini. */
   story?: number;
 };
 
@@ -23,16 +22,28 @@ export type SessionLimits = {
  * (materi + latihan + kuis), bukan tiap kuis dipanjangkan sampai 5 menit.
  */
 export const SESSION_LIMITS: Record<SessionKind, SessionLimits> = {
-  // 8 soal hitung + 4 soal cerita, tapi hanya di modul yang PUNYA soal cerita.
-  practice: { length: 8, story: 4 },
-  quiz: { length: 10 },
-  review: { length: 5 },
-  // Speed Round sengaja tanpa cerita: yang diukur di sini kecepatan mengingat,
-  // dan waktu membaca kalimat akan tercatat sebagai waktu berpikir. Menambahkan
-  // soal cerita ke sini bukan menambah penerapan, tapi merusak alat ukurnya.
-  master: { length: 10 },
+  // Latihan MEMANJANG jadi 12: 8 soal hitung + 4 cerita. Di sini soal cerita adalah
+  // tambahan latihan, jadi tidak boleh menggeser porsi berlatih lambangnya.
+  practice: { length: 8, storyLength: 12, story: 4 },
+
+  // Ujian TIDAK memanjang. 2 dari 10 soalnya cerita — penguasaan sekarang menuntut
+  // penerapan, bukan cuma lambang; anak yang hafal 3 + 2 tapi tidak mengenali bahwa
+  // membeli dua kue lagi ADALAH soal itu belum benar-benar menguasainya.
+  //
+  // Dua, bukan tiga atau empat: di Grade 4–6 ambang akurasinya 0,9, jadi dua soal
+  // cerita yang sama-sama salah sudah menjatuhkan sesi. Lebih dari itu, satu
+  // kalimat yang salah dibaca bisa menghapus sepuluh soal yang dikerjakan benar.
+  quiz: { length: 10, story: 2 },
+  master: { length: 10, story: 2 },
+  testout: { length: 10, story: 2 },
+
+  // Speed Round tetap MURNI lambang. Yang diukur di sini hanya kecepatan mengingat,
+  // dan satu-satunya jawaban jujur untuk "seberapa cepat kamu ingat 7 × 8" adalah
+  // soal yang tidak perlu dibaca dulu.
   speed: { length: 8 },
-  testout: { length: 10 },
+  // Ulangan hanya 5 soal dan tugasnya memanggil ingatan; menyisipkan cerita di situ
+  // mengubahnya jadi sesi baru, bukan pengulangan.
+  review: { length: 5 },
 };
 
 /**
@@ -50,7 +61,7 @@ export const SESSION_LIMITS: Record<SessionKind, SessionLimits> = {
 export function lengthFor(def: ModuleDef, kind: SessionKind): number {
   const limits = SESSION_LIMITS[kind];
   const hasStory = def.rules.some((r) => r.story);
-  return hasStory && limits.story ? limits.length + limits.story : limits.length;
+  return hasStory ? (limits.storyLength ?? limits.length) : limits.length;
 }
 
 export type PendingQuestion = { question: Question; retried: boolean };
@@ -129,6 +140,9 @@ export function submitAnswer(state: SessionState, input: AnswerInput): SessionSt
     totalMs: input.totalMs,
     retried: head.retried,
     hintUsed: input.hintUsed,
+    // Diambil dari SOALNYA, bukan diminta ke layar: layar tidak perlu tahu, dan
+    // satu sumber kebenaran berarti tidak ada yang bisa lupa mengisinya.
+    story: head.question.story === true,
   };
 
   const answered = state.results.length + 1;

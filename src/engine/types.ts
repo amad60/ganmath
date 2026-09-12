@@ -313,6 +313,8 @@ export type Question = {
   allowDecimal: boolean;
   allowNegative: boolean;
   params: Record<string, number>;
+  /** Soal ini lahir dari aturan bercerita — ikut ke hasilnya lewat `submitAnswer`. */
+  story?: true;
 };
 
 export type ModuleDef = {
@@ -354,6 +356,14 @@ export type QuestionResult = {
   /** Soal ulangan dalam sesi yang sama — TIDAK dihitung dalam akurasi. */
   retried: boolean;
   hintUsed: boolean;
+  /**
+   * Soal ini soal cerita.
+   *
+   * Dicatat per soal, bukan per sesi, karena satu sesi berisi campuran keduanya —
+   * dan yang dikecualikan dari ukuran KECEPATAN hanya soal ceritanya. Lihat
+   * `speedOf`.
+   */
+  story: boolean;
 };
 
 export type SessionResult = {

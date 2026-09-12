@@ -73,6 +73,7 @@ export function session(
     questionId: `q${i}`,
     type: types[i % types.length] as QuestionResult['type'],
     skill: 'add-within-10',
+    story: false,
     correct: i < correct,
     thinkMs,
     totalMs,

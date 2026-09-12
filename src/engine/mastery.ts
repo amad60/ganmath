@@ -44,12 +44,34 @@ export function accuracyOf(result: SessionResult): number {
   return scored.filter((q) => q.correct).length / scored.length;
 }
 
-/** Median thinkMs, membuang soal yang tertunda >30 detik (anak teralih). */
+/**
+ * Median thinkMs, membuang soal yang tertunda >30 detik (anak teralih) DAN membuang
+ * soal cerita.
+ *
+ * `thinkMs` diukur dari soal muncul sampai sentuhan pertama, jadi untuk soal cerita
+ * ia ikut menghitung waktu MEMBACA. Dibiarkan masuk, ambang kecepatan berhenti
+ * mengukur kelancaran berhitung dan mulai mengukur kelancaran membaca: anak yang
+ * paham tapi membaca pelan akan tercatat belum menguasai — karena membacanya.
+ *
+ * Inilah yang dulu memaksa soal cerita dijauhkan sama sekali dari sesi yang
+ * mengukur kecepatan. Dengan pengecualian di sini, soal cerita boleh ikut menguji
+ * PENERAPAN di kuis tanpa merusak alat ukur kecepatan, dan ambang lama tetap
+ * berarti persis sama seperti sebelumnya.
+ */
 export function speedOf(result: SessionResult): { thinkMs: number; totalMs: number } {
   const usable = result.questions.filter((q) => !q.retried && q.totalMs <= SPEED_OUTLIER_MS);
+  const timed = usable.filter((q) => !q.story);
+  // `median([])` mengembalikan 0, dan 0 LOLOS ambang kecepatan apa pun. Jadi setiap
+  // penyaringan di sini butuh jaring di bawahnya, kalau tidak sesi yang kebetulan
+  // tersaring habis justru memberi kelulusan gratis — sesi yang SELURUH soalnya
+  // tertunda >30 detik pun begitu, dan itu sudah begini sejak sebelum soal cerita
+  // ada. Turun bertahap: soal hitung → apa pun yang terukur → apa adanya. Ukuran
+  // yang buruk masih lebih jujur daripada nol yang meluluskan.
+  const base =
+    timed.length > 0 ? timed : usable.length > 0 ? usable : result.questions.filter((x) => !x.retried);
   return {
-    thinkMs: median(usable.map((q) => q.thinkMs)),
-    totalMs: median(usable.map((q) => q.totalMs)),
+    thinkMs: median(base.map((q) => q.thinkMs)),
+    totalMs: median(base.map((q) => q.totalMs)),
   };
 }
 

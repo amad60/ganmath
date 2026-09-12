@@ -30,8 +30,8 @@ describe('XP & level', () => {
   it('soal ulangan tidak memberi XP tambahan', () => {
     const r = session({ n: 0 });
     r.questions = [
-      { questionId: 'a', type: 'choose-number', skill: 's', correct: true, thinkMs: 1, totalMs: 1, retried: false, hintUsed: false },
-      { questionId: 'a', type: 'choose-number', skill: 's', correct: true, thinkMs: 1, totalMs: 1, retried: true, hintUsed: false },
+      { questionId: 'a', type: 'choose-number', skill: 's', correct: true, thinkMs: 1, totalMs: 1, retried: false, hintUsed: false, story: false },
+      { questionId: 'a', type: 'choose-number', skill: 's', correct: true, thinkMs: 1, totalMs: 1, retried: true, hintUsed: false, story: false },
     ];
     expect(xpForSession(r, { passed: false, mastered: false, thirdStar: false })).toBe(5);
   });

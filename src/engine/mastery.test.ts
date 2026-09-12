@@ -7,6 +7,7 @@ const q = (over: Partial<QuestionResult> = {}): QuestionResult => ({
   questionId: 'q',
   type: 'choose-number',
   skill: 'add-within-10',
+  story: false,
   correct: true,
   thinkMs: 2000,
   totalMs: 3000,
@@ -271,5 +272,63 @@ describe('review', () => {
     expect(e.next.status).toBe('mastered');
     expect(e.next.masteredAt).toBe('2026-09-08');
     expect(e.next.stars).toBe(2);
+  });
+});
+
+/**
+ * Inti dari membolehkan soal cerita masuk ujian: waktu MEMBACA tidak boleh
+ * tercatat sebagai waktu berpikir.
+ *
+ * `thinkMs` diukur dari soal muncul sampai sentuhan pertama. Untuk soal cerita
+ * ia ikut menghitung waktu membaca kalimatnya — dan kalau itu dibiarkan masuk,
+ * ambang kecepatan berhenti mengukur kelancaran berhitung lalu mulai mengukur
+ * kelancaran membaca. Anak yang paham tapi membaca pelan akan tercatat belum
+ * menguasai, karena membacanya.
+ */
+describe('kecepatan tidak menghitung waktu membaca', () => {
+  const def = addModule({ fluencyTracked: true, speedTargetMs: 5000 });
+
+  const withStories = (fastMs: number, readingMs: number) => {
+    const r = session({ n: 0, kind: 'quiz' });
+    r.questions = [
+      ...Array.from({ length: 8 }, (_, i) =>
+        q({ questionId: `s${i}`, correct: true, thinkMs: fastMs, totalMs: fastMs + 400 }),
+      ),
+      ...Array.from({ length: 2 }, (_, i) =>
+        q({ questionId: `c${i}`, correct: true, thinkMs: readingMs, totalMs: readingMs + 400, story: true }),
+      ),
+    ];
+    return r;
+  };
+
+  it('pembaca lambat yang hitungannya cepat tetap lulus ambang kecepatan', () => {
+    // Berhitungnya 2 detik; membaca dua soal ceritanya 20 detik masing-masing.
+    // Kalau soal cerita ikut dihitung, mediannya melompat dan anak ini gagal.
+    const r = withStories(2000, 20000);
+    expect(speedOf(r).thinkMs).toBe(2000);
+
+    const ev = evaluate(def, state({ status: 'practiced', stars: 2 }), r);
+    expect(ev.detail.speedPass).toBe(true);
+  });
+
+  it('soal cerita yang lambat tidak menggeser catatan riwayatnya', () => {
+    // Median yang dicatat ke attempts juga harus bersih, kalau tidak riwayat lama
+    // dan riwayat baru tidak bisa dibandingkan lagi.
+    const ev = evaluate(def, state({ status: 'practiced', stars: 2 }), withStories(2000, 20000));
+    expect(ev.next.attempts.at(-1)?.medianThinkMs).toBe(2000);
+  });
+
+  it('kalau soal hitungnya lambat, ambang tetap menggigit', () => {
+    // Pengecualian ini hanya membuang waktu MEMBACA — ia tidak boleh berubah jadi
+    // pintu belakang yang membuat kecepatan tidak pernah gagal.
+    const ev = evaluate(def, state({ status: 'practiced', stars: 2 }), withStories(9000, 9000));
+    expect(ev.detail.speedPass).toBe(false);
+  });
+
+  it('sesi yang tidak menyisakan soal hitung tidak memberi kelulusan gratis', () => {
+    // `median([])` = 0, dan 0 lolos ambang apa pun.
+    const r = session({ n: 0, kind: 'quiz' });
+    r.questions = [q({ correct: true, thinkMs: 30000, totalMs: 30400, story: true })];
+    expect(speedOf(r).thinkMs).toBe(30000);
   });
 });

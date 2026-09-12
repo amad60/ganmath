@@ -92,10 +92,18 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      pernah mengenali bahwa membeli dua kue lagi ADALAH soal itu; pengenalan itulah yang dipakai
      di luar layar. Aturannya ditandai `story: true`, dan mesin yang menjamin jumlahnya —
      `generateSet(..., { story: 4 })` — bukan undian. Tiga pagar yang tidak boleh dilepas:
-     (a) **hanya di latihan.** Kuis, master, speed, dan ulangan tetap lambang saja, karena
-     penguasaan di sini ikut diukur dari KECEPATAN dan waktu membaca kalimat akan tercatat
-     sebagai waktu berpikir — anak yang paham tapi membaca pelan akan gagal ambang kecepatan
-     karena membacanya;
+     (a) **waktu MEMBACA tidak boleh tercatat sebagai waktu berpikir.** `thinkMs` diukur dari
+     soal muncul sampai sentuhan pertama, jadi untuk soal cerita ia ikut menghitung waktu
+     membaca. Dibiarkan masuk, ambang kecepatan berhenti mengukur kelancaran berhitung lalu
+     mulai mengukur kelancaran membaca. `speedOf` MENGECUALIKAN soal cerita dari mediannya —
+     itulah yang membuat soal cerita boleh ikut menguji penerapan di ujian tanpa merusak alat
+     ukurnya, dan ambang lama tetap berarti persis sama. Setiap penyaringan di sana wajib
+     punya jaring di bawahnya: `median([])` = 0, dan 0 LOLOS ambang kecepatan apa pun;
+     (a2) **Speed Round dan ulangan tetap MURNI lambang.** Satu-satunya jawaban jujur untuk
+     "seberapa cepat kamu ingat 7 × 8" adalah soal yang tidak perlu dibaca dulu. Kuis, master,
+     dan testout berisi 2 soal cerita dari 10 — TANPA memanjangkan sesinya, jadi penguasaan
+     menuntut penerapan, bukan cuma lambang. Dua, bukan empat: di Grade 4–6 ambang akurasinya
+     0,9, jadi dua soal cerita yang sama-sama salah sudah menjatuhkan sesi;
      (b) **panjang kalimat dibatasi per grade** (`MAX_STORY_WORDS`, kelas 1 = 12 kata) dan
      kosakatanya dijaga (`STORY_VOCAB` + vocab modul). Tanpa ini yang diukur app berubah diam-diam
      jadi kelancaran membaca;
