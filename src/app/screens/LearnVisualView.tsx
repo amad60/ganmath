@@ -111,7 +111,9 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
           shaded={visual.shaded}
           shape={visual.shape ?? 'circle'}
           unequal={visual.unequal}
-          size={140}
+          // Bagian yang bisa disentuh butuh sasaran ≥44px (CLAUDE.md §2).
+          size={interactive && visual.tap ? 200 : 140}
+          onTap={interactive && visual.tap ? onValue : undefined}
         />
       );
     case 'clock':

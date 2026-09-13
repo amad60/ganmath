@@ -34,6 +34,7 @@ import { Shape2D } from './Shape2D';
 import { PositionScene } from './PositionScene';
 import { ComposedShape } from './ComposedShape';
 import { SolidShapes } from './SolidShapes';
+import { FractionShape, wedgeAngles } from './FractionShape';
 import { COMPOSED, COMPOSED_NAMES, polygonArea, type Pt } from './composed';
 import {
   NET_SOLIDS,
@@ -1549,5 +1550,41 @@ describe('SolidShapes — nama bangun hanya tampil kalau diminta', () => {
     const { container } = render(<SolidShapes shapes={[{ name: 'cone', label: true, note: '1 flat face' }]} />);
     expect(container.textContent).toContain('cone');
     expect(container.textContent).toContain('1 flat face');
+  });
+});
+
+describe('FractionShape — bagian-bagiannya menutup lingkaran tepat satu putaran', () => {
+  it('sama besar maupun tidak: bersambung tanpa celah, tanpa tumpang tindih', () => {
+    for (const unequal of [false, true]) {
+      for (let total = 2; total <= 6; total++) {
+        let at = -Math.PI / 2;
+        for (let i = 0; i < total; i++) {
+          const { start, end } = wedgeAngles(i, total, unequal);
+          expect(start, `${total}/${i}/${unequal}`).toBeCloseTo(at, 9);
+          expect(end).toBeGreaterThan(start);
+          at = end;
+        }
+        expect(at, `${total} ${unequal}`).toBeCloseTo((3 * Math.PI) / 2, 9);
+      }
+    }
+  });
+
+  it('varian tidak sama besar memang tidak sama besar', () => {
+    for (let total = 2; total <= 6; total++) {
+      const a = wedgeAngles(0, total, true);
+      const b = wedgeAngles(1, total, true);
+      expect(Math.abs(a.end - a.start - (b.end - b.start))).toBeGreaterThan(0.3);
+    }
+  });
+
+  it('bagian yang bisa disentuh dihitung sekali per bagian', () => {
+    const seen: number[] = [];
+    const { container } = render(<FractionShape parts={4} shaded={0} onTap={(n) => seen.push(n)} />);
+    const parts = container.querySelectorAll('[data-part="tap-target"]');
+    expect(parts).toHaveLength(4);
+    fireEvent.click(parts[0]!);
+    fireEvent.click(parts[0]!);
+    fireEvent.click(parts[3]!);
+    expect(seen).toEqual([1, 2]);
   });
 });

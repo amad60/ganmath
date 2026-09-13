@@ -138,6 +138,10 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      "ball") dan g1-u6-m3 ("Two triangles join into a square." di atas satu segitiga):
      sekarang bangun ruang (`solid-shapes`) dan bangun tersusun (`composed-shape`) digambar,
      dan jawabannya dibaca dari data gambar yang sama.
+     g1-u6-m4 menjanjikan soal "bagian tidak sama besar" di komentarnya tanpa punya satu pun,
+     dan gambar tidak-sama-besarnya sendiri bolong (rumus sudut yang salah) — sekarang ada
+     soal "not equal", bagian lingkaran bisa disentuh, dan `wedgeAngles` diuji menutup satu
+     putaran penuh.
    - **Tidak boleh ada tombol yang JUGA benar.** Persegi adalah persegi panjang, kubus adalah
      balok; kalau keduanya jadi tombol, anak yang benar dinilai salah. `ALSO_TRUE` di
      `src/content/options.ts` + lint `choices` menjaganya — lint itu langsung menemukan kasus

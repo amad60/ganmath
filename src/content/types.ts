@@ -36,7 +36,15 @@ export type LearnVisual =
       showValues?: boolean;
       labels?: string[];
     }
-  | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }
+  | {
+      kind: 'fraction';
+      parts: number;
+      shaded: number;
+      shape?: 'circle' | 'square';
+      unequal?: boolean;
+      /** Bagiannya bisa disentuh satu per satu. Wajib kalau `action` bukan `watch`. */
+      tap?: boolean;
+    }
   | { kind: 'clock'; hour: number; minute: number }
   | { kind: 'money'; items: number[] }
   | { kind: 'tally'; count: number }

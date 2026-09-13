@@ -789,3 +789,34 @@ describe('g1-u6-m2 & m3 — jawaban cocok dengan gambarnya', () => {
     expect(checked).toBeGreaterThanOrEqual(2);
   });
 });
+
+/**
+ * g1-u6-m4 menjanjikan soal "bagian tidak sama besar" di komentarnya, tapi tidak punya
+ * satu pun — dan langkah pertamanya meminta "Tap two equal parts." di atas emoji pizza.
+ */
+describe('g1-u6-m4 — sama besar atau tidak, dibaca dari gambarnya', () => {
+  const m = all.find((x) => x.id === 'g1-u6-m4') as ContentModule;
+
+  it('"not equal" benar HANYA untuk gambar yang bagiannya tidak sama besar', () => {
+    const r = m.rules.find((x) => x.type === 'choose-text')!;
+    let unequalSeen = 0;
+    for (const c of enumerate(r)) {
+      const v = r.visual!(c);
+      if (v.kind !== 'fraction') throw new Error('soal m4 harus bergambar pecahan');
+      const picked = r.options!(c)[r.answer(c)];
+      expect(picked === 'not equal', JSON.stringify(c)).toBe(v.unequal === true);
+      if (v.unequal) unequalSeen++;
+    }
+    expect(unequalSeen).toBeGreaterThan(0);
+  });
+
+  it('materi menunjukkan pembagian tidak sama besar sebelum soalnya menanyakan', () => {
+    expect(m.learn.some((l) => l.visual.kind === 'fraction' && l.visual.unequal)).toBe(true);
+  });
+
+  it('langkah pertama menghitung bagian gambar itu sendiri', () => {
+    const first = m.learn[0]!;
+    expect(first.visual.kind).toBe('fraction');
+    if (first.visual.kind === 'fraction') expect(first.target).toBe(first.visual.parts);
+  });
+});

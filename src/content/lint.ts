@@ -80,7 +80,7 @@ export const STORY_VOCAB = new Set(
  */
 export const ACTION_VISUALS: Record<Exclude<LearnStep['action'], 'watch'>, LearnVisual['kind'][]> =
   {
-    'tap-count': ['counter-objects', 'shape2d', 'composed-shape'],
+    'tap-count': ['counter-objects', 'shape2d', 'composed-shape', 'fraction'],
     'tap-fill': ['ten-frame'],
     'drop-on-line': ['number-line'],
   };
@@ -116,6 +116,10 @@ export function learnStepBlocked(step: LearnStep): string | null {
     if (target !== piecesOf(v.name)) {
       return `minta ${target} potongan tapi ${v.name} punya ${piecesOf(v.name)}`;
     }
+  }
+  if (v.kind === 'fraction') {
+    if (!v.tap) return 'pecahan tidak menyatakan bagiannya bisa disentuh (`tap`)';
+    if (target !== v.parts) return `minta ${target} bagian tapi gambarnya punya ${v.parts}`;
   }
   if (v.kind === 'counter-objects' && target > v.count) {
     return `minta ${target} tap tapi hanya ada ${v.count} objek`;

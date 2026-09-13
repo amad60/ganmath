@@ -1234,6 +1234,7 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
       shape2d: { kind: 'shape2d', name: 'triangle', showCorners: true, tap: 'corners' },
       'number-line': { kind: 'number-line', min: 0, max: 10, value: null },
       'composed-shape': { kind: 'composed-shape', name: 'square-2-triangles', tap: true },
+      fraction: { kind: 'fraction', parts: 2, shaded: 0, tap: true },
     };
     for (const kinds of Object.values(ACTION_VISUALS)) {
       for (const kind of kinds) {
