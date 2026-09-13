@@ -57,7 +57,8 @@ export type VisualId =
   | 'angle-arc'
   | 'circle'
   | 'coordinate-grid'
-  | 'counter-objects';
+  | 'counter-objects'
+  | 'position';
 
 export type DistractorKind = 'near' | 'digit-swap' | 'random';
 
@@ -134,7 +135,31 @@ export type QuestionVisual =
   | ({ kind: 'solid' } & SolidVisual)
   | ({ kind: 'net' } & NetVisual)
   | ({ kind: 'circle' } & CircleVisual)
-  | ({ kind: 'coordinate-grid' } & CoordinateVisual);
+  | ({ kind: 'coordinate-grid' } & CoordinateVisual)
+  | ({ kind: 'position' } & PositionVisual)
+  | { kind: 'counter-objects'; count: number; icon?: string; icons?: string[] };
+
+/** Letak sebuah benda terhadap benda acuan. Urutannya dipakai sebagai indeks jawaban. */
+export type Place = 'above' | 'below' | 'left' | 'right';
+
+/**
+ * Benda acuan di tengah, dengan benda lain di atas / bawah / kiri / kanannya.
+ *
+ * `name` ikut disimpan di data gambarnya, bukan cuma ikonnya: dengan begitu lint bisa
+ * membaca ulang gambar yang BENAR-BENAR tampil dan memeriksa bahwa "What is above the
+ * box?" memang dijawab dengan nama benda yang digambar di atas kotak.
+ */
+export type PositionVisual = {
+  anchor: { icon: string; name: string };
+  /** Maksimal satu benda per letak. Tanpa `icon` yang digambar hanya kata letaknya. */
+  items: {
+    at: Place;
+    icon?: string;
+    name?: string;
+    /** Tulis kata letaknya di bawah benda. Dimatikan di soal — itu jawabannya. */
+    label?: boolean;
+  }[];
+};
 
 /**
  * Balok yang tersusun dari kubus satuan. Dipakai sama persis di Learn dan di soal,
@@ -247,6 +272,14 @@ export type QuestionRule = {
    * ratusan tetangga, bukan angka mustahil. Dijaga aturan lint `distractor-scale`.
    */
   distractorUnit?: number;
+  /**
+   * Batas inklusif pilihan `choose-number`. Pengecoh di luar batas ini dibuang.
+   *
+   * Untuk soal yang jawabannya hanya bisa jatuh di rentang sempit — "urutan ke berapa
+   * dari kiri" di deretan 5 benda — pengecoh `near` tanpa batas melahirkan 0 atau 7,
+   * yang bisa dicoret anak tanpa menghitung.
+   */
+  choiceRange?: [number, number];
   /** Domain garis bilangan untuk soal `number-line-drop`. */
   range?: [number, number];
   /**

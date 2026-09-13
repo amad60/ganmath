@@ -3,6 +3,8 @@ import { teachingDuration, useReducedMotion } from './useReducedMotion';
 export type CounterObjectsProps = {
   count: number;
   icon?: string;
+  /** Ikon berbeda per benda, dari kiri ke kanan — untuk deretan yang dihitung urutannya. */
+  icons?: string[];
   /** Berapa objek yang sudah "dihitung" anak — dipakai modul Count to 5/10. */
   counted?: number;
   onTap?: (index: number) => void;
@@ -17,6 +19,7 @@ export type CounterObjectsProps = {
 export function CounterObjects({
   count,
   icon = '🍎',
+  icons,
   counted = 0,
   onTap,
   columns = 5,
@@ -44,7 +47,7 @@ export function CounterObjects({
               transition: `transform ${teachingDuration(200, reduced)}ms var(--ease-std), background ${teachingDuration(200, reduced)}ms linear`,
             }}
           >
-            <span className="text-[34px] leading-none">{icon}</span>
+            <span className="text-[34px] leading-none">{icons?.[i] ?? icon}</span>
             {done ? (
               <span
                 className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-[13px] font-black text-white"

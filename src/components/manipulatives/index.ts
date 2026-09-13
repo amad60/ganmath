@@ -2,6 +2,7 @@ export { TenFrame } from './TenFrame';
 export { NumberBond } from './NumberBond';
 export { NumberLine } from './NumberLine';
 export { CounterObjects } from './CounterObjects';
+export { PositionScene, PLACES } from './PositionScene';
 export { Shape2D, SHAPE_SIDES } from './Shape2D';
 export { Angle, ANGLE_NAMES, angleKind, type AngleKind } from './Angle';
 export { Solid3D } from './Solid3D';

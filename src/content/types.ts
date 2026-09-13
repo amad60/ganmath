@@ -3,6 +3,7 @@ import type {
   CoordinateVisual,
   ModuleDef,
   NetVisual,
+  PositionVisual,
   SolidVisual,
 } from '../engine/types';
 
@@ -48,7 +49,13 @@ export type LearnVisual =
       square?: boolean;
     }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
-  | { kind: 'counter-objects'; count: number; icon?: string }
+  | {
+      kind: 'counter-objects';
+      count: number;
+      icon?: string;
+      /** Ikon berbeda per benda, dari kiri ke kanan. Menimpa `icon`. */
+      icons?: string[];
+    }
   | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
   | {
       kind: 'number-line';
@@ -76,7 +83,8 @@ export type LearnVisual =
   | ({ kind: 'solid' } & SolidVisual)
   | ({ kind: 'net' } & NetVisual)
   | ({ kind: 'circle' } & CircleVisual)
-  | ({ kind: 'coordinate-grid' } & CoordinateVisual);
+  | ({ kind: 'coordinate-grid' } & CoordinateVisual)
+  | ({ kind: 'position' } & PositionVisual);
 
 export type LearnStep = {
   stage: 'concrete' | 'pictorial' | 'abstract';

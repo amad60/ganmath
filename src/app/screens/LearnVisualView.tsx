@@ -13,6 +13,7 @@ import {
   NumberBond,
   NumberLine,
   Pictogram,
+  PositionScene,
   Shape2D,
   ShapeNet,
   Solid3D,
@@ -37,6 +38,7 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
         <CounterObjects
           count={visual.count}
           icon={visual.icon}
+          icons={visual.icons}
           counted={value}
           onTap={interactive ? (i) => onValue(i + 1) : undefined}
         />
@@ -131,6 +133,8 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
+    case 'position':
+      return <PositionScene anchor={visual.anchor} items={visual.items} />;
     case 'solid':
       return (
         <Solid3D

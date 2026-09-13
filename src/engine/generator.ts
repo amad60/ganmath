@@ -93,22 +93,33 @@ export function buildChoices(
   rng: Rng,
 ): number[] {
   const out = new Set<number>([answer]);
+  const [lo, hi] = rule.choiceRange ?? [0, Infinity];
+  const fits = (n: number) => n >= lo && n <= hi;
 
   const mis = rule.misconception?.(params);
-  if (mis != null && mis >= 0 && mis !== answer) out.add(mis);
+  if (mis != null && mis >= 0 && mis !== answer && fits(mis)) out.add(mis);
 
   if (rule.distractors === 'digit-swap') {
     const d = digitSwap(answer);
-    if (d != null) out.add(d);
+    if (d != null && fits(d)) out.add(d);
   }
 
   const unit = Math.max(1, Math.trunc(rule.distractorUnit ?? 1));
   for (const n of nearDistractors(answer, rng, unit)) {
     if (out.size >= 4) break;
-    out.add(n);
+    if (fits(n)) out.add(n);
+  }
+  if (rule.choiceRange) {
+    // Rentang sempit: isi dari angka terdekat yang masih di dalam batas. Kalau
+    // rentangnya memang kurang dari 4 angka, pilihannya dibiarkan lebih sedikit —
+    // angka mustahil di luar batas justru yang mau dicegah di sini.
+    for (let d = 1; out.size < 4 && (answer - d >= lo || answer + d <= hi); d++) {
+      if (fits(answer + d)) out.add(answer + d);
+      if (out.size < 4 && fits(answer - d)) out.add(answer - d);
+    }
   }
   let extra = answer + 4 * unit;
-  while (out.size < 4) {
+  while (out.size < 4 && !rule.choiceRange) {
     out.add(extra);
     extra += unit;
   }

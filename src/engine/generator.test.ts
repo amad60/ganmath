@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { answerCaps, generateSet, uniqueChoices } from './generator';
+import { answerCaps, buildChoices, generateSet, uniqueChoices } from './generator';
 import { mulberry32 } from './rng';
 import { addModule } from './fixtures';
 import type { ModuleDef, QuestionRule } from './types';
@@ -55,6 +55,29 @@ describe('generator', () => {
     for (const q of set.questions.filter((x) => x.choices)) {
       for (const c of q.choices as number[]) {
         expect(Math.abs(c - q.answer)).toBeLessThanOrEqual(10);
+      }
+    }
+  });
+
+  it('choiceRange: pengecoh tidak pernah keluar batas, pilihan tetap 4', () => {
+    // "Urutan ke berapa dari kiri" di deret 5 benda: 0 dan 6 bisa dicoret tanpa menghitung.
+    const rule: QuestionRule = {
+      type: 'choose-number',
+      skill: 'order',
+      params: { at: [1, 5] },
+      answer: (p) => p.at as number,
+      text: () => 'Which number?',
+      distractors: 'near',
+      misconception: (p) => 6 - (p.at as number),
+      choiceRange: [1, 5],
+    };
+    for (let seed = 1; seed <= 40; seed++) {
+      for (let at = 1; at <= 5; at++) {
+        const c = buildChoices(rule, { at }, at, mulberry32(seed));
+        expect(c).toHaveLength(4);
+        expect(new Set(c).size).toBe(4);
+        expect(c).toContain(at);
+        expect(c.every((n) => n >= 1 && n <= 5)).toBe(true);
       }
     }
   });

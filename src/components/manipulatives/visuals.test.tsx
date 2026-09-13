@@ -31,6 +31,7 @@ import {
 import { maxTicksFor, stepFor, ticksFor } from './scale';
 import { ShapeNet } from './ShapeNet';
 import { Shape2D } from './Shape2D';
+import { PositionScene } from './PositionScene';
 import {
   NET_SOLIDS,
   SOLID_FACES,
@@ -1451,5 +1452,43 @@ describe('Shape2D — sudut & sisi yang bisa dihitung anak', () => {
   it('lingkaran tidak punya sudut maupun sisi untuk dihitung', () => {
     const { container } = render(<Shape2D name="circle" tap="corners" onTap={() => {}} />);
     expect(targets(container)).toHaveLength(0);
+  });
+});
+
+describe('PositionScene — letak yang digambar harus letak yang dimaksud', () => {
+  const box = { icon: '📦', name: 'box' };
+  const cell = (el: Element | null) => {
+    const st = (el as HTMLElement | null)?.style;
+    return [Number(st?.gridRowStart || st?.gridRow), Number(st?.gridColumnStart || st?.gridColumn)];
+  };
+
+  it('atas/bawah lurus di kolom acuan, kiri/kanan lurus di barisnya', () => {
+    const { container } = render(
+      <PositionScene
+        anchor={box}
+        items={[
+          { at: 'above', icon: '🐦' },
+          { at: 'below', icon: '⚽' },
+          { at: 'left', icon: '🐱' },
+          { at: 'right', icon: '🐶' },
+        ]}
+      />,
+    );
+    const at = (p: string) => cell(container.querySelector(`[data-place="${p}"]`));
+    expect(at('anchor')).toEqual([2, 2]);
+    expect(at('above')).toEqual([1, 2]);
+    expect(at('below')).toEqual([3, 2]);
+    expect(at('left')).toEqual([2, 1]);
+    expect(at('right')).toEqual([2, 3]);
+  });
+
+  it('kata letak hanya ditulis kalau diminta — di soal, kata itu jawabannya', () => {
+    const { container, rerender } = render(
+      <PositionScene anchor={box} items={[{ at: 'above', icon: '🐦', name: 'bird' }]} />,
+    );
+    expect(container.textContent).not.toContain('above');
+    expect(container.firstElementChild?.getAttribute('aria-label')).not.toContain('above');
+    rerender(<PositionScene anchor={box} items={[{ at: 'above', icon: '🐦', name: 'bird', label: true }]} />);
+    expect(container.textContent).toContain('above');
   });
 });

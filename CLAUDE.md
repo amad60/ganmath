@@ -128,6 +128,12 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      dua tombol sama-sama benar) dan `answer-matches-text` (soal yang teksnya perhitungan utuh
      dibaca ulang dan dihitung sendiri, lalu dibandingkan dengan jawaban yang dipakai menilai).
      Turunkan jawaban dari NILAI-nya, jangan dari rantai cabang yang bisa lupa satu kasus.
+   - **Jawaban harus bisa DIBACA dari layar.** g1-u6-m5 "Where Is It?" pernah tidak punya satu
+     pun soal yang bisa dijawab: "Which word means the same?" di atas satu batang berlabel huruf,
+     jawabannya ditentukan parameter yang tidak tampil; materinya berkata "This shape is above
+     that one." di atas SATU segitiga. Sekarang gambar posisi (`kind: 'position'`) dan
+     jawabannya dirakit dari data yang sama, dan lint `position-answer` membaca ulang gambar
+     yang tampil untuk memastikan tombol yang dinilai benar memang benar menurut gambarnya.
    - **Soal cerita punya lubang yang sama, dan penjaganya sendiri.** Di soal lambang teksnya
      ADALAH hitungannya, jadi bisa dibaca ulang dan dibandingkan. Di soal cerita, kalimat dan
      `answer` ditulis TERPISAH — tidak ada yang memaksa keduanya bicara tentang hitungan yang

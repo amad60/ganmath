@@ -8,6 +8,7 @@ import { stepFor } from '../components/manipulatives/scale';
 // Jumlah sisi/sudut diambil dari komponen yang menggambarnya, bukan disalin —
 // salinan akan berbeda diam-diam begitu ada bangun baru.
 import { SHAPE_SIDES } from '../components/manipulatives/Shape2D';
+import { PLACES as PLACE_WORDS } from '../components/manipulatives/PositionScene';
 import type { ContentModule, LearnStep, LearnVisual } from './types';
 import { spread, storyShape } from './storyShape';
 
@@ -464,6 +465,60 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
     }
 
+    // 4d2. Soal letak benda: jawaban harus cocok dengan GAMBARNYA.
+    //
+    //      g1-u6-m5 pernah menanyakan "Which word means the same?" di atas satu batang
+    //      berlabel huruf, dengan jawaban yang ditentukan parameter yang tidak terlihat
+    //      di layar — anak tidak punya jalan apa pun untuk tahu tombol mana yang benar.
+    //      Di sini gambar yang BENAR-BENAR tampil dibaca ulang: benda yang disebut di
+    //      kalimat dicari di gambar, lalu letaknya dibandingkan dengan tombol yang
+    //      dinilai benar (atau sebaliknya: letak yang disebut, benda di sana).
+    for (const [ri, r] of m.rules.entries()) {
+      if (r.type !== 'choose-text' || !r.visual || !r.options) continue;
+      for (const combo of enumerate(r).slice(0, 300)) {
+        const v = r.visual(combo);
+        if (v.kind !== 'position') continue;
+        const text = r.text(combo);
+        const said = words(text);
+        const labels = r.options(combo);
+        const picked = labels[r.answer(combo)] ?? '';
+        const where = `rule#${ri} "${text}" (${JSON.stringify(combo)})`;
+
+        if (v.items.some((it) => it.label)) {
+          add(m.id, 'position-answer', `${where}: gambar soal menulis kata letaknya — itu jawabannya`);
+        }
+        const places = [...new Set(v.items.map((it) => it.at))];
+        if (places.length !== v.items.length) {
+          add(m.id, 'position-answer', `${where}: dua benda di letak yang sama`);
+        }
+
+        const askedPlace = PLACE_WORDS.filter((w) => said.includes(w));
+        const named = v.items.filter((it) => it.name && said.includes(it.name));
+        let expected: string | null = null;
+        if (labels.every((l) => (PLACE_WORDS as string[]).includes(l))) {
+          // "Where is the cat?" — tepat satu benda bernama itu harus ada di gambar.
+          if (named.length !== 1) {
+            add(m.id, 'position-answer', `${where}: benda yang ditanyakan ada ${named.length} di gambar, harus tepat 1`);
+            continue;
+          }
+          expected = named[0]!.at;
+        } else if (askedPlace.length === 1) {
+          // "What is above the box?" — harus ada tepat satu benda di letak itu.
+          expected = v.items.find((it) => it.at === askedPlace[0])?.name ?? null;
+          if (expected == null) {
+            add(m.id, 'position-answer', `${where}: tidak ada benda di letak "${askedPlace[0]}"`);
+            continue;
+          }
+        } else {
+          add(m.id, 'position-answer', `${where}: kalimatnya tidak menyebut satu benda atau satu letak`);
+          continue;
+        }
+        if (picked !== expected) {
+          add(m.id, 'position-answer', `${where}: gambar menjawab "${expected}", dinilai benar "${picked}"`);
+        }
+      }
+    }
+
     // 4e. Soal dan jawabannya harus setuju.
     //
     //     `answer()` adalah satu-satunya sumber kebenaran saat menilai, jadi kalau
@@ -517,6 +572,20 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
           'distractor-scale',
           `jawaban selalu kelipatan ${g} tapi distractorUnit ${unit} — setel distractorUnit: ${g}`,
         );
+      }
+    }
+
+    // 6b. `choiceRange` membuang pengecoh di luar batas — jawabannya sendiri tidak
+    //     boleh ikut di luar, dan batasnya harus memberi ruang untuk ≥3 pilihan.
+    for (const r of m.rules) {
+      if (!r.choiceRange) continue;
+      const [lo, hi] = r.choiceRange;
+      if (hi - lo < 2) {
+        add(m.id, 'choices', `rule "${r.skill}" choiceRange [${lo}, ${hi}] memuat < 3 angka`);
+      }
+      const out = enumerate(r).find((c) => r.answer(c) < lo || r.answer(c) > hi);
+      if (out) {
+        add(m.id, 'choices', `rule "${r.skill}" berjawaban ${r.answer(out)}, di luar choiceRange [${lo}, ${hi}]`);
       }
     }
 

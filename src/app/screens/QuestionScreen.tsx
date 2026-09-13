@@ -22,10 +22,12 @@ import {
   RectShape,
   Base10Blocks,
   Clock,
+  CounterObjects,
   FractionShape,
   Money,
   NumberLine,
   Pictogram,
+  PositionScene,
   Shape2D,
   ShapeNet,
   Solid3D,
@@ -201,6 +203,11 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
       );
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
+    case 'position':
+      return <PositionScene anchor={visual.anchor} items={visual.items} />;
+    case 'counter-objects':
+      // Tanpa `onTap`: di soal, deretannya gambar untuk dibaca, bukan tombol.
+      return <CounterObjects count={visual.count} icon={visual.icon} icons={visual.icons} />;
     case 'solid':
       return (
         <Solid3D

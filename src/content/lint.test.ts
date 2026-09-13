@@ -123,6 +123,60 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'fraction-answer')).toBe(true);
   });
 
+  it('menolak soal letak yang jawabannya tidak cocok dengan gambarnya', () => {
+    // Kalimat menyebut kucing, gambar menaruh anjing — persis salah ketik yang
+    // sempat terjadi saat g1-u6-m5 ditulis ulang.
+    const box = { icon: '📦', name: 'box' };
+    const things = [
+      { icon: '🐱', name: 'cat' },
+      { icon: '🐶', name: 'dog' },
+    ];
+    const places = ['above', 'below', 'left', 'right'] as const;
+    const mods = broken({
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: 'position',
+          params: { place: [0, 1], thing: [0, 1] },
+          answer: (p) => p.place as number,
+          text: (p) => `Where is the ${things[p.thing as number]!.name}?`,
+          visual: (p) => ({
+            kind: 'position',
+            anchor: box,
+            items: [{ at: places[p.place as number]!, ...things[p.place as number]! }],
+          }),
+          options: () => [...places],
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'position-answer')).toBe(true);
+  });
+
+  it('menolak gambar soal letak yang menuliskan kata letaknya', () => {
+    const mods = broken({
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: 'position',
+          params: { i: [0, 0] },
+          answer: () => 0,
+          text: () => 'Where is the cat?',
+          visual: () => ({
+            kind: 'position',
+            anchor: { icon: '📦', name: 'box' },
+            items: [{ at: 'above', icon: '🐱', name: 'cat', label: true }],
+          }),
+          options: () => ['above', 'below', 'left', 'right'],
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'position-answer' && p.detail.includes('kata letak'))).toBe(true);
+  });
+
   it('menolak jawaban yang tidak sama dengan hasil hitung soalnya sendiri', () => {
     const mods = broken({
       questionTypes: ['keypad'],
@@ -607,5 +661,44 @@ describe('modul bersoal cerita', () => {
         );
       }
     }
+  });
+});
+
+/**
+ * g1-u6-m5 "Where Is It?" pernah tidak punya satu pun soal yang bisa dijawab dari
+ * layarnya. Soal letak dijaga lint `position-answer`; soal URUTAN di deret tidak
+ * tercakup lint itu, jadi dikunci di sini dengan membaca deret yang benar-benar tampil.
+ */
+describe('g1-u6-m5 — setiap jawaban terbaca dari gambarnya', () => {
+  const ICON: Record<string, string> = { cat: '🐱', dog: '🐶', bird: '🐤', fish: '🐟', frog: '🐸' };
+  const mod = all.find((m) => m.id === 'g1-u6-m5') as ContentModule;
+
+  it('urutan dari kiri = posisi hewan yang disebut di deret', () => {
+    const rule = mod.rules.find((r) => r.type === 'choose-number')!;
+    for (const c of enumerate(rule)) {
+      const text = rule.text(c);
+      const name = Object.keys(ICON).find((n) => text.includes(`the ${n}?`))!;
+      const v = rule.visual!(c);
+      if (v.kind !== 'counter-objects') throw new Error('deret harus counter-objects');
+      const icons = v.icons ?? [];
+      expect(icons.filter((i) => i === ICON[name])).toHaveLength(1);
+      expect(rule.answer(c)).toBe(icons.indexOf(ICON[name]!) + 1);
+    }
+  });
+
+  it('langkah concrete: target tap jatuh tepat di kucing', () => {
+    const step = mod.learn[0]!;
+    if (step.visual.kind !== 'counter-objects') throw new Error('langkah pertama harus deret');
+    expect(step.prompt).toContain('cat');
+    expect(step.visual.icons?.[step.target! - 1]).toBe(ICON.cat);
+  });
+
+  it('materi mengajarkan keempat kata letak sebelum soalnya menanyakan', () => {
+    const taught = new Set(
+      mod.learn.flatMap((l) =>
+        l.visual.kind === 'position' ? l.visual.items.filter((i) => i.label).map((i) => i.at) : [],
+      ),
+    );
+    expect([...taught].sort()).toEqual(['above', 'below', 'left', 'right']);
   });
 });
