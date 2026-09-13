@@ -157,6 +157,9 @@ export const whereIsIt: ContentModule = {
       // Miskonsepsi paling khas: menghitung dari KANAN.
       misconception: (p) => ROW.length - (p.at as number),
       choiceRange: [1, ROW.length],
+      // Hint bawaan menggambar atas/bawah/kiri/kanan — tidak menolong soal URUTAN.
+      // Langkah pertama tampil dalam keadaan sudah dikerjakan: hewan bernomor 1, 2, 3.
+      hint: () => 0,
     },
   ],
 };

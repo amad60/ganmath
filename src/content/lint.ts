@@ -315,6 +315,15 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       if (blocked) add(m.id, 'learn-action', `langkah "${step.prompt}": ${blocked}`);
     }
 
+    // 3b. Hint yang dipilih aturan harus menunjuk langkah materi yang ada.
+    for (const [ri, r] of m.rules.entries()) {
+      if (!r.hint) continue;
+      const bad = enumerate(r).find((c) => m.learn[r.hint!(c)] == null);
+      if (bad) {
+        add(m.id, 'hint-step', `rule#${ri} menunjuk langkah Learn ${r.hint(bad)} — modul hanya punya ${m.learn.length}`);
+      }
+    }
+
     // 4. Tipe soal
     if (m.questionTypes.length < 2) add(m.id, 'question-types', 'butuh minimal 2 tipe soal');
     for (const t of m.questionTypes) {

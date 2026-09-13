@@ -59,13 +59,14 @@ function Drawing({ name }: { name: SolidKind }) {
  * balok tidak bisa dibedakan dengan pasti. Gambar ini memberi bayangan tiga sisi dan
  * garis putus-putus untuk bagian yang tersembunyi.
  */
-export function SolidShapes({ shapes }: SolidShapesVisual) {
+export function SolidShapes({ shapes, compact }: SolidShapesVisual & { compact?: boolean }) {
   const one = shapes.length === 1;
-  const size = one ? 140 : 92;
+  const size = one ? 140 : compact ? 60 : 92;
+  const cellWidth = compact ? 84 : 104;
   return (
     <div className="flex max-w-full flex-wrap items-start justify-center gap-x-3 gap-y-4">
       {shapes.map((s, i) => (
-        <figure key={i} className="m-0 flex flex-col items-center gap-1" style={{ width: one ? size : 104 }}>
+        <figure key={i} className="m-0 flex flex-col items-center gap-1" style={{ width: one ? size : cellWidth }}>
           <svg
             viewBox="0 0 100 100"
             width={size}

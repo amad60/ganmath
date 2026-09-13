@@ -16,7 +16,9 @@ import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
 import { ACTION_VISUALS } from '../../content/lint';
 import type { LearnVisual } from '../../content/types';
-import type { ModuleDef, ModuleState } from '../../engine/types';
+import type { ModuleDef, ModuleState, Question } from '../../engine/types';
+import { generateSet } from '../../engine/generator';
+import { mulberry32 } from '../../engine/rng';
 import { session as fakeSession } from '../../engine/fixtures';
 
 /**
@@ -610,7 +612,7 @@ describe('pilihan berupa kata', () => {
         onExit={() => {}}
       />,
     );
-    const btn = screen.getByRole('button', { name: 'three fourths' });
+    const btn = screen.getByRole('button', { name: 'one fourth' });
     expect(btn.style.fontSize).toBe('21px');
   });
 });
@@ -688,6 +690,45 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     const step = learn.filter((l) => l.stage === 'pictorial').at(-1) ?? learn.at(-1);
     expect(screen.getByText(step?.prompt ?? '###')).toBeInTheDocument();
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+  });
+
+  /**
+   * Hint bawaan = langkah pictorial terakhir. Di modul yang soalnya menguji beberapa
+   * gagasan, itu menunjuk ke hal lain: g1-u6-m4 menjawab soal "not equal" dengan
+   * gambar seperempat, g1-u6-m5 menjawab soal urutan dengan gambar atas/bawah.
+   */
+  const withFirst = (moduleId: string, pick: (q: Question) => boolean) => {
+    const s = play(moduleId, 'practice');
+    const { questions } = generateSet(moduleById(moduleId), 200, mulberry32(9));
+    const q = questions.find(pick);
+    expect(q, 'soal yang dicari tidak pernah dibuat').toBeTruthy();
+    return { ...s, pending: [{ question: q!, retried: false }, ...s.pending] };
+  };
+
+  it('Hint menunjuk langkah materi yang mengajarkan jawaban soal INI', () => {
+    const cases: [string, (q: Question) => boolean, string][] = [
+      ['g1-u6-m4', (q) => q.visual?.kind === 'fraction' && q.visual.unequal === true, 'These parts are not equal. Not half.'],
+      ['g1-u6-m4', (q) => q.options?.[q.answer] === 'whole', 'Both equal parts shaded is the whole.'],
+      ['g1-u6-m2', (q) => q.text.startsWith('Does it roll'), 'Some roll. Some stack. Some do both.'],
+    ];
+    for (const [id, pick, prompt] of cases) {
+      const { unmount } = render(
+        <QuestionScreen session={withFirst(id, pick)} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+      );
+      fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
+      expect(screen.getByText(prompt)).toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it('Hint dari langkah aksi tampil sebagai contoh yang sudah dikerjakan', () => {
+    const session = withFirst('g1-u6-m5', (q) => q.type === 'choose-number');
+    render(<QuestionScreen session={session} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />);
+    fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
+    const panel = document.getElementById('hint-panel')!;
+    expect(panel.textContent).toContain('Count from the left to the cat.');
+    // Tiga hewan pertama bernomor — sampai kucing, target langkah itu.
+    expect(panel.querySelectorAll('button[aria-label$="counted"]')).toHaveLength(3);
   });
 
   /**

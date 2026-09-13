@@ -30,10 +30,16 @@ export type LearnVisualViewProps = {
   value: number;
   onValue: (n: number) => void;
   interactive: boolean;
+  /**
+   * Digambar lebih ringkas — dipakai panel Hint. Bantuan setinggi materi aslinya
+   * mendorong gambar SOAL ke luar layar, padahal anak yang macet butuh melihat
+   * soal dan bantuannya sekaligus.
+   */
+  compact?: boolean;
 };
 
 /** Menerjemahkan data materi jadi manipulatif. Komponen tidak tahu isi modulnya. */
-export function LearnVisualView({ visual, value, onValue, interactive }: LearnVisualViewProps) {
+export function LearnVisualView({ visual, value, onValue, interactive, compact }: LearnVisualViewProps) {
   switch (visual.kind) {
     case 'counter-objects':
       return (
@@ -138,9 +144,9 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
     case 'pictogram':
       return <Pictogram rows={visual.rows} />;
     case 'position':
-      return <PositionScene anchor={visual.anchor} items={visual.items} />;
+      return <PositionScene anchor={visual.anchor} items={visual.items} compact={compact} />;
     case 'solid-shapes':
-      return <SolidShapes shapes={visual.shapes} />;
+      return <SolidShapes shapes={visual.shapes} compact={compact} />;
     case 'composed-shape':
       return (
         <ComposedShape

@@ -79,6 +79,12 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      itu kalau ada, kalau tidak materi Learn modul itu dipanggil ulang (langkah pictorial
      terakhir). Pernah putus di sini: Hint hanya punya cabang ten-frame, jadi di 163 dari 240
      modul ia hanya menulis "Look at the picture." tanpa ada gambar apa pun di layar.
+     **Hint harus menunjuk gagasan soal INI.** Langkah pictorial terakhir cukup untuk modul
+     bergagasan satu; modul yang soalnya menguji beberapa gagasan memilih langkahnya lewat
+     `QuestionRule.hint` (dijaga lint `hint-step`). Pernah putus: g1-u6-m4 menjawab soal
+     "not equal" dengan gambar seperempat, g1-u6-m5 menjawab soal urutan dengan gambar
+     atas/bawah. Langkah aksi tampil sebagai contoh yang SUDAH dikerjakan, dan gambar di
+     panel Hint digambar ringkas (`compact`) supaya gambar soalnya tidak terdorong keluar layar.
    - **Bantuan yang bisa dibuka wajib bisa DITUTUP lagi, dan dibuka lagi.** Pernah putus di
      sini juga: tombolnya dimatikan begitu ditekan (satu state `hintUsed` dipakai sekaligus
      sebagai "sedang tampil" dan sebagai catatan "pernah dibantu"), jadi manipulatif setinggi

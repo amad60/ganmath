@@ -221,6 +221,7 @@ export function generateSet(
         ...(pool.rule.step != null ? { step: pool.rule.step } : {}),
         ...(visual ? { visual } : {}),
         ...(pool.rule.story ? { story: true as const } : {}),
+        ...(pool.rule.hint ? { hint: pool.rule.hint(params) } : {}),
       };
       if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];

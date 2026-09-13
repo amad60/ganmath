@@ -74,8 +74,8 @@ export const solidShapes: ContentModule = {
       action: 'watch',
     },
     {
-      // Langkah pictorial TERAKHIR = isi tombol Hint, jadi kelima bangun, namanya,
-      // dan jumlah sisi datarnya ada di sini.
+      // Langkah pictorial TERAKHIR = Hint bawaan (soal nama & sisi datar), jadi kelima
+      // bangun, namanya, dan jumlah sisi datarnya ada di sini.
       stage: 'pictorial',
       prompt: 'Count the flat faces on each shape.',
       visual: {
@@ -129,6 +129,9 @@ export const solidShapes: ContentModule = {
       text: () => 'Does it roll, stack, or both?',
       visual: (p) => ({ kind: 'solid-shapes', shapes: [{ name: MOVERS[p.m as number]! }] }),
       options: () => [...MOVE_WORDS],
+      // Hint bawaan (pictorial terakhir) adalah gambar sisi datar — soal ini butuh
+      // langkah "Some roll. Some stack."
+      hint: () => 1,
     },
   ],
 };

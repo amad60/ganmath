@@ -348,6 +348,16 @@ export type QuestionRule = {
    * beban BACA yang tidak dijaga akan mengukur kemampuan membaca, bukan matematika.
    */
   story?: true;
+  /**
+   * Indeks langkah Learn yang dipanggil ulang tombol Hint untuk soal INI.
+   *
+   * Kosong = langkah pictorial terakhir modulnya, cukup untuk modul yang materinya
+   * satu gagasan. Modul yang soalnya menguji beberapa gagasan berbeda perlu memilih:
+   * tanpa ini g1-u6-m2 menjawab "Does it roll or stack?" dengan gambar jumlah sisi
+   * datar, dan g1-u6-m4 menjawab "not equal" dengan gambar seperempat — pertolongan
+   * yang menunjuk ke hal lain sama saja dengan tidak menolong. Dijaga lint `hint-step`.
+   */
+  hint?: (p: Record<string, number>) => number;
 };
 
 export type Question = {
@@ -384,6 +394,8 @@ export type Question = {
   params: Record<string, number>;
   /** Soal ini lahir dari aturan bercerita — ikut ke hasilnya lewat `submitAnswer`. */
   story?: true;
+  /** Langkah Learn untuk tombol Hint (lihat `QuestionRule.hint`). */
+  hint?: number;
 };
 
 export type ModuleDef = {

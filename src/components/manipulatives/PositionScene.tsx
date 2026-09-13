@@ -19,12 +19,13 @@ const CELL: Record<Place, { row: number; col: number }> = {
  * yang benar ("above") bisa merasa jawabannya "left" juga — dan soal posisi yang
  * bisa dibaca dua arah tidak mengukur apa pun.
  */
-export function PositionScene({ anchor, items }: PositionVisual) {
+export function PositionScene({ anchor, items, compact }: PositionVisual & { compact?: boolean }) {
+  const cell = compact ? 58 : 72;
   const describe = items.map((it) => (it.name ? `${it.name} ${it.at}` : it.at)).join(', ');
   return (
     <div
       className="grid justify-center"
-      style={{ gridTemplateColumns: 'repeat(3, 72px)', gridTemplateRows: 'repeat(3, 72px)' }}
+      style={{ gridTemplateColumns: `repeat(3, ${cell}px)`, gridTemplateRows: `repeat(3, ${cell}px)` }}
       // Pembaca layar tidak diberi kata letaknya kalau gambarnya sendiri tidak menulisnya:
       // itulah jawaban soalnya.
       aria-label={
@@ -36,7 +37,7 @@ export function PositionScene({ anchor, items }: PositionVisual) {
     >
       <span
         className="flex items-center justify-center leading-none"
-        style={{ gridRow: 2, gridColumn: 2, fontSize: 48 }}
+        style={{ gridRow: 2, gridColumn: 2, fontSize: compact ? 38 : 48 }}
         data-place="anchor"
       >
         {anchor.icon}
@@ -50,12 +51,12 @@ export function PositionScene({ anchor, items }: PositionVisual) {
           style={{ gridRow: CELL[it.at].row, gridColumn: CELL[it.at].col }}
           data-place={it.at}
         >
-          {it.icon ? <span style={{ fontSize: 40, lineHeight: 1 }}>{it.icon}</span> : null}
+          {it.icon ? <span style={{ fontSize: compact ? 30 : 40, lineHeight: 1 }}>{it.icon}</span> : null}
           {it.label ? (
             <span
               className={it.icon ? 'absolute bottom-0 font-black' : 'font-black'}
               style={{
-                fontSize: it.icon ? 15 : 22,
+                fontSize: it.icon ? (compact ? 13 : 15) : 22,
                 color: 'var(--c-primary)',
                 lineHeight: 1,
               }}

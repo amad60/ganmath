@@ -284,9 +284,11 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
  * Learn modul itu. Yang dipilih adalah langkah bergambar terakhir — tahap pictorial
  * kalau ada, karena di situlah idenya terlihat sebagai gambar, bukan sebagai lambang.
  */
-function hintStep(moduleId: string): LearnStep | null {
+function hintStep(moduleId: string, chosen?: number): LearnStep | null {
   const steps = moduleRegistry[moduleId]?.learn ?? [];
   if (steps.length === 0) return null;
+  // Aturan soal yang menyebut langkahnya sendiri didahulukan — lihat `QuestionRule.hint`.
+  if (chosen != null && steps[chosen]) return steps[chosen];
   const pictorial = steps.filter((l) => l.stage === 'pictorial');
   return (pictorial.at(-1) ?? steps.at(-1)) ?? null;
 }
@@ -313,7 +315,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
    */
   const [hintOpen, setHintOpen] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
-  const hint = hintStep(session.moduleId);
+  const hint = hintStep(session.moduleId, question?.hint);
   const hintRef = useRef<HTMLDivElement | null>(null);
 
   // Escape menutup bantuan — kebiasaan baku untuk apa pun yang menimpa layar,
@@ -544,11 +546,20 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             {/* Ten-frame didahulukan kalau ada, karena ia dibangun dari angka SOAL
                 INI — lebih menolong daripada materi umum. Kalau tidak ada, materi
                 Learn modul itu yang dipanggil ulang. */}
-            {question.params.n != null ? (
+            {question.params.n != null && question.hint == null ? (
               <TenFrame value={question.params.n as number} animate />
             ) : hint ? (
               <>
-                <LearnVisualView visual={hint.visual} value={0} onValue={() => {}} interactive={false} />
+                <LearnVisualView
+                  visual={hint.visual}
+                  // Langkah aksi ditampilkan dalam keadaan SUDAH dikerjakan — contoh yang
+                  // selesai (hewan bernomor 1, 2, 3 sampai kucing), bukan perintah "Tap"
+                  // di atas gambar yang tidak bisa disentuh.
+                  value={hint.action === 'watch' ? 0 : (hint.target ?? 0)}
+                  onValue={() => {}}
+                  interactive={false}
+                  compact
+                />
                 <p className="text-ink-soft text-center text-[18px] font-bold">{hint.prompt}</p>
               </>
             ) : null}
