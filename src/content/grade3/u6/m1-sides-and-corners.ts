@@ -1,4 +1,11 @@
+import { ALSO_TRUE } from '../../options';
 import type { ContentModule } from '../../types';
+
+const NAMES = ['triangle', 'square', 'rectangle', 'pentagon', 'hexagon'] as const;
+
+/** Persegi JUGA persegi panjang — tombol "rectangle" tidak ikut saat jawabannya persegi. */
+const nameOptions = (i: number) =>
+  NAMES.filter((n, j) => j === i || !(ALSO_TRUE[NAMES[i]!] ?? []).includes(n));
 
 export const sidesAndCorners: ContentModule = {
   id: 'g3-u6-m1',
@@ -57,7 +64,7 @@ export const sidesAndCorners: ContentModule = {
       type: 'choose-text',
       skill: 'shape-parts',
       params: { s: [0, 4] },
-      answer: (p) => p.s as number,
+      answer: (p) => nameOptions(p.s as number).indexOf(NAMES[p.s as number]!),
       text: () => 'What shape is this?',
       visual: (p) => ({
         kind: 'shape2d',
@@ -66,7 +73,7 @@ export const sidesAndCorners: ContentModule = {
         ] as 'triangle',
         showCorners: true,
       }),
-      options: () => ['triangle', 'square', 'rectangle', 'pentagon', 'hexagon'],
+      options: (p) => nameOptions(p.s as number),
     },
   ],
 };

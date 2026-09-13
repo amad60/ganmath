@@ -134,6 +134,14 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      that one." di atas SATU segitiga. Sekarang gambar posisi (`kind: 'position'`) dan
      jawabannya dirakit dari data yang sama, dan lint `position-answer` membaca ulang gambar
      yang tampil untuk memastikan tombol yang dinilai benar memang benar menurut gambarnya.
+     Hal yang sama menimpa g1-u6-m2 ("A ball rolls." di atas ten-frame, 🔴 datar sebagai
+     "ball") dan g1-u6-m3 ("Two triangles join into a square." di atas satu segitiga):
+     sekarang bangun ruang (`solid-shapes`) dan bangun tersusun (`composed-shape`) digambar,
+     dan jawabannya dibaca dari data gambar yang sama.
+   - **Tidak boleh ada tombol yang JUGA benar.** Persegi adalah persegi panjang, kubus adalah
+     balok; kalau keduanya jadi tombol, anak yang benar dinilai salah. `ALSO_TRUE` di
+     `src/content/options.ts` + lint `choices` menjaganya — lint itu langsung menemukan kasus
+     yang sama di g1-u6-m1 dan g3-u6-m1.
    - **Soal cerita punya lubang yang sama, dan penjaganya sendiri.** Di soal lambang teksnya
      ADALAH hitungannya, jadi bisa dibaca ulang dan dibandingkan. Di soal cerita, kalimat dan
      `answer` ditulis TERPISAH — tidak ada yang memaksa keduanya bicara tentang hitungan yang

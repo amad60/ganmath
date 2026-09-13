@@ -32,6 +32,9 @@ import { maxTicksFor, stepFor, ticksFor } from './scale';
 import { ShapeNet } from './ShapeNet';
 import { Shape2D } from './Shape2D';
 import { PositionScene } from './PositionScene';
+import { ComposedShape } from './ComposedShape';
+import { SolidShapes } from './SolidShapes';
+import { COMPOSED, COMPOSED_NAMES, polygonArea, type Pt } from './composed';
 import {
   NET_SOLIDS,
   SOLID_FACES,
@@ -1490,5 +1493,61 @@ describe('PositionScene — letak yang digambar harus letak yang dimaksud', () =
     expect(container.firstElementChild?.getAttribute('aria-label')).not.toContain('above');
     rerender(<PositionScene anchor={box} items={[{ at: 'above', icon: '🐦', name: 'bird', label: true }]} />);
     expect(container.textContent).toContain('above');
+  });
+});
+
+describe('ComposedShape — potongannya benar-benar menyusun bangun besarnya', () => {
+  const bbox = (pts: Pt[]) => {
+    const xs = pts.map((p) => p[0]);
+    const ys = pts.map((p) => p[1]);
+    return { w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+  };
+
+  it('luas potongan = luas bangun besar: tanpa celah, tanpa tumpang tindih', () => {
+    for (const name of COMPOSED_NAMES) {
+      const { whole, pieces } = COMPOSED[name];
+      if (whole === 'circle') continue;
+      const polys = pieces.map((p) => ('pts' in p ? p.pts : []));
+      const all = polys.flat();
+      const { w, h } = bbox(all);
+      const sum = polys.reduce((a, q) => a + polygonArea(q), 0);
+      const expected =
+        whole === 'square' || whole === 'rectangle'
+          ? w * h
+          : whole === 'triangle'
+            ? (w * h) / 2
+            : polygonArea([[50, 5], [92, 28], [92, 72], [50, 95], [8, 72], [8, 28]]);
+      expect(sum, name).toBeCloseTo(expected, 6);
+      if (whole === 'square') expect(w, name).toBe(h);
+      if (whole === 'rectangle') expect(w, name).not.toBe(h);
+    }
+  });
+
+  it('dua setengah lingkaran: satu di atas, satu di bawah garis tengah', () => {
+    expect(COMPOSED['circle-2-halves'].pieces).toEqual([{ half: 'top' }, { half: 'bottom' }]);
+  });
+
+  it('gambar berisi persis sebanyak potongan di datanya', () => {
+    for (const name of COMPOSED_NAMES) {
+      const { container, unmount } = render(<ComposedShape name={name} />);
+      expect(container.querySelectorAll('path').length, name).toBe(COMPOSED[name].pieces.length);
+      // Nama bangun besar tidak boleh bocor lewat pembaca layar — itu jawabannya.
+      expect(container.innerHTML, name).not.toContain(COMPOSED[name].whole);
+      unmount();
+    }
+  });
+});
+
+describe('SolidShapes — nama bangun hanya tampil kalau diminta', () => {
+  it('di soal (tanpa label) namanya tidak ada di layar maupun di label aksesibilitas', () => {
+    const { container } = render(<SolidShapes shapes={[{ name: 'cylinder' }]} />);
+    expect(container.textContent).not.toContain('cylinder');
+    expect(container.innerHTML.replace(/data-solid="[^"]*"/, '')).not.toContain('cylinder');
+  });
+
+  it('di materi (dengan label) namanya ditulis', () => {
+    const { container } = render(<SolidShapes shapes={[{ name: 'cone', label: true, note: '1 flat face' }]} />);
+    expect(container.textContent).toContain('cone');
+    expect(container.textContent).toContain('1 flat face');
   });
 });

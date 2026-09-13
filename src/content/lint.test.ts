@@ -177,6 +177,25 @@ describe('linter konten', () => {
     expect(problems.some((p) => p.rule === 'position-answer' && p.detail.includes('kata letak'))).toBe(true);
   });
 
+  it('menolak tombol yang juga benar — persegi adalah persegi panjang', () => {
+    const mods = broken({
+      questionTypes: ['choose-text'],
+      rules: [
+        {
+          type: 'choose-text',
+          skill: 'shape-2d',
+          params: { i: [0, 0] },
+          answer: () => 0,
+          text: () => 'What shape is this?',
+          visual: () => ({ kind: 'shape2d', name: 'square' }),
+          options: () => ['square', 'rectangle', 'circle', 'triangle'],
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'choices' && p.detail.includes('juga benar'))).toBe(true);
+  });
+
   it('menolak jawaban yang tidak sama dengan hasil hitung soalnya sendiri', () => {
     const mods = broken({
       questionTypes: ['keypad'],
@@ -700,5 +719,73 @@ describe('g1-u6-m5 — setiap jawaban terbaca dari gambarnya', () => {
       ),
     );
     expect([...taught].sort()).toEqual(['above', 'below', 'left', 'right']);
+  });
+});
+
+/**
+ * g1-u6-m2 dan g1-u6-m3 pernah berkata satu hal dan menggambar hal lain ("Two triangles
+ * join into a square." di atas satu segitiga; "A ball rolls." di atas ten-frame), dan
+ * soalnya tidak berhubungan dengan judulnya. Jawaban sekarang dibaca dari gambar yang
+ * benar-benar tampil.
+ */
+describe('g1-u6-m2 & m3 — jawaban cocok dengan gambarnya', () => {
+  const byId = (id: string) => all.find((m) => m.id === id) as ContentModule;
+
+  it('m2: nama yang dinilai benar = bangun ruang yang digambar', () => {
+    const m = byId('g1-u6-m2');
+    for (const r of m.rules) {
+      for (const c of enumerate(r)) {
+        const v = r.visual!(c);
+        if (v.kind !== 'solid-shapes') throw new Error('soal m2 harus bergambar bangun ruang');
+        expect(v.shapes).toHaveLength(1);
+        expect(v.shapes[0]!.label).toBeFalsy();
+        const drawn = v.shapes[0]!.name;
+        const text = r.text(c);
+        if (text === 'What shape is this?') expect(r.options!(c)[r.answer(c)]).toBe(drawn);
+        if (text === 'How many flat faces?') {
+          expect(r.answer(c)).toBe({ ball: 0, cube: 6, box: 6, cylinder: 2, cone: 1 }[drawn]);
+        }
+        if (text.startsWith('Does it roll')) {
+          expect(r.options!(c)[r.answer(c)]).toBe(
+            { ball: 'rolls', cube: 'stacks', box: 'stacks', cylinder: 'both' }[drawn as 'ball'],
+          );
+        }
+      }
+    }
+  });
+
+  it('m3: bangun besar dan jumlah potongan dibaca dari gambar yang tampil', async () => {
+    const { COMPOSED } = await import('../components/manipulatives/composed');
+    const m = byId('g1-u6-m3');
+    for (const r of m.rules) {
+      for (const c of enumerate(r)) {
+        const v = r.visual!(c);
+        if (v.kind !== 'composed-shape') throw new Error('soal m3 harus bergambar bangun tersusun');
+        const shape = COMPOSED[v.name];
+        if (r.type === 'choose-text') {
+          expect(r.options!(c)).toHaveLength(4);
+          expect(r.options!(c)[r.answer(c)]).toBe(shape.whole);
+        } else {
+          expect(r.answer(c)).toBe(shape.pieces.length);
+        }
+      }
+    }
+  });
+
+  it('materi yang BERKATA "X make Y" menggambar persis X dan Y', async () => {
+    const { COMPOSED } = await import('../components/manipulatives/composed');
+    const COUNT: Record<string, number> = { two: 2, six: 6 };
+    let checked = 0;
+    for (const step of byId('g1-u6-m3').learn) {
+      const hit = step.prompt.toLowerCase().match(/^(two|six) (\w+?)s make an? (\w+)\.$/);
+      if (!hit || step.visual.kind !== 'composed-shape') continue;
+      const shape = COMPOSED[step.visual.name];
+      expect(shape.pieces.length, step.prompt).toBe(COUNT[hit[1]!]);
+      expect(step.visual.name, step.prompt).toContain(hit[2]!);
+      expect(shape.whole, step.prompt).toBe(hit[3]);
+      checked++;
+    }
+    // Kalau kalimat materinya diubah, test ini jangan diam-diam jadi kosong.
+    expect(checked).toBeGreaterThanOrEqual(2);
   });
 });

@@ -1208,13 +1208,16 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     expect(done).toHaveBeenCalled();
   });
 
-  it('sisi persegi di g1-u6-m3 dihitung per sisi, bukan per sudut', () => {
+  it('potongan di g1-u6-m3 dihitung per potongan, dan menyentuh yang sama tidak menambah', () => {
     const mod = moduleById('g1-u6-m3');
     render(<LearnScreen module={mod!} onDone={() => {}} onExit={() => {}} />);
-    const sides = screen.getAllByRole('button', { name: /^Side \d/ });
-    expect(sides).toHaveLength(4);
+    const pieces = screen.getAllByRole('button', { name: /^Piece \d/ });
+    expect(pieces).toHaveLength(2);
     const next = screen.getByRole('button', { name: /next|start/i });
-    for (const s of sides) fireEvent.click(s);
+    fireEvent.click(pieces[0]!);
+    fireEvent.click(pieces[0]!);
+    expect(next).toBeDisabled();
+    fireEvent.click(pieces[1]!);
     expect(next).not.toBeDisabled();
   });
 
@@ -1230,6 +1233,7 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
       'ten-frame': { kind: 'ten-frame', value: 0 },
       shape2d: { kind: 'shape2d', name: 'triangle', showCorners: true, tap: 'corners' },
       'number-line': { kind: 'number-line', min: 0, max: 10, value: null },
+      'composed-shape': { kind: 'composed-shape', name: 'square-2-triangles', tap: true },
     };
     for (const kinds of Object.values(ACTION_VISUALS)) {
       for (const kind of kinds) {

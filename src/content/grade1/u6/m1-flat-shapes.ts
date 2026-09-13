@@ -1,4 +1,5 @@
 import type { ShapeName } from '../../../engine/types';
+import { ALSO_TRUE } from '../../options';
 import type { ContentModule } from '../../types';
 
 const SHAPES: { name: ShapeName; sides: number }[] = [
@@ -9,6 +10,10 @@ const SHAPES: { name: ShapeName; sides: number }[] = [
 ];
 
 const NAMES = SHAPES.map((s) => s.name);
+
+/** Persegi JUGA persegi panjang — tombol "rectangle" tidak ikut saat jawabannya persegi. */
+const nameOptions = (i: number) =>
+  NAMES.filter((n, j) => j === i || !(ALSO_TRUE[NAMES[i]!] ?? []).includes(n));
 
 export const flatShapes: ContentModule = {
   id: 'g1-u6-m1',
@@ -70,10 +75,10 @@ export const flatShapes: ContentModule = {
       type: 'choose-text',
       skill: 'shape-2d',
       params: { i: [0, 3] },
-      answer: (p) => p.i as number,
+      answer: (p) => nameOptions(p.i as number).indexOf(NAMES[p.i as number]!),
       text: () => 'What shape is this?',
       visual: (p) => ({ kind: 'shape2d', name: NAMES[p.i as number] as ShapeName }),
-      options: () => NAMES,
+      options: (p) => nameOptions(p.i as number),
     },
     {
       type: 'choose-number',

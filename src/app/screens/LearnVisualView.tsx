@@ -7,6 +7,7 @@ import {
   RectShape,
   Base10Blocks,
   Clock,
+  ComposedShape,
   CounterObjects,
   FractionShape,
   Money,
@@ -17,6 +18,7 @@ import {
   Shape2D,
   ShapeNet,
   Solid3D,
+  SolidShapes,
   TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
@@ -135,6 +137,18 @@ export function LearnVisualView({ visual, value, onValue, interactive }: LearnVi
       return <Pictogram rows={visual.rows} />;
     case 'position':
       return <PositionScene anchor={visual.anchor} items={visual.items} />;
+    case 'solid-shapes':
+      return <SolidShapes shapes={visual.shapes} />;
+    case 'composed-shape':
+      return (
+        <ComposedShape
+          name={visual.name}
+          // Potongan yang bisa disentuh butuh sasaran ≥44px (CLAUDE.md §2).
+          size={interactive && visual.tap ? 200 : 150}
+          note={visual.note}
+          onTap={interactive && visual.tap ? onValue : undefined}
+        />
+      );
     case 'solid':
       return (
         <Solid3D

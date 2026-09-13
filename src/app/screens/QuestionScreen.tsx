@@ -22,6 +22,7 @@ import {
   RectShape,
   Base10Blocks,
   Clock,
+  ComposedShape,
   CounterObjects,
   FractionShape,
   Money,
@@ -31,6 +32,7 @@ import {
   Shape2D,
   ShapeNet,
   Solid3D,
+  SolidShapes,
   TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
@@ -205,6 +207,10 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
       return <Pictogram rows={visual.rows} />;
     case 'position':
       return <PositionScene anchor={visual.anchor} items={visual.items} />;
+    case 'solid-shapes':
+      return <SolidShapes shapes={visual.shapes} />;
+    case 'composed-shape':
+      return <ComposedShape name={visual.name} size={140} />;
     case 'counter-objects':
       // Tanpa `onTap`: di soal, deretannya gambar untuk dibaca, bukan tombol.
       return <CounterObjects count={visual.count} icon={visual.icon} icons={visual.icons} />;

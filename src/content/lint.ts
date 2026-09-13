@@ -9,6 +9,8 @@ import { stepFor } from '../components/manipulatives/scale';
 // salinan akan berbeda diam-diam begitu ada bangun baru.
 import { SHAPE_SIDES } from '../components/manipulatives/Shape2D';
 import { PLACES as PLACE_WORDS } from '../components/manipulatives/PositionScene';
+import { piecesOf } from '../components/manipulatives/composed';
+import { ALSO_TRUE } from './options';
 import type { ContentModule, LearnStep, LearnVisual } from './types';
 import { spread, storyShape } from './storyShape';
 
@@ -78,7 +80,7 @@ export const STORY_VOCAB = new Set(
  */
 export const ACTION_VISUALS: Record<Exclude<LearnStep['action'], 'watch'>, LearnVisual['kind'][]> =
   {
-    'tap-count': ['counter-objects', 'shape2d'],
+    'tap-count': ['counter-objects', 'shape2d', 'composed-shape'],
     'tap-fill': ['ten-frame'],
     'drop-on-line': ['number-line'],
   };
@@ -107,6 +109,12 @@ export function learnStepBlocked(step: LearnStep): string | null {
     }
     if (target !== parts) {
       return `minta ${target} ${v.tap} tapi ${v.name} punya ${parts}`;
+    }
+  }
+  if (v.kind === 'composed-shape') {
+    if (!v.tap) return 'bangun tersusun tidak menyatakan potongannya bisa disentuh (`tap`)';
+    if (target !== piecesOf(v.name)) {
+      return `minta ${target} potongan tapi ${v.name} punya ${piecesOf(v.name)}`;
     }
   }
   if (v.kind === 'counter-objects' && target > v.count) {
@@ -696,6 +704,18 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
           break;
         }
         const kept = uniqueChoices(labels, answer);
+        // Tombol yang JUGA benar: persegi adalah persegi panjang, kubus adalah balok.
+        const alsoTrue = (ALSO_TRUE[labels[answer] ?? ''] ?? []).filter((w) =>
+          kept.some((i) => labels[i] === w),
+        );
+        if (alsoTrue.length > 0) {
+          add(
+            m.id,
+            'choices',
+            `rule "${r.skill}": "${labels[answer]}" benar, tapi "${alsoTrue.join('", "')}" juga benar dan ikut jadi tombol`,
+          );
+          break;
+        }
         if (kept.length < 3) {
           const dup = labels.filter((l, i) => labels.indexOf(l) !== i);
           add(

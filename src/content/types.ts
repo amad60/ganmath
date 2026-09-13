@@ -4,6 +4,7 @@ import type {
   ModuleDef,
   NetVisual,
   PositionVisual,
+  SolidShapesVisual,
   SolidVisual,
 } from '../engine/types';
 
@@ -84,7 +85,16 @@ export type LearnVisual =
   | ({ kind: 'net' } & NetVisual)
   | ({ kind: 'circle' } & CircleVisual)
   | ({ kind: 'coordinate-grid' } & CoordinateVisual)
-  | ({ kind: 'position' } & PositionVisual);
+  | ({ kind: 'position' } & PositionVisual)
+  | ({ kind: 'solid-shapes' } & SolidShapesVisual)
+  | {
+      kind: 'composed-shape';
+      name: import('../engine/types').ComposedName;
+      /** Potongannya bisa disentuh satu per satu. Wajib kalau `action` bukan `watch`. */
+      tap?: boolean;
+      /** Kalimat lambang di bawah gambar, mis. "2 halves make 1 circle". */
+      note?: string;
+    };
 
 export type LearnStep = {
   stage: 'concrete' | 'pictorial' | 'abstract';

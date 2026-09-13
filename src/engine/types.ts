@@ -58,7 +58,9 @@ export type VisualId =
   | 'circle'
   | 'coordinate-grid'
   | 'counter-objects'
-  | 'position';
+  | 'position'
+  | 'solid-shapes'
+  | 'composed-shape';
 
 export type DistractorKind = 'near' | 'digit-swap' | 'random';
 
@@ -137,7 +139,41 @@ export type QuestionVisual =
   | ({ kind: 'circle' } & CircleVisual)
   | ({ kind: 'coordinate-grid' } & CoordinateVisual)
   | ({ kind: 'position' } & PositionVisual)
-  | { kind: 'counter-objects'; count: number; icon?: string; icons?: string[] };
+  | { kind: 'counter-objects'; count: number; icon?: string; icons?: string[] }
+  | ({ kind: 'solid-shapes' } & SolidShapesVisual)
+  | { kind: 'composed-shape'; name: ComposedName };
+
+/**
+ * Bangun ruang Grade 1 — dinamai seperti benda yang dipegang anak. Beda dari
+ * `SolidName` (Grade 4+), yang digambar dari kubus satuan dan punya jaring-jaring.
+ */
+export type SolidKind = 'ball' | 'cube' | 'box' | 'cylinder' | 'cone';
+
+export type SolidShapesVisual = {
+  shapes: {
+    name: SolidKind;
+    /** Tulis namanya di bawah gambar. Dimatikan di soal yang menanyakan nama. */
+    label?: boolean;
+    /** Keterangan kecil di bawah nama, mis. "6 flat faces". */
+    note?: string;
+  }[];
+};
+
+/**
+ * Bangun datar yang tersusun dari beberapa potongan. Nama = bangun besar + potongannya;
+ * bentuk tiap potongan ada di `src/components/manipulatives/composed.ts`.
+ */
+export type ComposedName =
+  | 'square-2-triangles'
+  | 'square-4-triangles'
+  | 'square-4-squares'
+  | 'square-2-rectangles'
+  | 'rectangle-2-squares'
+  | 'rectangle-3-squares'
+  | 'rectangle-2-triangles'
+  | 'triangle-2-triangles'
+  | 'hexagon-6-triangles'
+  | 'circle-2-halves';
 
 /** Letak sebuah benda terhadap benda acuan. Urutannya dipakai sebagai indeks jawaban. */
 export type Place = 'above' | 'below' | 'left' | 'right';
