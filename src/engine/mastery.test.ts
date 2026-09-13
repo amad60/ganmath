@@ -236,6 +236,33 @@ describe('tes-lewat (jump level)', () => {
 describe('review', () => {
   const def = addModule();
 
+  /**
+   * Bug terlapor (g1-u6-m5): ★ terkunci selamanya. Kuis lama di bawah 95% memberi ★;
+   * sesudah dikuasai hanya ulangan dan Master Round yang tersisa, dan keduanya tidak
+   * pernah menaikkan bintang — padahal anaknya kini menjawab 100% benar.
+   */
+  it('Master Round 100% benar tapi belum otomatis: ★ naik ke ★★ (belum ★★★)', () => {
+    const s = state({ status: 'mastered', stars: 1, masteredAt: '2026-09-10', reviewStage: 1 });
+    const e = evaluate(def, s, session({ kind: 'master', correct: 10, thinkMs: 3200 }));
+    expect(e.next.stars).toBe(2);
+    expect(e.events).toContainEqual({ type: 'star', moduleId: def.id, stars: 2 });
+  });
+
+  it('Master Round otomatis tetap memberi ★★★', () => {
+    const s = state({ status: 'mastered', stars: 1, masteredAt: '2026-09-10', reviewStage: 1 });
+    expect(evaluate(def, s, session({ kind: 'master', correct: 10, thinkMs: 2000 })).next.stars).toBe(3);
+  });
+
+  it('ulangan 5/5 menaikkan ★ ke ★★; ulangan yang kurang tidak pernah mencabut bintang', () => {
+    const one = state({ status: 'mastered', stars: 1, masteredAt: '2026-09-10', reviewStage: 1 });
+    expect(evaluate(def, one, session({ kind: 'review', n: 5, correct: 5 })).next.stars).toBe(2);
+    expect(evaluate(def, one, session({ kind: 'review', n: 5, correct: 4 })).next.stars).toBe(1);
+    const two = state({ status: 'mastered', stars: 2, masteredAt: '2026-09-10', reviewStage: 1 });
+    expect(evaluate(def, two, session({ kind: 'review', n: 5, correct: 4 })).next.stars).toBe(2);
+    const three = state({ status: 'mastered', stars: 3, masteredAt: '2026-09-10', reviewStage: 1 });
+    expect(evaluate(def, three, session({ kind: 'master', correct: 10, thinkMs: 5000 })).next.stars).toBe(3);
+  });
+
   it('review lulus menaikkan stage; baru lulus R4 → retained', () => {
     let s = state({ status: 'mastered', stars: 1, masteredAt: '2026-09-01', reviewStage: 3 });
     let e = evaluate(def, s, session({ kind: 'review', n: 5, correct: 5 }));

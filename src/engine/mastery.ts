@@ -121,6 +121,20 @@ export function starsFor(accuracy: number): 1 | 2 {
 }
 
 /**
+ * Bintang sesudah sesi yang membuktikan akurasi LAGI — tidak pernah turun.
+ *
+ * Pernah putus di sini: sesudah modul dikuasai, satu-satunya sesi yang tersisa
+ * (ulangan dan Master Round) tidak pernah menaikkan ★ ke ★★. Master Round hanya
+ * tahu bintang ke-3, jadi anak yang menjawab 100% benar dengan waktu berpikir 3,2
+ * detik pulang dengan ★ — sama dengan sebelum dia mencoba. Terjadi di g1-u6-m5:
+ * soal lamanya tidak bisa dijawab, akurasi kuisnya jatuh di bawah 95%, dan ★ itu
+ * terkunci selamanya meski soalnya sudah diperbaiki dan anaknya menjawab sempurna.
+ */
+function liftStars(current: ModuleState['stars'], accuracy: number): ModuleState['stars'] {
+  return Math.max(current, starsFor(accuracy)) as ModuleState['stars'];
+}
+
+/**
  * Evaluator penguasaan — fungsi murni, satu-satunya tempat keputusan
  * "lulus / bintang / perlu diajar ulang" dibuat.
  */
@@ -220,6 +234,11 @@ export function evaluate(
     if (!state.masteredAt) return { next, events, detail };
 
     if (sessionPassed) {
+      const lifted = liftStars(state.stars, accuracy);
+      if (lifted > state.stars) {
+        next.stars = lifted;
+        events.push({ type: 'star', moduleId: def.id, stars: lifted as 1 | 2 | 3 });
+      }
       // `reviewStage` = ulangan yang BARU SAJA dikerjakan (1 = R1). Hanya lulus R4
       // yang membuat `retained`. Versi sebelumnya menaikkan stage lebih dulu lalu
       // memeriksa `>= 4`, jadi lulus R3 langsung `retained` dan R4 (+2 bulan) —
@@ -251,6 +270,13 @@ export function evaluate(
     if (mistakes <= 1 && noHints && thinkMs <= AUTOMATIC_THINK_MS) {
       next.stars = 3;
       events.push({ type: 'star', moduleId: def.id, stars: 3 });
+    } else if (accuracyPass) {
+      // Belum otomatis, tapi kebenarannya tetap diakui: ★ → ★★ kalau akurasinya ≥95%.
+      const lifted = liftStars(state.stars, accuracy);
+      if (lifted > state.stars) {
+        next.stars = lifted;
+        events.push({ type: 'star', moduleId: def.id, stars: lifted as 1 | 2 | 3 });
+      }
     }
     return { next, events, detail };
   }
@@ -261,7 +287,7 @@ export function evaluate(
       next.status = 'mastered';
       next.masteredAt = result.date;
       next.reviewStage = Math.max(1, state.reviewStage) as ModuleState['reviewStage'];
-      next.stars = Math.max(state.stars, starsFor(accuracy)) as ModuleState['stars'];
+      next.stars = liftStars(state.stars, accuracy);
       events.push({ type: 'mastered', moduleId: def.id });
     }
     return { next, events, detail };

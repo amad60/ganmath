@@ -96,6 +96,7 @@ export const en = {
     almost: 'Well done! A Speed Round makes it automatic.',
     masterWon: 'Third star! You know these by heart.',
     masterMissed: 'Good round. Come back for the third star.',
+    starUp: 'Two stars now! Come back for the third.',
     oneMore: 'One more good round to master this.',
     keepPractising: 'Practise this one more time.',
     newBadge: 'New badge!',

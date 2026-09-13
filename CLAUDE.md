@@ -256,6 +256,12 @@ mendapat satu bintang pun — dari tempat duduknya itu terbaca "aku salah", pada
 tidak satu pun jawabannya salah. Bintang tidak pernah bisa dicabut oleh nilai yang
 lebih rendah di pengulangan berikutnya.
 
+**Bintang juga harus bisa NAIK sesudah modul dikuasai.** Ulangan dan Master Round yang lulus
+dengan akurasi ≥95% menaikkan ★ ke ★★ (`liftStars`). Pernah putus: keduanya hanya tahu
+bintang ke-3, jadi g1-u6-m5 — yang kuis lamanya tidak bisa dijawab dan memberi ★ —
+terkunci di ★ walau anaknya kemudian menjawab 100% benar di Master Round (median 3,2 dtk,
+di atas ambang otomatis 3 dtk).
+
 **Nilai sempurna melewati aturan konsistensi.** Kuis 100% benar (dengan cakupan
 terpenuhi) langsung menyelesaikan modul, tanpa perlu sesi kedua — berlaku baik anak
 itu cepat maupun lambat, karena alasannya sama. Menyuruh anak

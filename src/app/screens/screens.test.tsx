@@ -425,7 +425,8 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
   };
 
   it('Master Round yang kalah tidak dijawab dengan kalimat tentang kecepatan kuis', () => {
-    const round = evaluate(def, practiced, fakeSession({ kind: 'master', thinkMs: 9000 }));
+    // Sudah ★★: ronde yang belum otomatis tidak menambah apa pun.
+    const round = evaluate(def, { ...practiced, stars: 2 }, fakeSession({ kind: 'master', thinkMs: 9000 }));
     render(
       <ResultScreen
         module={def}
@@ -442,6 +443,24 @@ describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => 
     expect(screen.getByText(/come back for the third star/i)).toBeInTheDocument();
     // Master Round bukan langkah menuju kelulusan modul: bar "sesi lulus" tidak berlaku.
     expect(screen.queryByText('1/2')).not.toBeInTheDocument();
+  });
+
+  it('Master Round yang menaikkan ★ ke ★★ menyebut bintangnya (g1-u6-m5)', () => {
+    const round = evaluate(def, { ...practiced, status: 'mastered', stars: 1 }, fakeSession({ kind: 'master', thinkMs: 9000 }));
+    render(
+      <ResultScreen
+        module={def}
+        kind="master"
+        evaluation={round}
+        xpGained={10}
+        earnedBadges={[]}
+        sessionsNeeded={2}
+        nextTitle={null}
+        onBackToMap={() => {}}
+      />,
+    );
+    expect(round.next.stars).toBe(2);
+    expect(screen.getByText(/two stars now/i)).toBeInTheDocument();
   });
 
   it('Master Round yang menang merayakan bintang ke-3', () => {

@@ -84,10 +84,14 @@ export function ResultScreen({
     ? en.result.testedOut
     : testoutFailed
       ? en.result.testoutFailed
-      : masterRound
-        ? thirdStar
-          ? en.result.masterWon
-          : en.result.masterMissed
+      : thirdStar
+        ? en.result.masterWon
+        : // Ulangan atau Master Round yang menaikkan ★ ke ★★: bintangnya disebut, bukan
+          // cuma "datang lagi" di atas bintang yang baru saja bertambah.
+          gotStar && (masterRound || kind === 'review')
+          ? en.result.starUp
+          : masterRound
+            ? en.result.masterMissed
         : mastered
           ? en.result.mastered
           : practiced
