@@ -220,11 +220,15 @@ export function evaluate(
     if (!state.masteredAt) return { next, events, detail };
 
     if (sessionPassed) {
-      const stage = Math.min(4, state.reviewStage + 1) as ModuleState['reviewStage'];
-      next.reviewStage = stage;
-      next.status = stage >= 4 ? 'retained' : 'mastered';
+      // `reviewStage` = ulangan yang BARU SAJA dikerjakan (1 = R1). Hanya lulus R4
+      // yang membuat `retained`. Versi sebelumnya menaikkan stage lebih dulu lalu
+      // memeriksa `>= 4`, jadi lulus R3 langsung `retained` dan R4 (+2 bulan) —
+      // yang jadwalnya sudah dihitung `nextReviewDate` — tidak pernah terjadi.
+      const retained = state.reviewStage >= 4;
+      next.reviewStage = (retained ? 4 : state.reviewStage + 1) as ModuleState['reviewStage'];
+      next.status = retained ? 'retained' : 'mastered';
       events.push({ type: 'review-passed', moduleId: def.id });
-      if (stage >= 4) events.push({ type: 'retained', moduleId: def.id });
+      if (retained) events.push({ type: 'retained', moduleId: def.id });
     } else {
       next.status = 'needs_review';
       next.reviewStage = 1;

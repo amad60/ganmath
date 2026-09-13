@@ -236,13 +236,28 @@ describe('tes-lewat (jump level)', () => {
 describe('review', () => {
   const def = addModule();
 
-  it('review lulus menaikkan stage; stage 4 → retained', () => {
+  it('review lulus menaikkan stage; baru lulus R4 → retained', () => {
     let s = state({ status: 'mastered', stars: 1, masteredAt: '2026-09-01', reviewStage: 3 });
-    const e = evaluate(def, s, session({ kind: 'review', n: 5, correct: 5 }));
+    let e = evaluate(def, s, session({ kind: 'review', n: 5, correct: 5 }));
     s = e.next;
+    // Lulus R3 = R4 (+60 hari) masih harus dijalani, bukan langsung retained.
     expect(s.reviewStage).toBe(4);
-    expect(s.status).toBe('retained');
+    expect(s.status).toBe('mastered');
+    expect(e.events.map((x) => x.type)).not.toContain('retained');
+
+    e = evaluate(def, s, session({ kind: 'review', n: 5, correct: 5 }));
+    expect(e.next.status).toBe('retained');
     expect(e.events.map((x) => x.type)).toContain('retained');
+  });
+
+  it('empat ulangan berjarak, bukan tiga, sebelum retained (CLAUDE.md §6)', () => {
+    let s = state({ status: 'mastered', stars: 1, masteredAt: '2026-09-01', reviewStage: 1 });
+    let passes = 0;
+    while (s.status !== 'retained' && passes < 10) {
+      s = evaluate(def, s, session({ kind: 'review', n: 5, correct: 5 })).next;
+      passes++;
+    }
+    expect(passes).toBe(4);
   });
 
   it('review gagal → needs_review dan mundur ke stage 1, tidak mengunci modul berikutnya', () => {

@@ -7,6 +7,8 @@ import { ResultScreen } from './ResultScreen';
 import { OnboardingScreen } from './OnboardingScreen';
 import { MapScreen } from './MapScreen';
 import { LearnScreen } from './LearnScreen';
+import { ParentScreen } from './ParentScreen';
+import { createInitialState } from '../../store/schema';
 import { LearnVisualView } from './LearnVisualView';
 import { Button, Keypad } from '../../components/ui';
 import { createSession } from '../../engine/session';
@@ -1356,5 +1358,61 @@ describe('layar soal & materi tidak boleh melebihi tinggi layar', () => {
     const box = container.querySelector('[aria-live="polite"]');
     expect(box).not.toBeNull();
     expect(box?.closest('main')).toBeNull();
+  });
+});
+
+/**
+ * Parent Area dulu hanya tahu grade yang sedang aktif: begitu anak naik kelas,
+ * seluruh cerita grade yang baru dituntaskan hilang dari layar.
+ */
+describe('ParentScreen — kemajuan per grade', () => {
+  const g1 = pathOrder.filter((id) => id.startsWith('g1-'));
+  const mastered = (date: string): ModuleState => ({
+    ...emptyModuleState(),
+    status: 'mastered',
+    stars: 2,
+    masteredAt: date,
+    learnCompletedAt: date,
+    reviewStage: 1,
+    attempts: [{ date, kind: 'quiz', accuracy: 1, medianThinkMs: 2000, medianTotalMs: 3000, passed: true }],
+    totals: { sessions: 1, questions: 10, correct: 10 },
+  });
+
+  const renderParent = () => {
+    const data = createInitialState('2026-09-08T00:00:00.000Z');
+    data.profile.grade = 2;
+    g1.forEach((id, i) => {
+      data.modules[id] = mastered(i < 20 ? '2026-09-08' : '2026-09-13');
+    });
+    return render(
+      <ParentScreen data={data} onGrade={() => {}} onSettings={() => {}} onImport={() => {}} onReset={() => {}} onBack={() => {}} />,
+    );
+  };
+
+  // Tombol "Jump to level" juga bernama "Grade N"; kartu kemajuan yang bisa dibuka-tutup.
+  const cardOf = (g: number) =>
+    screen.queryAllByRole('button', { name: new RegExp(`^Grade ${g}`) }).find((b) => b.hasAttribute('aria-expanded'));
+
+  it('grade yang sudah tuntas tetap terlihat — dan terbuka duluan — setelah anak naik kelas', () => {
+    renderParent();
+    const card = cardOf(1)!;
+    expect(card).toHaveAttribute('aria-expanded', 'true');
+    expect(card.textContent).toContain('Completed');
+    expect(card.textContent).toContain('6 days');
+    expect(screen.getByRole('img', { name: /Modules mastered per day, 6 days/ })).toBeInTheDocument();
+    // Grade aktif yang belum ada isinya tetap punya kartu, tapi tertutup.
+    expect(cardOf(2)).toHaveAttribute('aria-expanded', 'false');
+    // Grade yang belum disentuh sama sekali tidak diberi kartu kosong.
+    expect(cardOf(3)).toBeUndefined();
+  });
+
+  it('unit bisa dibuka sampai ke modulnya, urut nomor unit', () => {
+    renderParent();
+    const units = screen.getAllByRole('button', { name: /^Unit \d/ });
+    const numbers = units.map((u) => Number(u.textContent?.match(/^Unit (\d+)/)?.[1]));
+    expect(numbers).toEqual([...numbers].sort((a, b) => a - b));
+    fireEvent.click(units[0]!);
+    expect(units[0]).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getAllByText(/first try/).length).toBeGreaterThan(0);
   });
 });

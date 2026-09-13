@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
-import { all, availableGrades, moduleById, pathOrderFor } from '../../content';
+import { all, availableGrades, moduleById, pathOrderFor, unitTitles } from '../../content';
+import { gradeReport } from '../../engine/report';
+import { GradeProgress } from './GradeProgress';
 import { storageIsAvailable } from '../../store/progress';
 import type { ProgressState, Settings } from '../../store/schema';
 import { readMeta, shouldRemindBackup, writeMeta } from '../../store/meta';
@@ -54,6 +56,30 @@ export function ParentScreen({
 
   const remind = shouldRemindBackup(meta, mastered);
 
+  // Semua grade yang punya konten, bukan hanya yang aktif: grade yang sudah tuntas
+  // justru yang paling ingin dilihat orang tua, dan dulu hilang begitu anak naik kelas.
+  const reports = availableGrades.map((g) =>
+    gradeReport(
+      g,
+      pathOrderFor(g).map((id) => {
+        const m = moduleById(id);
+        return { id, title: m.title, unitId: m.unitId };
+      }),
+      data.modules,
+      (uid) => unitTitles[uid]?.title ?? uid,
+    ),
+  );
+  // Yang terbuka duluan: grade dengan aktivitas terakhir yang sudah punya hasil —
+  // biasanya yang baru saja dituntaskan. Seri (tuntas Grade 1 dan membuka Grade 2 di
+  // hari yang sama) dimenangkan grade yang punya modul dikuasai: kartu kosong bukan
+  // hal pertama yang ingin dilihat orang tua.
+  const latest = [...reports]
+    .filter((r) => r.lastActiveOn)
+    .sort((a, b) => (b.lastActiveOn ?? '').localeCompare(a.lastActiveOn ?? '') || b.cleared - a.cleared)[0];
+  // Grade yang belum disentuh tidak diberi kartu — kecuali grade yang sedang aktif.
+  const shown = reports.filter((r) => r.startedOn || r.grade === activeGrade);
+  const hidden = reports.filter((r) => !shown.includes(r)).map((r) => r.grade);
+
   const pickFile = async (file: File | undefined) => {
     if (!file) return;
     const result = await readProgressFile(file);
@@ -84,7 +110,18 @@ export function ParentScreen({
         </section>
 
         <section>
-          <h2 className="mb-2 text-xl font-black">Struggling with</h2>
+          <h2 className="mb-2 text-xl font-black">Progress by grade</h2>
+          <GradeProgress reports={shown} openGrade={latest?.grade ?? activeGrade} />
+          {hidden.length > 0 ? (
+            <p className="text-ink-soft mt-2 text-[15px]">
+              {hidden.length === 1 ? `Grade ${hidden[0]}` : `Grades ${hidden[0]}–${hidden.at(-1)}`} will
+              show up here once started.
+            </p>
+          ) : null}
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-xl font-black">Struggling with · Grade {activeGrade}</h2>
           {struggling.length === 0 ? (
             <p className="text-ink-soft text-[18px]">Nothing yet — accuracy looks good.</p>
           ) : (

@@ -296,6 +296,10 @@ Berlaku di semua grade:
 | R3 | +1 bulan | Quick Review, 5 soal |
 | R4 | +2 bulan | Quick Review, 5 soal → lolos = status `retained` |
 
+`reviewStage` = ulangan yang jatuh tempo berikutnya (1 = R1). Pernah putus: stage dinaikkan
+lebih dulu lalu diperiksa `>= 4`, jadi lulus **R3** langsung `retained` dan R4 tidak pernah
+terjadi. Dikunci test "empat ulangan berjarak, bukan tiga".
+
 - **Maksimal 2 modul review per hari** supaya sesi tetap 5–10 menit dan tidak menumpuk jadi
   hukuman setelah berbulan-bulan.
 - Gagal review → `needs_review`, jadwal mundur ke R1. **Tidak mengunci ulang** modul berikutnya.
@@ -458,6 +462,14 @@ modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
 Terpisah dan terlindungi (gerbang sederhana, mis. tekan lama + soal perkalian dewasa):
 ringkasan progress per grade/modul, topik yang sering salah, waktu belajar, atur ambang
 penguasaan, export/import/reset progress.
+
+**Kemajuan per grade** (`engine/report.ts` + `GradeProgress.tsx`): satu kartu per grade yang
+sudah dimulai, bisa dibuka-tutup — lama tuntas, bintang, akurasi, perkiraan waktu menjawab,
+modul per hari, lulus-pertama vs perlu diulang, Speed Round terbuka, ulangan memori, lalu
+unit → modul. Pernah putus: Parent Area hanya membaca grade AKTIF, jadi begitu anak naik ke
+Grade 2 seluruh cerita Grade 1 hilang dari layar walau datanya utuh. Semua angka diturunkan
+dari `ModuleState` yang sudah ada; batasnya ditulis jujur di kodenya (tanggal per hari, waktu
+= perkiraan menjawab soal, `attempts` dipotong 10).
 
 ## 13. Non-Goals (v1)
 
