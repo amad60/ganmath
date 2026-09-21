@@ -16,13 +16,14 @@ Log keputusan produk. Semua yang terjawab sudah dipindahkan ke `../CLAUDE.md`.
 | 19 | Anak yang levelnya sudah di atas | **Pintu jump-level**: ⏩ "I already know this" per modul (kuis singkat, ambang 90%, gagal tidak menghukum) + bagian Jump to level di Parent Area |
 | 16 | Batas waktu belajar harian | **Tidak ada penguncian app**; hanya `Daily reminder` opsional (default OFF). App sudah membatasi diri lewat sesi 5–10 menit & maks 2 modul review/hari |
 | 7 | Cara menjalankan | **Deploy statis ke Netlify** akun pribadi user; deploy dilakukan user sendiri |
-| 8 | Device | **Poco F3 (Android/Chrome)** & **iPhone 17 (iOS/Safari)** → desain 390–430px portrait |
+| 8 | Device | **Poco F3 (Android/Chrome)** & **iPhone 12 mini (iOS/Safari)**; acuan awal juga menyebut iPhone 17 → desain 375–430px portrait |
 | 9 | Nama app | **GanMath** |
 | 10 | Stack teknis | Diserahkan ke Claude → Vite + React + TS + Tailwind + Motion + Zustand + PWA |
 | 11 | Titik mulai anak | Sudah bisa hitung sampai 100, tapi **mulai dari modul awal**, tanpa tes penempatan |
 | 12 | Kalau macet di satu modul | **Tahan di modul itu**, tidak ada jalur alternatif |
 | 13 | Panjang sesi | **Minimal 5 menit** per sesi |
 | — | Backup progress | Export/import file JSON wajib di v1 + pengingat backup berkala |
+| 20 | Sync antar HP | **Akun email orang tua** (kode 6 digit), bukan transfer file. File tetap sebagai jaring pengaman. `docs/tech/cloud-sync.md` |
 
 ## ⬜ Belum terjawab / muncul kemudian
 

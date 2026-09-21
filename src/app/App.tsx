@@ -3,14 +3,13 @@ import { evaluate, type Evaluation } from '../engine/mastery';
 import { createSession, toSessionResult, type SessionState } from '../engine/session';
 import { nextModule } from '../engine/unlock';
 import { nextStepFor, type ModuleStep } from '../engine/steps';
-import { dueReviews } from '../engine/review';
+import { dueReviewsForGrade, toDateString } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
 import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
-import { toDateString } from '../engine/review';
 import { MapScreen } from './screens/MapScreen';
 import { OnboardingScreen } from './screens/OnboardingScreen';
 import { BadgesScreen } from './screens/BadgesScreen';
@@ -24,6 +23,7 @@ import { clearSession, loadSession, saveSession } from '../store/session';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
+import { useCloudSync } from '../sync/useCloudSync';
 
 type Screen =
   | { name: 'map' }
@@ -54,6 +54,7 @@ export function App() {
   const setGrade = useProgress((s) => s.setGrade);
   const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
+  useCloudSync();
 
   // Sesi yang sedang berjalan dipulihkan saat app dibuka: HP terkunci atau app
   // dibunuh sistem tidak boleh menghapus jawaban yang sudah dikerjakan anak.
@@ -104,10 +105,11 @@ export function App() {
 
   const reviews = useMemo(
     () =>
-      dueReviews(data.modules, today)
-        .filter((r) => registry.modules[r.moduleId])
-        .map((r) => ({ moduleId: r.moduleId, title: moduleById(r.moduleId).title })),
-    [data.modules, today, registry],
+      dueReviewsForGrade(data.modules, today, grade).map((r) => ({
+        moduleId: r.moduleId,
+        title: moduleById(r.moduleId).title,
+      })),
+    [data.modules, today, grade],
   );
 
   useEffect(() => {

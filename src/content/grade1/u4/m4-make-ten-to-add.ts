@@ -31,12 +31,12 @@ export const makeTenToAdd: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Eight needs two to make ten.',
-      visual: { kind: 'number-bond', whole: 5, parts: [2, 3] },
+      visual: { kind: 'ten-frame', value: 10, capacity: 20, split: 8 },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Split five into two and three.',
+      prompt: 'Ten and three make 13.',
       visual: { kind: 'ten-frame', value: 13, capacity: 20, split: 10 },
       action: 'watch',
     },

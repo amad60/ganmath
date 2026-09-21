@@ -16,21 +16,19 @@ export const tellTheTime: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'choose-number'],
   visuals: ['clock'],
-  vocab: ['clock', 'time', 'hour', 'past', 'thirty', 'hand'],
+  vocab: ['clock', 'time', 'hour', 'past', 'thirty', 'hand', 'short', 'long', 'means'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap three on the frame.',
-      visual: { kind: 'ten-frame', value: 0 },
-      action: 'tap-fill',
-      target: 3,
-      hint: 'Three is the hour.',
+      prompt: 'The short hand shows the hour.',
+      visual: { kind: 'clock', hour: 3, minute: 0 },
+      action: 'watch',
     },
     {
       stage: 'pictorial',
-      prompt: 'The short hand shows the hour.',
-      visual: { kind: 'clock', hour: 3, minute: 0 },
+      prompt: 'The long hand means half past.',
+      visual: { kind: 'clock', hour: 3, minute: 30 },
       action: 'watch',
     },
     {

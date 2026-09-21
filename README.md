@@ -6,8 +6,8 @@ Web mobile app belajar matematika SD bergaya Duolingo, dibuat untuk satu anak ke
 Anak belajar sendiri dari materi yang bisa dibaca, lalu diuji, dan **hanya boleh lanjut ke modul
 berikutnya kalau benar-benar menguasai**.
 
-- **Tanpa backend, tanpa database, tanpa login.** Semua progress di localStorage + backup file.
-- **Offline-first** (PWA, installable ke home screen).
+- **Offline-first** (PWA, installable ke home screen). Progress di localStorage; akun
+  email orang tua menyalinnya antar HP. File backup tetap ada.
 - **Bahasa app: English sederhana** untuk pembaca pemula.
 
 ## Menjalankan

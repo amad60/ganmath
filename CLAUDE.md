@@ -394,24 +394,30 @@ modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
 ## 10. Target Perangkat
 
 - **Poco F3 (Android, Chrome)** — 6.67", viewport ±393×873 CSS px, refresh 120Hz.
+- **iPhone 12 mini (iOS, Safari)** — 5.4", viewport ±375×812 CSS px (Safari dengan chrome ~375×630). HP kedua anak; lebih sempit dan lebih pendek dari acuan awal.
 - **iPhone 17 (iOS, Safari)** — 6.3", viewport ±402×874 CSS px, ada Dynamic Island.
-- Desain acuan: **lebar 390–430px, portrait**, layar tinggi (rasio ±19.5–20:9). Harus tetap rapi
+- Desain acuan: **lebar 375–430px, portrait**, layar tinggi (rasio ±19.5–20:9). Harus tetap rapi
   di tablet, tapi bukan prioritas.
 - Wajib: `viewport-fit=cover` + `env(safe-area-inset-*)`, tanpa horizontal scroll, tombol utama
   dalam jangkauan jempol (sepertiga bawah layar).
 - **Peringatan khusus iOS:** Safari bisa menghapus localStorage situs yang tidak dibuka
   ±7 hari. Penawarnya: (a) dorong anak **Add to Home Screen** (PWA terinstal jauh lebih aman),
-  dan (b) backup file — lihat §11.
+  (b) **cloud sync akun orang tua** — lihat §11, dan (c) backup file.
 
 ## 11. Batasan Teknis
 
 - **Web mobile app** (bukan native), mobile-first, portrait.
-- **Tanpa database, tanpa backend, tanpa login.** Semua state di **localStorage**.
+- **State utama di localStorage** supaya app tetap jalan offline.
+- **Akun orang tua (opsional) untuk sync antar HP** — email + kode 6 digit, lewat
+  Parent Area. Bukan akun anak, bukan login di peta. Detail: `docs/tech/cloud-sync.md`.
 - **PWA**: installable ke home screen, jalan offline.
-- Tidak mengumpulkan data pribadi anak. Tidak ada iklan. Tidak ada tracking pihak ketiga.
+- Tidak ada iklan. Tidak ada tracking pihak ketiga. Cloud hanya menyimpan progress
+  yang sudah ada di HP, di belakang RLS akun orang tua.
 
 ### Backup progress (wajib di v1)
-- **Save to file** di Parent Area → unduh `ganmath-progress-YYYY-MM-DD.json`.
+- **Cloud sync** di Parent Area → email orang tua, kode 6 digit, progress mengikuti akun
+  itu di setiap HP. Yang `updatedAt`-nya lebih baru menang utuh; tidak digabung.
+- **Save to file** di Parent Area → unduh `ganmath-progress-YYYY-MM-DD.json` (jaring pengaman).
 - **Load from file** → pilih file, app validasi `schemaVersion`, konfirmasi kalau akan menimpa
   progress yang ada, lalu pulihkan.
 - **Pengingat backup otomatis** setiap satu grade selesai atau tiap ~2 minggu pemakaian.
@@ -480,7 +486,8 @@ dari `ModuleState` yang sudah ada; batasnya ditulis jujur di kodenya (tanggal pe
 ## 13. Non-Goals (v1)
 
 - Bukan aplikasi multi-user / kelas / guru.
-- Tidak ada akun, cloud sync, atau server.
+- Tidak ada akun **anak**, cloud sync kelas, atau login di peta. Akun email orang tua
+  hanya untuk menyalin progress antar HP milik keluarga yang sama.
 - Tidak ada word problem panjang di grade awal.
 - Tidak ada monetisasi, iklan, atau analitik.
 - Tidak generate soal via AI saat runtime (harus offline & deterministik).
@@ -496,7 +503,7 @@ learn math/
 │   ├── research/          ← ✅ Fase 1: riset kurikulum, pedagogi, mastery, app sejenis
 │   ├── curriculum/        ← ✅ Fase 2: skema modul, Grade 1 lengkap, peta Grade 2–6
 │   ├── design/            ← ✅ Fase 3: sistem desain, maskot, wireframe, animasi
-│   └── tech/              ← ✅ Fase 4: arsitektur, storage, engine, rencana 5a
+│   └── tech/              ← ✅ Fase 4: arsitektur, storage, engine, cloud sync, rencana 5a
 ├── scripts/               ← shots.mjs (screenshot layar), icons.mjs (ikon PWA dari maskot)
 └── src/
     ├── engine/            ← fungsi murni: penguasaan, generator soal, langkah, review

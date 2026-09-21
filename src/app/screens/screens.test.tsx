@@ -963,6 +963,23 @@ describe('MapScreen — pintu jump level', () => {
     expect(onNextGrade).toHaveBeenCalledWith(2);
   });
 
+  it('ulangan Grade 1 tetap muncul di peta Grade 2', () => {
+    const onReview = vi.fn();
+    render(
+      <MapScreen
+        {...mapProps({
+          grade: 2,
+          nextId: 'g2-u1-m1',
+          reviews: [{ moduleId: 'g1-u2-m4', title: 'Bonds of 10' }],
+          onReview,
+        })}
+      />,
+    );
+    expect(screen.getByText(/Time to remember/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Bonds of 10/ }));
+    expect(onReview).toHaveBeenCalledWith('g1-u2-m4');
+  });
+
   it('grade terakhir tidak menawarkan grade ke-7 yang tidak ada', async () => {
     const { pathOrderFor } = await import('../../content');
     const done: ModuleState = {

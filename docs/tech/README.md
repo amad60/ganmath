@@ -7,7 +7,7 @@ Selesai: 2026-09-08.
 | [architecture.md](architecture.md) | Stack final, struktur folder, aturan impor, navigasi tanpa router, aliran data, PWA, Netlify |
 | [storage.md](storage.md) | Skema `ProgressState` final, batas ukuran, migrasi, risiko iOS, format export/import |
 | [engine.md](engine.md) | RNG berseed, generator & pengecoh, session runner, evaluator penguasaan, penjadwal review, gating, rencana test |
-| [implementation-plan.md](implementation-plan.md) | 13 langkah Fase 5a + definition of done, anggaran, risiko |
+| [cloud-sync.md](cloud-sync.md) | Akun orang tua, OTP, last-write-wins, setup Supabase + Netlify |
 
 ## Keputusan arsitektur yang mengikat
 

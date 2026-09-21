@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { addDays, daysBetween, dueReviews, nextReviewDate, toDateString } from './review';
+import {
+  addDays,
+  daysBetween,
+  dueReviews,
+  dueReviewsForGrade,
+  gradeOfModuleId,
+  nextReviewDate,
+  toDateString,
+} from './review';
 import { state } from './fixtures';
 
 describe('tanggal', () => {
@@ -62,5 +70,61 @@ describe('jadwal review', () => {
   it('yang belum jatuh tempo tidak muncul', () => {
     const s = state({ status: 'mastered', masteredAt: '2026-09-01', reviewStage: 1 });
     expect(dueReviews({ x: s }, '2026-09-02')).toHaveLength(0);
+  });
+});
+
+describe('ulangan lintas grade', () => {
+  const mastered = (extra: Partial<ReturnType<typeof state>> = {}) =>
+    state({
+      status: 'mastered',
+      masteredAt: '2026-09-01',
+      reviewStage: 1,
+      totals: { sessions: 1, questions: 10, correct: 8 },
+      ...extra,
+    });
+
+  it('membaca grade dari ID modul', () => {
+    expect(gradeOfModuleId('g1-u2-m4')).toBe(1);
+    expect(gradeOfModuleId('g2-u1-m1')).toBe(2);
+    expect(gradeOfModuleId('unit:g1-u2')).toBeNull();
+  });
+
+  it('Grade 1: dua ulangan dari kelas itu sendiri', () => {
+    const due = dueReviewsForGrade(
+      {
+        'g1-u1-m1': mastered({ totals: { sessions: 1, questions: 10, correct: 5 } }),
+        'g1-u2-m4': mastered({ totals: { sessions: 1, questions: 10, correct: 9 } }),
+        'g1-u4-m2': mastered(),
+      },
+      '2026-09-20',
+      1,
+    );
+    expect(due.map((d) => d.moduleId)).toEqual(['g1-u1-m1', 'g1-u4-m2']);
+  });
+
+  it('Grade 2: satu slot untuk fakta Grade 1 yang jatuh tempo', () => {
+    const due = dueReviewsForGrade(
+      {
+        'g1-u2-m4': mastered({ totals: { sessions: 1, questions: 10, correct: 4 } }),
+        'g2-u1-m1': mastered({ totals: { sessions: 1, questions: 10, correct: 8 } }),
+        'g2-u2-m1': mastered({ totals: { sessions: 1, questions: 10, correct: 9 } }),
+      },
+      '2026-09-20',
+      2,
+    );
+    expect(due.map((d) => d.moduleId)).toEqual(['g1-u2-m4', 'g2-u1-m1']);
+  });
+
+  it('kalau kelas lama tidak punya yang jatuh tempo, keduanya dari kelas aktif', () => {
+    const due = dueReviewsForGrade(
+      {
+        'g1-u2-m4': state({ status: 'mastered', masteredAt: '2026-09-19', reviewStage: 1 }),
+        'g2-u1-m1': mastered({ totals: { sessions: 1, questions: 10, correct: 5 } }),
+        'g2-u2-m1': mastered({ totals: { sessions: 1, questions: 10, correct: 6 } }),
+      },
+      '2026-09-20',
+      2,
+    );
+    expect(due.map((d) => d.moduleId)).toEqual(['g2-u1-m1', 'g2-u2-m1']);
   });
 });

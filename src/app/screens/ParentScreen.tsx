@@ -10,6 +10,7 @@ import { Button, Header, ProgressBar, Sheet } from '../../components/ui';
 import { readProgressFile, saveProgressToFile } from '../backupFile';
 import { summarize, buildBackup } from '../../store/backup';
 import { APP_VERSION } from '../backupFile';
+import { CloudSyncPanel } from './CloudSync';
 
 export type ParentScreenProps = {
   data: ProgressState;
@@ -218,6 +219,8 @@ export function ParentScreen({
             switch back any time.
           </p>
         </section>
+
+        <CloudSyncPanel />
 
         <section className="flex flex-col gap-3">
           <h2 className="text-xl font-black">Progress backup</h2>

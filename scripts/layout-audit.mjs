@@ -14,6 +14,7 @@
  *   npm run audit:layout                 # seluruh 240 modul → /tmp/layout.jsonl
  *   OFFSET=40 LIMIT=20 npm run audit:layout
  *   ONLY=g1-u6-m1,g6-u5-m4 npm run audit:layout
+ *   WIDTH=375 HEIGHT=630 npm run audit:layout   # iPhone 12 mini di Safari, bukan PWA
  *
  * CATATAN: jalankan di FOREGROUND. macOS menurunkan prioritas proses latar sehingga
  * Chrome headless ikut di-throttle — audit yang sama bisa jadi 10x lebih lambat.
@@ -71,9 +72,12 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new'
 let page;
 /** Halaman bersih per modul, tapi TANPA service worker: precache 890KB per halaman
  *  membuat audit 240 modul berjam-jam, dan yang diaudit di sini tata letak, bukan PWA. */
+const VW = Number(process.env.WIDTH ?? 393);
+const VH = Number(process.env.HEIGHT ?? 873);
+
 const freshPage = async () => {
   const p = await browser.newPage();
-  await p.setViewport({ width: 393, height: 873, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await p.setViewport({ width: VW, height: VH, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   const client = await p.createCDPSession();
   await client.send('Network.setBypassServiceWorker', { bypass: true });

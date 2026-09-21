@@ -242,7 +242,10 @@ export function createProgressStore(
         updateSettings: (patch) =>
           set((s) => ({ data: touch({ ...s.data, settings: { ...s.data.settings, ...patch } }) })),
 
-        replaceAll: (state) => set({ data: touch(state) }),
+        // Jangan `touch`: impor file / tarik dari cloud harus mempertahankan
+        // `updatedAt` aslinya. Kalau di-bump, HP ini selalu "lebih baru" dari
+        // sumbernya dan menimpa cloud dengan data yang sama.
+        replaceAll: (state) => set({ data: state }),
 
         reset: () => set({ data: createInitialState() }),
       }),

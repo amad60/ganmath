@@ -71,6 +71,52 @@ export function dueReviews(
   return due.slice(0, limit);
 }
 
+/** Grade dari ID modul (`g2-u1-m1` → 2). Konvensi ID tidak pernah berubah. */
+export function gradeOfModuleId(id: string): number | null {
+  const m = /^g(\d+)-/.exec(id);
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * Ulangan untuk peta kelas aktif, dengan satu slot disisakan untuk kelas sebelumnya.
+ *
+ * Tanpa ini, naik ke Grade 2 membuat seluruh fakta Grade 1 hilang dari kartu
+ * "Time to remember" — `dueReviews` masih menghitungnya, tapi app membuangnya
+ * karena tidak ada di registry kelas aktif. Anak yang baru tamat Grade 1 justru
+ * kehilangan retensi di saat paling dibutuhkan.
+ *
+ * Maksimal tetap 2 per hari. Kalau ada yang jatuh tempo di kelas lama, satu
+ * diambil dari situ; sisanya dari kelas aktif. Kalau tidak ada, keduanya dari
+ * kelas aktif — perilaku Grade 1 tidak berubah.
+ */
+export function dueReviewsForGrade(
+  modules: Record<string, ModuleState>,
+  today: string,
+  grade: number,
+  limit: number = MAX_REVIEWS_PER_DAY,
+): DueReview[] {
+  const due = dueReviews(modules, today, 50);
+  const prior: DueReview[] = [];
+  const current: DueReview[] = [];
+  for (const r of due) {
+    const g = gradeOfModuleId(r.moduleId);
+    if (g == null) continue;
+    if (g === grade) current.push(r);
+    else if (g < grade) prior.push(r);
+  }
+  const picked: DueReview[] = [];
+  if (prior[0]) picked.push(prior[0]);
+  for (const r of current) {
+    if (picked.length >= limit) break;
+    picked.push(r);
+  }
+  for (const r of prior) {
+    if (picked.length >= limit) break;
+    if (!picked.includes(r)) picked.push(r);
+  }
+  return picked;
+}
+
 function accuracyOf(state: ModuleState): number {
   const { questions, correct } = state.totals;
   return questions === 0 ? 0 : correct / questions;

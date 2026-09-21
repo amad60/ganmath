@@ -142,5 +142,10 @@ layar "Welcome back! Load your progress from a file?" alih-alih diam-diam memula
 - **Import tidak pernah menggabungkan.** Menggabungkan dua riwayat penguasaan menghasilkan data
   yang tidak bisa dipercaya. Impor = ganti total, setelah konfirmasi eksplisit.
 
+## 7. Cloud sync (akun orang tua, 2026-09-21)
+
+Satu baris `progress` per akun di Supabase. Last-write-wins pada `updatedAt`. File backup
+§6 tetap sebagai jaring pengaman. Setup: [`cloud-sync.md`](cloud-sync.md).
+
 **Pengingat backup** muncul kalau: satu grade selesai, **atau** `now - lastBackupAt > 14 hari`
 dan ada minimal 5 modul baru dikuasai sejak backup terakhir.
