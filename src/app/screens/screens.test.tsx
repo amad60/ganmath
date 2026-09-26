@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { act, render, screen, fireEvent, within } from '@testing-library/react';
 import { QuestionScreen } from './QuestionScreen';
 import { ErrorBoundary } from '../ErrorBoundary';
 import { ResultScreen } from './ResultScreen';
@@ -14,6 +14,7 @@ import { Button, Keypad } from '../../components/ui';
 import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
 import { learnCheck } from '../../engine/learnCheck';
+import { QUICK_LOOK_FLASH_MS, WATCH_LOOK_MS } from '../../engine/learnPacing';
 import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
 import { moduleById, pathOrder } from '../../content';
 import { ACTION_VISUALS } from '../../content/lint';
@@ -525,6 +526,20 @@ describe('Onboarding', () => {
     expect(screen.getByLabelText('cat')).toBeInTheDocument();
     expect(screen.queryByText('🤖')).not.toBeInTheDocument();
   });
+
+  it('HP baru bisa tarik progress dari akun lama tanpa isi nama dulu', () => {
+    render(<OnboardingScreen onDone={() => {}} cloudRestore />);
+    expect(screen.queryByLabelText('6-digit code')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Used GanMath on another phone/i }));
+    expect(screen.getByLabelText('6-digit code')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Load progress' })).toBeInTheDocument();
+  });
+
+  it('menunggu cloud sebelum minta nama, supaya magic link sempat menarik progress', () => {
+    render(<OnboardingScreen onDone={() => {}} loading />);
+    expect(screen.getByText(/Looking for your progress/)).toBeInTheDocument();
+    expect(screen.queryByLabelText('Your name')).not.toBeInTheDocument();
+  });
 });
 
 describe('area aman', () => {
@@ -695,22 +710,54 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     return createSession(def, kind, 5, 0);
   };
 
-  it('menekan Hint di modul tanpa param "n" tetap memunculkan materi, bukan kalimat kosong', () => {
-    // g1-u2-m2 "Add to 5": aturannya berparameter a & b — dulu Hint-nya nihil.
+  it('menekan Hint di soal penjumlahan menampilkan angka SOAL INI, bukan contoh Learn', () => {
+    // g1-u2-m2 "Add to 5": aturannya berparameter a & b — dulu Hint-nya contoh 2+3
+    // tetap, atau nihil. Sekarang ten-frame-nya dari a dan b yang sedang ditanyakan.
+    const session = play('g1-u2-m2', 'practice');
+    const q = session.pending[0]!.question;
     render(
       <QuestionScreen
-        session={play('g1-u2-m2', 'practice')}
+        session={session}
         onSession={() => {}}
         onFinish={() => {}}
         onExit={() => {}}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
-    // Materi Learn modul itu dipanggil ulang: ada gambar (svg) DAN kalimat pengantarnya.
-    const learn = moduleById('g1-u2-m2').learn;
-    const step = learn.filter((l) => l.stage === 'pictorial').at(-1) ?? learn.at(-1);
-    expect(screen.getByText(step?.prompt ?? '###')).toBeInTheDocument();
+    const parts = q.text.match(/(\d+)\s*\+\s*(\d+)/);
+    expect(parts).toBeTruthy();
+    expect(screen.getByText(`${parts![1]} and ${parts![2]}.`)).toBeInTheDocument();
+    expect(screen.queryByLabelText(`Ten frame showing ${q.answer}`)).not.toBeInTheDocument();
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+  });
+
+  it('Hint 26 + 37 menampilkan 26 dan 37, bukan contoh 47+38=85', () => {
+    const s = play('g2-u2-m4', 'practice');
+    const base = s.pending[0]!.question;
+    const question = {
+      ...base,
+      text: '26 + 37 = ?',
+      params: { a: 26, b: 37 },
+      answer: 63,
+      hint: undefined,
+    };
+    render(
+      <QuestionScreen
+        session={{ ...s, pending: [{ question, retried: false }, ...s.pending] }}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
+    expect(screen.getByText('Ones first. 6 + 7.')).toBeInTheDocument();
+    expect(screen.getByLabelText(/26 plus 37/)).toBeInTheDocument();
+    expect(screen.getByText('13')).toBeInTheDocument();
+    expect(screen.getByText('6 + 7')).toBeInTheDocument();
+    expect(screen.getByText('50')).toBeInTheDocument();
+    expect(screen.getByText('20 + 30')).toBeInTheDocument();
+    expect(screen.queryByText('63')).not.toBeInTheDocument();
+    expect(screen.queryByText(/47 \+ 38/)).not.toBeInTheDocument();
   });
 
   /**
@@ -840,6 +887,45 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     render(
       <QuestionScreen
         session={play('g1-u2-m2', 'quiz')}
+        onSession={() => {}}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    expect(screen.queryByRole('button', { name: /Hint/ })).not.toBeInTheDocument();
+  });
+
+  it('Speed Round dan ulangan tidak menampilkan Hint', () => {
+    for (const kind of ['speed', 'review'] as const) {
+      const { unmount } = render(
+        <QuestionScreen
+          session={createSession(moduleById('g1-u2-m2'), kind, 5, 0)}
+          onSession={() => {}}
+          onFinish={() => {}}
+          onExit={() => {}}
+        />,
+      );
+      expect(screen.queryByRole('button', { name: /Hint/ })).not.toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it('Hint latihan hilang setelah dipakai 2 kali', () => {
+    const session = createSession(moduleById('g1-u2-m2'), 'practice', 5, 0);
+    const used = {
+      questionId: 'past',
+      type: 'keypad' as const,
+      skill: 'add',
+      correct: true,
+      thinkMs: 1000,
+      totalMs: 1200,
+      retried: false,
+      hintUsed: true,
+      story: false,
+    };
+    render(
+      <QuestionScreen
+        session={{ ...session, results: [used, used] }}
         onSession={() => {}}
         onFinish={() => {}}
         onExit={() => {}}
@@ -1215,6 +1301,23 @@ describe('QuestionScreen — soal tanpa gambar tidak boleh terlihat kosong', () 
  * anak terjebak di layar itu — tidak bisa lanjut, tidak bisa apa-apa selain keluar.
  */
 describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaikan', () => {
+  /** Isi langkah aksi, atau jalankan jeda look/flash sampai Next terbuka. */
+  function enableLearnNext() {
+    const next = screen.getByRole('button', { name: /next|start/i });
+    if (!next.hasAttribute('disabled')) return;
+    for (const b of screen.getAllByRole('button')) {
+      const label = b.getAttribute('aria-label') ?? '';
+      if (/^(Object|Cell|Corner|Side|Piece|Coin|Note) /.test(label) && !label.includes('look again')) {
+        fireEvent.click(b);
+      }
+    }
+    if (screen.getByRole('button', { name: /next|start/i }).hasAttribute('disabled')) {
+      act(() => {
+        vi.advanceTimersByTime(QUICK_LOOK_FLASH_MS);
+      });
+    }
+  }
+
   it('sudut segitiga di g1-u6-m1 bisa disentuh sampai Next terbuka', () => {
     const done = vi.fn();
     const mod = moduleById('g1-u6-m1');
@@ -1235,12 +1338,12 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
   });
 
   /**
-   * Materi tidak boleh bisa dilewati dengan mengetuk Next berulang kali. Untuk
-   * langkah `watch` tombol Next aktif seketika, dan 72% langkah di app ini `watch` —
-   * jadi tanpa pengecekan di akhir, anak bisa sampai di ujung materi dalam tiga detik
-   * tanpa pernah menyentuh idenya.
+   * Materi tidak boleh bisa dilewati dengan mengetuk Next berulang kali. Langkah
+   * `watch` menunggu jeda look, dan 72% langkah di app ini `watch` — jadi tanpa
+   * pengecekan di akhir, anak masih bisa sampai di ujung tanpa menerapkan idenya.
    */
   it('materi ditutup pengecekan: Next terkunci sampai anak menjawab benar', () => {
+    vi.useFakeTimers();
     const done = vi.fn();
     const mod = moduleById('g1-u1-m1');
     const SEED = 20260910;
@@ -1249,12 +1352,7 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
 
     // Tembus seluruh langkah materi.
     for (let i = 0; i < mod.learn.length; i++) {
-      const next = screen.getByRole('button', { name: /next|start/i });
-      if (next.hasAttribute('disabled')) {
-        for (const b of screen.getAllByRole('button')) {
-          if (/^(Object|Cell|Corner|Side)/.test(b.getAttribute('aria-label') ?? '')) fireEvent.click(b);
-        }
-      }
+      enableLearnNext();
       fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
     }
 
@@ -1285,6 +1383,7 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     expect(start).not.toBeDisabled();
     fireEvent.click(start);
     expect(done).toHaveBeenCalled();
+    vi.useRealTimers();
   });
 
   it('potongan di g1-u6-m3 dihitung per potongan, dan menyentuh yang sama tidak menambah', () => {
@@ -1314,6 +1413,7 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
       'number-line': { kind: 'number-line', min: 0, max: 10, value: null },
       'composed-shape': { kind: 'composed-shape', name: 'square-2-triangles', tap: true },
       fraction: { kind: 'fraction', parts: 2, shaded: 0, tap: true },
+      money: { kind: 'money', items: [1000, 500, 2000] },
     };
     for (const kinds of Object.values(ACTION_VISUALS)) {
       for (const kind of kinds) {
@@ -1336,6 +1436,62 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
         unmount();
       }
     }
+  });
+
+  it('langkah watch: Next terkunci sampai jeda look selesai', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('g1-u7-m4');
+    render(<LearnScreen module={mod} onDone={() => {}} onExit={() => {}} />);
+    const next = screen.getByRole('button', { name: /next|start/i });
+    expect(next).toBeDisabled();
+    expect(screen.getByText(/Look at the picture/i)).toBeInTheDocument();
+    act(() => {
+      vi.advanceTimersByTime(WATCH_LOOK_MS);
+    });
+    expect(next).not.toBeDisabled();
+    vi.useRealTimers();
+  });
+
+  it('Back mundur satu langkah, bukan keluar dari materi', () => {
+    vi.useFakeTimers();
+    const exit = vi.fn();
+    const mod = moduleById('g1-u1-m1');
+    render(<LearnScreen module={mod} onDone={() => {}} onExit={exit} />);
+    enableLearnNext();
+    fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+    expect(screen.getByText(/Fill the boxes/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /^Back$/i }));
+    expect(screen.getByText(/Tap each apple/i)).toBeInTheDocument();
+    expect(exit).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: /next|start/i })).not.toBeDisabled();
+    vi.useRealTimers();
+  });
+
+  it('Quick Look: titik tampil lalu hilang sebelum Next terbuka', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('g1-u1-m4');
+    render(<LearnScreen module={mod} onDone={() => {}} onExit={() => {}} />);
+    enableLearnNext();
+    fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+    act(() => {
+      vi.advanceTimersByTime(WATCH_LOOK_MS);
+    });
+    fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+    expect(screen.getByLabelText('Ten frame showing 6')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+    act(() => {
+      vi.advanceTimersByTime(QUICK_LOOK_FLASH_MS);
+    });
+    expect(screen.getByLabelText('Ten frame showing 0')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next|start/i })).not.toBeDisabled();
+    vi.useRealTimers();
+  });
+
+  it('Money concrete memakai koin rupiah, bukan emoji', () => {
+    const mod = moduleById('g1-u7-m5');
+    render(<LearnScreen module={mod} onDone={() => {}} onExit={() => {}} />);
+    expect(screen.getAllByRole('button', { name: /^Coin / })).toHaveLength(4);
+    expect(screen.queryByText('🪙')).not.toBeInTheDocument();
   });
 });
 

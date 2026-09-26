@@ -2,29 +2,22 @@ import { useEffect, useState } from 'react';
 import { Button } from '../../components/ui';
 import { useProgress } from '../../store/progress';
 import { cloudEnabled } from '../../sync/client';
-import {
-  reconcile,
-  sendSignInCode,
-  signOutCloud,
-  signedInEmail,
-  verifySignInCode,
-} from '../../sync/cloud';
+import { createPairingCode, reconcile, signOutCloud, signedInEmail } from '../../sync/cloud';
+import { CloudSignIn } from './CloudSignIn';
 
 /**
- * Masuk akun orang tua. Anak tidak pernah melihat layar ini — gerbang perkalian
- * sudah di depannya. Satu email = progress yang sama di Poco dan iPhone.
+ * Masuk akun orang tua. Anak tidak pernah melihat layar ini di peta — gerbang
+ * perkalian sudah di depannya. HP baru juga bisa masuk dari layar nama.
  */
 export function CloudSyncPanel() {
   const data = useProgress((s) => s.data);
   const replaceAll = useProgress((s) => s.replaceAll);
 
-  const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [sent, setSent] = useState(false);
   const [signedIn, setSignedIn] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [pairCode, setPairCode] = useState<string | null>(null);
 
   const refresh = async () => {
     setSignedIn(await signedInEmail());
@@ -32,6 +25,11 @@ export function CloudSyncPanel() {
 
   useEffect(() => {
     void refresh();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refresh();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
 
   const run = async (work: () => Promise<void>) => {
@@ -61,14 +59,38 @@ export function CloudSyncPanel() {
     <section className="flex flex-col gap-3">
       <h2 className="text-xl font-black">Cloud sync</h2>
       <p className="text-ink-soft text-[15px]">
-        Same progress on every phone. Sign in with your email — the child never sees
-        this.
+        Same progress on every phone. The app saves after each lesson and loads
+        the newest copy when you open it.
       </p>
 
       {signedIn ? (
         <>
           <p className="text-[16px] font-bold">Signed in as {signedIn}</p>
           {status ? <p className="text-ink-soft text-[15px]">{status}</p> : null}
+          {pairCode ? (
+            <div className="rounded-[var(--r-sm)] p-3 text-center" style={{ background: 'var(--c-primary-soft)' }}>
+              <p className="text-[15px] font-bold">Type this on the other phone</p>
+              <p className="mt-1 text-4xl font-black tracking-[0.3em]">{pairCode}</p>
+              <p className="text-ink-soft mt-1 text-[14px]">Good for 10 minutes. Do not tap email links.</p>
+            </div>
+          ) : null}
+          <Button
+            full
+            disabled={busy}
+            onClick={() =>
+              void run(async () => {
+                const made = await createPairingCode();
+                if (!made.ok) {
+                  setError(made.error);
+                  return;
+                }
+                setPairCode(made.code);
+                setStatus(null);
+              })
+            }
+          >
+            Show a code
+          </Button>
           <Button
             full
             disabled={busy}
@@ -100,6 +122,7 @@ export function CloudSyncPanel() {
               void run(async () => {
                 await signOutCloud();
                 setSignedIn(null);
+                setPairCode(null);
                 setStatus(null);
               })
             }
@@ -108,77 +131,13 @@ export function CloudSyncPanel() {
           </Button>
         </>
       ) : (
-        <>
-          <label className="text-[16px] font-bold">
-            Email
-            <input
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value.trim())}
-              className="bg-surface mt-1 w-full rounded-[var(--r-sm)] border-2 border-[var(--c-line)] px-3 py-3 text-[18px] font-bold"
-              placeholder="you@email.com"
-            />
-          </label>
-          <Button
-            full
-            disabled={busy || !email.includes('@')}
-            onClick={() =>
-              void run(async () => {
-                const result = await sendSignInCode(email);
-                if (!result.ok) {
-                  setError(result.error);
-                  return;
-                }
-                setSent(true);
-                setStatus('Code sent. Check your email.');
-              })
-            }
-          >
-            Send sign-in code
-          </Button>
-          {sent ? (
-            <>
-              <label className="text-[16px] font-bold">
-                6-digit code
-                <input
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="bg-surface mt-1 w-full rounded-[var(--r-sm)] border-2 border-[var(--c-line)] px-3 py-3 text-center text-2xl font-black tracking-[0.4em]"
-                  placeholder="000000"
-                />
-              </label>
-              <Button
-                full
-                disabled={busy || code.length !== 6}
-                onClick={() =>
-                  void run(async () => {
-                    const verified = await verifySignInCode(email, code);
-                    if (!verified.ok) {
-                      setError(verified.error);
-                      return;
-                    }
-                    const result = await reconcile(data);
-                    if (result.ok && result.action === 'applied-cloud') {
-                      replaceAll(result.state);
-                      setStatus('Loaded progress from the other phone.');
-                    } else if (result.ok) {
-                      setStatus('This phone is now the cloud copy.');
-                    } else {
-                      setError(result.error);
-                    }
-                    await refresh();
-                    setCode('');
-                  })
-                }
-              >
-                Sign in
-              </Button>
-            </>
-          ) : null}
-        </>
+        <CloudSignIn
+          submitLabel="Sign in"
+          onRestored={() => {
+            setStatus('This phone is now signed in.');
+            void refresh();
+          }}
+        />
       )}
 
       {error ? (

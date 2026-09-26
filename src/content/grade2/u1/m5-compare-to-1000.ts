@@ -17,7 +17,7 @@ export const compareTo1000: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Put 320 on the line.',
+      prompt: 'Put 300 on the line.',
       visual: { kind: 'number-line', min: 0, max: 500, value: null },
       action: 'drop-on-line',
       target: 300,
@@ -32,8 +32,9 @@ export const compareTo1000: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'We write it as 320 > 298.',
-      visual: { kind: 'base10', hundreds: 2, tens: 9, ones: 8 },
+      visual: { kind: 'bars', values: [320, 298], showValues: true },
       action: 'watch',
+      caption: '320 > 298',
     },
   ],
 

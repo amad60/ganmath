@@ -16,6 +16,13 @@ import type {
 export type LearnVisual =
   | { kind: 'base10'; hundreds?: number; tens: number; ones: number }
   | {
+      kind: 'base10-pair';
+      left: { hundreds?: number; tens: number; ones: number };
+      right: { hundreds?: number; tens: number; ones: number };
+      op?: '+' | '−';
+    }
+  | { kind: 'column-sum'; a: number; b: number; op?: '+' | '−'; showTotal?: boolean }
+  | {
       kind: 'shape2d';
       name: import('../engine/types').ShapeName;
       showCorners?: boolean;
@@ -65,7 +72,16 @@ export type LearnVisual =
       /** Ikon berbeda per benda, dari kiri ke kanan. Menimpa `icon`. */
       icons?: string[];
     }
-  | { kind: 'ten-frame'; value: number; capacity?: 10 | 20; split?: number }
+  | {
+      kind: 'ten-frame';
+      value: number;
+      capacity?: 10 | 20;
+      split?: number;
+      /** Titik muncul bersamaan, bukan satu-satu — untuk subitizing. */
+      together?: boolean;
+      /** Tampil `value` selama ini (ms) lalu kosong. Anak mengetuk frame untuk melihat lagi. */
+      flashMs?: number;
+    }
   | {
       kind: 'number-line';
       min: number;
@@ -109,12 +125,20 @@ export type LearnStep = {
   /** ≤8 kata, English sederhana. */
   prompt: string;
   visual: LearnVisual;
-  /** Aksi yang diminta. `watch` = tidak ada aksi, tombol Next langsung aktif. */
+  /**
+   * Aksi yang diminta. `watch` = lihat gambarnya; Next menunggu jeda look
+   * (`WATCH_LOOK_MS`) atau flash selesai, bukan aktif seketika.
+   */
   action: 'tap-count' | 'tap-fill' | 'drop-on-line' | 'watch';
   /** Nilai yang harus dicapai anak sebelum tombol Next aktif. */
   target?: number;
   /** Teks aksi di bawah visual, mis. "Tap each apple." */
   hint?: string;
+  /**
+   * Lambang yang ditulis besar di bawah gambar — tahap abstract.
+   * Prompt-nya dibaca; ini yang DILIHAT, mis. "5", "6 > 4", "3:30".
+   */
+  caption?: string;
 };
 
 export type ContentModule = ModuleDef & { learn: LearnStep[] };

@@ -63,6 +63,8 @@ export const en = {
     start: 'Start practice',
     stepOf: (i: number, n: number) => `Step ${i} of ${n}`,
     tapToContinue: 'Do it to continue.',
+    lookToContinue: 'Look at the picture.',
+    lookAgain: 'Tap the boxes to look again.',
     checkPrompt: 'Now you try.',
     checkRetry: 'Not that one. Try again.',
     checkHint: 'Pick the right answer to continue.',
@@ -70,6 +72,7 @@ export const en = {
 
   question: {
     hint: 'Hint',
+    hintLeft: (n: number) => (n === 1 ? 'Hint · 1 left' : `Hint · ${n} left`),
     hintHide: 'Hide hint',
     check: 'Check',
     correct: 'Yes!',

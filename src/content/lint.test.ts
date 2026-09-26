@@ -23,6 +23,34 @@ describe('linter konten', () => {
     pathOrder: mods.map((m) => m.id),
   });
 
+  it('menolak "Put N on the line" yang targetnya angka lain', () => {
+    const mods = broken({
+      learn: [
+        {
+          stage: 'concrete',
+          prompt: 'Put 34 on the line.',
+          visual: { kind: 'number-line', min: 0, max: 100, value: null, step: 1 },
+          action: 'drop-on-line',
+          target: 30,
+        },
+        {
+          stage: 'pictorial',
+          prompt: 'Two plus three is five.',
+          visual: { kind: 'ten-frame', value: 5 },
+          action: 'watch',
+        },
+        {
+          stage: 'abstract',
+          prompt: 'We write it as 5.',
+          visual: { kind: 'ten-frame', value: 5 },
+          action: 'watch',
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'learn-target' && p.detail.includes('30'))).toBe(true);
+  });
+
   it('menolak instruksi lebih dari 8 kata', () => {
     const mods = broken({
       learn: [

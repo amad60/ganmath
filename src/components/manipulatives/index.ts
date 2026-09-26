@@ -22,6 +22,7 @@ export * from './circles';
 export * from './coordinates';
 
 export { Base10Blocks } from './Base10Blocks';
+export { ColumnSum } from './ColumnSum';
 export { Bars, type BarsProps } from './Bars';
 export { FractionShape } from './FractionShape';
 export { Clock } from './Clock';

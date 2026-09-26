@@ -11,7 +11,7 @@ import {
 import { Button, Header, Keypad, SessionDots, type Feedback } from '../../components/ui';
 import { LearnVisualView } from './LearnVisualView';
 import { modules as moduleRegistry } from '../../content';
-import type { LearnStep } from '../../content/types';
+import { HINTS_PER_PRACTICE, hintFor } from '../../engine/hint';
 import type { DotState } from '../../components/ui/SessionDots';
 import {
   Angle,
@@ -284,13 +284,21 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
  * Learn modul itu. Yang dipilih adalah langkah bergambar terakhir — tahap pictorial
  * kalau ada, karena di situlah idenya terlihat sebagai gambar, bukan sebagai lambang.
  */
-function hintStep(moduleId: string, chosen?: number): LearnStep | null {
-  const steps = moduleRegistry[moduleId]?.learn ?? [];
-  if (steps.length === 0) return null;
-  // Aturan soal yang menyebut langkahnya sendiri didahulukan — lihat `QuestionRule.hint`.
-  if (chosen != null && steps[chosen]) return steps[chosen];
-  const pictorial = steps.filter((l) => l.stage === 'pictorial');
-  return (pictorial.at(-1) ?? steps.at(-1)) ?? null;
+/**
+ * Materi yang dipanggil saat anak menekan Hint.
+ *
+ * Dulu ada dua cabang yang SAMA-SAMA bisa menunjuk ke soal YANG LAIN:
+ *  1. ten-frame dari `params.n` — untuk `6 + 7` (near doubles, n=6) itu enam
+ *     titik, bukan 6 dan 7;
+ *  2. langkah pictorial terakhir Learn — untuk `26 + 37` itu gambar 85 dari
+ *     contoh 47+38. Anak yang macet melihat pertolongan untuk soal orang lain.
+ *
+ * Sekarang gambarnya selalu dibangun dari angka SOAL INI (`engine/hint.ts`).
+ * Langkah Learn hanya dipakai untuk modul bergagasan banyak (bangun, pecahan)
+ * yang memilihnya lewat `QuestionRule.hint`.
+ */
+function hintOf(moduleId: string, question: Question) {
+  return hintFor(moduleRegistry[moduleId]?.learn, question);
 }
 
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
@@ -315,7 +323,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
    */
   const [hintOpen, setHintOpen] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
-  const hint = hintStep(session.moduleId, question?.hint);
+  const hint = question ? hintOf(session.moduleId, question) : null;
   const hintRef = useRef<HTMLDivElement | null>(null);
 
   // Escape menutup bantuan — kebiasaan baku untuk apa pun yang menimpa layar,
@@ -367,6 +375,12 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   // Tes-lewat diperlakukan seperti ujian: tanpa hint, tanpa visual pendamping.
   const isQuiz =
     session.kind === 'quiz' || session.kind === 'master' || session.kind === 'testout';
+  const noHint =
+    isQuiz || session.kind === 'speed' || session.kind === 'review';
+  const hintsLeft = Math.max(
+    0,
+    HINTS_PER_PRACTICE - session.results.filter((r) => r.hintUsed).length,
+  );
   const isCompare = question?.type === 'compare-symbol';
   const isText = question?.type === 'choose-text';
   const isLine = question?.type === 'number-line-drop';
@@ -392,7 +406,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
    * kegagalan yang dulu bikin anak macet — dia menekan satu-satunya tombol
    * bantuan yang dia punya, tidak terjadi apa-apa, dan dia tetap macet.
    */
-  const hasHint = question.params.n != null || hint != null;
+  const hasHint = hint != null;
 
   const touch = () => {
     unlockAudio();
@@ -510,7 +524,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             harus menunjuk elemen yang benar-benar ada, kalau tidak pembaca layar
             mengumumkan tombol yang mengendalikan ketiadaan. */}
         <div ref={hintRef} id="hint-panel" className="flex w-full flex-col items-center">
-        {!isQuiz && hintOpen && hasHint ? (
+        {!noHint && hintOpen && hasHint ? (
           <div
             role="group"
             aria-label={en.question.hint}
@@ -543,19 +557,12 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               </button>
             </div>
 
-            {/* Ten-frame didahulukan kalau ada, karena ia dibangun dari angka SOAL
-                INI — lebih menolong daripada materi umum. Kalau tidak ada, materi
-                Learn modul itu yang dipanggil ulang. */}
-            {question.params.n != null && question.hint == null ? (
-              <TenFrame value={question.params.n as number} animate />
-            ) : hint ? (
+            {/* Gambar dari angka SOAL INI, bukan ten-frame param `n` atau contoh Learn. */}
+            {hint ? (
               <>
                 <LearnVisualView
                   visual={hint.visual}
-                  // Langkah aksi ditampilkan dalam keadaan SUDAH dikerjakan — contoh yang
-                  // selesai (hewan bernomor 1, 2, 3 sampai kucing), bukan perintah "Tap"
-                  // di atas gambar yang tidak bisa disentuh.
-                  value={hint.action === 'watch' ? 0 : (hint.target ?? 0)}
+                  value={hint.doneValue}
                   onValue={() => {}}
                   interactive={false}
                   compact
@@ -567,7 +574,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         ) : null}
         </div>
 
-        {!isQuiz && hasHint ? (
+        {!noHint && hasHint && (hintsLeft > 0 || hintUsed) ? (
           <Button
             variant="ghost"
             aria-expanded={hintOpen}
@@ -588,7 +595,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               setHintUsed(true);
             }}
           >
-            {hintOpen ? `✕ ${en.question.hintHide}` : `💡 ${en.question.hint}`}
+            {hintOpen ? `✕ ${en.question.hintHide}` : `💡 ${en.question.hintLeft(hintsLeft)}`}
           </Button>
         ) : null}
 

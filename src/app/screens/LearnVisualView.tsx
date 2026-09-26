@@ -6,6 +6,7 @@ import {
   CoordinatePlane,
   RectShape,
   Base10Blocks,
+  ColumnSum,
   Clock,
   ComposedShape,
   CounterObjects,
@@ -30,6 +31,8 @@ export type LearnVisualViewProps = {
   value: number;
   onValue: (n: number) => void;
   interactive: boolean;
+  /** Dipanggil saat flash ten-frame selesai — Next baru boleh menyala. */
+  onFlashEnd?: () => void;
   /**
    * Digambar lebih ringkas — dipakai panel Hint. Bantuan setinggi materi aslinya
    * mendorong gambar SOAL ke luar layar, padahal anak yang macet butuh melihat
@@ -39,7 +42,14 @@ export type LearnVisualViewProps = {
 };
 
 /** Menerjemahkan data materi jadi manipulatif. Komponen tidak tahu isi modulnya. */
-export function LearnVisualView({ visual, value, onValue, interactive, compact }: LearnVisualViewProps) {
+export function LearnVisualView({
+  visual,
+  value,
+  onValue,
+  interactive,
+  compact,
+  onFlashEnd,
+}: LearnVisualViewProps) {
   switch (visual.kind) {
     case 'counter-objects':
       return (
@@ -57,7 +67,10 @@ export function LearnVisualView({ visual, value, onValue, interactive, compact }
           value={interactive ? value : visual.value}
           capacity={visual.capacity ?? 10}
           split={visual.split}
+          together={visual.together}
+          flashMs={interactive ? undefined : visual.flashMs}
           onChange={interactive ? onValue : undefined}
+          onFlashEnd={onFlashEnd}
         />
       );
     case 'number-line':
@@ -76,6 +89,34 @@ export function LearnVisualView({ visual, value, onValue, interactive, compact }
     case 'base10':
       return (
         <Base10Blocks hundreds={visual.hundreds ?? 0} tens={visual.tens} ones={visual.ones} />
+      );
+    case 'base10-pair':
+      return (
+        <div className="flex flex-wrap items-end justify-center gap-3" aria-label="Place value pair">
+          <Base10Blocks
+            hundreds={visual.left.hundreds ?? 0}
+            tens={visual.left.tens}
+            ones={visual.left.ones}
+            size={compact ? 0.7 : 1}
+          />
+          <span className="pb-2 text-3xl font-black">{visual.op ?? '+'}</span>
+          <Base10Blocks
+            hundreds={visual.right.hundreds ?? 0}
+            tens={visual.right.tens}
+            ones={visual.right.ones}
+            size={compact ? 0.7 : 1}
+          />
+        </div>
+      );
+    case 'column-sum':
+      return (
+        <ColumnSum
+          a={visual.a}
+          b={visual.b}
+          op={visual.op}
+          compact={compact}
+          showTotal={visual.showTotal !== false}
+        />
       );
     case 'shape2d':
       return (
@@ -125,7 +166,13 @@ export function LearnVisualView({ visual, value, onValue, interactive, compact }
     case 'clock':
       return <Clock hour={visual.hour} minute={visual.minute} />;
     case 'money':
-      return <Money items={visual.items} />;
+      return (
+        <Money
+          items={visual.items}
+          counted={value}
+          onTap={interactive ? (i) => onValue(i + 1) : undefined}
+        />
+      );
     case 'tally':
       return <TallyChart count={visual.count} />;
     case 'rect':

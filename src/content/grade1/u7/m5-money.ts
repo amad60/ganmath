@@ -45,7 +45,7 @@ export const money: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap two coins.',
-      visual: { kind: 'counter-objects', count: 4, icon: '🪙' },
+      visual: { kind: 'money', items: [500, 1000, 500, 1000] },
       action: 'tap-count',
       target: 2,
       hint: 'Coins are round.',
@@ -55,12 +55,14 @@ export const money: ContentModule = {
       prompt: 'This is one thousand.',
       visual: { kind: 'money', items: [1000] },
       action: 'watch',
+      caption: '1000',
     },
     {
       stage: 'abstract',
       prompt: 'Two notes make more money.',
-      visual: { kind: 'money', items: [1000, 500] },
+      visual: { kind: 'money', items: [2000, 5000] },
       action: 'watch',
+      caption: '7000',
     },
   ],
 

@@ -17,7 +17,7 @@ export const subtractNoRegroup: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Put 68 on the line.',
+      prompt: 'Put 70 on the line.',
       visual: { kind: 'number-line', min: 0, max: 100, value: null },
       action: 'drop-on-line',
       target: 70,
@@ -26,13 +26,18 @@ export const subtractNoRegroup: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Take the ones, then the tens.',
-      visual: { kind: 'base10', tens: 4, ones: 5 },
+      visual: {
+        kind: 'base10-pair',
+        left: { tens: 6, ones: 8 },
+        right: { tens: 2, ones: 3 },
+        op: '−',
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 68 - 23 = 45.',
-      visual: { kind: 'base10', tens: 4, ones: 5 },
+      visual: { kind: 'column-sum', a: 68, b: 23, op: '−' },
       action: 'watch',
     },
   ],

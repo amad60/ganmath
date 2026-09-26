@@ -25,15 +25,17 @@ export const numbersTo1000000: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Hundred thousands, ten thousands, thousands.',
-      visual: { kind: 'base10', hundreds: 3, tens: 4, ones: 2 },
+      prompt: 'See 342000 on the line.',
+      visual: { kind: 'number-line', min: 0, max: 400000, value: 342000, marks: [300000] },
       action: 'watch',
+      caption: '342000',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 342000.',
-      visual: { kind: 'base10', hundreds: 3, tens: 4, ones: 2 },
+      visual: { kind: 'number-line', min: 0, max: 400000, value: 342000, marks: [300000] },
       action: 'watch',
+      caption: '342000',
     },
   ],
 

@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-import { describe, expect, it } from 'vitest';
-import { act, fireEvent, render } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { ArrayGrid } from './ArrayGrid';
 import { Bars } from './Bars';
 import { Base10Blocks } from './Base10Blocks';
@@ -1586,5 +1586,78 @@ describe('FractionShape — bagian-bagiannya menutup lingkaran tepat satu putara
     fireEvent.click(parts[0]!);
     fireEvent.click(parts[3]!);
     expect(seen).toEqual([1, 2]);
+  });
+});
+
+describe('TenFrame flash — subitizing, bukan menghitung', () => {
+  it('titik tampil lalu hilang, dan bisa dilihat lagi', () => {
+    vi.useFakeTimers();
+    const ended = vi.fn();
+    render(
+      <LearnVisualView
+        visual={{ kind: 'ten-frame', value: 6, flashMs: 2000 }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+        onFlashEnd={ended}
+      />,
+    );
+    expect(screen.getByLabelText('Ten frame showing 6')).toBeTruthy();
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getByLabelText('Ten frame showing 0')).toBeTruthy();
+    expect(ended).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getAllByRole('button', { name: /look again/i })[0]!);
+    expect(screen.getByLabelText('Ten frame showing 6')).toBeTruthy();
+    vi.useRealTimers();
+  });
+});
+
+describe('ColumnSum — cara bersusun yang bisa dibaca sendiri', () => {
+  it('26 + 37: satuan 13, puluhan 50, jumlah 63', () => {
+    render(
+      <LearnVisualView
+        visual={{ kind: 'column-sum', a: 26, b: 37, op: '+' }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    const col = screen.getByLabelText(/26 plus 37/);
+    expect(col).toHaveTextContent('13');
+    expect(col).toHaveTextContent('6 + 7');
+    expect(col).toHaveTextContent('50');
+    expect(col).toHaveTextContent('20 + 30');
+    expect(col).toHaveTextContent('63');
+    expect(col).toHaveTextContent('13 + 50');
+  });
+
+  it('hint menyembunyikan jumlah 63', () => {
+    render(
+      <LearnVisualView
+        visual={{ kind: 'column-sum', a: 26, b: 37, op: '+', showTotal: false }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    const col = screen.getByLabelText(/26 plus 37/);
+    expect(col).toHaveTextContent('13');
+    expect(col).toHaveTextContent('50');
+    expect(col).not.toHaveTextContent('63');
+  });
+
+  it('52 − 27: buka puluhan, 12 − 7 = 5', () => {
+    render(
+      <LearnVisualView
+        visual={{ kind: 'column-sum', a: 52, b: 27, op: '−' }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+      />,
+    );
+    expect(screen.getByLabelText(/52 minus 27/)).toHaveTextContent('12 − 7 = 5');
+    expect(screen.getByLabelText(/52 minus 27/)).toHaveTextContent('25');
   });
 });

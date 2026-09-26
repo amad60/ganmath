@@ -17,22 +17,27 @@ export const addNoRegroup: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Put 34 on the line.',
+      prompt: 'Put 30 on the line.',
       visual: { kind: 'number-line', min: 0, max: 100, value: null },
       action: 'drop-on-line',
       target: 30,
-      hint: 'Three tens and four.',
+      hint: 'Three tens.',
     },
     {
       stage: 'pictorial',
       prompt: 'Add the ones, then the tens.',
-      visual: { kind: 'base10', tens: 5, ones: 9 },
+      visual: {
+        kind: 'base10-pair',
+        left: { tens: 3, ones: 4 },
+        right: { tens: 2, ones: 5 },
+        op: '+',
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 34 + 25 = 59.',
-      visual: { kind: 'base10', tens: 5, ones: 9 },
+      visual: { kind: 'column-sum', a: 34, b: 25, op: '+' },
       action: 'watch',
     },
   ],

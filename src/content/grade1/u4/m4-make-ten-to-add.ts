@@ -33,12 +33,14 @@ export const makeTenToAdd: ContentModule = {
       prompt: 'Eight needs two to make ten.',
       visual: { kind: 'ten-frame', value: 10, capacity: 20, split: 8 },
       action: 'watch',
+      caption: '8 + 2 = 10',
     },
     {
       stage: 'abstract',
       prompt: 'Ten and three make 13.',
       visual: { kind: 'ten-frame', value: 13, capacity: 20, split: 10 },
       action: 'watch',
+      caption: '10 + 3 = 13',
     },
   ],
 

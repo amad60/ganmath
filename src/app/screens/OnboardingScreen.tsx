@@ -3,6 +3,7 @@ import type { Avatar } from '../../store/schema';
 import { Button } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { unlockAudio } from '../sfx';
+import { CloudSignIn } from './CloudSignIn';
 
 export type OnboardingScreenProps = {
   onDone: (name: string, avatar: Avatar) => void;
@@ -12,6 +13,10 @@ export type OnboardingScreenProps = {
    * kehilangan progress hanya melihat layar "anak baru" dan mulai dari nol.
    */
   onRestore?: (() => void) | null;
+  /** HP baru: orang tua bisa tarik progress dari akun yang sudah dipakai di HP lain. */
+  cloudRestore?: boolean;
+  /** Tunggu sesi cloud (magic link / session) sebelum minta nama. */
+  loading?: boolean;
 };
 
 // Rubah tidak ada di sini: itu Gan, si maskot. Avatar adalah anaknya, bukan Gan.
@@ -24,13 +29,27 @@ const AVATARS: { id: Avatar; icon: string }[] = [
 ];
 
 /**
- * Dua input saja: nama dan avatar. Tidak ada umur, kelas, atau email.
- * Setelah ini anak langsung masuk modul pertama — bukan ke peta — supaya dia
- * segera mengerjakan sesuatu (docs/design/wireframes.md §1).
+ * Dua input anak: nama dan avatar. Pintu orang tua di bawah: tarik progress
+ * dari HP lain lewat email, supaya iPhone baru tidak mulai dari nol.
  */
-export function OnboardingScreen({ onDone, onRestore }: OnboardingScreenProps) {
+export function OnboardingScreen({
+  onDone,
+  onRestore,
+  cloudRestore = false,
+  loading = false,
+}: OnboardingScreenProps) {
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState<Avatar>('cat');
+  const [showCloud, setShowCloud] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col items-center justify-center gap-4 px-6">
+        <Mascot mood="happy" size={120} />
+        <p className="text-center text-xl font-bold">Looking for your progress…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="safe-top safe-bottom mx-auto flex min-h-full max-w-[430px] flex-col gap-5 px-6">
@@ -77,6 +96,27 @@ export function OnboardingScreen({ onDone, onRestore }: OnboardingScreenProps) {
           <Button variant="ghost" full onClick={onRestore}>
             Load progress from a file
           </Button>
+        </div>
+      ) : null}
+
+      {cloudRestore ? (
+        <div
+          className="flex flex-col gap-3 rounded-[var(--r-md)] p-3"
+          style={{ background: 'var(--c-primary-soft)' }}
+        >
+          {showCloud ? (
+            <>
+              <p className="text-[16px] font-bold">Load this child from another phone.</p>
+              <CloudSignIn submitLabel="Load progress" />
+              <Button variant="ghost" full onClick={() => setShowCloud(false)}>
+                Not now
+              </Button>
+            </>
+          ) : (
+            <Button variant="ghost" full onClick={() => setShowCloud(true)}>
+              Used GanMath on another phone?
+            </Button>
+          )}
         </div>
       ) : null}
 

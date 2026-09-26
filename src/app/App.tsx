@@ -23,6 +23,7 @@ import { clearSession, loadSession, saveSession } from '../store/session';
 import { LearnScreen } from './screens/LearnScreen';
 import { QuestionScreen } from './screens/QuestionScreen';
 import { ResultScreen } from './screens/ResultScreen';
+import { cloudEnabled } from '../sync/client';
 import { useCloudSync } from '../sync/useCloudSync';
 
 type Screen =
@@ -54,7 +55,7 @@ export function App() {
   const setGrade = useProgress((s) => s.setGrade);
   const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
-  useCloudSync();
+  const { ready: cloudReady } = useCloudSync();
 
   // Sesi yang sedang berjalan dipulihkan saat app dibuka: HP terkunci atau app
   // dibunuh sistem tidak boleh menghapus jawaban yang sudah dikerjakan anak.
@@ -216,6 +217,8 @@ export function App() {
   };
 
   // Onboarding muncul sekali seumur hidup, sebelum apa pun yang lain.
+  // HP baru: tunggu sesi cloud dulu supaya magic-link / akun lama sempat
+  // menarik nama anak — jangan minta nama dulu lalu menimpa Grade 1.
   if (!data.profile.name) {
     const wiped = looksWiped(Object.keys(data.modules).length > 0, readMeta());
     const restore = () => {
@@ -233,6 +236,8 @@ export function App() {
     };
     return (
       <OnboardingScreen
+        loading={cloudEnabled && !cloudReady}
+        cloudRestore={cloudEnabled}
         onRestore={wiped ? restore : null}
         onDone={(name, avatar) => {
           setProfile(name, avatar);

@@ -26,14 +26,16 @@ export const readBigNumbers: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Read the big part first.',
-      visual: { kind: 'base10', hundreds: 2, tens: 4, ones: 0 },
+      visual: { kind: 'number-line', min: 0, max: 300000, value: 240000, marks: [200000] },
       action: 'watch',
+      caption: '240000',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 240000.',
-      visual: { kind: 'base10', hundreds: 2, tens: 4, ones: 0 },
+      visual: { kind: 'number-line', min: 0, max: 300000, value: 240000, marks: [200000] },
       action: 'watch',
+      caption: '240000',
     },
   ],
 

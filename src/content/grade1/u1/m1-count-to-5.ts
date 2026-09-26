@@ -36,6 +36,7 @@ export const countTo5: ContentModule = {
       prompt: 'Five dots. The number is 5.',
       visual: { kind: 'ten-frame', value: 5 },
       action: 'watch',
+      caption: '5',
     },
   ],
 

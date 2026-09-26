@@ -12,8 +12,9 @@ Yang bisa diverifikasi tanpa HP fisik **sudah dilakukan**; sisanya butuh HP anak
 | Service worker terbit | ✅ `sw.js` 200, precache 14 entri (328KB) |
 | Anggaran bundle | ✅ **±81KB gzip JS + 5KB CSS**, jauh di bawah batas 200KB |
 | Logika ujung-ke-ujung | ✅ 125 test, termasuk alur peta → learn → quiz → mastered |
+| Tata letak **iPhone 12 mini Safari** (375×630) | ✅ 2026-09-21: 48 modul (Grade 1 + 5 awal Grade 2). 0 layar buntu, 0 scroll horizontal, 0 elemen keluar layar, 0 sasaran tap &lt;44px. Peta lebih tinggi dari layar — itu disengaja. Ulang: `WIDTH=375 HEIGHT=630 npm run audit:layout` |
 
-## ⬜ Butuh HP sungguhan (Poco F3 & iPhone 17)
+## ⬜ Butuh HP sungguhan (Poco F3 & iPhone 12 mini)
 
 Jalankan `npm run preview` lalu buka alamat Network dari HP (service worker hanya aktif di
 build, bukan di `npm run dev`).

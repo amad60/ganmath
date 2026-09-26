@@ -27,13 +27,13 @@ export const subtractWithRegrouping: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Open one ten into ten ones.',
-      visual: { kind: 'base10', tens: 2, ones: 13 },
+      visual: { kind: 'base10', tens: 4, ones: 12 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 52 - 27 = 25.',
-      visual: { kind: 'base10', tens: 2, ones: 5 },
+      visual: { kind: 'column-sum', a: 52, b: 27, op: '−' },
       action: 'watch',
     },
   ],

@@ -17,7 +17,7 @@ export const compareTwoDigit: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Put 62 on the line.',
+      prompt: 'Put 60 on the line.',
       visual: { kind: 'number-line', min: 0, max: 100, value: null },
       action: 'drop-on-line',
       target: 60,

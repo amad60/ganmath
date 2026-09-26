@@ -30,14 +30,19 @@ export const addWithRegrouping: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Ten ones become one ten.',
-      visual: { kind: 'base10', tens: 8, ones: 5 },
+      prompt: 'Add the ones first.',
+      visual: {
+        kind: 'base10-pair',
+        left: { tens: 4, ones: 7 },
+        right: { tens: 3, ones: 8 },
+        op: '+',
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 47 + 38 = 85.',
-      visual: { kind: 'base10', tens: 8, ones: 5 },
+      visual: { kind: 'column-sum', a: 47, b: 38, op: '+' },
       action: 'watch',
     },
   ],

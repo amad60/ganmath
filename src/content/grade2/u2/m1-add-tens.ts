@@ -26,13 +26,18 @@ export const addTens: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Two tens and three tens.',
-      visual: { kind: 'base10', tens: 5, ones: 0 },
+      visual: {
+        kind: 'base10-pair',
+        left: { tens: 2, ones: 0 },
+        right: { tens: 3, ones: 0 },
+        op: '+',
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Only the tens change.',
-      visual: { kind: 'base10', tens: 5, ones: 0 },
+      visual: { kind: 'column-sum', a: 20, b: 30, op: '+' },
       action: 'watch',
     },
   ],

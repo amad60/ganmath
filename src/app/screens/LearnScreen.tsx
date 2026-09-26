@@ -1,11 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ContentModule } from '../../content/types';
 import { Button, Header, ProgressBar } from '../../components/ui';
 import { learnCheck } from '../../engine/learnCheck';
+import { WATCH_LOOK_MS } from '../../engine/learnPacing';
 import { QuestionVisualView } from './QuestionScreen';
 import { en } from '../../i18n/en';
 import { LearnVisualView } from './LearnVisualView';
 import { Mascot } from '../../components/mascot/Mascot';
+import { teachingDuration, useReducedMotion } from '../../components/manipulatives/useReducedMotion';
 import { sfx, unlockAudio } from '../sfx';
 
 export type LearnScreenProps = {
@@ -21,22 +23,25 @@ export type LearnScreenProps = {
  * Tombol Next TIDAK aktif sampai anak benar-benar melakukan aksinya —
  * itu yang membedakan Learn dari slide pasif (docs/design/README.md keputusan #2).
  *
- * Janji itu hanya separuh ditepati sampai sekarang. Dari 252 langkah Learn yang
- * menuntut aksi, 240 ada di tahap `concrete`, dan NOL dari 314 langkah `abstract`
- * meminta apa pun — untuk langkah `watch` tombol Next aktif seketika. Anak bisa
- * mengetuk Next empat kali dalam tiga detik dan sampai di ujung materi tanpa pernah
- * menyentuh idenya.
+ * Untuk langkah `watch` Next menunggu jeda look (`WATCH_LOOK_MS`) atau flash
+ * selesai. Dulu Next aktif seketika, dan 72% langkah di app ini `watch` — anak
+ * mengetuk Next empat kali dalam tiga detik tanpa pernah melihat gambarnya.
  *
- * Karena itu setiap modul kini ditutup satu **pengecekan pemahaman**: satu soal yang
- * dibuat dari aturan modul itu sendiri (lihat `engine/learnCheck.ts`). Ia bukan kuis —
- * tidak dinilai, tidak masuk hitungan apa pun, boleh diulang tanpa batas. Ia pintu:
- * anak keluar dari materi dengan menerapkan idenya sekali, selagi gambarnya masih di
- * layar, bukan delapan soal kemudian.
+ * Setiap modul masih ditutup satu **pengecekan pemahaman**: satu soal dari aturan
+ * modul itu sendiri (`engine/learnCheck.ts`). Ia bukan kuis — tidak dinilai, tidak
+ * masuk hitungan, boleh diulang tanpa batas. Ia pintu: anak keluar dari materi
+ * dengan menerapkan idenya sekali, selagi gambarnya masih di layar.
+ *
+ * Tombol Back di kaki layar mundur satu langkah (bukan keluar). Header Close tetap
+ * keluar ke peta — anak yang salah ketuk Next bisa melihat lagi, anak yang mau
+ * berhenti tidak perlu mundur satu-satu.
  */
 export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScreenProps) {
   const [step, setStep] = useState(0);
-  const [value, setValue] = useState(0);
+  const [values, setValues] = useState<number[]>(() => module.learn.map(() => 0));
+  const [looked, setLooked] = useState<boolean[]>(() => module.learn.map(() => false));
   const [picked, setPicked] = useState<number | null>(null);
+  const reduced = useReducedMotion();
 
   // Seed dikunci sekali per kunjungan: soalnya tidak boleh berganti di tengah anak
   // memikirkannya, tapi kunjungan berikutnya (mis. setelah diajar ulang) dapat yang baru.
@@ -46,21 +51,63 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
   const total = module.learn.length + (check ? 1 : 0);
   const onCheck = check != null && step === module.learn.length;
   const current = module.learn[step];
+  const value = current ? (values[step] ?? 0) : 0;
+
+  const markLooked = () => {
+    setLooked((prev) => {
+      if (prev[step]) return prev;
+      const next = [...prev];
+      next[step] = true;
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (onCheck || !current || current.action !== 'watch') return;
+    if (looked[step]) return;
+    const flashMs = current.visual.kind === 'ten-frame' ? current.visual.flashMs : undefined;
+    if (flashMs != null) return;
+    const t = window.setTimeout(markLooked, teachingDuration(WATCH_LOOK_MS, reduced));
+    return () => window.clearTimeout(t);
+    // markLooked membaca `step` terkini; step/looked/current adalah pemicunya.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, onCheck, current, reduced, looked]);
+
   if (!current && !onCheck) return null;
 
   const correct = check != null && picked === check.question.answer;
   const interactive = onCheck || current!.action !== 'watch';
   const reached = onCheck
     ? correct
-    : current!.action === 'watch' || (current!.target != null && value >= current!.target);
+    : current!.action === 'watch'
+      ? Boolean(looked[step])
+      : current!.target != null && value >= current!.target;
   const last = step === total - 1;
+  const canPrev = step > 0;
+  const flashing =
+    !onCheck && current?.visual.kind === 'ten-frame' && current.visual.flashMs != null;
+
+  const setValue = (n: number) => {
+    setValues((prev) => {
+      const next = [...prev];
+      next[step] = n;
+      return next;
+    });
+  };
 
   const advance = () => {
     unlockAudio();
     sfx.tap();
     if (last) return onDone();
     setStep(step + 1);
-    setValue(0);
+    setPicked(null);
+  };
+
+  const goPrev = () => {
+    if (!canPrev) return;
+    unlockAudio();
+    sfx.tap();
+    setStep(step - 1);
     setPicked(null);
   };
 
@@ -127,7 +174,12 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
               value={value}
               onValue={setValue}
               interactive={interactive}
+              onFlashEnd={markLooked}
             />
+
+            {current!.caption ? (
+              <p className="text-3xl font-black tabular-nums">{current!.caption}</p>
+            ) : null}
 
             {current!.hint && !reached ? (
               <p className="text-ink-soft text-center text-[18px]">{current!.hint}</p>
@@ -145,13 +197,26 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
       </main>
 
       <div className="safe-bottom px-6 pt-2">
-        <Button full disabled={!reached} onClick={advance}>
-          {last ? en.learn.start : en.learn.next}
-        </Button>
+        <div className="flex items-center gap-3">
+          {canPrev ? (
+            <Button variant="ghost" onClick={goPrev} aria-label={en.common.back}>
+              {en.common.back}
+            </Button>
+          ) : null}
+          <Button full={!canPrev} className={canPrev ? 'min-w-0 flex-1' : ''} disabled={!reached} onClick={advance}>
+            {last ? en.learn.start : en.learn.next}
+          </Button>
+        </div>
         {!reached ? (
           <p className="text-ink-soft mt-2 text-center text-[15px]">
-            {onCheck ? en.learn.checkHint : en.learn.tapToContinue}
+            {onCheck
+              ? en.learn.checkHint
+              : current!.action === 'watch'
+                ? en.learn.lookToContinue
+                : en.learn.tapToContinue}
           </p>
+        ) : flashing ? (
+          <p className="text-ink-soft mt-2 text-center text-[15px]">{en.learn.lookAgain}</p>
         ) : null}
       </div>
     </div>

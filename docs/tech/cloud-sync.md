@@ -3,28 +3,44 @@
 Keputusan 2026-09-21: progress mengikuti **akun email orang tua**, bukan file
 yang dikirim antar HP. File backup tetap ada sebagai jaring pengaman.
 
-Anak tidak pernah melihat layar masuk. Pintunya hanya di Parent Area.
+**Project:** [ganmath](https://supabase.com/dashboard/project/arqgihpkloeczvyqxyci)
+(Singapore). Tabel `progress` + RLS sudah dipasang. Anak tidak pernah melihat
+login di peta — pintunya di layar nama (HP baru) dan Parent Area.
 
 ## Cara kerja
-1. Orang tua memasukkan email di Parent Area → kode 6 digit ke inbox.
-2. Kode diketik di app (bukan link — link magic membuka Safari, bukan PWA).
-3. Progress diunggah ke satu baris `progress` milik akun itu.
-4. HP lain: masuk email yang sama → progress terunduh.
-5. Kalau kedua HP menulis, yang `updatedAt`-nya lebih baru menang utuh.
-   Tidak digabung.
+1. **HP baru (PWA di home screen):** jangan ketik nama, jangan ketuk tautan email.
+   Di HP lama (sudah masuk): Parent Area → **Show a code**. Ketik kode 6 digit
+   itu di HP baru. Tautan email membuka Chrome/Safari — session-nya **bukan**
+   PWA, jadi PWA tetap menunggu.
+2. Progress diunggah ke satu baris `progress` milik akun itu setelah tiap
+   pelajaran, dan saat app ditutup.
+3. **Tiap kali app dibuka** (dan saat HP kembali ke depan): tarik kalau cloud
+   lebih baru. Dua HP dipakai bergantian: yang terakhir menyelesaikan sesi
+   menang utuh. Tidak digabung.
+4. HP yang baru diisi nama (modul masih kosong) **tidak** menimpa Grade 1 di
+   cloud, meski stempel waktunya lebih baru.
 
-## Setup sekali (Supabase + Netlify)
+## Status setup (2026-09-21)
 
-1. Buat project di [supabase.com](https://supabase.com).
-2. SQL Editor: jalankan `supabase/migrations/001_progress.sql`.
-3. **Authentication → Email**: ubah template Magic Link supaya berisi
-   `{{ .Token }}` (kode 6 digit), bukan hanya `{{ .ConfirmationURL }}`.
-   Tanpa ini, email berisi tautan yang memecah PWA di iPhone.
-4. Project Settings → API: salin URL dan anon key ke:
-   - `.env.local` (dev)
-   - Netlify → Site settings → Environment variables
-     (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) lalu **rebuild**
-5. Authentication → URL configuration: Site URL = `https://ganmath.netlify.app`
+| Langkah | Status |
+|---|---|
+| Project `ganmath` | ✅ `arqgihpkloeczvyqxyci` |
+| Migrasi `progress` + RLS | ✅ |
+| `.env.local` (dev) | ✅ gitignored |
+| Site URL | ✅ `https://ganmath.netlify.app` |
+| Kode 6 digit antar HP | ✅ Parent Area → Show a code (bukan tautan email) |
+| Env Netlify + rebuild | ✅ `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` |
 
-Setelah itu: di Poco, Parent Area → Cloud sync → email → kode. Ulangi di
-iPhone 12 mini (buka dari ikon home screen, bukan tab Safari).
+Email Magic Link default adalah tautan dan di iOS membuka browser lain, bukan
+PWA. Jangan dipakai untuk HP kedua. Pakai **Show a code** di HP yang sudah
+masuk.
+
+## Env yang dipakai app
+
+```
+VITE_SUPABASE_URL=https://arqgihpkloeczvyqxyci.supabase.co
+VITE_SUPABASE_ANON_KEY=…   # anon/publishable saja, JANGAN service_role
+```
+
+Dev: file `.env.local`. Production: Netlify → Environment variables, lalu
+**rebuild** (Vite membakar env saat build).

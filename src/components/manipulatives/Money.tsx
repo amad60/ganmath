@@ -2,6 +2,9 @@ export type MoneyProps = {
   /** Pecahan rupiah, mis. [2000, 1000, 500] */
   items: number[];
   size?: number;
+  /** Berapa lembar/koin yang sudah disentuh — sama pola CounterObjects. */
+  counted?: number;
+  onTap?: (index: number) => void;
 };
 
 const STYLE: Record<number, { bg: string; coin: boolean }> = {
@@ -17,19 +20,24 @@ export function formatRupiah(v: number): string {
   return `Rp${v.toLocaleString('id-ID')}`;
 }
 
+function kindOf(v: number): 'Coin' | 'Note' {
+  return STYLE[v]?.coin ? 'Coin' : 'Note';
+}
+
 /**
  * Uang rupiah — pecahan yang benar-benar dipegang anak.
  * Koin digambar bulat, uang kertas persegi panjang, supaya bisa dibedakan sekilas
  * tanpa membaca angkanya.
  */
-export function Money({ items, size = 1 }: MoneyProps) {
+export function Money({ items, size = 1, counted = 0, onTap }: MoneyProps) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-2" aria-label="Money">
       {items.map((v, i) => {
         const st = STYLE[v] ?? { bg: 'var(--c-locked)', coin: false };
-        return st.coin ? (
+        const done = i < counted;
+        const label = done ? `${kindOf(v)} ${i + 1}, counted` : `${kindOf(v)} ${i + 1}`;
+        const body = st.coin ? (
           <span
-            key={i}
             className="flex items-center justify-center font-black text-white"
             style={{
               width: 54 * size,
@@ -44,7 +52,6 @@ export function Money({ items, size = 1 }: MoneyProps) {
           </span>
         ) : (
           <span
-            key={i}
             className="flex items-center justify-center font-black text-white"
             style={{
               width: 84 * size,
@@ -57,6 +64,30 @@ export function Money({ items, size = 1 }: MoneyProps) {
           >
             {formatRupiah(v)}
           </span>
+        );
+
+        if (!onTap) {
+          return (
+            <span key={i} aria-label={label}>
+              {body}
+            </span>
+          );
+        }
+
+        return (
+          <button
+            key={i}
+            type="button"
+            aria-label={label}
+            onClick={() => onTap(i)}
+            className="rounded-[var(--r-sm)]"
+            style={{
+              background: done ? 'var(--c-correct-soft)' : 'transparent',
+              transform: done ? 'scale(0.94)' : 'scale(1)',
+            }}
+          >
+            {body}
+          </button>
         );
       })}
     </div>

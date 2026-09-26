@@ -58,7 +58,7 @@ export const makeBottomsMatch: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Now both bottoms are 6.',
-      visual: { kind: 'fraction', parts: 6, shaded: 1, shape: 'square' },
+      visual: { kind: 'fraction', parts: 6, shaded: 3, shape: 'square' },
       action: 'watch',
     },
   ],

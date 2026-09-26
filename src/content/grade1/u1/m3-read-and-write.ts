@@ -36,6 +36,7 @@ export const readAndWrite: ContentModule = {
       prompt: 'We write it as 3.',
       visual: { kind: 'ten-frame', value: 3 },
       action: 'watch',
+      caption: '3',
     },
   ],
 

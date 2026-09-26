@@ -58,13 +58,15 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
 
 1. **Self-learning.** Setiap konsep diajarkan lebih dulu di dalam app (mode Learn), baru diuji.
    Tidak pernah ada kuis tentang materi yang belum diajarkan.
-   - **Setiap modul ditutup satu pengecekan pemahaman.** Untuk langkah `watch` tombol Next
-     aktif seketika, dan 72% langkah Learn bertipe `watch` — anak bisa mengetuk Next empat
-     kali dalam tiga detik dan sampai di ujung materi tanpa pernah menyentuh idenya. Angka
-     yang mendasari: dari **252 langkah Learn yang menuntut aksi, 240 ada di tahap
-     `concrete`**, dan **nol dari 314 langkah `abstract`** meminta apa pun. Sebabnya bukan
-     penulis konten — `LearnStep.action` cuma punya tap-count / tap-fill / drop-on-line,
-     ketiganya soal menghitung dan menempatkan, semuanya untuk tahap concrete.
+   - **Setiap modul ditutup satu pengecekan pemahaman.** Langkah `watch` menunggu
+     jeda look (`WATCH_LOOK_MS`, 800ms) atau flash selesai sebelum Next aktif —
+     dulu Next aktif seketika, dan 72% langkah Learn bertipe `watch`, jadi anak
+     bisa mengetuk Next empat kali dalam tiga detik tanpa pernah menyentuh idenya.
+     Angka yang mendasari: dari **252 langkah Learn yang menuntut aksi, 240 ada di
+     tahap `concrete`**, dan **nol dari 314 langkah `abstract`** meminta apa pun
+     (kosakata aksinya cuma tap-count / tap-fill / drop-on-line). Jeda look
+     menahan skip, tapi tidak membuktikan paham — karena itu setiap modul masih
+     ditutup satu soal dari aturan modul itu sendiri (`engine/learnCheck.ts`).
 
      Soalnya **dibuat dari aturan modul itu sendiri** (`engine/learnCheck.ts`), bukan
      ditulis ulang 240 kali: aturan yang sama yang dipakai kuis, sudah dilint, sudah punya
@@ -74,17 +76,20 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      Ini **bukan kuis**: tidak dinilai, tidak masuk hitungan apa pun, boleh diulang tanpa
      batas, dan salah tidak pernah mengunci anak keluar. Ia pintu — anak meninggalkan materi
      dengan menerapkan idenya sekali, selagi gambarnya masih di layar.
-   - **Tombol Hint wajib benar-benar menampilkan sesuatu, di SETIAP modul.** Ia satu-satunya
-     pertolongan dalam sesi untuk anak yang macet sendirian. Isinya: ten-frame dari angka soal
-     itu kalau ada, kalau tidak materi Learn modul itu dipanggil ulang (langkah pictorial
-     terakhir). Pernah putus di sini: Hint hanya punya cabang ten-frame, jadi di 163 dari 240
-     modul ia hanya menulis "Look at the picture." tanpa ada gambar apa pun di layar.
-     **Hint harus menunjuk gagasan soal INI.** Langkah pictorial terakhir cukup untuk modul
-     bergagasan satu; modul yang soalnya menguji beberapa gagasan memilih langkahnya lewat
-     `QuestionRule.hint` (dijaga lint `hint-step`). Pernah putus: g1-u6-m4 menjawab soal
-     "not equal" dengan gambar seperempat, g1-u6-m5 menjawab soal urutan dengan gambar
-     atas/bawah. Langkah aksi tampil sebagai contoh yang SUDAH dikerjakan, dan gambar di
-     panel Hint digambar ringkas (`compact`) supaya gambar soalnya tidak terdorong keluar layar.
+   - **Tombol Hint wajib menolong soal yang SEDANG ditanyakan.** Ia satu-satunya
+     pertolongan dalam sesi untuk anak yang macet sendirian. Gambarnya dibangun
+     dari angka soal itu (`engine/hint.ts`): `26 + 37` disusun **13 (6+7) + 50
+     (20+30) = 63** (cara kertas, puluhan ditulis 50 bukan 5). `8 ? 10`,
+     `Round 47`, dan `8 thousands = ?` memakai angka soal itu, bukan contoh
+     Learn. `−6 + 9` memakai
+     garis bilangan soal itu, bukan ten-frame 6+9. Pecahan `1/4 + 5/8` dan
+     missing-number `6 + 6 = 10 + ?` tidak boleh dibaca sebagai 4+5 atau 6+6.
+     Bukan ten-frame dari parameter `n` (`6 + 7` dulu jadi
+     enam titik), dan bukan langkah Learn 47+38=85. Langkah Learn hanya dipakai
+     untuk modul bergagasan banyak (`QuestionRule.hint`, dijaga lint `hint-step`).
+     Angka terakhir tidak ditulis: `26 + 37` berhenti di **13** dan **50**, anak yang menjumlahkannya. Hint hanya ada di Practice, paling banyak **2 kali** per sesi. Speed Round, ulangan, dan ujian tidak punya tombol Hint.
+     Langkah aksi tampil sebagai contoh yang SUDAH dikerjakan, dan gambar di panel
+     Hint digambar ringkas (`compact`) supaya gambar soalnya tidak terdorong keluar layar.
    - **Bantuan yang bisa dibuka wajib bisa DITUTUP lagi, dan dibuka lagi.** Pernah putus di
      sini juga: tombolnya dimatikan begitu ditekan (satu state `hintUsed` dipakai sekaligus
      sebagai "sedang tampil" dan sebagai catatan "pernah dibantu"), jadi manipulatif setinggi
@@ -408,15 +413,18 @@ modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
 
 - **Web mobile app** (bukan native), mobile-first, portrait.
 - **State utama di localStorage** supaya app tetap jalan offline.
-- **Akun orang tua (opsional) untuk sync antar HP** — email + kode 6 digit, lewat
+- **Akun orang tua (opsional) untuk sync antar HP** — email + kode 6 digit.
+  Pintu masuk: layar nama di HP baru ("Used GanMath on another phone?") dan
   Parent Area. Bukan akun anak, bukan login di peta. Detail: `docs/tech/cloud-sync.md`.
 - **PWA**: installable ke home screen, jalan offline.
 - Tidak ada iklan. Tidak ada tracking pihak ketiga. Cloud hanya menyimpan progress
   yang sudah ada di HP, di belakang RLS akun orang tua.
 
 ### Backup progress (wajib di v1)
-- **Cloud sync** di Parent Area → email orang tua, kode 6 digit, progress mengikuti akun
-  itu di setiap HP. Yang `updatedAt`-nya lebih baru menang utuh; tidak digabung.
+- **Cloud sync** → email orang tua, kode 6 digit. App menarik progress saat dibuka
+  (dan saat HP kembali ke depan). HP baru: tombol "Used GanMath on another phone?"
+  di layar nama, jangan isi nama dulu. Yang `updatedAt`-nya lebih baru menang utuh;
+  HP yang hanya punya nama tidak menimpa progress cloud.
 - **Save to file** di Parent Area → unduh `ganmath-progress-YYYY-MM-DD.json` (jaring pengaman).
 - **Load from file** → pilih file, app validasi `schemaVersion`, konfirmasi kalau akan menimpa
   progress yang ada, lalu pulihkan.

@@ -25,15 +25,17 @@ export const numbersTo10000: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Thousands, hundreds, tens, ones.',
-      visual: { kind: 'base10', hundreds: 3, tens: 4, ones: 2 },
+      prompt: 'See 2342 on the line.',
+      visual: { kind: 'number-line', min: 0, max: 3000, value: 2342, marks: [2000] },
       action: 'watch',
+      caption: '2342',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 2342.',
-      visual: { kind: 'base10', hundreds: 3, tens: 4, ones: 2 },
+      visual: { kind: 'number-line', min: 0, max: 3000, value: 2342, marks: [2000] },
       action: 'watch',
+      caption: '2342',
     },
   ],
 

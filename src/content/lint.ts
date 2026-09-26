@@ -80,7 +80,7 @@ export const STORY_VOCAB = new Set(
  */
 export const ACTION_VISUALS: Record<Exclude<LearnStep['action'], 'watch'>, LearnVisual['kind'][]> =
   {
-    'tap-count': ['counter-objects', 'shape2d', 'composed-shape', 'fraction'],
+    'tap-count': ['counter-objects', 'shape2d', 'composed-shape', 'fraction', 'money'],
     'tap-fill': ['ten-frame'],
     'drop-on-line': ['number-line'],
   };
@@ -126,6 +126,9 @@ export function learnStepBlocked(step: LearnStep): string | null {
   }
   if (v.kind === 'ten-frame' && target > (v.capacity ?? 10)) {
     return `minta ${target} tapi frame hanya memuat ${v.capacity ?? 10}`;
+  }
+  if (v.kind === 'money' && target > v.items.length) {
+    return `minta ${target} tap tapi hanya ada ${v.items.length} uang`;
   }
   return null;
 }
@@ -288,6 +291,7 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       for (const [field, text] of [
         ['prompt', step.prompt],
         ['hint', step.hint ?? ''],
+        ['caption', step.caption ?? ''],
       ] as const) {
         if (!text) continue;
         const n = words(text).length;
@@ -313,6 +317,14 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
       }
       const blocked = learnStepBlocked(step);
       if (blocked) add(m.id, 'learn-action', `langkah "${step.prompt}": ${blocked}`);
+      const put = step.prompt.match(/^Put (\d+) on the line/);
+      if (put && step.target != null && Number(put[1]) !== step.target) {
+        add(
+          m.id,
+          'learn-target',
+          `langkah "${step.prompt}" minta ${step.target} tapi yang ditulis ${put[1]}`,
+        );
+      }
     }
 
     // 3b. Hint yang dipilih aturan harus menunjuk langkah materi yang ada.

@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { QUICK_LOOK_FLASH_MS } from '../../../engine/learnPacing';
 
 /**
  * Subitizing — mengenali jumlah tanpa menghitung satu per satu. Ini modul `fact`
@@ -30,13 +31,14 @@ export const quickLook: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'You can see four at once.',
-      visual: { kind: 'ten-frame', value: 4 },
+      visual: { kind: 'ten-frame', value: 4, together: true },
       action: 'watch',
+      caption: '4',
     },
     {
       stage: 'abstract',
       prompt: 'Look fast. Say the number.',
-      visual: { kind: 'ten-frame', value: 6 },
+      visual: { kind: 'ten-frame', value: 6, together: true, flashMs: QUICK_LOOK_FLASH_MS },
       action: 'watch',
     },
   ],

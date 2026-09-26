@@ -34,6 +34,7 @@ export const moreOrLess: ContentModule = {
       prompt: 'We write it as 6 > 4.',
       visual: { kind: 'ten-frame', value: 6, split: 4 },
       action: 'watch',
+      caption: '6 > 4',
     },
   ],
 
