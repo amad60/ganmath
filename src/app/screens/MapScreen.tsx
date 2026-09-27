@@ -5,6 +5,7 @@ import { moduleById, registryFor, unitModules, unitTitles } from '../../content'
 import { Button, Icon, ProgressBar, Sheet, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
+import { UnitIntroModal } from '../../components/unit-intro/UnitIntroModal';
 
 export type MapScreenProps = {
   states: Record<string, ModuleState>;
@@ -57,6 +58,7 @@ export function MapScreen(props: MapScreenProps) {
   const [skipOpen, setSkipOpen] = useState(false);
   /** Bagian unit yang sengaja dibuka anak meski sudah tuntas. */
   const [opened, setOpened] = useState<Set<number>>(new Set());
+  const [activeIntroUnit, setActiveIntroUnit] = useState<string | null>(null);
   const toggleSection = (sectionIndex: number) =>
     setOpened((prev) => {
       const next = new Set(prev);
@@ -248,6 +250,24 @@ export function MapScreen(props: MapScreenProps) {
                     <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
                   ) : null}
                 </span>
+                {grade === 1 ? (
+                  <button
+                    type="button"
+                    aria-label={`Preview animation for ${unit?.title ?? unitId}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveIntroUnit(unitId);
+                    }}
+                    className="-my-1 flex h-9 items-center gap-1 rounded-full px-2.5 text-xs font-black"
+                    style={{
+                      background: 'var(--c-primary-soft)',
+                      color: accent,
+                    }}
+                  >
+                    <span>🎬</span>
+                    <span>Intro</span>
+                  </button>
+                ) : null}
                 <span
                   className="ml-auto text-[13px] font-black tabular-nums"
                   style={{ color: unitDone ? 'var(--c-star)' : 'var(--c-ink-soft)' }}
@@ -548,6 +568,19 @@ export function MapScreen(props: MapScreenProps) {
           </Button>
         </div>
       </Sheet>
+
+      <UnitIntroModal
+        unitId={activeIntroUnit}
+        onClose={() => setActiveIntroUnit(null)}
+        onStart={() => {
+          const unit = activeIntroUnit;
+          setActiveIntroUnit(null);
+          if (unit) {
+            const firstMod = pathOrder.find((id) => moduleById(id).unitId === unit);
+            if (firstMod) onOpen(firstMod);
+          }
+        }}
+      />
     </div>
   );
 }

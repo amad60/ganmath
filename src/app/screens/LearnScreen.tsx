@@ -9,6 +9,7 @@ import { LearnVisualView } from './LearnVisualView';
 import { Mascot } from '../../components/mascot/Mascot';
 import { teachingDuration, useReducedMotion } from '../../components/manipulatives/useReducedMotion';
 import { sfx, unlockAudio } from '../sfx';
+import { UnitIntroModal } from '../../components/unit-intro/UnitIntroModal';
 
 export type LearnScreenProps = {
   module: ContentModule;
@@ -41,6 +42,7 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
   const [values, setValues] = useState<number[]>(() => module.learn.map(() => 0));
   const [looked, setLooked] = useState<boolean[]>(() => module.learn.map(() => false));
   const [picked, setPicked] = useState<number | null>(null);
+  const [showUnitIntro, setShowUnitIntro] = useState(false);
   const reduced = useReducedMotion();
 
   // Seed dikunci sekali per kunjungan: soalnya tidak boleh berganti di tengah anak
@@ -117,6 +119,23 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
         onBack={onExit}
         center={
           <ProgressBar value={step + 1} max={total} label={en.learn.stepOf(step + 1, total)} />
+        }
+        right={
+          module.grade === 1 && module.unitId ? (
+            <button
+              type="button"
+              aria-label="Unit Intro"
+              onClick={() => setShowUnitIntro(true)}
+              className="flex h-9 items-center gap-1 rounded-full px-2.5 text-xs font-black shadow-xs"
+              style={{
+                background: 'var(--c-primary-soft)',
+                color: 'var(--c-primary)',
+              }}
+            >
+              <span>🎬</span>
+              <span>Intro</span>
+            </button>
+          ) : null
         }
       />
 
@@ -219,6 +238,11 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
           <p className="text-ink-soft mt-2 text-center text-[15px]">{en.learn.lookAgain}</p>
         ) : null}
       </div>
+
+      <UnitIntroModal
+        unitId={showUnitIntro ? module.unitId : null}
+        onClose={() => setShowUnitIntro(false)}
+      />
     </div>
   );
 }
