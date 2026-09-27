@@ -12,6 +12,8 @@ export type FractionShapeProps = {
   unequal?: boolean;
   /** Bagian bisa disentuh satu per satu; dipanggil dengan jumlah bagian berbeda yang disentuh. */
   onTap?: (count: number) => void;
+  /** Hanya bagian yang diarsir yang dihitung. Bagian kosong tetap bisa ditekan, tapi tidak naik. */
+  shadedOnly?: boolean;
 };
 
 /** Porsi bagian pertama pada varian `unequal`, dalam satuan "satu bagian sama besar". */
@@ -51,6 +53,7 @@ export function FractionShape({
   size = 120,
   unequal,
   onTap,
+  shadedOnly,
 }: FractionShapeProps) {
   const reduced = useReducedMotion();
   const hitRef = useRef<number[]>([]);
@@ -62,6 +65,7 @@ export function FractionShape({
 
   const take = (i: number) => {
     if (!onTap || hitRef.current.includes(i)) return;
+    if (shadedOnly && i >= shaded) return;
     hitRef.current = [...hitRef.current, i];
     setHit(hitRef.current);
     onTap(hitRef.current.length);

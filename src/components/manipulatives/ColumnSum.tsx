@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { columnPlaces } from './columnPlaces';
+import { teachingDuration, useReducedMotion } from './useReducedMotion';
+
 export type ColumnSumProps = {
   a: number;
   b: number;
@@ -5,7 +9,40 @@ export type ColumnSumProps = {
   compact?: boolean;
   /** Tutorial Learn menampilkan jumlah. Hint latihan menyembunyikannya. */
   showTotal?: boolean;
+  /**
+   * Putar barisnya sendiri, satu per satu. Dipakai panel Hint.
+   * Jumlah akhir tetap tersembunyi kalau `showTotal` mati.
+   */
+  play?: boolean;
+  /**
+   * Berapa baris hitungan yang sudah dibuka anak (langkah Learn).
+   * Kosong = tampilkan semua. `0` = baru operand.
+   */
+  reveal?: number;
 };
+
+const STEP_MS = 420;
+
+function useAutoReveal(active: boolean, max: number): number {
+  const reduced = useReducedMotion();
+  const [n, setN] = useState(0);
+
+  useEffect(() => {
+    if (!active) return;
+    setN(0);
+    if (max <= 0) return;
+    const ms = teachingDuration(STEP_MS, reduced);
+    let cur = 0;
+    const id = window.setInterval(() => {
+      cur += 1;
+      setN(cur);
+      if (cur >= max) window.clearInterval(id);
+    }, ms);
+    return () => window.clearInterval(id);
+  }, [active, max, reduced]);
+
+  return n;
+}
 
 function Row({
   op,
@@ -18,8 +55,12 @@ function Row({
   note?: string;
   big?: boolean;
 }) {
+  const reduced = useReducedMotion();
   return (
-    <div className="grid grid-cols-[1.5rem_minmax(3.5rem,auto)_1fr] items-baseline gap-x-2">
+    <div
+      className="grid grid-cols-[1.5rem_minmax(3.5rem,auto)_1fr] items-baseline gap-x-2"
+      style={{ animation: `fade-rise ${teachingDuration(280, reduced)}ms both` }}
+    >
       <span className="text-right text-[22px] font-black">{op ?? ''}</span>
       <span
         className="text-right font-black tabular-nums"
@@ -55,7 +96,19 @@ function Rule() {
  *   ----
  *     63  13 + 50
  */
-function ColumnAdd({ a, b, compact, showTotal }: { a: number; b: number; compact?: boolean; showTotal: boolean }) {
+function ColumnAdd({
+  a,
+  b,
+  compact,
+  showTotal,
+  shown,
+}: {
+  a: number;
+  b: number;
+  compact?: boolean;
+  showTotal: boolean;
+  shown: number;
+}) {
   const aOnes = a % 10;
   const bOnes = b % 10;
   const aTens = (Math.floor(a / 10) % 10) * 10;
@@ -66,30 +119,33 @@ function ColumnAdd({ a, b, compact, showTotal }: { a: number; b: number; compact
   const tensVal = aTens + bTens;
   const hundredsVal = aHundreds + bHundreds;
   const total = a + b;
-  const showOnes = ones !== 0 || tensVal === 0;
+  const places = columnPlaces(a, b, '+');
+  const visible = new Set(places.slice(0, shown));
+  const showSum = showTotal && shown >= places.length;
   const parts: number[] = [];
-  if (showOnes) parts.push(ones);
-  if (tensVal !== 0) parts.push(tensVal);
-  if (hundredsVal !== 0) parts.push(hundredsVal);
+  if (visible.has('ones')) parts.push(ones);
+  if (visible.has('tens')) parts.push(tensVal);
+  if (visible.has('hundreds')) parts.push(hundredsVal);
+
+  const heard = [`${a} plus ${b}.`];
+  if (visible.has('ones')) heard.push(`Ones ${ones}.`);
+  if (visible.has('tens')) heard.push(`Tens ${tensVal}.`);
+  if (visible.has('hundreds')) heard.push(`Hundreds ${hundredsVal}.`);
+  if (showSum) heard.push(`Total ${total}.`);
 
   return (
-    <div
-      className={compact ? 'text-[15px]' : ''}
-      aria-label={
-        showTotal
-          ? `${a} plus ${b}. Ones ${ones}. Tens ${tensVal}. Total ${total}.`
-          : `${a} plus ${b}. Ones ${ones}. Tens ${tensVal}.`
-      }
-    >
+    <div className={compact ? 'text-[15px]' : ''} aria-label={heard.join(' ')}>
       <Row n={a} />
       <Row op="+" n={b} />
       <Rule />
-      {showOnes ? <Row n={ones} note={`${aOnes} + ${bOnes}`} /> : null}
-      {tensVal !== 0 ? (
-        <Row op={showOnes ? '+' : undefined} n={tensVal} note={`${aTens} + ${bTens}`} />
+      {visible.has('ones') ? <Row n={ones} note={`${aOnes} + ${bOnes}`} /> : null}
+      {visible.has('tens') ? (
+        <Row op={visible.has('ones') ? '+' : undefined} n={tensVal} note={`${aTens} + ${bTens}`} />
       ) : null}
-      {hundredsVal !== 0 ? <Row op="+" n={hundredsVal} note={`${aHundreds} + ${bHundreds}`} /> : null}
-      {showTotal ? (
+      {visible.has('hundreds') ? (
+        <Row op="+" n={hundredsVal} note={`${aHundreds} + ${bHundreds}`} />
+      ) : null}
+      {showSum ? (
         <>
           <Rule />
           <Row n={total} big note={parts.length >= 2 ? parts.join(' + ') : undefined} />
@@ -110,37 +166,58 @@ function ColumnAdd({ a, b, compact, showTotal }: { a: number; b: number; compact
  *   ----
  *     25
  */
-function ColumnSub({ a, b, compact, showTotal }: { a: number; b: number; compact?: boolean; showTotal: boolean }) {
+function ColumnSub({
+  a,
+  b,
+  compact,
+  showTotal,
+  shown,
+}: {
+  a: number;
+  b: number;
+  compact?: boolean;
+  showTotal: boolean;
+  shown: number;
+}) {
+  const reduced = useReducedMotion();
   const needOpen = a % 10 < b % 10;
   const aOnes = needOpen ? (a % 10) + 10 : a % 10;
   const aTens = needOpen ? Math.floor(a / 10) - 1 : Math.floor(a / 10);
   const ones = aOnes - (b % 10);
   const tens = aTens - Math.floor(b / 10);
   const total = a - b;
+  const showSum = showTotal && shown >= 2;
+  const rise = { animation: `fade-rise ${teachingDuration(280, reduced)}ms both` };
+
+  const heard = [`${a} minus ${b}.`];
+  if (shown >= 1) {
+    heard.push(needOpen ? `Open one ten. ${aOnes} take ${b % 10} is ${ones}.` : `Ones ${ones}.`);
+  }
+  if (shown >= 2) {
+    heard.push(
+      needOpen ? `${aTens} take ${Math.floor(b / 10)} is ${tens}.` : `Tens ${tens * 10}.`,
+    );
+  }
+  if (showSum) heard.push(`Total ${total}.`);
 
   return (
-    <div
-      className={compact ? 'text-[15px]' : ''}
-      aria-label={
-        needOpen
-          ? `${a} minus ${b}. Open one ten. ${aOnes} take ${b % 10} is ${ones}. ${aTens} take ${Math.floor(b / 10)} is ${tens}.${showTotal ? ` Total ${total}.` : ''}`
-          : `${a} minus ${b}. Ones ${ones}. Tens ${tens * 10}.${showTotal ? ` Total ${total}.` : ''}`
-      }
-    >
+    <div className={compact ? 'text-[15px]' : ''} aria-label={heard.join(' ')}>
       <Row n={a} />
       <Row op="−" n={b} />
       <Rule />
-      <div className="text-[18px] font-bold">
-        <p>
-          {aOnes} − {b % 10} = {ones}{' '}
-          <span className="text-ink-soft">ones</span>
-        </p>
-        <p>
-          {aTens} − {Math.floor(b / 10)} = {tens}{' '}
-          <span className="text-ink-soft">tens</span>
-        </p>
-      </div>
-      {showTotal ? (
+      {shown >= 1 ? (
+        <div className="text-[18px] font-bold" style={rise}>
+          <p>
+            {aOnes} − {b % 10} = {ones} <span className="text-ink-soft">ones</span>
+          </p>
+          {shown >= 2 ? (
+            <p>
+              {aTens} − {Math.floor(b / 10)} = {tens} <span className="text-ink-soft">tens</span>
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+      {showSum ? (
         <>
           <Rule />
           <Row n={total} big />
@@ -150,10 +227,22 @@ function ColumnSub({ a, b, compact, showTotal }: { a: number; b: number; compact
   );
 }
 
-export function ColumnSum({ a, b, op = '+', compact, showTotal = true }: ColumnSumProps) {
+export function ColumnSum({
+  a,
+  b,
+  op = '+',
+  compact,
+  showTotal = true,
+  play = false,
+  reveal,
+}: ColumnSumProps) {
+  const count = columnPlaces(a, b, op).length;
+  const auto = useAutoReveal(play && reveal == null, count);
+  const shown = reveal != null ? reveal : play ? auto : count;
+
   return op === '−' ? (
-    <ColumnSub a={a} b={b} compact={compact} showTotal={showTotal} />
+    <ColumnSub a={a} b={b} compact={compact} showTotal={showTotal} shown={shown} />
   ) : (
-    <ColumnAdd a={a} b={b} compact={compact} showTotal={showTotal} />
+    <ColumnAdd a={a} b={b} compact={compact} showTotal={showTotal} shown={shown} />
   );
 }

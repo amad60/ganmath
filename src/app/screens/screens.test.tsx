@@ -357,11 +357,12 @@ describe('QuestionScreen — anak harus tahu sisa berapa lagi', () => {
       'data-feedback',
       'retry',
     );
-    // jawaban benar ikut ditunjukkan — layar mengajar, bukan sekadar menilai
     expect(screen.getByRole('button', { name: String(q.answer) })).toHaveAttribute(
       'data-feedback',
-      'reveal',
+      'idle',
     );
+    expect(screen.getByText('Not quite')).toBeInTheDocument();
+    expect(screen.queryByText(new RegExp(`Try again · ${q.answer}`))).not.toBeInTheDocument();
     vi.useRealTimers();
   });
 
@@ -733,6 +734,7 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
   });
 
   it('Hint 26 + 37 menampilkan 26 dan 37, bukan contoh 47+38=85', () => {
+    vi.useFakeTimers();
     const s = play('g2-u2-m4', 'practice');
     const base = s.pending[0]!.question;
     const question = {
@@ -756,12 +758,18 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     const panel = document.getElementById('hint-panel')!;
     expect(within(panel).getByText('Ones first. 6 + 7.')).toBeInTheDocument();
     expect(within(panel).getByLabelText(/26 plus 37/)).toBeInTheDocument();
+    // Barisnya bergerak: satuan dulu, baru puluhan. Jumlah 63 tidak pernah muncul.
+    expect(within(panel).queryByText('13')).not.toBeInTheDocument();
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
     expect(within(panel).getByText('13')).toBeInTheDocument();
     expect(within(panel).getByText('6 + 7')).toBeInTheDocument();
     expect(within(panel).getByText('50')).toBeInTheDocument();
     expect(within(panel).getByText('20 + 30')).toBeInTheDocument();
     expect(within(panel).queryByText('63')).not.toBeInTheDocument();
     expect(within(panel).queryByText(/47 \+ 38/)).not.toBeInTheDocument();
+    vi.useRealTimers();
   });
 
   /**
@@ -1400,7 +1408,12 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
     expect(done).not.toHaveBeenCalled();
 
-    fireEvent.click(opsi.find((b) => b.textContent === benar)!);
+    const nextCheck = learnCheck(mod, SEED + 1);
+    const benar2 = String(
+      nextCheck!.options ? nextCheck!.options[nextCheck!.question.answer] : nextCheck!.question.answer,
+    );
+    const lanjut = screen.getAllByRole('button').find((b) => b.textContent === benar2);
+    fireEvent.click(lanjut!);
 
     const start = screen.getByRole('button', { name: /next|start/i });
     expect(start).not.toBeDisabled();
@@ -1471,6 +1484,55 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     act(() => {
       vi.advanceTimersByTime(WATCH_LOOK_MS);
     });
+    expect(next).not.toBeDisabled();
+    vi.useRealTimers();
+  });
+
+  it('kolom, menyimpan, dan pecahan harus dikerjakan sebelum Next', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('g2-u2-m4');
+    render(<LearnScreen module={mod} onDone={() => {}} onExit={() => {}} />);
+    enableLearnNext();
+    fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+
+    const next = screen.getByRole('button', { name: /next|start/i });
+    expect(next).toBeDisabled();
+    act(() => {
+      vi.advanceTimersByTime(WATCH_LOOK_MS);
+    });
+    expect(next).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Make a ten' }));
+    expect(screen.getByText('10 ones make 1 ten.')).toBeInTheDocument();
+    expect(next).not.toBeDisabled();
+    fireEvent.click(next);
+
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Add the ones' }));
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Add the tens' }));
+    expect(screen.getByLabelText(/47 plus 38/)).toHaveTextContent('15');
+    expect(screen.getByLabelText(/47 plus 38/)).not.toHaveTextContent('85');
+    expect(screen.getByRole('button', { name: /next|start/i })).not.toBeDisabled();
+    vi.useRealTimers();
+  });
+
+  it('pecahan yang diarsir harus disentuh sebelum Next', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('g1-u6-m4');
+    render(<LearnScreen module={mod!} onDone={() => {}} onExit={() => {}} />);
+    const parts = screen.getAllByRole('button', { name: /^Part / });
+    for (const p of parts) fireEvent.click(p);
+    fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+
+    const next = screen.getByRole('button', { name: /next|start/i });
+    expect(next).toBeDisabled();
+    act(() => {
+      vi.advanceTimersByTime(WATCH_LOOK_MS);
+    });
+    expect(next).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Part 2' }));
+    expect(next).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Part 1' }));
     expect(next).not.toBeDisabled();
     vi.useRealTimers();
   });

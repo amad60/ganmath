@@ -26,6 +26,7 @@ import {
 import { EvidenceText } from '../../components/reading/EvidenceText';
 import { SequenceCards } from '../../components/reading/SequenceCards';
 import type { LearnVisual } from '../../content/types';
+import { en } from '../../i18n/en';
 
 export type LearnVisualViewProps = {
   visual: LearnVisual;
@@ -41,6 +42,14 @@ export type LearnVisualViewProps = {
    * soal dan bantuannya sekaligus.
    */
   compact?: boolean;
+  /** Panel Hint: kolom bersusun memainkan barisnya satu per satu. */
+  play?: boolean;
+  /** Berapa baris kolom yang sudah dibuka anak. */
+  reveal?: number;
+  /** Sepuluh satuan sudah dijadikan satu puluhan. */
+  bundled?: boolean;
+  /** Pecahan `watch`: anak mengetuk bagian yang diarsir. */
+  fractionTap?: boolean;
 };
 
 /** Menerjemahkan data materi jadi manipulatif. Komponen tidak tahu isi modulnya. */
@@ -51,6 +60,10 @@ export function LearnVisualView({
   interactive,
   compact,
   onFlashEnd,
+  play,
+  reveal,
+  bundled,
+  fractionTap,
 }: LearnVisualViewProps) {
   switch (visual.kind) {
     case 'counter-objects':
@@ -92,7 +105,22 @@ export function LearnVisualView({
       return (
         <Base10Blocks hundreds={visual.hundreds ?? 0} tens={visual.tens} ones={visual.ones} />
       );
-    case 'base10-pair':
+    case 'base10-pair': {
+      const ones = visual.left.ones + visual.right.ones;
+      const made = bundled && (visual.op ?? '+') === '+' && ones >= 10;
+      if (made) {
+        return (
+          <div className="flex flex-col items-center gap-2">
+            <Base10Blocks
+              hundreds={(visual.left.hundreds ?? 0) + (visual.right.hundreds ?? 0)}
+              tens={visual.left.tens + visual.right.tens + Math.floor(ones / 10)}
+              ones={ones % 10}
+              size={compact ? 0.7 : 1}
+            />
+            <p className="text-[18px] font-black">{en.learn.madeTen}</p>
+          </div>
+        );
+      }
       return (
         <div className="flex flex-wrap items-end justify-center gap-3" aria-label="Place value pair">
           <Base10Blocks
@@ -110,6 +138,7 @@ export function LearnVisualView({
           />
         </div>
       );
+    }
     case 'column-sum':
       return (
         <ColumnSum
@@ -118,6 +147,8 @@ export function LearnVisualView({
           op={visual.op}
           compact={compact}
           showTotal={visual.showTotal !== false}
+          play={play}
+          reveal={reveal}
         />
       );
     case 'shape2d':
@@ -161,8 +192,9 @@ export function LearnVisualView({
           shape={visual.shape ?? 'circle'}
           unequal={visual.unequal}
           // Bagian yang bisa disentuh butuh sasaran ≥44px (CLAUDE.md §2).
-          size={interactive && visual.tap ? 200 : 140}
-          onTap={interactive && visual.tap ? onValue : undefined}
+          size={interactive && (visual.tap || fractionTap) ? 200 : 140}
+          shadedOnly={fractionTap}
+          onTap={interactive && (visual.tap || fractionTap) ? onValue : undefined}
         />
       );
     case 'clock':

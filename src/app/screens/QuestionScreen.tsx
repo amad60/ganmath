@@ -508,9 +508,6 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const choiceFeedback = (c: number): Feedback => {
     if (!feedback) return 'idle';
     if (sameAnswer(c, feedback.value)) return feedback.correct ? 'correct' : 'retry';
-    // Soal baca tidak membuka pilihan yang benar. Membukanya, lalu mengulang
-    // modul, membuat anak hafal tombolnya tanpa membaca teks.
-    if (!isRead && sameAnswer(c, question.answer)) return 'reveal';
     return 'idle';
   };
 
@@ -649,6 +646,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                   onValue={() => {}}
                   interactive={false}
                   compact
+                  play={hint.visual.kind === 'column-sum'}
                 />
                 <p className="text-ink-soft text-center text-[18px] font-bold">{hint.prompt}</p>
               </>
@@ -807,11 +805,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             style={{ color: feedback.correct ? 'var(--c-correct)' : 'var(--c-retry)' }}
             role="status"
           >
-            {feedback.correct
-              ? en.question.correct
-              : isRead
-                ? en.question.notQuite
-                : `${en.question.retry} · ${label(question.answer)}`}
+            {feedback.correct ? en.question.correct : en.question.notQuite}
           </p>
         ) : null}
       </div>

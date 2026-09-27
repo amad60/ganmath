@@ -64,9 +64,13 @@ describe('session runner', () => {
     expect(progressOf(s).total).toBe(10);
   });
 
-  it('soal yang salah dimunculkan lagi, ditandai retried, dengan jarak ≥2 soal', () => {
+  it('soal keypad yang salah dimunculkan lagi, ditandai retried, dengan jarak ≥2 soal', () => {
     let s = createSession(def, 'practice', 5, T0);
+    while (currentQuestion(s)?.type !== 'keypad') {
+      s = submitAnswer(s, { correct: true, thinkMs: 2000, totalMs: 3000, hintUsed: false, nowMs: T0 });
+    }
     const first = currentQuestion(s);
+    expect(first?.type).toBe('keypad');
     s = submitAnswer(s, { correct: false, thinkMs: 2000, totalMs: 3000, hintUsed: false, nowMs: T0 });
     // dua soal berikutnya bukan soal yang sama
     expect(currentQuestion(s)?.id).not.toBe(first?.id);
@@ -74,6 +78,15 @@ describe('session runner', () => {
     s = submitAnswer(s, { correct: true, thinkMs: 2000, totalMs: 3000, hintUsed: false, nowMs: T0 });
     const requeued = s.pending.find((p) => p.retried);
     expect(requeued?.question.id).toBe(first?.id);
+  });
+
+  it('soal pilihan yang salah tidak dimunculkan lagi', () => {
+    let s = createSession(def, 'practice', 5, T0);
+    const first = currentQuestion(s);
+    expect(first?.type).toBe('choose-number');
+    s = submitAnswer(s, { correct: false, thinkMs: 2000, totalMs: 3000, hintUsed: false, nowMs: T0 });
+    expect(s.requeue).toHaveLength(0);
+    expect(s.pending.some((p) => p.question.id === first?.id)).toBe(false);
   });
 
   it('soal ulangan tidak diulang lagi kalau salah lagi (tidak ada lingkaran tak berujung)', () => {

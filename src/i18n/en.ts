@@ -68,6 +68,15 @@ export const en = {
     checkPrompt: 'Now you try.',
     checkRetry: 'Not that one. Try again.',
     checkHint: 'Pick the right answer to continue.',
+    addOnes: 'Add the ones',
+    addTens: 'Add the tens',
+    addHundreds: 'Add the hundreds',
+    takeOnes: 'Take the ones',
+    takeTens: 'Take the tens',
+    makeTen: 'Make a ten',
+    openTen: 'Open one ten',
+    tapParts: 'Tap each shaded part.',
+    madeTen: '10 ones make 1 ten.',
   },
 
   question: {

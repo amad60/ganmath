@@ -1660,4 +1660,27 @@ describe('ColumnSum — cara bersusun yang bisa dibaca sendiri', () => {
     expect(screen.getByLabelText(/52 minus 27/)).toHaveTextContent('12 − 7 = 5');
     expect(screen.getByLabelText(/52 minus 27/)).toHaveTextContent('25');
   });
+
+  it('play membuka satuan lalu puluhan, dan tidak pernah menulis 63', () => {
+    vi.useFakeTimers();
+    render(
+      <LearnVisualView
+        visual={{ kind: 'column-sum', a: 26, b: 37, op: '+', showTotal: false }}
+        value={0}
+        onValue={() => {}}
+        interactive={false}
+        play
+      />,
+    );
+    const col = screen.getByLabelText(/26 plus 37/);
+    expect(col).not.toHaveTextContent('13');
+    expect(col).not.toHaveTextContent('63');
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+    expect(col).toHaveTextContent('13');
+    expect(col).toHaveTextContent('50');
+    expect(col).not.toHaveTextContent('63');
+    vi.useRealTimers();
+  });
 });
