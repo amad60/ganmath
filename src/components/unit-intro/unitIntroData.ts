@@ -415,6 +415,90 @@ export const GRADE_6_INTROS: Record<string, UnitIntroDef> = {
   },
 };
 
+export const READ_INTROS: Record<string, UnitIntroDef> = {
+  'r1-u1': {
+    unitId: 'r1-u1',
+    grade: 1,
+    title: 'Unit 1 · Who, Where & What',
+    subtitle: 'Characters & Settings',
+    concept: 'Spot who is in the story and where the adventure happens!',
+    mascotMood: 'happy',
+    accentColor: '#10b981',
+  },
+  'r1-u2': {
+    unitId: 'r1-u2',
+    grade: 1,
+    title: 'Unit 2 · Beginning, Middle & End',
+    subtitle: 'Order of Events',
+    concept: 'Follow what happens first, what happens next, and what happens last!',
+    mascotMood: 'thinking',
+    accentColor: '#059669',
+  },
+  'r1-u3': {
+    unitId: 'r1-u3',
+    grade: 1,
+    title: 'Unit 3 · Why Did It Happen?',
+    subtitle: 'Cause & Effect',
+    concept: 'Find the reason why things happen in the story!',
+    mascotMood: 'encourage',
+    accentColor: '#0d9488',
+  },
+  'r1-u4': {
+    unitId: 'r1-u4',
+    grade: 1,
+    title: 'Unit 4 · Mystery Clues',
+    subtitle: 'Inferring & Riddles',
+    concept: 'Read between the lines and use smart clues to solve the riddle!',
+    mascotMood: 'celebrate',
+    accentColor: '#0284c7',
+  },
+  'r2-u1': {
+    unitId: 'r2-u1',
+    grade: 2,
+    title: 'Unit 1 · The Big Idea',
+    subtitle: 'Main Idea & Details',
+    concept: 'Find the one big main idea and see how details support it!',
+    mascotMood: 'happy',
+    accentColor: '#10b981',
+  },
+  'r2-u2': {
+    unitId: 'r2-u2',
+    grade: 2,
+    title: 'Unit 2 · Fact or Feeling?',
+    subtitle: 'Fact vs Opinion',
+    concept: 'Facts can be proven true; opinions tell how someone feels!',
+    mascotMood: 'thinking',
+    accentColor: '#059669',
+  },
+  'r2-u3': {
+    unitId: 'r2-u3',
+    grade: 2,
+    title: 'Unit 3 · Character Feelings',
+    subtitle: 'Show, Don’t Tell',
+    concept: 'Look at actions and body language to tell how characters feel!',
+    mascotMood: 'celebrate',
+    accentColor: '#0d9488',
+  },
+  'r3-u1': {
+    unitId: 'r3-u1',
+    grade: 3,
+    title: 'Unit 1 · Follow the Steps',
+    subtitle: 'Procedural & Recipes',
+    concept: 'Follow steps in exact order to build things and stay safe!',
+    mascotMood: 'encourage',
+    accentColor: '#10b981',
+  },
+  'r3-u2': {
+    unitId: 'r3-u2',
+    grade: 3,
+    title: 'Unit 2 · Animal Adaptations',
+    subtitle: 'Science & Informational Text',
+    concept: 'Discover how special features help animals survive in the wild!',
+    mascotMood: 'thinking',
+    accentColor: '#0284c7',
+  },
+};
+
 export const ALL_UNIT_INTROS: Record<string, UnitIntroDef> = {
   ...GRADE_1_INTROS,
   ...GRADE_2_INTROS,
@@ -422,6 +506,7 @@ export const ALL_UNIT_INTROS: Record<string, UnitIntroDef> = {
   ...GRADE_4_INTROS,
   ...GRADE_5_INTROS,
   ...GRADE_6_INTROS,
+  ...READ_INTROS,
 };
 
 export function getUnitIntro(unitId: string): UnitIntroDef | null {

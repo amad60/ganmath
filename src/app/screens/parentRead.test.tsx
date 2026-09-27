@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ParentScreen } from './ParentScreen';
 import { BadgesScreen } from './BadgesScreen';
 import { createInitialState } from '../../store/schema';
@@ -33,6 +33,18 @@ describe('Integrasi Parent Area & Rewards untuk Track Read', () => {
     expect(screen.getByText('Reading Progress (Literasi)')).toBeInTheDocument();
     expect(screen.getByText('Read Level 1')).toBeInTheDocument();
     expect(screen.getByText('Jump to Reading Level')).toBeInTheDocument();
+
+    // Navigasi ke Tab Settings
+    const settingsTabBtn = screen.getByRole('button', { name: /Settings/i });
+    fireEvent.click(settingsTabBtn);
+    expect(screen.getByText('Preferences')).toBeInTheDocument();
+    expect(screen.getByText('Mastery threshold')).toBeInTheDocument();
+
+    // Navigasi ke Tab Sync & Data
+    const syncTabBtn = screen.getByRole('button', { name: /Sync & Data/i });
+    fireEvent.click(syncTabBtn);
+    expect(screen.getByText('Progress backup')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Reset progress' })).toBeInTheDocument();
   });
 
   it('BadgesScreen memiliki badge membaca dan mendukung track read', () => {

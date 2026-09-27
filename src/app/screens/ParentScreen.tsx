@@ -43,6 +43,7 @@ export function ParentScreen({
   onReset,
   onBack,
 }: ParentScreenProps) {
+  const [tab, setTab] = useState<'progress' | 'settings' | 'sync'>('progress');
   const activeGrade = data.profile.grade ?? 1;
   const fileRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<{ state: ProgressState; text: string } | null>(null);
@@ -119,211 +120,255 @@ export function ParentScreen({
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
       <Header onBack={onBack} backLabel="Back" center={<span className="text-2xl font-black">Parent Area</span>} />
 
-      <main className="safe-bottom flex flex-col gap-6 px-6 pt-5">
-        <section className="bg-surface rounded-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]">
-          <Row label="Mastered" value={plural(mastered, 'module')} />
-          <Row label="Needs review" value={plural(needsReview, 'module')} />
-          <Row label="XP" value={String(data.xp)} />
-          <Row
-            label="Streak"
-            value={`${plural(data.streak.current, 'day')} (best ${data.streak.best})`}
-          />
-          <div className="mt-3">
-            <ProgressBar value={mastered} max={totalAllModules} label={`${mastered}/${totalAllModules}`} />
-          </div>
-        </section>
+      <main className="safe-bottom flex flex-col gap-5 px-6 pt-4">
+        {/* Tab Navigation */}
+        <div className="flex w-full items-center justify-between rounded-[var(--r-md)] bg-[var(--c-surface-sunk)] p-1 border border-[var(--c-line)]">
+          <button
+            type="button"
+            onClick={() => setTab('progress')}
+            className="flex-1 rounded-lg py-2 text-center text-xs font-black transition-all"
+            style={{
+              background: tab === 'progress' ? 'var(--c-surface)' : 'transparent',
+              color: tab === 'progress' ? 'var(--c-primary)' : 'var(--c-ink-soft)',
+              boxShadow: tab === 'progress' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+            }}
+          >
+            📊 Progress
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab('settings')}
+            className="flex-1 rounded-lg py-2 text-center text-xs font-black transition-all"
+            style={{
+              background: tab === 'settings' ? 'var(--c-surface)' : 'transparent',
+              color: tab === 'settings' ? 'var(--c-primary)' : 'var(--c-ink-soft)',
+              boxShadow: tab === 'settings' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+            }}
+          >
+            ⚙️ Settings
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab('sync')}
+            className="flex-1 rounded-lg py-2 text-center text-xs font-black transition-all"
+            style={{
+              background: tab === 'sync' ? 'var(--c-surface)' : 'transparent',
+              color: tab === 'sync' ? 'var(--c-primary)' : 'var(--c-ink-soft)',
+              boxShadow: tab === 'sync' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+            }}
+          >
+            ☁️ Sync & Data
+          </button>
+        </div>
 
-        <section>
-          <h2 className="mb-2 text-xl font-black">Math Progress by grade</h2>
-          <GradeProgress reports={shown} openGrade={latest?.grade ?? activeGrade} />
-          {hidden.length > 0 ? (
-            <p className="text-ink-soft mt-2 text-[15px]">
-              {hidden.length === 1 ? `Grade ${hidden[0]}` : `Grades ${hidden[0]}–${hidden.at(-1)}`} will
-              show up here once started.
-            </p>
-          ) : null}
-        </section>
+        {tab === 'progress' ? (
+          <>
+            <section className="bg-surface rounded-[var(--r-lg)] p-5 shadow-[var(--shadow-card)]">
+              <Row label="Mastered" value={plural(mastered, 'module')} />
+              <Row label="Needs review" value={plural(needsReview, 'module')} />
+              <Row label="XP" value={String(data.xp)} />
+              <Row
+                label="Streak"
+                value={`${plural(data.streak.current, 'day')} (best ${data.streak.best})`}
+              />
+              <div className="mt-3">
+                <ProgressBar value={mastered} max={totalAllModules} label={`${mastered}/${totalAllModules}`} />
+              </div>
+            </section>
 
-        {shownRead.length > 0 ? (
-          <section>
-            <div className="mb-2 flex items-center gap-2">
-              <span className="text-xl">📖</span>
-              <h2 className="text-xl font-black">Reading Progress (Literasi)</h2>
+            <section>
+              <h2 className="mb-2 text-xl font-black">Math Progress by grade</h2>
+              <GradeProgress reports={shown} openGrade={latest?.grade ?? activeGrade} />
+              {hidden.length > 0 ? (
+                <p className="text-ink-soft mt-2 text-[15px]">
+                  {hidden.length === 1 ? `Grade ${hidden[0]}` : `Grades ${hidden[0]}–${hidden.at(-1)}`} will
+                  show up here once started.
+                </p>
+              ) : null}
+            </section>
+
+            {/* Jump to Math level */}
+            <section className="flex flex-col gap-3">
+              <h2 className="text-xl font-black">Jump to level</h2>
+              <p className="text-ink-soft text-[15px]">
+                Pick the grade your child is in. On the map, <b>Skip ahead</b> lets a child pass a
+                short check instead of learning a module first — one module, or a whole unit.
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {[1, 2, 3, 4, 5, 6].map((g) => {
+                  const available = availableGrades.includes(g);
+                  const active = g === activeGrade;
+                  const count = pathOrderFor(g).length;
+                  return (
+                    <button
+                      key={g}
+                      type="button"
+                      disabled={!available}
+                      onClick={() => onGrade(g)}
+                      aria-pressed={active}
+                      className="rounded-[var(--r-md)] px-2 py-3 text-[16px] font-black disabled:opacity-45"
+                      style={{
+                        background: active
+                          ? 'var(--c-primary)'
+                          : available
+                            ? 'var(--c-primary-soft)'
+                            : 'var(--c-surface-sunk)',
+                        color: active ? 'var(--c-primary-ink)' : 'var(--c-ink)',
+                        border: `2px solid ${active ? 'var(--c-primary)' : 'var(--c-line)'}`,
+                      }}
+                    >
+                      <span className="block">Grade {g}</span>
+                      <span
+                        className="block text-[12px] font-bold"
+                        style={{ opacity: 0.75 }}
+                      >
+                        {available ? `${count} modules` : 'soon'}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {shownRead.length > 0 ? (
+              <section>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-xl">📖</span>
+                  <h2 className="text-xl font-black">Reading Progress (Literasi)</h2>
+                </div>
+                <GradeProgress reports={shownRead} openGrade={data.profile.readGrade ?? 1} trackTitle="Read Level" />
+              </section>
+            ) : null}
+
+            <section className="flex flex-col gap-2">
+              <h3 className="text-base font-black">Jump to Reading Level</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {[1, 2, 3].map((rg) => {
+                  const active = rg === (data.profile.readGrade ?? 1);
+                  const count = readPathOrderFor(rg).length;
+                  return (
+                    <button
+                      key={`read-${rg}`}
+                      type="button"
+                      onClick={() => onReadGrade?.(rg)}
+                      aria-pressed={active}
+                      className="rounded-[var(--r-md)] px-2 py-2 text-[15px] font-black"
+                      style={{
+                        background: active ? '#059669' : '#d1fae5',
+                        color: active ? '#ffffff' : '#065f46',
+                        border: `2px solid ${active ? '#059669' : 'var(--c-line)'}`,
+                      }}
+                    >
+                      <span className="block">Level {rg}</span>
+                      <span className="block text-[11px] font-bold opacity-80">{count} modules</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section>
+              <h2 className="mb-2 text-xl font-black">Struggling with · Grade {activeGrade}</h2>
+              {struggling.length === 0 ? (
+                <p className="text-ink-soft text-[18px]">Nothing yet — accuracy looks good.</p>
+              ) : (
+                struggling.map((s) => (
+                  <div key={s.id} className="flex items-center justify-between py-1">
+                    <span className="text-[18px] font-bold">{moduleById(s.id).title}</span>
+                    <span className="text-[18px] font-black" style={{ color: 'var(--c-retry)' }}>
+                      {Math.round(s.acc * 100)}%
+                    </span>
+                  </div>
+                ))
+              )}
+            </section>
+          </>
+        ) : null}
+
+        {tab === 'settings' ? (
+          <section className="flex flex-col gap-3">
+            <h2 className="text-xl font-black">Preferences</h2>
+            <Toggle
+              label="Sound"
+              on={data.settings.sound}
+              onToggle={() => onSettings({ sound: !data.settings.sound })}
+            />
+            <Toggle
+              label="Reduce motion"
+              on={data.settings.reducedMotion === true}
+              onToggle={() =>
+                onSettings({ reducedMotion: data.settings.reducedMotion === true ? null : true })
+              }
+            />
+            <div className="flex items-center justify-between">
+              <span className="text-[18px] font-bold">Mastery threshold</span>
+              <select
+                value={data.settings.masteryAccuracyOverride ?? ''}
+                onChange={(e) =>
+                  onSettings({
+                    masteryAccuracyOverride: e.target.value === '' ? null : Number(e.target.value),
+                  })
+                }
+                className="bg-surface rounded-[var(--r-sm)] border-2 border-[var(--c-line)] px-3 py-2 text-[18px] font-bold"
+              >
+                <option value="">Default (80%)</option>
+                <option value="0.7">70%</option>
+                <option value="0.9">90%</option>
+                <option value="1">100%</option>
+              </select>
             </div>
-            <GradeProgress reports={shownRead} openGrade={data.profile.readGrade ?? 1} trackTitle="Read Level" />
           </section>
         ) : null}
 
-        <section>
-          <h2 className="mb-2 text-xl font-black">Struggling with · Grade {activeGrade}</h2>
-          {struggling.length === 0 ? (
-            <p className="text-ink-soft text-[18px]">Nothing yet — accuracy looks good.</p>
-          ) : (
-            struggling.map((s) => (
-              <div key={s.id} className="flex items-center justify-between py-1">
-                <span className="text-[18px] font-bold">{moduleById(s.id).title}</span>
-                <span className="text-[18px] font-black" style={{ color: 'var(--c-retry)' }}>
-                  {Math.round(s.acc * 100)}%
-                </span>
-              </div>
-            ))
-          )}
-        </section>
+        {tab === 'sync' ? (
+          <>
+            <CloudSyncPanel />
 
-        <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-black">Settings</h2>
-          <Toggle
-            label="Sound"
-            on={data.settings.sound}
-            onToggle={() => onSettings({ sound: !data.settings.sound })}
-          />
-          <Toggle
-            label="Reduce motion"
-            on={data.settings.reducedMotion === true}
-            onToggle={() =>
-              onSettings({ reducedMotion: data.settings.reducedMotion === true ? null : true })
-            }
-          />
-          <div className="flex items-center justify-between">
-            <span className="text-[18px] font-bold">Mastery threshold</span>
-            <select
-              value={data.settings.masteryAccuracyOverride ?? ''}
-              onChange={(e) =>
-                onSettings({
-                  masteryAccuracyOverride: e.target.value === '' ? null : Number(e.target.value),
-                })
-              }
-              className="bg-surface rounded-[var(--r-sm)] border-2 border-[var(--c-line)] px-3 py-2 text-[18px] font-bold"
-            >
-              <option value="">Default (80%)</option>
-              <option value="0.7">70%</option>
-              <option value="0.9">90%</option>
-              <option value="1">100%</option>
-            </select>
-          </div>
-        </section>
+            <section className="flex flex-col gap-3">
+              <h2 className="text-xl font-black">Progress backup</h2>
+              {!storageIsAvailable() ? (
+                <p className="text-[18px] font-bold" style={{ color: 'var(--c-retry)' }}>
+                  This browser is not saving data. Save to a file often.
+                </p>
+              ) : null}
+              {remind ? (
+                <p className="text-ink-soft text-[18px]">Time to save a backup file.</p>
+              ) : null}
+              <Button
+                full
+                onClick={() => {
+                  saveProgressToFile(data);
+                  writeMeta({ lastBackupAt: new Date().toISOString() });
+                  setSavedAt(new Date().toISOString());
+                }}
+              >
+                Save to file
+              </Button>
+              <Button variant="ghost" full onClick={() => fileRef.current?.click()}>
+                Load from file
+              </Button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="application/json,.json"
+                hidden
+                onChange={(e) => void pickFile(e.target.files?.[0])}
+              />
+              <p className="text-ink-soft text-[15px]">
+                Last backup:{' '}
+                {savedAt ?? meta.lastBackupAt
+                  ? new Date((savedAt ?? meta.lastBackupAt) as string).toLocaleDateString()
+                  : 'never'}
+              </p>
+            </section>
 
-        {/* Pintu jump-level. Dengan konten yang ada sekarang, melompat dilakukan
-            per modul lewat tombol ⏩ di peta; pemilihan grade disiapkan untuk konten
-            berikutnya dan ditandai jujur mana yang belum ada. */}
-        <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-black">Jump to level</h2>
-          <p className="text-ink-soft text-[15px]">
-            Pick the grade your child is in. On the map, <b>Skip ahead</b> lets a child pass a
-            short check instead of learning a module first — one module, or a whole unit.
-            Failing costs nothing.
-          </p>
-          <div className="grid grid-cols-3 gap-2">
-            {[1, 2, 3, 4, 5, 6].map((g) => {
-              const available = availableGrades.includes(g);
-              const active = g === activeGrade;
-              const count = pathOrderFor(g).length;
-              return (
-                <button
-                  key={g}
-                  type="button"
-                  disabled={!available}
-                  onClick={() => onGrade(g)}
-                  aria-pressed={active}
-                  className="rounded-[var(--r-md)] px-2 py-3 text-[16px] font-black disabled:opacity-45"
-                  style={{
-                    background: active
-                      ? 'var(--c-primary)'
-                      : available
-                        ? 'var(--c-primary-soft)'
-                        : 'var(--c-surface-sunk)',
-                    color: active ? 'var(--c-primary-ink)' : 'var(--c-ink)',
-                    border: `2px solid ${active ? 'var(--c-primary)' : 'var(--c-line)'}`,
-                  }}
-                >
-                  <span className="block">Grade {g}</span>
-                  <span
-                    className="block text-[12px] font-bold"
-                    style={{ opacity: 0.75 }}
-                  >
-                    {available ? `${count} modules` : 'soon'}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-          <p className="text-ink-soft text-[15px]">
-            Switching grade never erases anything — progress is kept per module, so you can
-            switch back any time.
-          </p>
-
-          <div className="mt-2 border-t border-[var(--c-line)] pt-3">
-            <h3 className="mb-2 text-base font-black">Jump to Reading Level</h3>
-            <div className="grid grid-cols-3 gap-2">
-              {[1, 2, 3].map((rg) => {
-                const active = rg === (data.profile.readGrade ?? 1);
-                const count = readPathOrderFor(rg).length;
-                return (
-                  <button
-                    key={`read-${rg}`}
-                    type="button"
-                    onClick={() => onReadGrade?.(rg)}
-                    aria-pressed={active}
-                    className="rounded-[var(--r-md)] px-2 py-2 text-[15px] font-black"
-                    style={{
-                      background: active ? '#059669' : '#d1fae5',
-                      color: active ? '#ffffff' : '#065f46',
-                      border: `2px solid ${active ? '#059669' : 'var(--c-line)'}`,
-                    }}
-                  >
-                    <span className="block">Level {rg}</span>
-                    <span className="block text-[11px] font-bold opacity-80">{count} modules</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <CloudSyncPanel />
-
-        <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-black">Progress backup</h2>
-          {!storageIsAvailable() ? (
-            <p className="text-[18px] font-bold" style={{ color: 'var(--c-retry)' }}>
-              This browser is not saving data. Save to a file often.
-            </p>
-          ) : null}
-          {remind ? (
-            <p className="text-ink-soft text-[18px]">Time to save a backup file.</p>
-          ) : null}
-          <Button
-            full
-            onClick={() => {
-              saveProgressToFile(data);
-              // Dicatat supaya pengingat backup berikutnya dihitung dari sini.
-              writeMeta({ lastBackupAt: new Date().toISOString() });
-              setSavedAt(new Date().toISOString());
-            }}
-          >
-            Save to file
-          </Button>
-          <Button variant="ghost" full onClick={() => fileRef.current?.click()}>
-            Load from file
-          </Button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="application/json,.json"
-            hidden
-            onChange={(e) => void pickFile(e.target.files?.[0])}
-          />
-          <p className="text-ink-soft text-[15px]">
-            Last backup:{' '}
-            {savedAt ?? meta.lastBackupAt
-              ? new Date((savedAt ?? meta.lastBackupAt) as string).toLocaleDateString()
-              : 'never'}
-          </p>
-        </section>
-
-        <Button variant="danger" full onClick={() => setConfirmReset(true)}>
-          Reset progress
-        </Button>
+            <section className="pt-2">
+              <Button variant="danger" full onClick={() => setConfirmReset(true)}>
+                Reset progress
+              </Button>
+            </section>
+          </>
+        ) : null}
       </main>
 
       <Sheet

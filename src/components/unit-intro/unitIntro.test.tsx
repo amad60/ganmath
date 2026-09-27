@@ -8,6 +8,7 @@ import {
   GRADE_4_INTROS,
   GRADE_5_INTROS,
   GRADE_6_INTROS,
+  READ_INTROS,
 } from './unitIntroData';
 
 describe('UnitIntroModal — animasi dan panduan unit', () => {
@@ -69,6 +70,24 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
       expect(intro?.title).toContain(`Unit ${u}`);
       expect(intro?.concept.length).toBeGreaterThan(10);
     }
+  });
+
+  it('semua unit Read Track punya data animasi intro (r1, r2, r3)', () => {
+    const readUnitIds = ['r1-u1', 'r1-u2', 'r1-u3', 'r1-u4', 'r2-u1', 'r2-u2', 'r2-u3', 'r3-u1', 'r3-u2'];
+    for (const unitId of readUnitIds) {
+      const intro = READ_INTROS[unitId];
+      expect(intro).toBeDefined();
+      expect(intro?.title).toBeDefined();
+      expect(intro?.concept.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('merender modal intro Read dengan animasi dan tombol', () => {
+    render(<UnitIntroModal unitId="r1-u1" onClose={() => {}} />);
+    expect(screen.getByText(/Who, Where & What/)).toBeInTheDocument();
+    expect(screen.getByText(/Characters & Settings/)).toBeInTheDocument();
+    expect(screen.getByText(/Spot who is in the story/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: "Let's Go! 🚀" })).toBeInTheDocument();
   });
 
   it('merender modal intro dengan benar saat unitId aktif', () => {

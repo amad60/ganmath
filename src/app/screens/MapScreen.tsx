@@ -299,7 +299,7 @@ export function MapScreen(props: MapScreenProps) {
                     ) : null}
                   </span>
                 </button>
-                {activeTrack === 'math' && grade <= 6 ? (
+                {(activeTrack === 'math' && grade <= 6) || (activeTrack === 'read' && grade <= 3) ? (
                   <button
                     type="button"
                     aria-label={`Preview animation for ${unit?.title ?? unitId}`}

@@ -121,6 +121,24 @@ function renderUnitVisual(unitId: string, reduced: boolean) {
       return <AnimationG6U6 reduced={reduced} />;
     case 'g6-u7':
       return <AnimationG6U7 reduced={reduced} />;
+    case 'r1-u1':
+      return <AnimationR1U1 reduced={reduced} />;
+    case 'r1-u2':
+      return <AnimationR1U2 reduced={reduced} />;
+    case 'r1-u3':
+      return <AnimationR1U3 reduced={reduced} />;
+    case 'r1-u4':
+      return <AnimationR1U4 reduced={reduced} />;
+    case 'r2-u1':
+      return <AnimationR2U1 reduced={reduced} />;
+    case 'r2-u2':
+      return <AnimationR2U2 reduced={reduced} />;
+    case 'r2-u3':
+      return <AnimationR2U3 reduced={reduced} />;
+    case 'r3-u1':
+      return <AnimationR3U1 reduced={reduced} />;
+    case 'r3-u2':
+      return <AnimationR3U2 reduced={reduced} />;
     default:
       return <AnimationDefault unitId={unitId} />;
   }
@@ -1686,6 +1704,208 @@ function AnimationG6U7({ reduced }: { reduced: boolean }) {
     </div>
   );
 }
+
+/** R1-U1: Who, Where & What — Storybook + Character highlight */
+function AnimationR1U1({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-xs border-2 border-[#10b981]"
+        style={{ animation: reduced ? undefined : 'badge-pop 700ms ease-out both' }}
+      >
+        <span className="text-3xl">🐱</span>
+        <div className="flex flex-col font-bold text-xs leading-tight">
+          <span className="text-[#059669] font-black text-sm">Mimi the Cat</span>
+          <span className="text-ink-soft">Sat in the sunny garden 🌳</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">
+        Spot <span className="text-[#059669]">WHO</span> is here and <span className="text-[#059669]">WHERE</span>! 🔍
+      </span>
+    </div>
+  );
+}
+
+/** R1-U2: Beginning, Middle & End — Sequence 1-2-3 */
+function AnimationR1U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-2 font-black text-xs">
+        <div className="flex flex-col items-center rounded-xl bg-white p-2 border border-[#059669] shadow-xs">
+          <span className="text-xl">🌱</span>
+          <span className="mt-1 text-ink-soft">1. Seed</span>
+        </div>
+        <span className="text-lg text-ink-soft">➔</span>
+        <div
+          className="flex flex-col items-center rounded-xl bg-white p-2 border border-[#059669] shadow-xs"
+          style={{ animation: reduced ? undefined : 'apple-hop 400ms ease-out 200ms both' }}
+        >
+          <span className="text-xl">💧</span>
+          <span className="mt-1 text-ink-soft">2. Water</span>
+        </div>
+        <span className="text-lg text-ink-soft">➔</span>
+        <div
+          className="flex flex-col items-center rounded-xl bg-[#d1fae5] p-2 border border-[#059669] shadow-xs text-[#065f46]"
+          style={{ animation: reduced ? undefined : 'apple-hop 400ms ease-out 400ms both' }}
+        >
+          <span className="text-xl">🌻</span>
+          <span className="mt-1">3. Bloom!</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">First, next, and last! ⏳</span>
+    </div>
+  );
+}
+
+/** R1-U3: Why Did It Happen? — Cause & Effect */
+function AnimationR1U3({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
+        <div className="flex flex-col items-center rounded-xl bg-white p-2 border border-[#0d9488] shadow-xs">
+          <span className="text-2xl">🌧️</span>
+          <span className="text-[11px] font-black text-ink-soft">Heavy Rain</span>
+        </div>
+        <span className="text-2xl font-black text-[#0d9488]">➔</span>
+        <div
+          className="flex flex-col items-center rounded-xl bg-[#ccfbf1] p-2 border border-[#0d9488] shadow-xs text-[#115e59]"
+          style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 300ms both' }}
+        >
+          <span className="text-2xl">☂️</span>
+          <span className="text-[11px] font-black">Open Umbrella</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Find WHY things happen! ⚡</span>
+    </div>
+  );
+}
+
+/** R1-U4: Mystery Clues — Riddle detective */
+function AnimationR1U4({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        className="flex items-center gap-3 rounded-2xl bg-white px-4 py-2.5 border-2 border-[#0284c7] shadow-xs"
+        style={{ animation: reduced ? undefined : 'badge-pop 700ms ease-out both' }}
+      >
+        <span className="text-3xl">🕵️</span>
+        <div className="flex flex-col text-xs font-bold leading-tight">
+          <span className="text-ink-soft">Soft fur + long ears + hops...</span>
+          <span className="text-sm font-black text-[#0284c7] mt-0.5">It's a Rabbit! 🐰</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Use smart clues to solve the mystery! ✨</span>
+    </div>
+  );
+}
+
+/** R2-U1: The Big Idea — Main idea & details */
+function AnimationR2U1({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        className="flex items-center gap-2 rounded-xl bg-[#d1fae5] px-3.5 py-1.5 border border-[#10b981] text-[#065f46] font-black text-sm"
+        style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out both' }}
+      >
+        <span>💡</span>
+        <span>Main Idea: Honeybees work hard</span>
+      </div>
+      <div className="flex gap-2 text-[11px] font-bold text-ink-soft">
+        <span className="rounded-md bg-white border border-[var(--c-line)] px-2 py-0.5">Sip nectar</span>
+        <span className="rounded-md bg-white border border-[var(--c-line)] px-2 py-0.5">Make honey</span>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Find what the story is mostly about!</span>
+    </div>
+  );
+}
+
+/** R2-U2: Fact or Feeling? — Fact vs Opinion scale */
+function AnimationR2U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-6">
+      <div className="flex flex-col items-center rounded-xl bg-white p-2.5 border-2 border-[#059669] shadow-xs">
+        <span className="text-xl">✅</span>
+        <span className="text-xs font-black text-[#059669] mt-0.5">FACT</span>
+        <span className="text-[10px] text-ink-soft font-bold">Can be proven true</span>
+      </div>
+      <span className="text-lg font-black text-ink-soft">vs</span>
+      <div
+        className="flex flex-col items-center rounded-xl bg-[#fef3c7] p-2.5 border-2 border-[#d97706] shadow-xs text-[#92400e]"
+        style={{ animation: reduced ? undefined : 'apple-hop 600ms ease-out 300ms both' }}
+      >
+        <span className="text-xl">💭</span>
+        <span className="text-xs font-black mt-0.5">OPINION</span>
+        <span className="text-[10px] font-bold opacity-90">What someone feels</span>
+      </div>
+    </div>
+  );
+}
+
+/** R2-U3: Character Feelings — Show, don't tell */
+function AnimationR2U3(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center rounded-xl bg-white p-2.5 border border-[#0d9488] shadow-xs">
+          <span className="text-2xl">😄</span>
+          <span className="text-[11px] font-black text-[#0d9488] mt-1">Jump & cheer</span>
+          <span className="text-[10px] text-ink-soft font-bold">➔ Excited!</span>
+        </div>
+        <div className="flex flex-col items-center rounded-xl bg-white p-2.5 border border-[#0d9488] shadow-xs">
+          <span className="text-2xl">🫣</span>
+          <span className="text-[11px] font-black text-[#0d9488] mt-1">Fidget fingers</span>
+          <span className="text-[10px] text-ink-soft font-bold">➔ Nervous</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Look at actions to discover emotions! 🎭</span>
+    </div>
+  );
+}
+
+/** R3-U1: Follow the Steps — Recipe & Procedural checklist */
+function AnimationR3U1({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="flex flex-col gap-1 rounded-xl bg-white p-3 border-2 border-[#10b981] shadow-xs text-xs font-black">
+        <span className="flex items-center gap-2 text-[#059669]">
+          <span>☑</span> 1. Peel ripe banana
+        </span>
+        <span className="flex items-center gap-2 text-[#059669]">
+          <span>☑</span> 2. Add milk and yogurt
+        </span>
+        <span
+          className="flex items-center gap-2 text-[var(--c-primary)]"
+          style={{ animation: reduced ? undefined : 'apple-hop 400ms ease-out 300ms both' }}
+        >
+          <span>⏳</span> 3. Blend for 30 seconds!
+        </span>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Follow steps in exact order! 📋</span>
+    </div>
+  );
+}
+
+/** R3-U2: Animal Adaptations — Chameleon & features */
+function AnimationR3U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-5">
+      <div
+        className="flex items-center justify-center text-4xl"
+        style={{ animation: reduced ? undefined : 'coin-shine 2s infinite' }}
+      >
+        🦎
+      </div>
+      <div className="flex flex-col font-black text-xs">
+        <span className="text-sm text-[#0284c7]">Color Camouflage</span>
+        <span className="text-ink-soft">Feature ➔ Survival in the wild!</span>
+        <span className="rounded-full bg-[#e0f2fe] px-2 py-0.5 text-[#0369a1] text-[10px] mt-1 text-center">
+          Adaptation power!
+        </span>
+      </div>
+    </div>
+  );
+}
+
 
 
 
