@@ -251,7 +251,7 @@ export function MapScreen(props: MapScreenProps) {
                     ) : null}
                   </span>
                 </button>
-                {grade <= 3 ? (
+                {grade <= 6 ? (
                   <button
                     type="button"
                     aria-label={`Preview animation for ${unit?.title ?? unitId}`}

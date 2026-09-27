@@ -79,6 +79,48 @@ function renderUnitVisual(unitId: string, reduced: boolean) {
       return <AnimationG3U6 reduced={reduced} />;
     case 'g3-u7':
       return <AnimationG3U7 reduced={reduced} />;
+    case 'g4-u1':
+      return <AnimationG4U1 reduced={reduced} />;
+    case 'g4-u2':
+      return <AnimationG4U2 reduced={reduced} />;
+    case 'g4-u3':
+      return <AnimationG4U3 reduced={reduced} />;
+    case 'g4-u4':
+      return <AnimationG4U4 reduced={reduced} />;
+    case 'g4-u5':
+      return <AnimationG4U5 reduced={reduced} />;
+    case 'g4-u6':
+      return <AnimationG4U6 reduced={reduced} />;
+    case 'g4-u7':
+      return <AnimationG4U7 reduced={reduced} />;
+    case 'g5-u1':
+      return <AnimationG5U1 reduced={reduced} />;
+    case 'g5-u2':
+      return <AnimationG5U2 reduced={reduced} />;
+    case 'g5-u3':
+      return <AnimationG5U3 reduced={reduced} />;
+    case 'g5-u4':
+      return <AnimationG5U4 reduced={reduced} />;
+    case 'g5-u5':
+      return <AnimationG5U5 reduced={reduced} />;
+    case 'g5-u6':
+      return <AnimationG5U6 reduced={reduced} />;
+    case 'g5-u7':
+      return <AnimationG5U7 reduced={reduced} />;
+    case 'g6-u1':
+      return <AnimationG6U1 reduced={reduced} />;
+    case 'g6-u2':
+      return <AnimationG6U2 reduced={reduced} />;
+    case 'g6-u3':
+      return <AnimationG6U3 reduced={reduced} />;
+    case 'g6-u4':
+      return <AnimationG6U4 reduced={reduced} />;
+    case 'g6-u5':
+      return <AnimationG6U5 reduced={reduced} />;
+    case 'g6-u6':
+      return <AnimationG6U6 reduced={reduced} />;
+    case 'g6-u7':
+      return <AnimationG6U7 reduced={reduced} />;
     default:
       return <AnimationDefault unitId={unitId} />;
   }
@@ -1180,5 +1222,470 @@ function AnimationG3U7({ reduced }: { reduced: boolean }) {
     </div>
   );
 }
+
+/** G4-U1: Big Numbers — Numbers to 1.000.000 (Hundred thousands to 1 Million) */
+function AnimationG4U1({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-2">
+        <div className="rounded-xl border-2 border-[var(--c-unit-1)] bg-[var(--c-surface)] px-2.5 py-1.5 text-center shadow-xs">
+          <span className="block text-xs font-bold text-ink-soft">100.000 × 10</span>
+          <span className="text-sm font-black text-[var(--c-unit-1)]">Hundred Thousands</span>
+        </div>
+        <span className="text-xl font-black text-ink-soft">➔</span>
+        <div
+          className="rounded-xl bg-[var(--c-unit-1)] px-3 py-1.5 text-center text-white shadow-sm"
+          style={{ animation: reduced ? undefined : 'badge-pop 700ms ease-out both' }}
+        >
+          <span className="block text-lg font-black tracking-wide tabular-nums">1.000.000</span>
+          <span className="text-[10px] font-bold uppercase opacity-90">One Million!</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Place value counts all the way to 1.000.000 🗺️</span>
+    </div>
+  );
+}
+
+/** G4-U2: Multiply & Divide Bigger — Split to Multiply 4 × 23 = 4×20 + 4×3 */
+function AnimationG4U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-2">
+        <span className="rounded-lg border-2 border-[var(--c-line)] bg-[var(--c-surface)] px-2.5 py-1 text-sm font-black">
+          4 × 23
+        </span>
+        <span className="text-sm font-black text-ink-soft">=</span>
+        <span
+          className="rounded-lg bg-[var(--c-primary-soft)] px-2 py-1 text-xs font-black text-[var(--c-primary)]"
+          style={{ animation: reduced ? undefined : 'apple-hop 400ms ease-out 200ms both' }}
+        >
+          4 × 20 (80)
+        </span>
+        <span className="text-xs font-black">+</span>
+        <span
+          className="rounded-lg bg-[var(--c-correct-soft)] px-2 py-1 text-xs font-black text-[var(--c-correct)]"
+          style={{ animation: reduced ? undefined : 'apple-hop 400ms ease-out 400ms both' }}
+        >
+          4 × 3 (12)
+        </span>
+      </div>
+      <div
+        className="rounded-full bg-[var(--c-unit-2)] px-4 py-0.5 text-sm font-black text-white shadow-xs"
+        style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 600ms both' }}
+      >
+        80 + 12 = 92 ✨
+      </div>
+    </div>
+  );
+}
+
+/** G4-U3: Factors & Multiples — Factor rainbow for 12 */
+function AnimationG4U3({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
+        <div className="flex flex-col items-center gap-1 font-mono text-xs font-black">
+          <span className="rounded-md bg-[var(--c-surface)] px-2 py-0.5 border border-[var(--c-unit-3)]">1 × 12 = 12</span>
+          <span className="rounded-md bg-[var(--c-surface)] px-2 py-0.5 border border-[var(--c-unit-3)]">2 × 6 = 12</span>
+          <span className="rounded-md bg-[var(--c-surface)] px-2 py-0.5 border border-[var(--c-unit-3)]">3 × 4 = 12</span>
+        </div>
+        <div
+          className="flex flex-col items-center rounded-xl bg-[var(--c-unit-3)] px-3 py-2 text-white shadow-xs"
+          style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 400ms both' }}
+        >
+          <span className="text-xs font-bold uppercase">Factors of 12</span>
+          <span className="text-sm font-black">1, 2, 3, 4, 6, 12</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Pairs that multiply to make the number! 🧩</span>
+    </div>
+  );
+}
+
+/** G4-U4: Equivalent Fractions — 1/2 = 2/4 = 4/8 */
+function AnimationG4U4(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3 font-black">
+        <div className="flex flex-col items-center gap-0.5">
+          <div className="h-6 w-14 rounded-sm border-2 border-[var(--c-unit-4)] bg-[var(--c-surface)] overflow-hidden flex">
+            <span className="h-full w-1/2 bg-[var(--c-unit-4)]" />
+          </div>
+          <span className="text-xs">1/2</span>
+        </div>
+        <span className="text-lg text-ink-soft">=</span>
+        <div className="flex flex-col items-center gap-0.5">
+          <div className="h-6 w-14 rounded-sm border-2 border-[var(--c-unit-4)] bg-[var(--c-surface)] overflow-hidden flex">
+            <span className="h-full w-1/4 bg-[var(--c-unit-4)] border-r border-white" />
+            <span className="h-full w-1/4 bg-[var(--c-unit-4)]" />
+          </div>
+          <span className="text-xs">2/4</span>
+        </div>
+        <span className="text-lg text-ink-soft">=</span>
+        <div className="flex flex-col items-center gap-0.5">
+          <div className="h-6 w-14 rounded-sm border-2 border-[var(--c-unit-4)] bg-[var(--c-surface)] overflow-hidden flex">
+            <span className="h-full w-1/8 bg-[var(--c-unit-4)] border-r border-white" />
+            <span className="h-full w-1/8 bg-[var(--c-unit-4)] border-r border-white" />
+            <span className="h-full w-1/8 bg-[var(--c-unit-4)] border-r border-white" />
+            <span className="h-full w-1/8 bg-[var(--c-unit-4)]" />
+          </div>
+          <span className="text-xs">4/8</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Multiply top and bottom by the same number! 🍕</span>
+    </div>
+  );
+}
+
+/** G4-U5: Decimals Begin — Tenths & Hundredths grid */
+function AnimationG4U5({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center">
+          <span className="text-xl font-black text-[var(--c-unit-5)]">3/10</span>
+          <span className="text-xs font-bold text-ink-soft">fraction</span>
+        </div>
+        <span className="text-2xl font-black text-ink-soft">⇄</span>
+        <div
+          className="flex flex-col items-center rounded-xl bg-[var(--c-unit-5)] px-3 py-1.5 text-white shadow-xs"
+          style={{ animation: reduced ? undefined : 'badge-pop 700ms ease-out both' }}
+        >
+          <span className="text-2xl font-black tracking-wider">0.3</span>
+          <span className="text-[10px] font-bold uppercase opacity-90">decimal</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">A decimal point is just another way to write parts! 🎯</span>
+    </div>
+  );
+}
+
+/** G4-U6: Angles & Area — Angle rotation & Square grid area */
+function AnimationG4U6(_props: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-6">
+      {/* 90 deg right angle */}
+      <div className="flex flex-col items-center gap-1">
+        <svg viewBox="0 0 50 50" className="h-14 w-14">
+          <line x1="10" y1="40" x2="45" y2="40" stroke="var(--c-ink)" strokeWidth="3" strokeLinecap="round" />
+          <line x1="10" y1="40" x2="10" y2="5" stroke="var(--c-unit-6)" strokeWidth="3" strokeLinecap="round" />
+          <rect x="10" y="30" width="10" height="10" fill="none" stroke="var(--c-unit-6)" strokeWidth="2" />
+        </svg>
+        <span className="text-xs font-black text-[var(--c-unit-6)]">90° Right Angle</span>
+      </div>
+      {/* Area 3x3 grid */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="grid grid-cols-3 gap-0.5 rounded-sm border-2 border-[var(--c-ink)] bg-white p-0.5">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <span key={i} className="h-3.5 w-3.5 bg-[var(--c-primary-soft)] border border-[var(--c-line)]" />
+          ))}
+        </div>
+        <span className="text-xs font-black text-ink-soft">Area = 9 sq units</span>
+      </div>
+    </div>
+  );
+}
+
+/** G4-U7: Data — Line plot with X marks */
+function AnimationG4U7(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center">
+        {/* X marks */}
+        <div className="flex gap-4 mb-1 text-sm font-black text-[var(--c-unit-7)]">
+          <div className="flex flex-col items-center leading-none"><span>✕</span><span>✕</span></div>
+          <div className="flex flex-col items-center leading-none"><span>✕</span><span>✕</span><span>✕</span><span>✕</span></div>
+          <div className="flex flex-col items-center leading-none"><span>✕</span></div>
+          <div className="flex flex-col items-center leading-none"><span>✕</span><span>✕</span><span>✕</span></div>
+        </div>
+        {/* Baseline */}
+        <div className="flex gap-4 border-t-2 border-[var(--c-ink)] pt-1 text-xs font-black tabular-nums">
+          <span className="w-4 text-center">1</span>
+          <span className="w-4 text-center">2</span>
+          <span className="w-4 text-center">3</span>
+          <span className="w-4 text-center">4</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Count frequencies on line plots! 📊</span>
+    </div>
+  );
+}
+
+/** G5-U1: Fraction Operations — Unlike denominators (1/2 + 1/3 = 3/6 + 2/6 = 5/6) */
+function AnimationG5U1({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-2 font-black text-sm">
+        <span className="rounded-md border border-[var(--c-line)] bg-white px-2 py-0.5">1/2 + 1/3</span>
+        <span className="text-ink-soft">➔</span>
+        <span
+          className="rounded-md bg-[var(--c-primary-soft)] px-2 py-0.5 text-[var(--c-primary)]"
+          style={{ animation: reduced ? undefined : 'fade-rise 400ms ease-out 200ms both' }}
+        >
+          3/6 + 2/6
+        </span>
+        <span className="text-ink-soft">=</span>
+        <span
+          className="rounded-md bg-[var(--c-unit-1)] px-2 py-0.5 text-white"
+          style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 400ms both' }}
+        >
+          5/6 ✨
+        </span>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Make denominators match first! 🧲</span>
+    </div>
+  );
+}
+
+/** G5-U2: Decimals — Line up decimal points 3.25 + 1.40 */
+function AnimationG5U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="font-mono text-base font-black leading-tight tabular-nums rounded-xl border border-[var(--c-line)] bg-white px-4 py-2 shadow-xs">
+        <div>&nbsp;&nbsp;3<span className="text-[var(--c-unit-2)] font-black">.</span>25</div>
+        <div className="border-b-2 border-[var(--c-ink)] pb-0.5">+ 1<span className="text-[var(--c-unit-2)] font-black">.</span>40</div>
+        <div
+          className="pt-1 text-[var(--c-unit-2)]"
+          style={{ animation: reduced ? undefined : 'fade-rise 400ms ease-out 300ms both' }}
+        >
+          &nbsp;&nbsp;4<span className="font-black">.</span>65
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Line up the dot straight down! 🎯</span>
+    </div>
+  );
+}
+
+/** G5-U3: Percent — 10x10 grid with 50% shaded */
+function AnimationG5U3(_props: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-5">
+      <div className="grid grid-cols-10 gap-0.5 rounded-sm border border-[var(--c-line)] bg-white p-1">
+        {Array.from({ length: 100 }).map((_, i) => (
+          <span
+            key={i}
+            className={`h-1.5 w-1.5 rounded-xxs ${i < 50 ? 'bg-[var(--c-unit-3)]' : 'bg-[var(--c-surface-sunk)]'}`}
+          />
+        ))}
+      </div>
+      <div className="flex flex-col font-black">
+        <span className="text-2xl text-[var(--c-unit-3)]">50%</span>
+        <span className="text-xs text-ink-soft">50 out of 100</span>
+        <span className="text-xs text-[var(--c-correct)]">= 1/2 = 0.5</span>
+      </div>
+    </div>
+  );
+}
+
+/** G5-U4: Multiply & Divide Fluently — 2-digit × 2-digit area model */
+function AnimationG5U4(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="grid grid-cols-2 gap-1 rounded-lg border-2 border-[var(--c-unit-4)] bg-white p-2 font-mono text-xs font-black">
+        <div className="rounded-xs bg-[var(--c-primary-soft)] p-1 text-center">20×30 = 600</div>
+        <div className="rounded-xs bg-[var(--c-correct-soft)] p-1 text-center">20×4 = 80</div>
+        <div className="rounded-xs bg-[var(--c-retry-soft)] p-1 text-center">5×30 = 150</div>
+        <div className="rounded-xs bg-amber-100 p-1 text-center">5×4 = 20</div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Area model breaks large products into 4 boxes! 📦</span>
+    </div>
+  );
+}
+
+/** G5-U5: Volume & Measurement — 3D Box length × width × height */
+function AnimationG5U5(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="flex items-center gap-3">
+        <svg viewBox="0 0 70 50" className="h-14 w-20">
+          {/* Isometric box */}
+          <polygon points="10,25 35,10 60,25 35,40" fill="var(--c-primary-soft)" stroke="var(--c-unit-5)" strokeWidth="2" />
+          <polygon points="10,25 35,40 35,50 10,35" fill="var(--c-unit-5)" opacity="0.8" stroke="var(--c-unit-5)" strokeWidth="1" />
+          <polygon points="35,40 60,25 60,35 35,50" fill="var(--c-unit-5)" opacity="0.6" stroke="var(--c-unit-5)" strokeWidth="1" />
+        </svg>
+        <div className="flex flex-col font-black text-xs">
+          <span>L × W × H</span>
+          <span className="text-sm text-[var(--c-unit-5)]">4 × 3 × 2 = 24</span>
+          <span className="text-ink-soft">cubic units</span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Volume counts how many blocks fill inside! 🧊</span>
+    </div>
+  );
+}
+
+/** G5-U6: Shapes in Space — Unfolding cube net */
+function AnimationG5U6(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      {/* Cross cube net */}
+      <div className="flex flex-col items-center font-black">
+        <span className="h-5 w-5 border border-[var(--c-unit-6)] bg-[var(--c-primary-soft)]" />
+        <div className="flex">
+          <span className="h-5 w-5 border border-[var(--c-unit-6)] bg-[var(--c-primary-soft)]" />
+          <span className="h-5 w-5 border border-[var(--c-unit-6)] bg-[var(--c-unit-6)] text-white text-[9px] flex items-center justify-center">cube</span>
+          <span className="h-5 w-5 border border-[var(--c-unit-6)] bg-[var(--c-primary-soft)]" />
+          <span className="h-5 w-5 border border-[var(--c-unit-6)] bg-[var(--c-primary-soft)]" />
+        </div>
+        <span className="h-5 w-5 border border-[var(--c-unit-6)] bg-[var(--c-primary-soft)]" />
+      </div>
+      <span className="text-xs font-black text-ink-soft">Fold the 6 flat squares to build a solid cube! 📦</span>
+    </div>
+  );
+}
+
+/** G5-U7: Data & Speed — Distance / Time = Speed */
+function AnimationG5U7({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
+        <span className="text-3xl" style={{ animation: reduced ? undefined : 'slide-merge-left 1.2s ease-in-out infinite alternate' }}>🚗</span>
+        <div className="flex flex-col font-black">
+          <span className="text-sm text-[var(--c-unit-7)]">120 km in 2 hours</span>
+          <span className="rounded-full bg-[var(--c-unit-7)] px-2.5 py-0.5 text-xs text-white text-center">
+            Speed = 60 km/h ⚡
+          </span>
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Speed tells distance traveled each hour!</span>
+    </div>
+  );
+}
+
+/** G6-U1: Integers — Negative number line (-5 to +5) */
+function AnimationG6U1(_props: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <svg viewBox="0 0 240 50" className="w-full max-w-[260px]">
+        <line x1="10" y1="30" x2="230" y2="30" stroke="var(--c-ink)" strokeWidth="3" />
+        {/* Ticks */}
+        <line x1="30" y1="24" x2="30" y2="36" stroke="var(--c-unit-1)" strokeWidth="2.5" />
+        <text x="30" y="46" textAnchor="middle" fontSize="10" fontWeight="900" fill="var(--c-unit-1)">-5</text>
+        <line x1="120" y1="20" x2="120" y2="40" stroke="var(--c-ink)" strokeWidth="3.5" />
+        <text x="120" y="46" textAnchor="middle" fontSize="11" fontWeight="900" fill="var(--c-ink)">0</text>
+        <line x1="210" y1="24" x2="210" y2="36" stroke="var(--c-correct)" strokeWidth="2.5" />
+        <text x="210" y="46" textAnchor="middle" fontSize="10" fontWeight="900" fill="var(--c-correct)">+5</text>
+        {/* Negative jump arc */}
+        <path d="M 120 25 Q 75 5 30 25" fill="none" stroke="var(--c-unit-1)" strokeWidth="2.5" strokeDasharray="4 2" />
+      </svg>
+      <span className="text-xs font-black text-ink-soft">Numbers below zero live on the left! ❄️</span>
+    </div>
+  );
+}
+
+/** G6-U2: Ratio & Proportion — Scaling ratios 2 : 3 = 4 : 6 */
+function AnimationG6U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2 font-black">
+      <div className="flex items-center gap-3">
+        <span className="rounded-lg bg-[var(--c-surface)] border border-[var(--c-unit-2)] px-2.5 py-1 text-sm text-[var(--c-unit-2)]">
+          2 : 3
+        </span>
+        <span className="text-xs text-ink-soft">× 2 ➔</span>
+        <span
+          className="rounded-lg bg-[var(--c-unit-2)] px-3 py-1 text-sm text-white shadow-xs"
+          style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out both' }}
+        >
+          4 : 6 ✨
+        </span>
+      </div>
+      <span className="text-xs text-ink-soft">Scale both sides equally like a cooking recipe! 🥣</span>
+    </div>
+  );
+}
+
+/** G6-U3: Algebra Begins — Mystery balance n + 4 = 10 */
+function AnimationG6U3({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3 font-black text-sm">
+        <div className="rounded-xl border-2 border-[var(--c-unit-3)] bg-white px-3 py-1">
+          <span className="rounded-md bg-[var(--c-unit-3)] px-1.5 py-0.5 text-white">n</span> + 4 = 10
+        </div>
+        <span className="text-xs text-ink-soft">➔</span>
+        <div
+          className="rounded-xl bg-[var(--c-correct-soft)] px-3 py-1 text-[var(--c-correct)]"
+          style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 300ms both' }}
+        >
+          n = 10 - 4 = <span className="underline">6</span>!
+        </div>
+      </div>
+      <span className="text-xs font-black text-ink-soft">Undo operations to reveal the mystery number n! 🔍</span>
+    </div>
+  );
+}
+
+/** G6-U4: Circles — Radius, Diameter, Circumference (π × d) */
+function AnimationG6U4(_props: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-5">
+      <svg viewBox="0 0 60 60" className="h-16 w-16">
+        <circle cx="30" cy="30" r="26" fill="var(--c-primary-soft)" stroke="var(--c-unit-4)" strokeWidth="3" />
+        <line x1="4" y1="30" x2="56" y2="30" stroke="var(--c-ink)" strokeWidth="2.5" />
+        <circle cx="30" cy="30" r="3" fill="var(--c-ink)" />
+      </svg>
+      <div className="flex flex-col font-black text-xs gap-0.5">
+        <span className="text-[var(--c-unit-4)]">Radius = 1/2 Diameter</span>
+        <span>Diameter (d) = full width</span>
+        <span className="rounded-xs bg-[var(--c-unit-4)] px-1.5 py-0.5 text-white text-[10px]">Perimeter = π × d</span>
+      </div>
+    </div>
+  );
+}
+
+/** G6-U5: Solids — Cylinder and Prism volume (Base Area × Height) */
+function AnimationG6U5(_props: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-5">
+      <svg viewBox="0 0 50 60" className="h-16 w-14">
+        {/* Cylinder */}
+        <ellipse cx="25" cy="12" rx="20" ry="8" fill="var(--c-primary-soft)" stroke="var(--c-unit-5)" strokeWidth="2.5" />
+        <path d="M 5 12 L 5 45 A 20 8 0 0 0 45 45 L 45 12" fill="var(--c-primary-soft)" stroke="var(--c-unit-5)" strokeWidth="2.5" />
+        <ellipse cx="25" cy="45" rx="20" ry="8" fill="none" stroke="var(--c-unit-5)" strokeWidth="2.5" />
+      </svg>
+      <div className="flex flex-col font-black text-xs gap-0.5">
+        <span className="text-sm text-[var(--c-unit-5)]">Prism & Cylinder</span>
+        <span>Volume = Base Area × Height</span>
+        <span className="text-ink-soft">Stack bases all the way up! 🏛️</span>
+      </div>
+    </div>
+  );
+}
+
+/** G6-U6: Coordinates — 4 quadrants grid with (x, y) point */
+function AnimationG6U6({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-4">
+      <svg viewBox="0 0 60 60" className="h-16 w-16 bg-white rounded-lg border border-[var(--c-line)]">
+        {/* Axes */}
+        <line x1="30" y1="2" x2="30" y2="58" stroke="var(--c-ink)" strokeWidth="2" />
+        <line x1="2" y1="30" x2="58" y2="30" stroke="var(--c-ink)" strokeWidth="2" />
+        {/* Point at (2, 2) */}
+        <circle cx="45" cy="15" r="4" fill="var(--c-unit-6)" style={{ animation: reduced ? undefined : 'pulse-guess 1.2s infinite' }} />
+        <text x="47" y="12" fontSize="9" fontWeight="900" fill="var(--c-unit-6)">(x, y)</text>
+      </svg>
+      <div className="flex flex-col font-black text-xs">
+        <span className="text-[var(--c-unit-6)]">Point (x, y)</span>
+        <span>Crawl across x first,</span>
+        <span className="text-ink-soft">then fly up y! 🚀</span>
+      </div>
+    </div>
+  );
+}
+
+/** G6-U7: Statistics & Chance — Dice probability & Mean/Median */
+function AnimationG6U7({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-5">
+      <span className="text-3xl" style={{ animation: reduced ? undefined : 'coin-shine 2s infinite' }}>🎲</span>
+      <div className="flex flex-col font-black text-xs">
+        <span className="text-sm text-[var(--c-unit-7)]">Probability & Stats</span>
+        <span>Median = exact middle value</span>
+        <span className="text-ink-soft">Chance = wanted / total outcomes</span>
+      </div>
+    </div>
+  );
+}
+
 
 
