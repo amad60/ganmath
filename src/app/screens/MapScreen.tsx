@@ -231,26 +231,27 @@ export function MapScreen(props: MapScreenProps) {
           return (
             <section key={`${unitId}-${sectionIndex}`} className="flex w-full flex-col items-center">
               {/* Judul unit: anak bisa melihat "aku ada di bagian apa", dan berapa sisanya. */}
-              <button
-                type="button"
-                disabled={!unitDone || hasNext}
-                onClick={() => toggleSection(sectionIndex)}
-                // min-h-11 = 44px: judul unit ini BISA ditekan (melipat unit yang
-                // sudah selesai), jadi ia terikat ambang sasaran tap di CLAUDE.md §2.
-                // Tulisannya tetap 15px; yang dibesarkan area sentuhnya.
+              <div
                 className="mt-0.5 mb-1.5 flex min-h-11 w-full items-center gap-3"
               >
-                <span
-                  className="h-2.5 w-2.5 shrink-0 rounded-full"
-                  style={{ background: unitDone ? 'var(--c-star)' : accent }}
-                />
-                <span className="text-left text-[15px] font-black">
-                  {unit?.title ?? unitId}
-                  {repeat > 1 ? (
-                    <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
-                  ) : null}
-                </span>
-                {grade <= 2 ? (
+                <button
+                  type="button"
+                  disabled={!unitDone || hasNext}
+                  onClick={() => toggleSection(sectionIndex)}
+                  className="flex min-h-11 flex-1 items-center gap-3 text-left disabled:cursor-default"
+                >
+                  <span
+                    className="h-2.5 w-2.5 shrink-0 rounded-full"
+                    style={{ background: unitDone ? 'var(--c-star)' : accent }}
+                  />
+                  <span className="text-left text-[15px] font-black">
+                    {unit?.title ?? unitId}
+                    {repeat > 1 ? (
+                      <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
+                    ) : null}
+                  </span>
+                </button>
+                {grade <= 3 ? (
                   <button
                     type="button"
                     aria-label={`Preview animation for ${unit?.title ?? unitId}`}
@@ -258,7 +259,7 @@ export function MapScreen(props: MapScreenProps) {
                       e.stopPropagation();
                       setActiveIntroUnit(unitId);
                     }}
-                    className="-my-1 flex h-9 items-center gap-1 rounded-full px-2.5 text-xs font-black"
+                    className="-my-1 flex h-9 shrink-0 items-center gap-1 rounded-full px-2.5 text-xs font-black shadow-xs hover:opacity-90 active:scale-95"
                     style={{
                       background: 'var(--c-primary-soft)',
                       color: accent,
@@ -269,20 +270,22 @@ export function MapScreen(props: MapScreenProps) {
                   </button>
                 ) : null}
                 <span
-                  className="ml-auto text-[13px] font-black tabular-nums"
+                  className="ml-1 text-[13px] font-black tabular-nums"
                   style={{ color: unitDone ? 'var(--c-star)' : 'var(--c-ink-soft)' }}
                 >
                   {cleared}/{unitIds.length}
                 </span>
                 {unitDone && !hasNext ? (
-                  <span
+                  <button
+                    type="button"
+                    onClick={() => toggleSection(sectionIndex)}
                     className="text-[13px] font-black"
                     style={{ color: 'var(--c-primary)' }}
                   >
                     {collapsed ? en.map.expand : en.map.collapse}
-                  </span>
+                  </button>
                 ) : null}
-              </button>
+              </div>
 
               {collapsed ? (
                 // Barisnya BERBENTUK kartu, jadi anak akan menekannya — dan dulu tidak

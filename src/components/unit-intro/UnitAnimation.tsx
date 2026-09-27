@@ -65,6 +65,20 @@ function renderUnitVisual(unitId: string, reduced: boolean) {
       return <AnimationG2U6 reduced={reduced} />;
     case 'g2-u7':
       return <AnimationG2U7 reduced={reduced} />;
+    case 'g3-u1':
+      return <AnimationG3U1 reduced={reduced} />;
+    case 'g3-u2':
+      return <AnimationG3U2 reduced={reduced} />;
+    case 'g3-u3':
+      return <AnimationG3U3 reduced={reduced} />;
+    case 'g3-u4':
+      return <AnimationG3U4 reduced={reduced} />;
+    case 'g3-u5':
+      return <AnimationG3U5 reduced={reduced} />;
+    case 'g3-u6':
+      return <AnimationG3U6 reduced={reduced} />;
+    case 'g3-u7':
+      return <AnimationG3U7 reduced={reduced} />;
     default:
       return <AnimationDefault unitId={unitId} />;
   }
@@ -882,4 +896,289 @@ function AnimationG2U7({ reduced }: { reduced: boolean }) {
     </div>
   );
 }
+
+/** G3-U1: Numbers to 10.000 — 4 thousands blocks + number line rounding */
+function AnimationG3U1({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
+        {/* Big Thousands blocks */}
+        <div className="flex items-center gap-1">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex h-12 w-10 flex-col items-center justify-center rounded-lg border-2 border-[var(--c-unit-1)] shadow-xs"
+              style={{
+                background: 'var(--c-primary-soft)',
+                animation: reduced ? undefined : `apple-hop 400ms ease-out ${i * 120}ms both`,
+              }}
+            >
+              <span className="text-[11px] font-black text-[var(--c-unit-1)]">1.000</span>
+            </div>
+          ))}
+        </div>
+
+        <span className="text-lg font-black text-ink-soft">=</span>
+
+        <div
+          className="flex flex-col items-center justify-center rounded-xl px-3 py-2 shadow-sm"
+          style={{
+            background: 'var(--c-unit-1)',
+            color: '#ffffff',
+            animation: reduced ? undefined : 'badge-pop 600ms ease-out 500ms both',
+          }}
+        >
+          <span className="text-xl font-black tabular-nums">4.000</span>
+          <span className="text-[10px] font-bold tracking-wider uppercase opacity-90">Four Thousand</span>
+        </div>
+      </div>
+
+      <span className="text-xs font-black text-ink-soft">
+        Read and round numbers up to <span className="text-[var(--c-unit-1)]">10.000!</span> 🏔️
+      </span>
+    </div>
+  );
+}
+
+/** G3-U2: Times Tables — Turn around fact 6 × 7 = 7 × 6 = 42 */
+function AnimationG3U2({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-1.5 rounded-xl px-3 py-2 shadow-sm"
+          style={{
+            background: 'var(--c-surface)',
+            border: '2px solid var(--c-unit-2)',
+            animation: reduced ? undefined : 'slide-merge-left 1.2s ease-in-out infinite alternate',
+          }}
+        >
+          <span className="text-base font-black text-[var(--c-unit-2)]">6 × 7</span>
+        </div>
+
+        <span className="text-2xl font-black text-ink-soft">⇄</span>
+
+        <div
+          className="flex items-center gap-1.5 rounded-xl px-3 py-2 shadow-sm"
+          style={{
+            background: 'var(--c-surface)',
+            border: '2px solid var(--c-unit-2)',
+            animation: reduced ? undefined : 'slide-merge-right 1.2s ease-in-out infinite alternate',
+          }}
+        >
+          <span className="text-base font-black text-[var(--c-unit-2)]">7 × 6</span>
+        </div>
+      </div>
+
+      <div
+        className="rounded-full px-4 py-1 text-base font-black shadow-xs"
+        style={{
+          background: 'var(--c-correct-soft)',
+          color: 'var(--c-correct)',
+          animation: reduced ? undefined : 'badge-pop 700ms ease-out 400ms both',
+        }}
+      >
+        Both make 42! 🎯
+      </div>
+    </div>
+  );
+}
+
+/** G3-U3: Division — 12 split into 3 equal baskets of 4 */
+function AnimationG3U3({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
+        {Array.from({ length: 3 }).map((_, bIdx) => (
+          <div
+            key={bIdx}
+            className="flex flex-col items-center rounded-xl p-2 shadow-xs"
+            style={{
+              background: 'var(--c-surface)',
+              border: '2px solid var(--c-unit-3)',
+              animation: reduced ? undefined : `fade-rise 300ms ease-out ${bIdx * 150}ms both`,
+            }}
+          >
+            <div className="grid grid-cols-2 gap-1">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <span key={i} className="h-3.5 w-3.5 rounded-full bg-[var(--c-unit-3)]" />
+              ))}
+            </div>
+            <span className="mt-1 text-[11px] font-black text-[var(--c-unit-3)]">4 dots</span>
+          </div>
+        ))}
+      </div>
+
+      <span className="rounded-full bg-[var(--c-primary-soft)] px-3 py-0.5 text-sm font-black text-[var(--c-primary)]">
+        12 shared by 3 = 4 each! 🧺
+      </span>
+    </div>
+  );
+}
+
+/** G3-U4: Add & Subtract to 1000 — 3-digit column regrouping */
+function AnimationG3U4({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div
+        className="flex items-center gap-4 rounded-xl px-4 py-2 shadow-sm"
+        style={{
+          background: 'var(--c-surface)',
+          border: '2px solid var(--c-unit-4)',
+        }}
+      >
+        <div className="font-mono text-base font-black leading-tight tabular-nums">
+          <div>&nbsp;&nbsp;248</div>
+          <div className="border-b-2 border-[var(--c-ink)] pb-0.5">+ 175</div>
+          <div className="pt-0.5 text-xs text-ink-soft">
+            <div style={{ animation: reduced ? undefined : 'fade-rise 300ms ease-out 200ms both' }}>
+              &nbsp;&nbsp;&nbsp;13 <span className="font-sans text-[10px]">(8 + 5)</span>
+            </div>
+            <div style={{ animation: reduced ? undefined : 'fade-rise 300ms ease-out 350ms both' }}>
+              &nbsp;&nbsp;110 <span className="font-sans text-[10px]">(40 + 70)</span>
+            </div>
+            <div style={{ animation: reduced ? undefined : 'fade-rise 300ms ease-out 500ms both' }}>
+              + 300 <span className="font-sans text-[10px]">(200 + 100)</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center gap-1">
+          <span
+            className="rounded-full px-3 py-1 text-sm font-black shadow-xs"
+            style={{
+              background: 'var(--c-unit-4)',
+              color: '#ffffff',
+              animation: reduced ? undefined : 'badge-pop 600ms ease-out 600ms both',
+            }}
+          >
+            423 ✨
+          </span>
+          <span className="text-[11px] font-bold text-ink-soft">3-digit power!</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** G3-U5: Fractions — 1 circle split in 4 with 3 shaded (3/4) */
+function AnimationG3U5({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-4">
+        {/* Fraction pie circle */}
+        <svg
+          viewBox="0 0 60 60"
+          className="h-16 w-16"
+          style={{ animation: reduced ? undefined : 'shape-float 2.5s ease-in-out infinite alternate' }}
+        >
+          <circle cx="30" cy="30" r="28" fill="var(--c-surface)" stroke="var(--c-unit-5)" strokeWidth="3" />
+          {/* Top-right slice */}
+          <path d="M 30 30 L 30 2 A 28 28 0 0 1 58 30 Z" fill="var(--c-unit-5)" />
+          {/* Bottom-right slice */}
+          <path d="M 30 30 L 58 30 A 28 28 0 0 1 30 58 Z" fill="var(--c-unit-5)" />
+          {/* Bottom-left slice */}
+          <path d="M 30 30 L 30 58 A 28 28 0 0 1 2 30 Z" fill="var(--c-unit-5)" />
+          {/* Dividing lines */}
+          <line x1="30" y1="2" x2="30" y2="58" stroke="var(--c-line)" strokeWidth="2" />
+          <line x1="2" y1="30" x2="58" y2="30" stroke="var(--c-line)" strokeWidth="2" />
+        </svg>
+
+        <div className="flex flex-col items-start gap-1 font-black">
+          <span className="text-2xl text-[var(--c-unit-5)]">3/4</span>
+          <span className="text-xs text-ink-soft">3 of 4 equal parts</span>
+        </div>
+      </div>
+
+      <span className="text-xs font-black text-ink-soft">
+        Fractions are equal slices of one whole! 🍕
+      </span>
+    </div>
+  );
+}
+
+/** G3-U6: Shapes & Perimeter — Rectangle with 4 sides adding up */
+function AnimationG3U6({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div
+        className="relative flex h-16 w-32 items-center justify-center rounded-lg border-3 border-[var(--c-unit-6)] shadow-xs"
+        style={{
+          background: 'var(--c-primary-soft)',
+          animation: reduced ? undefined : 'badge-pop 800ms ease-out both',
+        }}
+      >
+        <span className="absolute -top-3 text-[11px] font-black text-[var(--c-unit-6)]">6 cm</span>
+        <span className="absolute -bottom-3 text-[11px] font-black text-[var(--c-unit-6)]">6 cm</span>
+        <span className="absolute -left-5 text-[11px] font-black text-[var(--c-unit-6)]">3 cm</span>
+        <span className="absolute -right-5 text-[11px] font-black text-[var(--c-unit-6)]">3 cm</span>
+        <span className="text-xs font-black text-ink-soft">Fence</span>
+      </div>
+
+      <div
+        className="mt-1 rounded-full px-3 py-0.5 text-xs font-black"
+        style={{
+          background: 'var(--c-surface)',
+          border: '1.5px solid var(--c-line)',
+        }}
+      >
+        Perimeter = 6 + 3 + 6 + 3 = <span className="text-[var(--c-unit-6)]">18 cm</span> 📏
+      </div>
+    </div>
+  );
+}
+
+/** G3-U7: Time, Money & Data — Exact clock to minute + 100.000 rupiah note */
+function AnimationG3U7({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex items-center justify-center gap-6">
+      {/* Clock to the minute */}
+      <div className="flex flex-col items-center gap-1">
+        <div
+          className="relative flex h-15 w-15 items-center justify-center rounded-full border-3 shadow-xs"
+          style={{
+            borderColor: 'var(--c-unit-7)',
+            background: 'var(--c-surface)',
+          }}
+        >
+          <div className="z-10 h-2 w-2 rounded-full bg-[var(--c-ink)]" />
+          <div
+            className="absolute h-3 w-1 rounded-full bg-[var(--c-ink)]"
+            style={{
+              bottom: '50%',
+              transformOrigin: 'bottom center',
+              transform: 'rotate(120deg)',
+            }}
+          />
+          <div
+            className="absolute h-5.5 w-0.5 rounded-full bg-[var(--c-unit-4)]"
+            style={{
+              bottom: '50%',
+              transformOrigin: 'bottom center',
+              transform: 'rotate(252deg)',
+            }}
+          />
+        </div>
+        <span className="text-[11px] font-black text-ink-soft">4:42</span>
+      </div>
+
+      {/* 100k note */}
+      <div className="flex flex-col items-center gap-1">
+        <div
+          className="flex h-12 w-20 items-center justify-center rounded-md border-2 font-black shadow-xs"
+          style={{
+            borderColor: '#E84A5F',
+            background: '#FFE8EC',
+            color: '#B81424',
+            animation: reduced ? undefined : 'coin-shine 2.5s ease-in-out infinite',
+          }}
+        >
+          <span className="text-[11px] leading-tight">Rp<br />100.000</span>
+        </div>
+        <span className="text-[11px] font-black text-ink-soft">Big Money!</span>
+      </div>
+    </div>
+  );
+}
+
 

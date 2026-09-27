@@ -121,7 +121,7 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
           <ProgressBar value={step + 1} max={total} label={en.learn.stepOf(step + 1, total)} />
         }
         right={
-          module.grade <= 2 && module.unitId ? (
+          module.grade <= 3 && module.unitId ? (
             <button
               type="button"
               aria-label="Unit Intro"

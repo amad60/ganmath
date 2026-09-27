@@ -151,9 +151,76 @@ export const GRADE_2_INTROS: Record<string, UnitIntroDef> = {
   },
 };
 
+export const GRADE_3_INTROS: Record<string, UnitIntroDef> = {
+  'g3-u1': {
+    unitId: 'g3-u1',
+    grade: 3,
+    title: 'Unit 1 · Numbers to 10.000',
+    subtitle: 'Thousands & Rounding',
+    concept: 'Ten thousands line up on the big number line! Round to nearest hundred.',
+    mascotMood: 'happy',
+    accentColor: 'var(--c-unit-1)',
+  },
+  'g3-u2': {
+    unitId: 'g3-u2',
+    grade: 3,
+    title: 'Unit 2 · Times Tables',
+    subtitle: '×3, ×4, ×6, ×7, ×8, ×9',
+    concept: 'Turn-around facts make multiplication twice as easy! 6 × 7 = 7 × 6.',
+    mascotMood: 'celebrate',
+    accentColor: 'var(--c-unit-2)',
+  },
+  'g3-u3': {
+    unitId: 'g3-u3',
+    grade: 3,
+    title: 'Unit 3 · Division',
+    subtitle: 'Sharing & Equal Groups',
+    concept: 'Share equally into piles or count how many fit! Spot the leftovers.',
+    mascotMood: 'thinking',
+    accentColor: 'var(--c-unit-3)',
+  },
+  'g3-u4': {
+    unitId: 'g3-u4',
+    grade: 3,
+    title: 'Unit 4 · Add & Subtract to 1000',
+    subtitle: '3-Digit Regrouping',
+    concept: 'Three columns! Add ones, tens, then hundreds with carrying.',
+    mascotMood: 'encourage',
+    accentColor: 'var(--c-unit-4)',
+  },
+  'g3-u5': {
+    unitId: 'g3-u5',
+    grade: 3,
+    title: 'Unit 5 · Fractions',
+    subtitle: 'Halves, Thirds, Fourths & Beyond',
+    concept: 'Equal slices of the whole! Find fractions on the number line.',
+    mascotMood: 'happy',
+    accentColor: 'var(--c-unit-5)',
+  },
+  'g3-u6': {
+    unitId: 'g3-u6',
+    grade: 3,
+    title: 'Unit 6 · Shapes & Perimeter',
+    subtitle: 'Square Corners & Walking Around',
+    concept: 'Measure all sides and add them up to find the perimeter around the fence!',
+    mascotMood: 'thinking',
+    accentColor: 'var(--c-unit-6)',
+  },
+  'g3-u7': {
+    unitId: 'g3-u7',
+    grade: 3,
+    title: 'Unit 7 · Time, Money & Data',
+    subtitle: 'To the Minute, Shopping & Bar Graphs',
+    concept: 'Tell time to the exact minute and count money up to Rp 100.000!',
+    mascotMood: 'celebrate',
+    accentColor: 'var(--c-unit-7)',
+  },
+};
+
 export const ALL_UNIT_INTROS: Record<string, UnitIntroDef> = {
   ...GRADE_1_INTROS,
   ...GRADE_2_INTROS,
+  ...GRADE_3_INTROS,
 };
 
 export function getUnitIntro(unitId: string): UnitIntroDef | null {

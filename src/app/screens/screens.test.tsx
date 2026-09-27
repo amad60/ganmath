@@ -1023,6 +1023,15 @@ describe('MapScreen — pintu jump level', () => {
     expect(screen.getByRole('button', { name: /Master Round/i })).toBeInTheDocument();
   });
 
+  it('tombol Intro unit bisa ditekan untuk unit mana pun di Grade 1, 2, atau 3', () => {
+    render(<MapScreen {...mapProps({ grade: 2 })} />);
+    const introButtons = screen.getAllByRole('button', { name: /Preview animation for/i });
+    expect(introButtons.length).toBeGreaterThan(0);
+    fireEvent.click(introButtons[0]!);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Replay/i })).toBeInTheDocument();
+  });
+
   /**
    * Tamat satu grade dulu berarti jalan buntu: "All done for now!" dan tidak ada satu
    * pun jalan ke grade berikutnya — pintunya cuma ada di Parent Area, di balik gerbang

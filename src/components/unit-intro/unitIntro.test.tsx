@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { UnitIntroModal } from './UnitIntroModal';
-import { GRADE_1_INTROS, GRADE_2_INTROS } from './unitIntroData';
+import { GRADE_1_INTROS, GRADE_2_INTROS, GRADE_3_INTROS } from './unitIntroData';
 
 describe('UnitIntroModal — animasi dan panduan unit', () => {
   it('semua unit Grade 1 (g1-u1 s.d. g1-u8) punya data animasi intro', () => {
@@ -18,6 +18,16 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
     for (let u = 1; u <= 7; u++) {
       const unitId = `g2-u${u}`;
       const intro = GRADE_2_INTROS[unitId];
+      expect(intro).toBeDefined();
+      expect(intro?.title).toContain(`Unit ${u}`);
+      expect(intro?.concept.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('semua unit Grade 3 (g3-u1 s.d. g3-u7) punya data animasi intro', () => {
+    for (let u = 1; u <= 7; u++) {
+      const unitId = `g3-u${u}`;
+      const intro = GRADE_3_INTROS[unitId];
       expect(intro).toBeDefined();
       expect(intro?.title).toContain(`Unit ${u}`);
       expect(intro?.concept.length).toBeGreaterThan(10);
