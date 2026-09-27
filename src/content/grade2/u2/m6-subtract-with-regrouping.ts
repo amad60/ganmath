@@ -32,9 +32,17 @@ export const subtractWithRegrouping: ContentModule = {
     },
     {
       stage: 'abstract',
+      prompt: '12 ones take 7 is 5.',
+      visual: { kind: 'column-sum', a: 52, b: 27, op: '−', showTotal: false },
+      action: 'watch',
+      caption: '12 − 7 = 5',
+    },
+    {
+      stage: 'abstract',
       prompt: 'We write it as 52 - 27 = 25.',
       visual: { kind: 'column-sum', a: 52, b: 27, op: '−' },
       action: 'watch',
+      caption: '25',
     },
   ],
 
@@ -81,6 +89,24 @@ export const subtractWithRegrouping: ContentModule = {
       text: (p) => `${p.a} cookies on a plate. The class eats ${p.b}. How many left?`,
       exclude: (p) =>
         (p.b as number) > (p.a as number) || ((p.a as number) % 10) >= ((p.b as number) % 10),
+    },
+    {
+      // Soal cerita relasional model batang selisih (Saran 3)
+      type: 'keypad',
+      skill: 'sub-regroup',
+      story: true,
+      params: { a: [35, 85], b: [18, 59] },
+      answer: (p) => (p.a as number) - (p.b as number),
+      text: (p) =>
+        `Ana has ${p.a} apples. Budi has ${p.b}. How many more has Ana?`,
+      exclude: (p) =>
+        (p.b as number) >= (p.a as number) || ((p.a as number) % 10) >= ((p.b as number) % 10),
+      visual: (p) => ({
+        kind: 'bars',
+        values: [p.a as number, p.b as number],
+        labels: ['Ana', 'Budi'],
+        showValues: true,
+      }),
     },
   ],
 };

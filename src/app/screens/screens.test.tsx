@@ -724,9 +724,10 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
+    const panel = document.getElementById('hint-panel')!;
     const parts = q.text.match(/(\d+)\s*\+\s*(\d+)/);
     expect(parts).toBeTruthy();
-    expect(screen.getByText(`${parts![1]} and ${parts![2]}.`)).toBeInTheDocument();
+    expect(within(panel).getByText(`${parts![1]} and ${parts![2]}.`)).toBeInTheDocument();
     expect(screen.queryByLabelText(`Ten frame showing ${q.answer}`)).not.toBeInTheDocument();
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
   });
@@ -749,15 +750,18 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
+    // key = 0 di sesi practice (soal pertama) sekarang punya scaffold otomatis di question-block
+    // saat hint dibuka, kita memeriksa isi panel hint secara spesifik
     fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
-    expect(screen.getByText('Ones first. 6 + 7.')).toBeInTheDocument();
-    expect(screen.getByLabelText(/26 plus 37/)).toBeInTheDocument();
-    expect(screen.getByText('13')).toBeInTheDocument();
-    expect(screen.getByText('6 + 7')).toBeInTheDocument();
-    expect(screen.getByText('50')).toBeInTheDocument();
-    expect(screen.getByText('20 + 30')).toBeInTheDocument();
-    expect(screen.queryByText('63')).not.toBeInTheDocument();
-    expect(screen.queryByText(/47 \+ 38/)).not.toBeInTheDocument();
+    const panel = document.getElementById('hint-panel')!;
+    expect(within(panel).getByText('Ones first. 6 + 7.')).toBeInTheDocument();
+    expect(within(panel).getByLabelText(/26 plus 37/)).toBeInTheDocument();
+    expect(within(panel).getByText('13')).toBeInTheDocument();
+    expect(within(panel).getByText('6 + 7')).toBeInTheDocument();
+    expect(within(panel).getByText('50')).toBeInTheDocument();
+    expect(within(panel).getByText('20 + 30')).toBeInTheDocument();
+    expect(within(panel).queryByText('63')).not.toBeInTheDocument();
+    expect(within(panel).queryByText(/47 \+ 38/)).not.toBeInTheDocument();
   });
 
   /**
@@ -813,10 +817,9 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
-    // Satu-satunya tombol berlabel aria-expanded di layar ini adalah tombol bantuan,
-    // jadi keadaannya sendiri yang dipakai untuk menemukannya — bukan teksnya.
-    const opener = () => screen.getByRole('button', { expanded: false });
-    const closer = () => screen.getByRole('button', { expanded: true });
+    // Tombol bantuan di layar ini
+    const opener = () => screen.getByRole('button', { name: /Hint ·/i });
+    const closer = () => screen.getByRole('button', { name: /✕ Hide hint/i });
 
     fireEvent.click(opener());
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
@@ -832,7 +835,8 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
 
     // 3. lewat silang di dalam bantuannya sendiri
-    fireEvent.click(screen.getByRole('button', { name: 'Hide hint' }));
+    const hideBtn = screen.getAllByRole('button', { name: 'Hide hint' })[0]!;
+    fireEvent.click(hideBtn);
     expect(screen.queryByText(/Look at the picture/)).not.toBeInTheDocument();
     expect(opener()).toBeInTheDocument();
   });
@@ -846,7 +850,7 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { expanded: false }));
+    fireEvent.click(screen.getByRole('button', { name: /Hint ·/i }));
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(screen.queryByText(/Look at the picture/)).not.toBeInTheDocument();
@@ -868,8 +872,9 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { expanded: false }));
-    fireEvent.click(screen.getByRole('button', { name: 'Hide hint' }));
+    fireEvent.click(screen.getByRole('button', { name: /Hint ·/i }));
+    const hideBtn = screen.getAllByRole('button', { name: 'Hide hint' })[0]!;
+    fireEvent.click(hideBtn);
 
     // g1-u2-m2 dijawab lewat keypad: ketik angkanya, lalu Check.
     vi.useFakeTimers();

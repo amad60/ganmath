@@ -25,7 +25,7 @@ export const addNoRegroup: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Add the ones, then the tens.',
+      prompt: 'Add ones: 4 + 5 = 9.',
       visual: {
         kind: 'base10-pair',
         left: { tens: 3, ones: 4 },
@@ -36,9 +36,17 @@ export const addNoRegroup: ContentModule = {
     },
     {
       stage: 'abstract',
+      prompt: 'Ones 9. Tens 50.',
+      visual: { kind: 'column-sum', a: 34, b: 25, op: '+', showTotal: false },
+      action: 'watch',
+      caption: '9 + 50',
+    },
+    {
+      stage: 'abstract',
       prompt: 'We write it as 34 + 25 = 59.',
       visual: { kind: 'column-sum', a: 34, b: 25, op: '+' },
       action: 'watch',
+      caption: '59',
     },
   ],
 

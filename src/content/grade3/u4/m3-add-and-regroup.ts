@@ -76,5 +76,24 @@ export const addAndRegroup: ContentModule = {
       text: (p) => `${(p.a as number) * 10} birds sit. ${(p.b as number) * 10} more land. How many birds now?`,
       exclude: (p) => ((p.a as number) % 10) + ((p.b as number) % 10) < 10,
     },
+    {
+      // Soal cerita relasional 2-langkah dengan model batang (Saran 3)
+      type: 'keypad',
+      skill: 'add-regroup-1000',
+      story: true,
+      params: { a: [12, 35], k: [11, 25] },
+      answer: (p) => ((p.a as number) + ((p.a as number) + (p.k as number))) * 10,
+      text: (p) =>
+        `Ana reads ${(p.a as number) * 10} books. Budi reads ${(p.k as number) * 10} more. How many altogether?`,
+      exclude: (p) =>
+        ((p.a as number) % 10) + (((p.a as number) + (p.k as number)) % 10) < 10 ||
+        ((p.a as number) + ((p.a as number) + (p.k as number))) * 10 > 990,
+      visual: (p) => ({
+        kind: 'bars',
+        values: [(p.a as number) * 10, ((p.a as number) + (p.k as number)) * 10],
+        labels: ['Ana', 'Budi'],
+        showValues: true,
+      }),
+    },
   ],
 };

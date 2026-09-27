@@ -67,6 +67,7 @@ function bases(n: number[]): Base[] {
       const b = n[j] as number;
       push(`n${i}+n${j}`, a + b);
       push(`n${i}-n${j}`, a - b);
+      push(`2*n${i}+n${j}`, 2 * a + b);
       push(`n${i}*n${j}`, a * b);
       if (b !== 0) {
         push(`n${i}/n${j}`, a / b);

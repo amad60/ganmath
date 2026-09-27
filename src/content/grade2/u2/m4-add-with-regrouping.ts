@@ -30,7 +30,7 @@ export const addWithRegrouping: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Add the ones first.',
+      prompt: 'Add the ones first: 7 + 8.',
       visual: {
         kind: 'base10-pair',
         left: { tens: 4, ones: 7 },
@@ -41,9 +41,17 @@ export const addWithRegrouping: ContentModule = {
     },
     {
       stage: 'abstract',
+      prompt: 'Ones make 15. Tens make 70.',
+      visual: { kind: 'column-sum', a: 47, b: 38, op: '+', showTotal: false },
+      action: 'watch',
+      caption: '15 + 70',
+    },
+    {
+      stage: 'abstract',
       prompt: 'We write it as 47 + 38 = 85.',
       visual: { kind: 'column-sum', a: 47, b: 38, op: '+' },
       action: 'watch',
+      caption: '85',
     },
   ],
 
@@ -96,6 +104,26 @@ export const addWithRegrouping: ContentModule = {
       exclude: (p) =>
         ((p.a as number) % 10) + ((p.b as number) % 10) < 10 ||
         (p.a as number) + (p.b as number) > 99,
+    },
+    {
+      // Soal cerita relasional 2-langkah dengan model batang (Saran 3)
+      // Ana punya a buku. Budi punya k lebih banyak. Berapa total keduanya?
+      type: 'keypad',
+      skill: 'add-regroup',
+      story: true,
+      params: { a: [15, 38], k: [11, 23] },
+      answer: (p) => (p.a as number) + ((p.a as number) + (p.k as number)),
+      text: (p) =>
+        `Ana has ${p.a} books. Budi has ${p.k} more than Ana. How many altogether?`,
+      exclude: (p) =>
+        ((p.a as number) % 10) + (((p.a as number) + (p.k as number)) % 10) < 10 ||
+        (p.a as number) + ((p.a as number) + (p.k as number)) > 99,
+      visual: (p) => ({
+        kind: 'bars',
+        values: [p.a as number, (p.a as number) + (p.k as number)],
+        labels: ['Ana', 'Budi'],
+        showValues: true,
+      }),
     },
   ],
 };

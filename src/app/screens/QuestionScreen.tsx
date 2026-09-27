@@ -12,6 +12,7 @@ import { Button, Header, Keypad, SessionDots, type Feedback } from '../../compon
 import { LearnVisualView } from './LearnVisualView';
 import { modules as moduleRegistry } from '../../content';
 import { HINTS_PER_PRACTICE, hintFor } from '../../engine/hint';
+import { scaffoldForQuestion } from '../../engine/scaffolding';
 import type { DotState } from '../../components/ui/SessionDots';
 import {
   Angle,
@@ -22,10 +23,12 @@ import {
   RectShape,
   Base10Blocks,
   Clock,
+  ColumnSum,
   ComposedShape,
   CounterObjects,
   FractionShape,
   Money,
+  NumberBond,
   NumberLine,
   Pictogram,
   PositionScene,
@@ -268,6 +271,18 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
           size={280}
         />
       );
+    case 'column-sum':
+      return (
+        <ColumnSum
+          a={visual.a}
+          b={visual.b}
+          op={visual.op}
+          compact
+          showTotal={visual.showTotal !== false}
+        />
+      );
+    case 'number-bond':
+      return <NumberBond whole={visual.whole} parts={visual.parts} ask={visual.ask} />;
   }
 }
 
@@ -303,6 +318,13 @@ function hintOf(moduleId: string, question: Question) {
 
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
   const question = currentQuestion(session);
+  const { done, total } = progressOf(session);
+
+  const scaffoldVisual = question
+    ? scaffoldForQuestion(question, done, session.kind)
+    : null;
+
+  const activeVisual = question?.visual ?? (scaffoldVisual ? scaffoldVisual : null);
   const [typed, setTyped] = useState('');
   const [linePick, setLinePick] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<{ value: number; correct: boolean } | null>(null);
@@ -442,7 +464,6 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     );
   };
 
-  const { done, total } = progressOf(session);
   const dots: DotState[] = Array.from({ length: total }, (_, i) => {
     const r = session.results[i];
     if (r) return r.correct ? 'correct' : 'wrong';
@@ -497,7 +518,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             tadinya kosong melompong dan terlihat seperti halaman gagal dimuat.
             `my-auto` menaruh Gan tepat di tengah ruang sisa: ruangnya jadi terpakai,
             dan reaksi wajahnya memberi umpan balik yang tidak bisa diberikan angka. */}
-        {!question.visual ? <Mascot mood={mood} size={190} className="my-auto opacity-90" /> : null}
+        {!activeVisual ? <Mascot mood={mood} size={190} className="my-auto opacity-90" /> : null}
 
         {/* key = id soal: setiap soal baru memainkan animasi masuknya sendiri,
             jadi pergantian soal terasa sebagai perpindahan, bukan teks yang berkedip. */}
@@ -507,7 +528,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           className="flex w-full flex-col items-center gap-4"
           style={{ animation: 'question-in 260ms var(--ease-std)' }}
         >
-          {question.visual ? <QuestionVisualView visual={question.visual} /> : null}
+          {activeVisual ? <QuestionVisualView visual={activeVisual} /> : null}
           <QuestionText text={question.text} />
         </div>
 

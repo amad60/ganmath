@@ -25,7 +25,7 @@ export const subtractNoRegroup: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Take the ones, then the tens.',
+      prompt: 'Take ones: 8 - 3 = 5.',
       visual: {
         kind: 'base10-pair',
         left: { tens: 6, ones: 8 },
@@ -36,9 +36,17 @@ export const subtractNoRegroup: ContentModule = {
     },
     {
       stage: 'abstract',
+      prompt: 'Ones 5. Tens 40.',
+      visual: { kind: 'column-sum', a: 68, b: 23, op: '−', showTotal: false },
+      action: 'watch',
+      caption: '5 and 40',
+    },
+    {
+      stage: 'abstract',
       prompt: 'We write it as 68 - 23 = 45.',
       visual: { kind: 'column-sum', a: 68, b: 23, op: '−' },
       action: 'watch',
+      caption: '45',
     },
   ],
 

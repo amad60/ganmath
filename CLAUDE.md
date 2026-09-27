@@ -90,6 +90,11 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      Angka terakhir tidak ditulis: `26 + 37` berhenti di **13** dan **50**, anak yang menjumlahkannya. Hint hanya ada di Practice, paling banyak **2 kali** per sesi. Speed Round, ulangan, dan ujian tidak punya tombol Hint.
      Langkah aksi tampil sebagai contoh yang SUDAH dikerjakan, dan gambar di panel
      Hint digambar ringkas (`compact`) supaya gambar soalnya tidak terdorong keluar layar.
+   - **Scaffolding berjenjang di sesi Practice (fading support).** Dua soal pertama sesi
+     latihan (soal 0 & 1) otomatis memunculkan visual pembimbing/tangga bantu (mis. kolom bersusun
+     tanpa jumlah akhir) jika soal aslinya belum bergambar. Pada soal ke-2 dan seterusnya, bantuan
+     visual memudar (*fading*) agar anak mandiri menyelesaikan soal murni simbolik. Sesi ujian
+     (Mastery Check, Speed Round, Master Round, Review) tidak pernah memakai scaffold ini.
    - **Bantuan yang bisa dibuka wajib bisa DITUTUP lagi, dan dibuka lagi.** Pernah putus di
      sini juga: tombolnya dimatikan begitu ditekan (satu state `hintUsed` dipakai sekaligus
      sebagai "sedang tampil" dan sebagai catatan "pernah dibantu"), jadi manipulatif setinggi

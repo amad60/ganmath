@@ -141,7 +141,9 @@ export type QuestionVisual =
   | ({ kind: 'position' } & PositionVisual)
   | { kind: 'counter-objects'; count: number; icon?: string; icons?: string[] }
   | ({ kind: 'solid-shapes' } & SolidShapesVisual)
-  | { kind: 'composed-shape'; name: ComposedName };
+  | { kind: 'composed-shape'; name: ComposedName }
+  | { kind: 'column-sum'; a: number; b: number; op?: '+' | '−'; showTotal?: boolean }
+  | { kind: 'number-bond'; whole: number | null; parts: [number | null, number | null]; ask?: 'whole' | 'part0' | 'part1' };
 
 /**
  * Bangun ruang Grade 1 — dinamai seperti benda yang dipegang anak. Beda dari
