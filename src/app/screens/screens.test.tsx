@@ -1516,6 +1516,29 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     vi.useRealTimers();
   });
 
+  it('perkalian bertambah satu baris sebelum Next', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('g2-u4-m1');
+    render(<LearnScreen module={mod!} onDone={() => {}} onExit={() => {}} />);
+    const apples = screen.getAllByRole('button', { name: /^Object / });
+    fireEvent.click(apples[0]!);
+    fireEvent.click(apples[1]!);
+    fireEvent.click(apples[2]!);
+    fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+
+    expect(screen.getByLabelText('1 of 2 rows, 3 in each')).toBeTruthy();
+    const next = screen.getByRole('button', { name: /^Next$/i });
+    expect(next).toBeDisabled();
+    act(() => {
+      vi.advanceTimersByTime(WATCH_LOOK_MS);
+    });
+    expect(next).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Add a row' }));
+    expect(screen.getByLabelText('2 rows of 3')).toBeTruthy();
+    expect(next).not.toBeDisabled();
+    vi.useRealTimers();
+  });
+
   it('pecahan yang diarsir harus disentuh sebelum Next', () => {
     vi.useFakeTimers();
     const mod = moduleById('g1-u6-m4');

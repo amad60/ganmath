@@ -99,10 +99,11 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
   const columnDone = work?.kind === 'column' && (opened[step] ?? 0) >= work.places.length;
   const fractionDone = work?.kind === 'fraction' && value >= work.need;
   const bundleDone = work?.kind === 'bundle' && Boolean(bundled[step]);
+  const rowsDone = work?.kind === 'rows' && (opened[step] ?? 0) >= work.rows - 1;
   const reached = onCheck
     ? correct
     : work
-      ? columnDone || fractionDone || bundleDone
+      ? columnDone || fractionDone || bundleDone || rowsDone
       : current!.action === 'watch'
         ? Boolean(looked[step])
         : current!.target != null && value >= current!.target;
@@ -224,7 +225,13 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
               onValue={setValue}
               interactive={interactive}
               onFlashEnd={markLooked}
-              reveal={work?.kind === 'column' ? (opened[step] ?? 0) : undefined}
+              reveal={
+                work?.kind === 'column'
+                  ? (opened[step] ?? 0)
+                  : work?.kind === 'rows'
+                    ? (opened[step] ?? 0) + 1
+                    : undefined
+              }
               bundled={work?.kind === 'bundle' ? Boolean(bundled[step]) : false}
               fractionTap={work?.kind === 'fraction'}
             />
@@ -246,6 +253,22 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
                 }}
               >
                 {columnLabel(work.op, work.places[opened[step] ?? 0] ?? 'ones')}
+              </Button>
+            ) : null}
+
+            {work?.kind === 'rows' && !rowsDone ? (
+              <Button
+                onClick={() => {
+                  unlockAudio();
+                  sfx.tap();
+                  setOpened((prev) => {
+                    const next = [...prev];
+                    next[step] = (next[step] ?? 0) + 1;
+                    return next;
+                  });
+                }}
+              >
+                {en.learn.addRow}
               </Button>
             ) : null}
 

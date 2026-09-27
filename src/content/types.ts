@@ -90,6 +90,11 @@ export type LearnVisual =
       marks?: number[];
       /** Menimpa langkah otomatis. Isi hanya untuk langkah pecahan/desimal. */
       step?: number;
+      /**
+       * Tujuan lompatan. Penanda bergerak ke arahnya, tetapi gelembung berhenti
+       * satu langkah sebelumnya supaya bantuan tidak menuliskan jawabannya.
+       */
+      hopTo?: number;
     }
   | {
       kind: 'angle';

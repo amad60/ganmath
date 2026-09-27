@@ -1402,6 +1402,59 @@ describe('ArrayGrid — penanda bulat untuk benda, petak persegi untuk luas', ()
     expect(container.querySelector('[aria-label="3 rows of 4 squares"]')).not.toBeNull();
     expect(container.querySelectorAll('span')).toHaveLength(12);
   });
+
+  it('bantuan perkalian menumbuhkan baris dan menyembunyikan baris terakhir', () => {
+    vi.useFakeTimers();
+    const { container } = render(<ArrayGrid rows={3} cols={4} play omitLast />);
+    expect(container.querySelector('[aria-label="1 of 3 rows, 4 in each"]')).not.toBeNull();
+    expect(cells(container)).toHaveLength(4);
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+    expect(container.querySelector('[aria-label="2 of 3 rows, 4 in each"]')).not.toBeNull();
+    expect(cells(container)).toHaveLength(8);
+    vi.useRealTimers();
+  });
+});
+
+describe('garis bilangan dan blok puluhan bergerak', () => {
+  it('penanda melompat dari tanda menuju nilainya', () => {
+    vi.useFakeTimers();
+    const { container } = render(
+      <NumberLine min={-10} max={10} step={1} value={-7} marks={[-3]} play />,
+    );
+    expect(container.querySelector('[data-hop="-3"]')).not.toBeNull();
+    act(() => {
+      vi.advanceTimersByTime(400 * 4);
+    });
+    expect(container.querySelector('[data-hop="-7"]')).not.toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('bantuan berhenti satu langkah sebelum tujuan', () => {
+    vi.useFakeTimers();
+    const { container } = render(
+      <NumberLine min={-7} max={4} step={1} value={-6} marks={[0]} play stopBefore={3} />,
+    );
+    expect(container.querySelector('[data-hop="-6"]')).not.toBeNull();
+    act(() => {
+      vi.advanceTimersByTime(400 * 8);
+    });
+    expect(container.querySelector('[data-hop="2"]')).not.toBeNull();
+    expect(container.querySelector('[data-hop="3"]')).toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('sepuluh satuan merapat jadi satu batang', () => {
+    vi.useFakeTimers();
+    render(<Base10Blocks tens={1} ones={0} join />);
+    expect(screen.getByLabelText('0 hundreds, 0 tens and 10 ones')).toBeTruthy();
+    act(() => {
+      vi.advanceTimersByTime(600);
+    });
+    expect(screen.getByLabelText('0 hundreds, 1 tens and 0 ones')).toBeTruthy();
+    vi.useRealTimers();
+  });
 });
 
 describe('Shape2D — sudut & sisi yang bisa dihitung anak', () => {

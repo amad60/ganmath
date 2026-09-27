@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   clamp,
   formatValue,
@@ -24,6 +24,16 @@ export type NumberLineProps = {
   onChange?: (next: number) => void;
   /** Penanda tambahan, mis. titik awal lompatan. */
   marks?: number[];
+  /**
+   * Mainkan lompatan. Dari tanda terdekat kalau ada, atau dari `value` menuju
+   * `stopBefore`. Maksimal 8 lompatan — garis lebar tetap gambar diam.
+   */
+  play?: boolean;
+  /**
+   * Tujuan yang tidak boleh ditulis di gelembung. Penanda berhenti satu langkah
+   * sebelumnya. Dipakai bantuan, supaya jumlah akhir tidak terbaca.
+   */
+  stopBefore?: number;
   /** >1 menampilkan label sebagai pecahan (dipakai mulai Grade 3). */
   denominator?: number;
   height?: number;
@@ -36,6 +46,40 @@ export type NumberLineProps = {
  *
  * Penanda MELOMPAT per satuan, bukan meluncur: melompat itu sendiri mengajarkan hitungan.
  */
+const HOP_MS = 380;
+const MAX_HOPS = 8;
+
+function hopsToward(from: number, toward: number, step: number, hideEnd: boolean): number[] {
+  const dir = Math.sign(toward - from);
+  if (dir === 0 || !(step > 0)) return [];
+  const out: number[] = [];
+  for (let i = 1; i <= MAX_HOPS; i++) {
+    const next = Number((from + dir * step * i).toFixed(6));
+    if (dir > 0 && next > toward + 1e-6) break;
+    if (dir < 0 && next < toward - 1e-6) break;
+    if (Math.abs(next - toward) < step / 2) {
+      if (!hideEnd) out.push(toward);
+      break;
+    }
+    out.push(next);
+  }
+  return out;
+}
+
+function hopOrigin(
+  value: number,
+  marks: number[],
+  step: number,
+  stopBefore: number | undefined,
+): number | null {
+  if (stopBefore != null) return value;
+  const mark = marks.find((m) => Math.abs(m - value) >= step - 1e-6);
+  if (mark == null) return null;
+  const hops = Math.round(Math.abs(value - mark) / step);
+  if (hops < 1 || hops > MAX_HOPS) return null;
+  return mark;
+}
+
 export function NumberLine({
   min,
   max,
@@ -43,6 +87,8 @@ export function NumberLine({
   value = null,
   onChange,
   marks = [],
+  play = false,
+  stopBefore,
   denominator,
   height = 96,
 }: NumberLineProps) {
@@ -65,7 +111,31 @@ export function NumberLine({
           (t) => !labelled.has(t),
         )
       : [];
-  const jumps = value == null ? 0 : Math.abs(Math.round((value - min) / effectiveStep));
+  const origin =
+    play && value != null ? hopOrigin(value, marks, effectiveStep, stopBefore) : null;
+  const goal = stopBefore ?? value;
+  const plan =
+    origin != null && goal != null ? hopsToward(origin, goal, effectiveStep, stopBefore != null) : [];
+  const [shown, setShown] = useState<number | null>(origin ?? value);
+  const markKey = marks.join(',');
+
+  useEffect(() => {
+    if (origin == null || plan.length === 0) {
+      setShown(value);
+      return;
+    }
+    setShown(origin);
+    let i = 0;
+    const id = window.setInterval(() => {
+      setShown(plan[i] ?? origin);
+      i += 1;
+      if (i >= plan.length) window.clearInterval(id);
+    }, teachingDuration(HOP_MS, reduced));
+    return () => window.clearInterval(id);
+  }, [origin, value, reduced, markKey, stopBefore, plan.join(',')]);
+
+  const jumps = shown == null ? 0 : Math.abs(Math.round(((shown ?? min) - min) / effectiveStep));
+  const hopping = plan.length > 0;
 
   const handle = (clientX: number) => {
     if (!onChange || !ref.current) return;
@@ -144,20 +214,23 @@ export function NumberLine({
         />
       ))}
 
-      {value != null ? (
+      {shown != null ? (
         <div
           className="absolute -translate-x-1/2"
           style={{
-            left: `${toRatio(value, min, max) * 100}%`,
+            left: `${toRatio(shown, min, max) * 100}%`,
             top: height / 2 - 30,
-            transition: `left ${teachingDuration(Math.min(600, 120 + jumps * 40), reduced)}ms steps(${Math.max(1, jumps)}, end)`,
+            transition: hopping
+              ? undefined
+              : `left ${teachingDuration(Math.min(600, 120 + jumps * 40), reduced)}ms steps(${Math.max(1, jumps)}, end)`,
           }}
         >
           <div
             className="flex h-8 w-8 items-center justify-center rounded-full text-[15px] font-black text-white"
+            data-hop={shown}
             style={{ background: 'var(--c-primary)' }}
           >
-            {formatValue(value, denominator)}
+            {formatValue(shown, denominator)}
           </div>
           <div
             className="mx-auto"

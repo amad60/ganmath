@@ -155,7 +155,7 @@ describe('hintFor — bantuan harus tentang soal INI', () => {
     expect(operandsOf(question)).toEqual({ left: -6, right: 9, op: '+' });
     const h = hintFor(moduleById('g6-u1-m4').learn, question);
     expect(h?.prompt).toBe('Start at −6. Jump 9.');
-    expect(h?.visual).toMatchObject({ kind: 'number-line', value: -6 });
+    expect(h?.visual).toMatchObject({ kind: 'number-line', value: -6, hopTo: 3 });
   });
 
   it('modul Read r1-u1-m1 mengambil langkah pictorial sebagai hint', () => {

@@ -36,6 +36,7 @@ function lineFor(start: number, end: number): LearnVisual {
     value: start,
     marks: [0],
     step: 1,
+    hopTo: end,
   };
 }
 

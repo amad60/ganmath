@@ -97,13 +97,20 @@ export function LearnVisualView({
           value={interactive ? (value > visual.min - 1 ? value : null) : (visual.value ?? null)}
           marks={visual.marks ?? []}
           onChange={interactive ? onValue : undefined}
+          play={!interactive && (visual.hopTo != null || (visual.marks?.length ?? 0) > 0)}
+          stopBefore={visual.hopTo}
         />
       );
     case 'number-bond':
       return <NumberBond whole={visual.whole} parts={visual.parts} ask={visual.ask} />;
     case 'base10':
       return (
-        <Base10Blocks hundreds={visual.hundreds ?? 0} tens={visual.tens} ones={visual.ones} />
+        <Base10Blocks
+          hundreds={visual.hundreds ?? 0}
+          tens={visual.tens}
+          ones={visual.ones}
+          join={!interactive && visual.tens >= 1 && visual.ones < 10}
+        />
       );
     case 'base10-pair': {
       const ones = visual.left.ones + visual.right.ones;
@@ -116,6 +123,7 @@ export function LearnVisualView({
               tens={visual.left.tens + visual.right.tens + Math.floor(ones / 10)}
               ones={ones % 10}
               size={compact ? 0.7 : 1}
+              join
             />
             <p className="text-[18px] font-black">{en.learn.madeTen}</p>
           </div>
@@ -220,6 +228,9 @@ export function LearnVisualView({
           cols={visual.cols}
           highlightRow={visual.highlightRow}
           square={visual.square}
+          visibleRows={reveal}
+          play={play && !visual.square && visual.rows > 1 && reveal == null}
+          omitLast={play && !visual.square && visual.rows > 1 && reveal == null}
         />
       );
     case 'pictogram':

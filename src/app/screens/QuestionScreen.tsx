@@ -646,7 +646,12 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                   onValue={() => {}}
                   interactive={false}
                   compact
-                  play={hint.visual.kind === 'column-sum'}
+                  play={
+                    hint.visual.kind === 'column-sum' ||
+                    hint.visual.kind === 'number-line' ||
+                    hint.visual.kind === 'array' ||
+                    hint.visual.kind === 'base10'
+                  }
                 />
                 <p className="text-ink-soft text-center text-[18px] font-bold">{hint.prompt}</p>
               </>

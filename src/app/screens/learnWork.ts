@@ -4,7 +4,8 @@ import { columnPlaces, type ColumnPlace } from '../../components/manipulatives/c
 export type WatchWork =
   | { kind: 'column'; op: '+' | '−'; places: ColumnPlace[] }
   | { kind: 'fraction'; need: number }
-  | { kind: 'bundle'; label: 'make' | 'open' };
+  | { kind: 'bundle'; label: 'make' | 'open' }
+  | { kind: 'rows'; rows: number };
 
 /**
  * Langkah `watch` yang idenya hanya masuk kalau anak mengerjakannya:
@@ -28,6 +29,9 @@ export function watchWork(visual: LearnVisual): WatchWork | null {
   if (visual.kind === 'base10-pair') {
     const ones = visual.left.ones + visual.right.ones;
     if ((visual.op ?? '+') === '+' && ones >= 10) return { kind: 'bundle', label: 'make' };
+  }
+  if (visual.kind === 'array' && !visual.square && visual.rows > 1) {
+    return { kind: 'rows', rows: visual.rows };
   }
   return null;
 }

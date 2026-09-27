@@ -73,6 +73,7 @@ export const en = {
     addHundreds: 'Add the hundreds',
     takeOnes: 'Take the ones',
     takeTens: 'Take the tens',
+    addRow: 'Add a row',
     makeTen: 'Make a ten',
     openTen: 'Open one ten',
     tapParts: 'Tap each shaded part.',

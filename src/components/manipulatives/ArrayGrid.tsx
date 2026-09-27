@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { teachingDuration, useReducedMotion } from './useReducedMotion';
 
 export type ArrayGridProps = {
@@ -15,6 +16,11 @@ export type ArrayGridProps = {
    */
   square?: boolean;
   size?: number;
+  /** Berapa baris yang sudah dibuka. Kosong = semua, kecuali `play` mengatur sendiri. */
+  visibleRows?: number;
+  /** Munculkan baris satu per satu. Baris terakhir tetap tersembunyi kalau `omitLast`. */
+  play?: boolean;
+  omitLast?: boolean;
 };
 
 /**
@@ -24,17 +30,55 @@ export type ArrayGridProps = {
  * sifat komutatif tidak perlu dihafal. Dipakai dari Grade 2 (pengenalan perkalian)
  * sampai Grade 5 (luas).
  */
-export function ArrayGrid({ rows, cols, highlightRow, square, size = 22 }: ArrayGridProps) {
+const ROW_MS = 420;
+
+export function ArrayGrid({
+  rows,
+  cols,
+  highlightRow,
+  square,
+  size = 22,
+  visibleRows,
+  play = false,
+  omitLast = false,
+}: ArrayGridProps) {
   const reduced = useReducedMotion();
   const dot = Math.max(10, Math.min(size, 200 / Math.max(rows, cols)));
+  const cap = omitLast ? Math.max(1, rows - 1) : rows;
+  const [played, setPlayed] = useState(play ? 1 : rows);
+
+  useEffect(() => {
+    if (visibleRows != null) return;
+    if (!play) {
+      setPlayed(rows);
+      return;
+    }
+    setPlayed(1);
+    if (cap <= 1) return;
+    let n = 1;
+    const id = window.setInterval(() => {
+      n += 1;
+      setPlayed(Math.min(n, cap));
+      if (n >= cap) window.clearInterval(id);
+    }, teachingDuration(ROW_MS, reduced));
+    return () => window.clearInterval(id);
+  }, [play, rows, cap, reduced, visibleRows]);
+
+  const shown = Math.max(1, Math.min(visibleRows ?? (play ? played : rows), rows));
+  const label =
+    shown < rows
+      ? `${shown} of ${rows} rows, ${cols} in each`
+      : square
+        ? `${rows} rows of ${cols} squares`
+        : `${rows} rows of ${cols}`;
 
   return (
     <div
       className={square ? 'flex flex-col' : 'flex flex-col gap-1.5'}
-      aria-label={square ? `${rows} rows of ${cols} squares` : `${rows} rows of ${cols}`}
+      aria-label={label}
       style={{ alignItems: 'center' }}
     >
-      {Array.from({ length: rows }, (_, r) => (
+      {Array.from({ length: shown }, (_, r) => (
         <div key={r} className={square ? 'flex' : 'flex gap-1.5'}>
           {Array.from({ length: cols }, (_, c) => (
             <span
