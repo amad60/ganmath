@@ -85,6 +85,77 @@ export const GRADE_1_INTROS: Record<string, UnitIntroDef> = {
   },
 };
 
+export const GRADE_2_INTROS: Record<string, UnitIntroDef> = {
+  'g2-u1': {
+    unitId: 'g2-u1',
+    grade: 2,
+    title: 'Unit 1 · Numbers to 1000',
+    subtitle: 'Hundreds, Tens & Ones',
+    concept: 'Ten hundreds make a thousand! Read and round 3-digit numbers.',
+    mascotMood: 'happy',
+    accentColor: 'var(--c-unit-1)',
+  },
+  'g2-u2': {
+    unitId: 'g2-u2',
+    grade: 2,
+    title: 'Unit 2 · Add & Subtract',
+    subtitle: 'Written Column Methods & Regrouping',
+    concept: 'Add ones first, then add tens! Open a ten when you need more ones.',
+    mascotMood: 'celebrate',
+    accentColor: 'var(--c-unit-2)',
+  },
+  'g2-u3': {
+    unitId: 'g2-u3',
+    grade: 2,
+    title: 'Unit 3 · Mental Math',
+    subtitle: 'Quick Tricks & Near Tens',
+    concept: 'Jump 10 or 100 fast in your head, and double numbers in a flash!',
+    mascotMood: 'thinking',
+    accentColor: 'var(--c-unit-3)',
+  },
+  'g2-u4': {
+    unitId: 'g2-u4',
+    grade: 2,
+    title: 'Unit 4 · Meet Multiplication',
+    subtitle: 'Equal Groups & Times Tables',
+    concept: 'Rows and groups of the same size! Master ×2, ×5, and ×10.',
+    mascotMood: 'celebrate',
+    accentColor: 'var(--c-unit-4)',
+  },
+  'g2-u5': {
+    unitId: 'g2-u5',
+    grade: 2,
+    title: 'Unit 5 · Even, Odd & Patterns',
+    subtitle: 'Pairs & Growing Patterns',
+    concept: 'Fair pairs are even! Spot growing steps on the hundreds chart.',
+    mascotMood: 'encourage',
+    accentColor: 'var(--c-unit-5)',
+  },
+  'g2-u6': {
+    unitId: 'g2-u6',
+    grade: 2,
+    title: 'Unit 6 · Measure',
+    subtitle: 'Centimetres, Metres, Grams & Kilos',
+    concept: 'Line up from zero with your ruler, and weigh items in grams and kg!',
+    mascotMood: 'thinking',
+    accentColor: 'var(--c-unit-6)',
+  },
+  'g2-u7': {
+    unitId: 'g2-u7',
+    grade: 2,
+    title: 'Unit 7 · Time, Money & Data',
+    subtitle: 'Quarter Hours, Rupiah & Bar Charts',
+    concept: 'Read quarter past and quarter to, give change, and read bar graphs!',
+    mascotMood: 'celebrate',
+    accentColor: 'var(--c-unit-7)',
+  },
+};
+
+export const ALL_UNIT_INTROS: Record<string, UnitIntroDef> = {
+  ...GRADE_1_INTROS,
+  ...GRADE_2_INTROS,
+};
+
 export function getUnitIntro(unitId: string): UnitIntroDef | null {
-  return GRADE_1_INTROS[unitId] ?? null;
+  return ALL_UNIT_INTROS[unitId] ?? null;
 }

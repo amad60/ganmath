@@ -250,7 +250,7 @@ export function MapScreen(props: MapScreenProps) {
                     <span className="text-ink-soft font-bold"> · {en.map.unitAgain}</span>
                   ) : null}
                 </span>
-                {grade === 1 ? (
+                {grade <= 2 ? (
                   <button
                     type="button"
                     aria-label={`Preview animation for ${unit?.title ?? unitId}`}
