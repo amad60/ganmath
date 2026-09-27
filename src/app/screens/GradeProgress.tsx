@@ -30,7 +30,15 @@ function duration(minutes: number): string {
   return m ? `${h}h ${m}m` : `${h}h`;
 }
 
-export function GradeProgress({ reports, openGrade }: { reports: GradeReport[]; openGrade: number | null }) {
+export function GradeProgress({
+  reports,
+  openGrade,
+  trackTitle = 'Grade',
+}: {
+  reports: GradeReport[];
+  openGrade: number | null;
+  trackTitle?: string;
+}) {
   const [open, setOpen] = useState<number | null>(openGrade);
   return (
     <div className="flex flex-col gap-3">
@@ -38,6 +46,7 @@ export function GradeProgress({ reports, openGrade }: { reports: GradeReport[]; 
         <GradeCard
           key={r.grade}
           report={r}
+          trackTitle={trackTitle}
           open={open === r.grade}
           onToggle={() => setOpen(open === r.grade ? null : r.grade)}
         />
@@ -46,7 +55,17 @@ export function GradeProgress({ reports, openGrade }: { reports: GradeReport[]; 
   );
 }
 
-function GradeCard({ report: r, open, onToggle }: { report: GradeReport; open: boolean; onToggle: () => void }) {
+function GradeCard({
+  report: r,
+  open,
+  onToggle,
+  trackTitle = 'Grade',
+}: {
+  report: GradeReport;
+  open: boolean;
+  onToggle: () => void;
+  trackTitle?: string;
+}) {
   const status = r.complete ? 'complete' : r.cleared > 0 || r.startedOn ? 'active' : 'idle';
   const when = r.complete
     ? `${plural(r.days ?? 0, 'day')} · ${formatDay(r.startedOn!)} – ${formatDay(r.completedOn!)}`
@@ -63,7 +82,7 @@ function GradeCard({ report: r, open, onToggle }: { report: GradeReport; open: b
         className="flex w-full flex-col gap-2 rounded-[var(--r-lg)] p-5 text-left"
       >
         <span className="flex w-full items-center justify-between gap-2">
-          <span className="text-xl font-black">Grade {r.grade}</span>
+          <span className="text-xl font-black">{trackTitle} {r.grade}</span>
           <span className="flex items-center gap-2">
             <StatusChip status={status} />
             <Chevron open={open} />

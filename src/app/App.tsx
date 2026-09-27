@@ -7,7 +7,7 @@ import { dueReviewsForGrade, toDateString } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
-import { readRegistryFor } from '../content/readIndex';
+import { readModulesList, readRegistryFor } from '../content/readIndex';
 import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
@@ -98,15 +98,19 @@ export function App() {
    * hanya karena registry aktifnya berganti.
    */
   const curriculum = useMemo<CurriculumIndex>(() => {
+    const combined = [...all, ...readModulesList];
     const byUnit = new Map<string, string[]>();
-    for (const m of all) {
+    for (const m of combined) {
       const list = byUnit.get(m.unitId);
       if (list) list.push(m.id);
       else byUnit.set(m.unitId, [m.id]);
     }
     return {
       units: [...byUnit.values()],
-      grades: GRADES.map((g) => ({ grade: g, moduleIds: [...pathOrderFor(g)] })),
+      grades: [
+        ...GRADES.map((g) => ({ grade: g, moduleIds: [...pathOrderFor(g)] })),
+        { grade: 101, moduleIds: readModulesList.map((m) => m.id) },
+      ],
     };
   }, []);
 
@@ -206,7 +210,11 @@ export function App() {
     }
 
     const def = moduleById(final.moduleId);
-    const unitModuleIds = all.filter((m) => m.unitId === def.unitId).map((m) => m.id);
+    const unitModuleIds = (
+      final.moduleId.startsWith('r') ? readModulesList : all
+    )
+      .filter((m) => m.unitId === def.unitId)
+      .map((m) => m.id);
     const outcome = recordSession(def, toSessionResult(final, today), {
       unitModuleIds,
       curriculum,
@@ -313,6 +321,7 @@ export function App() {
           streakCurrent={data.streak.current}
           nextId={next}
           grade={grade}
+          activeTrack={activeTrack}
           onBack={() => setScreen({ name: 'map' })}
         />
       );

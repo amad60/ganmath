@@ -182,6 +182,9 @@ export type BadgeId =
   | 'modules-150'
   | 'memory-keeper-10'
   | 'memory-keeper-30'
+  | 'bookworm-1'
+  | 'story-detective'
+  | 'read-graduate-1'
   | 'graduate-1'
   | 'graduate-2'
   | 'graduate-3'
@@ -221,6 +224,9 @@ export const BADGES: Record<BadgeId, { icon: string; title: string; hint: string
   'modules-150': { icon: '⛰️', title: 'One Fifty Done', hint: 'Finish 150 modules' },
   'memory-keeper-10': { icon: '💠', title: 'Ten Kept', hint: 'Keep 10 modules two months later' },
   'memory-keeper-30': { icon: '🔮', title: 'Thirty Kept', hint: 'Keep 30 modules two months later' },
+  'bookworm-1': { icon: '🐛', title: 'First Story', hint: 'Master your first reading lesson' },
+  'story-detective': { icon: '🕵️', title: 'Story Detective', hint: 'Solve clues with 100% accuracy' },
+  'read-graduate-1': { icon: '📜', title: 'Read Level 1 Graduate', hint: 'Finish all Level 1 reading units' },
   'graduate-1': { icon: '🎓', title: 'Grade 1 Graduate', hint: 'Finish the whole of Grade 1' },
   'graduate-2': { icon: '🎓', title: 'Grade 2 Graduate', hint: 'Finish the whole of Grade 2' },
   'graduate-3': { icon: '🎓', title: 'Grade 3 Graduate', hint: 'Finish the whole of Grade 3' },
@@ -297,7 +303,13 @@ export function newBadges(ctx: BadgeContext): BadgeId[] {
 
   const mastered = ctx.after.status === 'mastered' || ctx.after.status === 'retained';
   const wasMastered = ctx.before.status === 'mastered' || ctx.before.status === 'retained';
-  if (mastered && !wasMastered) add('module-master');
+  if (mastered && !wasMastered) {
+    add('module-master');
+    if (ctx.result.moduleId.startsWith('r1-')) add('bookworm-1');
+  }
+  if (ctx.result.moduleId.startsWith('r1-') && ctx.accuracy === 1 && ctx.result.questions.length > 0) {
+    add('story-detective');
+  }
   if (ctx.after.stars === 3) add('gold-brain');
   if (ctx.after.status === 'retained') add('memory-keeper');
   if (ctx.unitComplete) add('unit-champion');

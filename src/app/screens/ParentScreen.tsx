@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
 import { all, availableGrades, moduleById, pathOrderFor, unitTitles } from '../../content';
+import { readModulesList, readPathOrder, readUnitTitles } from '../../content/readIndex';
 import { gradeReport } from '../../engine/report';
 import { GradeProgress } from './GradeProgress';
 import { storageIsAvailable } from '../../store/progress';
@@ -81,6 +82,17 @@ export function ParentScreen({
   const shown = reports.filter((r) => r.startedOn || r.grade === activeGrade);
   const hidden = reports.filter((r) => !shown.includes(r)).map((r) => r.grade);
 
+  // Laporan Read Grade 1
+  const readReport = gradeReport(
+    1,
+    readPathOrder.map((id) => {
+      const m = moduleById(id);
+      return { id, title: m.title, unitId: m.unitId };
+    }),
+    data.modules,
+    (uid) => readUnitTitles[uid]?.title ?? uid,
+  );
+
   const pickFile = async (file: File | undefined) => {
     if (!file) return;
     const result = await readProgressFile(file);
@@ -91,6 +103,8 @@ export function ParentScreen({
       text: `File: ${incoming.mastered} modules mastered.\nNow: ${mastered} modules mastered.`,
     });
   };
+
+  const totalAllModules = all.length + readModulesList.length;
 
   return (
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
@@ -106,12 +120,12 @@ export function ParentScreen({
             value={`${plural(data.streak.current, 'day')} (best ${data.streak.best})`}
           />
           <div className="mt-3">
-            <ProgressBar value={mastered} max={all.length} label={`${mastered}/${all.length}`} />
+            <ProgressBar value={mastered} max={totalAllModules} label={`${mastered}/${totalAllModules}`} />
           </div>
         </section>
 
         <section>
-          <h2 className="mb-2 text-xl font-black">Progress by grade</h2>
+          <h2 className="mb-2 text-xl font-black">Math Progress by grade</h2>
           <GradeProgress reports={shown} openGrade={latest?.grade ?? activeGrade} />
           {hidden.length > 0 ? (
             <p className="text-ink-soft mt-2 text-[15px]">
@@ -120,6 +134,16 @@ export function ParentScreen({
             </p>
           ) : null}
         </section>
+
+        {readReport.cleared > 0 || readReport.startedOn ? (
+          <section>
+            <div className="mb-2 flex items-center gap-2">
+              <span className="text-xl">📖</span>
+              <h2 className="text-xl font-black">Reading Progress (Literasi)</h2>
+            </div>
+            <GradeProgress reports={[readReport]} openGrade={1} trackTitle="Read Level" />
+          </section>
+        ) : null}
 
         <section>
           <h2 className="mb-2 text-xl font-black">Struggling with · Grade {activeGrade}</h2>
