@@ -31,7 +31,7 @@ export const mainIdeaSummary: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The first sentence often states the big idea.',
+      prompt: 'The big idea covers the whole text.',
       visual: {
         kind: 'evidence-text',
         title: 'Main Sentence',
@@ -56,7 +56,7 @@ export const mainIdeaSummary: ContentModule = {
     {
       type: 'clue-tap',
       skill: 'read-main-idea',
-      params: { s: [0, 4] },
+      params: { s: [0, 7] },
       answer: () => 0, // kalimat pertama memuat ide utama
       text: () => 'Which sentence states the MAIN IDEA of the story?',
       visual: (p) => {
@@ -101,6 +101,30 @@ export const mainIdeaSummary: ContentModule = {
               'Crisp leaves drift softly down to the forest floor.',
             ],
           },
+          {
+            title: 'City Trains',
+            sentences: [
+              'Trains move people across a busy city.',
+              'Doors slide open at each station.',
+              'Riders hold the rail when the car turns.',
+            ],
+          },
+          {
+            title: 'Night Owls',
+            sentences: [
+              'Owls hunt quietly after the sun sets.',
+              'Soft feathers muffle every wingbeat.',
+              'Round eyes gather light in the dark.',
+            ],
+          },
+          {
+            title: 'School Garden',
+            sentences: [
+              'The class garden grows food for lunch.',
+              'Students water the tomato vines.',
+              'Ripe fruit goes to the school kitchen.',
+            ],
+          },
         ];
         return {
           kind: 'evidence-text',
@@ -112,7 +136,7 @@ export const mainIdeaSummary: ContentModule = {
     {
       type: 'choose-text',
       skill: 'read-main-idea',
-      params: { c: [0, 4] },
+      params: { c: [0, 7] },
       answer: () => 0,
       text: (p) => {
         const stories = [
@@ -121,6 +145,9 @@ export const mainIdeaSummary: ContentModule = {
           'Cactus plants have thick stems to store rain water, waxy skin, and sharp spines instead of wide leaves. What is this mostly about?',
           'An astronaut wears a pressurized suit with helmet, radio microphone, and oxygen backpack in space. What is this mostly about?',
           'A fire truck carries high ladders, long water hoses, and flashing sirens to rescue people quickly. What is this mostly about?',
+          'Whales sing long songs, swim in pods, and rise to breathe air. What is this mostly about?',
+          'Beavers cut logs, pack mud, and build dams across streams. What is this mostly about?',
+          'The class plants seeds, waters them, and picks tomatoes for lunch. What is this mostly about?',
         ];
         return stories[p.c as number] ?? '';
       },
@@ -131,6 +158,9 @@ export const mainIdeaSummary: ContentModule = {
           ['How cactus plants survive dry deserts', 'Desert sand dunes', 'Cactus flowers', 'Desert lizards'],
           ['Equipment an astronaut needs in space', 'The planet Mars', 'How to fly a rocket', 'Star constellations'],
           ['Tools on a fire truck for rescue', 'Police car sirens', 'How water freezes', 'Driving fast'],
+          ['How whales live in the ocean', 'Ship horns', 'Ocean maps', 'Whale size charts'],
+          ['How beavers build their dams', 'Fish recipes', 'River names', 'Boat races'],
+          ['A class garden that feeds lunch', 'How to buy tomatoes', 'School bells', 'Rain clouds'],
         ];
         return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
       },

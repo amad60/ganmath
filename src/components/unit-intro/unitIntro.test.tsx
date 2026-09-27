@@ -72,8 +72,13 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
     }
   });
 
-  it('semua unit Read Track punya data animasi intro (r1, r2, r3)', () => {
-    const readUnitIds = ['r1-u1', 'r1-u2', 'r1-u3', 'r1-u4', 'r2-u1', 'r2-u2', 'r2-u3', 'r3-u1', 'r3-u2'];
+  it('semua unit Read Track punya data animasi intro (r1 sampai r4)', () => {
+    const readUnitIds = [
+      'r1-u1', 'r1-u2', 'r1-u3', 'r1-u4',
+      'r2-u1', 'r2-u2', 'r2-u3', 'r2-u4',
+      'r3-u1', 'r3-u2', 'r3-u3', 'r3-u4',
+      'r4-u1', 'r4-u2', 'r4-u3', 'r4-u4',
+    ];
     for (const unitId of readUnitIds) {
       const intro = READ_INTROS[unitId];
       expect(intro).toBeDefined();
@@ -88,6 +93,15 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
     expect(screen.getByText(/Characters & Settings/)).toBeInTheDocument();
     expect(screen.getByText(/Spot who is in the story/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: "Let's Go! 🚀" })).toBeInTheDocument();
+  });
+
+  it('merender intro unit baru Level 2 dan Level 4', () => {
+    const { unmount } = render(<UnitIntroModal unitId="r2-u4" onClose={() => {}} />);
+    expect(screen.getByText(/Which Detail Fits/)).toBeInTheDocument();
+    unmount();
+    render(<UnitIntroModal unitId="r4-u1" onClose={() => {}} />);
+    expect(screen.getByText(/Same and Different/)).toBeInTheDocument();
+    expect(screen.getByText(/Read both texts/)).toBeInTheDocument();
   });
 
   it('merender modal intro dengan benar saat unitId aktif', () => {

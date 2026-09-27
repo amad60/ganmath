@@ -223,7 +223,22 @@ export function generateSet(
         ...(pool.rule.story ? { story: true as const } : {}),
         ...(pool.rule.hint ? { hint: pool.rule.hint(params) } : {}),
       };
-      if (pool.rule.type === 'choose-text') {
+      if (pool.rule.type === 'clue-tap' && q.visual?.kind === 'evidence-text') {
+        // Urutan kalimat DIACAK, dan indeks jawaban ikut pindah.
+        // Banyak modul menaruh petunjuk di slot yang sama setiap cerita
+        // (selalu kalimat pertama, atau selalu yang kedua). Tanpa acak,
+        // anak lulus dengan mengetuk posisi, bukan dengan membaca.
+        const sentences = q.visual.sentences;
+        const order = shuffle(rng, sentences.map((_, i) => i));
+        const nextAt = order.indexOf(q.answer);
+        if (nextAt >= 0 && sentences.length > 1) {
+          q.visual = {
+            ...q.visual,
+            sentences: order.map((i) => sentences[i] ?? ''),
+          };
+          q.answer = nextAt;
+        }
+      } else if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];
         q.options = labels;
         // Urutan tombol DIACAK. Sebelumnya pilihan tampil persis seperti ditulis,

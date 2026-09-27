@@ -139,6 +139,20 @@ function renderUnitVisual(unitId: string, reduced: boolean) {
       return <AnimationR3U1 reduced={reduced} />;
     case 'r3-u2':
       return <AnimationR3U2 reduced={reduced} />;
+    case 'r2-u4':
+      return <AnimationR2U4 reduced={reduced} />;
+    case 'r3-u3':
+      return <AnimationR3U3 reduced={reduced} />;
+    case 'r3-u4':
+      return <AnimationR3U4 reduced={reduced} />;
+    case 'r4-u1':
+      return <AnimationR4U1 reduced={reduced} />;
+    case 'r4-u2':
+      return <AnimationR4U2 reduced={reduced} />;
+    case 'r4-u3':
+      return <AnimationR4U3 reduced={reduced} />;
+    case 'r4-u4':
+      return <AnimationR4U4 reduced={reduced} />;
     default:
       return <AnimationDefault unitId={unitId} />;
   }
@@ -1902,6 +1916,140 @@ function AnimationR3U2({ reduced }: { reduced: boolean }) {
           Adaptation power!
         </span>
       </div>
+    </div>
+  );
+}
+
+function AnimationR2U4({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2 font-black">
+      <span className="rounded-full bg-[#dbeafe] px-3 py-1 text-xs text-[#1d4ed8]">Big idea: Bees work hard</span>
+      <div className="flex gap-2 text-[11px]">
+        <span
+          className="rounded-md bg-white px-2 py-1 text-[#0369a1]"
+          style={{ animation: reduced ? undefined : 'badge-pop 500ms ease-out both', border: '2px solid #0284c7' }}
+        >
+          Pollen on their legs
+        </span>
+        <span className="rounded-md bg-white px-2 py-1 text-ink-soft line-through" style={{ border: '2px solid var(--c-line)' }}>
+          The moon
+        </span>
+      </div>
+      <span className="text-xs text-ink-soft">Keep the detail. Drop what wanders.</span>
+    </div>
+  );
+}
+
+function AnimationR3U3({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex items-center gap-3 font-black text-xs">
+      <div className="rounded-xl bg-white px-3 py-2 text-center" style={{ border: '2px solid #0d9488' }}>
+        <div className="text-2xl">🪁</div>
+        String snapped
+      </div>
+      <span className="text-lg text-[#0d9488]">➔</span>
+      <div
+        className="rounded-xl bg-[#ccfbf1] px-3 py-2 text-center text-[#115e59]"
+        style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 200ms both', border: '2px solid #0d9488' }}
+      >
+        <div className="text-2xl">🪢</div>
+        Tie a new knot
+      </div>
+    </div>
+  );
+}
+
+function AnimationR3U4({ reduced }: { reduced: boolean }) {
+  const steps = ['🌱 Seed', '🌿 Shoot', '🌼 Flower'];
+  return (
+    <div className="flex items-center gap-2 font-black text-[11px]">
+      {steps.map((label, i) => (
+        <div key={label} className="flex items-center gap-2">
+          <span
+            className="rounded-xl bg-white px-2 py-2"
+            style={{
+              border: '2px solid #059669',
+              animation: reduced ? undefined : `apple-hop 400ms ease-out ${i * 180}ms both`,
+            }}
+          >
+            {label}
+          </span>
+          {i < steps.length - 1 ? <span className="text-ink-soft">➔</span> : null}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AnimationR4U1(_props: { reduced: boolean }) {
+  return (
+    <div className="flex items-center gap-3 font-black text-xs">
+      <div className="rounded-xl bg-white px-3 py-2 text-center" style={{ border: '2px solid #10b981' }}>
+        <div className="text-2xl">🌳</div>
+        Park
+      </div>
+      <div className="rounded-full bg-[#d1fae5] px-2 py-1 text-[#065f46]">BOTH play</div>
+      <div className="rounded-xl bg-white px-3 py-2 text-center" style={{ border: '2px solid #10b981' }}>
+        <div className="text-2xl">🏖️</div>
+        Beach
+      </div>
+    </div>
+  );
+}
+
+function AnimationR4U2({ reduced }: { reduced: boolean }) {
+  const chips = [
+    ['Teach', '📘'],
+    ['Amuse', '😄'],
+    ['Ask', '✋'],
+  ];
+  return (
+    <div className="flex gap-2 font-black text-[11px]">
+      {chips.map(([label, icon], i) => (
+        <div
+          key={label}
+          className="flex flex-col items-center rounded-xl bg-white px-3 py-2"
+          style={{
+            border: '2px solid #059669',
+            animation: reduced ? undefined : `badge-pop 500ms ease-out ${i * 120}ms both`,
+          }}
+        >
+          <span className="text-xl">{icon}</span>
+          {label}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AnimationR4U3({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2 font-black text-xs">
+      <span className="rounded-lg bg-white px-3 py-1" style={{ border: '2px solid #0d9488' }}>
+        Water is <span className="text-[#0d9488]">scarce</span>
+      </span>
+      <span className="text-ink-soft">➔</span>
+      <span
+        className="rounded-lg bg-[#ccfbf1] px-3 py-1 text-[#115e59]"
+        style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 200ms both' }}
+      >
+        almost none left
+      </span>
+    </div>
+  );
+}
+
+function AnimationR4U4({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2 font-black text-xs">
+      <span className="text-ink-soft">Lina gave her coat away</span>
+      <span className="text-lg">⬇</span>
+      <span
+        className="rounded-full bg-[#e0f2fe] px-3 py-1 text-[#0369a1]"
+        style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 200ms both' }}
+      >
+        Lesson: kindness matters
+      </span>
     </div>
   );
 }

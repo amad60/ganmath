@@ -53,6 +53,7 @@ describe('Integrasi Parent Area & Rewards untuk Track Read', () => {
     expect(BADGES['read-graduate-1']).toBeDefined();
     expect(BADGES['read-graduate-2']).toBeDefined();
     expect(BADGES['read-graduate-3']).toBeDefined();
+    expect(BADGES['read-graduate-4']).toBeDefined();
 
     render(
       <BadgesScreen

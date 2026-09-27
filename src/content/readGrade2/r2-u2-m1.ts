@@ -55,7 +55,7 @@ export const factVsOpinion: ContentModule = {
     {
       type: 'clue-tap',
       skill: 'read-fact-opinion',
-      params: { s: [0, 4] },
+      params: { s: [0, 7] },
       answer: () => 0, // kalimat pertama adalah FAKTA
       text: () => 'Which sentence is a true FACT that can be proven?',
       visual: (p) => {
@@ -80,6 +80,18 @@ export const factVsOpinion: ContentModule = {
             title: 'Bicycle',
             sentences: ['A bicycle moves on two rolling wheels.', 'Riding bikes is the most exciting sport.'],
           },
+          {
+            title: 'Rain',
+            sentences: ['Rain is water that falls from clouds.', 'Rainy days are the coziest days.'],
+          },
+          {
+            title: 'Moon',
+            sentences: ['The moon orbits the Earth.', 'The moon is the loveliest night light.'],
+          },
+          {
+            title: 'Books',
+            sentences: ['A book is made of pages and a cover.', 'Mystery books are the best stories.'],
+          },
         ];
         return {
           kind: 'evidence-text',
@@ -91,7 +103,7 @@ export const factVsOpinion: ContentModule = {
     {
       type: 'choose-text',
       skill: 'read-fact-opinion',
-      params: { c: [0, 4] },
+      params: { c: [0, 7] },
       answer: () => 0,
       text: (p) => {
         const stories = [
@@ -100,6 +112,9 @@ export const factVsOpinion: ContentModule = {
           'Which statement about pizza is an OPINION?',
           'Which statement about books is an OPINION?',
           'Which statement about rain is a true FACT?',
+          'Which statement about cats is an OPINION?',
+          'Which statement about the ocean is a true FACT?',
+          'Which statement about soccer is an OPINION?',
         ];
         return stories[p.c as number] ?? '';
       },
@@ -110,6 +125,9 @@ export const factVsOpinion: ContentModule = {
           ['Pizza is the most delicious food', 'Pizza dough is baked', 'Cheese melts on hot pizza', 'Pizza crust has flour'],
           ['Comic books are better than novels', 'Books have paper pages', 'Libraries store many books', 'Authors write books'],
           ['Rain clouds carry tiny water drops', 'Rain is always depressing', 'Puddles are the best to jump in', 'Rainy days are boring'],
+          ['Cats are nicer than dogs', 'Cats have whiskers', 'Cats can purr', 'Cats drink water'],
+          ['The ocean is a large body of salt water', 'The ocean is the prettiest place', 'Beaches are boring', 'Waves are the most fun'],
+          ['Soccer is the greatest sport', 'Soccer is played with a ball', 'A match has two teams', 'Players kick the ball'],
         ];
         return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
       },

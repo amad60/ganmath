@@ -149,7 +149,12 @@ export function submitAnswer(state: SessionState, input: AnswerInput): SessionSt
   const requeue = [...state.requeue];
   // Soal yang salah muncul lagi di sesi yang sama, tapi tidak langsung —
   // beri jarak ≥2 soal supaya anak benar-benar mengingat, bukan menyalin.
-  if (!input.correct && !head.retried && state.kind !== 'master') {
+  // Soal baca yang salah TIDAK diantrekan lagi. Di matematika, ulangannya
+  // mengajar karena anak sudah melihat jalan hitungnya. Di baca, ulangan soal
+  // yang sama plus tanda "Yes!" pada tebakan yang akhirnya kena menjadi kunci
+  // jawaban: anak mengulang modul dan mengetuk kalimat yang tadi hijau.
+  const reading = head.question.skill.startsWith('read-');
+  if (!input.correct && !head.retried && state.kind !== 'master' && !reading) {
     requeue.push({ question: head.question, readyAfter: answered + 2 });
   }
 

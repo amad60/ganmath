@@ -4,6 +4,13 @@ export type EvidenceTextProps = {
   sentences: string[];
   title?: string;
   selectedIndex?: number | null;
+  /** Kalimat yang sudah dipilih dan ternyata bukan petunjuk. Tidak bisa diketuk lagi. */
+  rejectedIndices?: number[];
+  /**
+   * Warna kalimat `selectedIndex`. `correct` hanya untuk tebakan pertama yang kena.
+   * Tebakan yang salah memakai `wrong` dan tidak menandai kalimat lain.
+   */
+  selectedTone?: 'correct' | 'wrong' | null;
   onSelect?: (index: number) => void;
   interactive?: boolean;
 };
@@ -20,6 +27,8 @@ export function EvidenceText({
   sentences,
   title,
   selectedIndex = null,
+  rejectedIndices = [],
+  selectedTone = null,
   onSelect,
   interactive = true,
 }: EvidenceTextProps) {
@@ -42,7 +51,11 @@ export function EvidenceText({
 
       <div className="flex flex-col gap-2">
         {sentences.map((sentence, idx) => {
-          const isSelected = selectedIndex === idx;
+          const isRejected = rejectedIndices.includes(idx);
+          const isSelected = selectedIndex === idx && !isRejected;
+          const tone = isRejected ? 'wrong' : isSelected ? selectedTone : null;
+          const toneColor =
+            tone === 'correct' ? 'var(--c-correct)' : tone === 'wrong' ? 'var(--c-retry)' : null;
 
           if (!interactive) {
             return (
@@ -56,20 +69,28 @@ export function EvidenceText({
             <button
               key={idx}
               type="button"
-              aria-pressed={isSelected}
-              onClick={() => onSelect?.(idx)}
+              aria-pressed={isSelected || isRejected}
+              aria-disabled={isRejected}
+              onClick={() => {
+                if (!isRejected) onSelect?.(idx);
+              }}
               className="flex min-h-[46px] w-full items-center rounded-[var(--r-md)] px-3.5 py-2 text-left text-[16px] font-bold leading-snug transition-all active:scale-[0.98]"
               style={{
-                background: isSelected ? 'var(--c-primary-soft)' : 'var(--c-surface-sunk)',
-                border: `2px solid ${isSelected ? 'var(--c-primary)' : 'transparent'}`,
-                color: isSelected ? 'var(--c-primary)' : 'var(--c-ink)',
-                boxShadow: isSelected ? '0 2px 8px rgba(76, 91, 212, 0.15)' : 'none',
-                animation: isSelected && !reduced ? 'badge-pop 300ms ease-out both' : undefined,
+                background: toneColor
+                  ? tone === 'correct'
+                    ? 'var(--c-correct-soft)'
+                    : 'var(--c-retry-soft)'
+                  : 'var(--c-surface-sunk)',
+                border: `2px solid ${toneColor ?? 'transparent'}`,
+                color: toneColor ?? 'var(--c-ink)',
+                boxShadow: 'none',
+                animation: tone && !reduced ? 'badge-pop 300ms ease-out both' : undefined,
+                opacity: isRejected ? 0.72 : 1,
               }}
             >
               <span className="mr-2.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-black text-white"
                 style={{
-                  background: isSelected ? 'var(--c-primary)' : 'var(--c-ink-soft)',
+                  background: toneColor ?? 'var(--c-ink-soft)',
                 }}
               >
                 {idx + 1}

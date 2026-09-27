@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
 import { all, availableGrades, moduleById, pathOrderFor, unitTitles } from '../../content';
 import {
+  READ_LEVELS,
   readModulesList,
   readPathOrderFor,
   readUnitTitles,
@@ -89,8 +90,7 @@ export function ParentScreen({
   const shown = reports.filter((r) => r.startedOn || r.grade === activeGrade);
   const hidden = reports.filter((r) => !shown.includes(r)).map((r) => r.grade);
 
-  // Laporan Read Grade 1, 2, 3
-  const readReports = [1, 2, 3].map((rg) =>
+  const readReports = READ_LEVELS.map((rg) =>
     gradeReport(
       rg,
       readPathOrderFor(rg).map((id) => {
@@ -242,8 +242,8 @@ export function ParentScreen({
 
             <section className="flex flex-col gap-2">
               <h3 className="text-base font-black">Jump to Reading Level</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {[1, 2, 3].map((rg) => {
+              <div className="grid grid-cols-4 gap-2">
+                {READ_LEVELS.map((rg) => {
                   const active = rg === (data.profile.readGrade ?? 1);
                   const count = readPathOrderFor(rg).length;
                   return (

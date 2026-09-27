@@ -7,7 +7,7 @@ import { dueReviewsForGrade, toDateString } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
-import { readModulesList, readPathOrderFor, readRegistryFor } from '../content/readIndex';
+import { READ_LEVELS, readModulesList, readPathOrderFor, readRegistryFor } from '../content/readIndex';
 import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
@@ -110,9 +110,7 @@ export function App() {
       units: [...byUnit.values()],
       grades: [
         ...GRADES.map((g) => ({ grade: g, moduleIds: [...pathOrderFor(g)] })),
-        { grade: 101, moduleIds: readPathOrderFor(1) },
-        { grade: 102, moduleIds: readPathOrderFor(2) },
-        { grade: 103, moduleIds: readPathOrderFor(3) },
+        ...READ_LEVELS.map((g) => ({ grade: 100 + g, moduleIds: readPathOrderFor(g) })),
       ],
     };
   }, []);

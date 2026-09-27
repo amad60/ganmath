@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
 import { isUnlocked } from '../../engine/unlock';
 import { moduleById, registryFor, unitModules, unitTitles } from '../../content';
-import { readRegistryFor } from '../../content/readIndex';
+import { READ_LEVELS, readRegistryFor } from '../../content/readIndex';
 import { Button, Icon, ProgressBar, Sheet, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
@@ -34,7 +34,7 @@ export type MapScreenProps = {
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
 const LAST_GRADE = 6;
-const LAST_READ_GRADE = 3;
+const LAST_READ_GRADE = READ_LEVELS[READ_LEVELS.length - 1] ?? 1;
 
 export function MapScreen(props: MapScreenProps) {
   const {

@@ -55,7 +55,7 @@ export const characterFeelings: ContentModule = {
     {
       type: 'clue-tap',
       skill: 'read-character-feelings',
-      params: { s: [0, 4] },
+      params: { s: [0, 7] },
       answer: () => 1, // kalimat kedua memuat aksi penunjuk emosi
       text: () => 'Which sentence shows HOW the character feels?',
       visual: (p) => {
@@ -80,6 +80,18 @@ export const characterFeelings: ContentModule = {
             title: 'Puppy Gift',
             sentences: ['Dad carried a ribboned cardboard box.', 'Budi squealed in delight and bounced up and down.'],
           },
+          {
+            title: 'New Bike',
+            sentences: ['A red bike stood by the door.', 'Lina clapped and spun in a happy circle.'],
+          },
+          {
+            title: 'Missed Bus',
+            sentences: ['The bus pulled away from the stop.', 'Rafi dropped his bag and let out a long sigh.'],
+          },
+          {
+            title: 'Dark Hall',
+            sentences: ['The lights in the hall went out.', 'Sari grabbed a sleeve and stood very still.'],
+          },
         ];
         return {
           kind: 'evidence-text',
@@ -91,7 +103,7 @@ export const characterFeelings: ContentModule = {
     {
       type: 'choose-text',
       skill: 'read-character-feelings',
-      params: { c: [0, 4] },
+      params: { c: [0, 7] },
       answer: () => 0,
       text: (p) => {
         const stories = [
@@ -100,6 +112,9 @@ export const characterFeelings: ContentModule = {
           'Budi stamped his foot, crossed his arms tight, and frowned at the broken robot. How does Budi feel?',
           'Mimi peeked around the tree, wagged her tail, and crept closer to the yarn ball. How does Mimi feel?',
           'Grandma closed her eyes, leaned back in the rocking chair, and breathed deeply. How does Grandma feel?',
+          'Lina clapped and spun when she saw the red bike. How does Lina feel?',
+          'Rafi dropped his bag and sighed when the bus left. How does Rafi feel?',
+          'Sari stood very still and held a sleeve when the lights went out. How does Sari feel?',
         ];
         return stories[p.c as number] ?? '';
       },
@@ -110,6 +125,9 @@ export const characterFeelings: ContentModule = {
           ['Frustrated or angry', 'Excited', 'Peaceful', 'Shy'],
           ['Playful and curious', 'Sad', 'Terrified', 'Grumpy'],
           ['Relaxed and peaceful', 'Excited to dance', 'Worried', 'Curious'],
+          ['Excited and happy', 'Angry', 'Bored', 'Sleepy'],
+          ['Disappointed', 'Proud', 'Playful', 'Hungry'],
+          ['Frightened', 'Proud', 'Relaxed', 'Silly'],
         ];
         return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
       },

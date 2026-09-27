@@ -77,6 +77,8 @@ export const en = {
     check: 'Check',
     correct: 'Yes!',
     retry: 'Try again',
+    notThatSentence: 'Not that sentence.',
+    notQuite: 'Not quite',
     masteryCheck: 'Mastery Check',
     practice: 'Practice',
     review: 'Quick Review',

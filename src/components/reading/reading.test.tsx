@@ -11,6 +11,13 @@ import { factVsOpinion } from '../../content/readGrade2/r2-u2-m1';
 import { characterFeelings } from '../../content/readGrade2/r2-u3-m1';
 import { howToFollowSteps } from '../../content/readGrade3/r3-u1-m1';
 import { scienceAnimalClues } from '../../content/readGrade3/r3-u2-m1';
+import { supportingDetails } from '../../content/readGrade2/r2-u4-m1';
+import { problemAndSolution } from '../../content/readGrade3/r3-u3-m1';
+import { informationOrder } from '../../content/readGrade3/r3-u4-m1';
+import { compareTwoTexts } from '../../content/readGrade4/r4-u1-m1';
+import { authorsPurpose } from '../../content/readGrade4/r4-u2-m1';
+import { contextClues } from '../../content/readGrade4/r4-u3-m1';
+import { storyTheme } from '../../content/readGrade4/r4-u4-m1';
 
 describe('Literasi Pemahaman Teks (Reading Mechanics)', () => {
   it('EvidenceText: anak bisa mengetuk kalimat sebagai bukti (clue-tap)', () => {
@@ -75,6 +82,13 @@ describe('Literasi Pemahaman Teks (Reading Mechanics)', () => {
       characterFeelings,
       howToFollowSteps,
       scienceAnimalClues,
+      supportingDetails,
+      problemAndSolution,
+      informationOrder,
+      compareTwoTexts,
+      authorsPurpose,
+      contextClues,
+      storyTheme,
     ];
     for (const m of modules) {
       expect(m.id).toMatch(/^[r](\d+)-/);

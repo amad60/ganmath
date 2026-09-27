@@ -93,5 +93,6 @@ describe('Gamification — perolehan XP modul Read', () => {
     expect(earned).toContain('read-graduate-1');
     expect(earned).toContain('read-graduate-2');
     expect(earned).not.toContain('read-graduate-3');
+    expect(earned).not.toContain('read-graduate-4');
   });
 });

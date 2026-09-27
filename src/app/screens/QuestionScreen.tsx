@@ -334,6 +334,8 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const [typed, setTyped] = useState('');
   const [linePick, setLinePick] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<{ value: number; correct: boolean } | null>(null);
+  /** Kalimat yang sudah disingkirkan pada soal baca. Satu kali coba lagi, tanpa membuka jawaban. */
+  const [rejected, setRejected] = useState<number[]>([]);
   /**
    * Dua state, bukan satu — dan inilah inti perbaikannya.
    *
@@ -432,6 +434,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     setHintOpen(false);
     setHintUsed(false);
     setFeedback(null);
+    setRejected([]);
     return () => cancelAnimationFrame(id);
   }, [question?.id]);
 
@@ -450,20 +453,35 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     if (firstInputAt.current == null) firstInputAt.current = performance.now();
   };
 
+  const isRead = question.skill.startsWith('read-');
+  // Latihan ketuk-kalimat: satu tebakan salah mengunci kalimat itu, lalu satu
+  // kesempatan lagi. Benar di kesempatan kedua TIDAK dihitung — mengetuk dua
+  // dari tiga kalimat tidak boleh meluluskan. Jawaban yang benar tidak ditandai.
+  const secondChance =
+    isRead && question.type === 'clue-tap' && session.kind === 'practice';
+
   const answer = (value: number) => {
     if (feedback) return;
+    if (rejected.includes(value)) return;
     touch();
     const now = performance.now();
     // Dibandingkan sebagai NILAI, bukan string atau `===` mentah: jawaban desimal
     // yang dihitung modul bisa lahir sebagai 0.30000000000000004 (0.1 + 0.2),
     // dan "0.50" adalah angka yang sama dengan "0.5". Lihat `sameAnswer`.
     const correct = sameAnswer(value, question.answer);
-    setFeedback({ value, correct });
-    if (correct) sfx.correct();
+    if (!correct && secondChance && rejected.length === 0) {
+      setRejected([value]);
+      sfx.retry();
+      return;
+    }
+    // Kesempatan kedua, kena atau tidak, tidak menjadi angka yang lulus.
+    const scored = correct && rejected.length === 0;
+    setFeedback({ value, correct: scored });
+    if (scored) sfx.correct();
     else sfx.retry();
 
     const next = submitAnswer(session, {
-      correct,
+      correct: scored,
       thinkMs: Math.max(0, (firstInputAt.current ?? now) - shownAt.current),
       totalMs: Math.max(0, now - shownAt.current),
       hintUsed,
@@ -475,7 +493,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         if (isFinished(next, Date.now())) onFinish(next);
         else onSession(next);
       },
-      correct ? 700 : 1600,
+      scored ? 700 : 1600,
     );
   };
 
@@ -490,7 +508,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const choiceFeedback = (c: number): Feedback => {
     if (!feedback) return 'idle';
     if (sameAnswer(c, feedback.value)) return feedback.correct ? 'correct' : 'retry';
-    if (sameAnswer(c, question.answer)) return 'reveal';
+    // Soal baca tidak membuka pilihan yang benar. Membukanya, lalu mengulang
+    // modul, membuat anak hafal tombolnya tanpa membaca teks.
+    if (!isRead && sameAnswer(c, question.answer)) return 'reveal';
     return 'idle';
   };
 
@@ -547,7 +567,15 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             <EvidenceText
               sentences={activeVisual.sentences}
               title={activeVisual.title}
-              selectedIndex={feedback ? feedback.value : null}
+              rejectedIndices={rejected}
+              selectedIndex={
+                feedback?.correct
+                  ? feedback.value
+                  : feedback && !sameAnswer(feedback.value, question.answer)
+                    ? feedback.value
+                    : null
+              }
+              selectedTone={feedback?.correct ? 'correct' : feedback ? 'wrong' : null}
               onSelect={(idx) => {
                 if (!feedback) answer(idx);
               }}
@@ -763,6 +791,16 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           </div>
         )}
 
+        {rejected.length > 0 && !feedback ? (
+          <p
+            className="mt-3 text-center text-xl font-black"
+            style={{ color: 'var(--c-retry)' }}
+            role="status"
+          >
+            {en.question.notThatSentence}
+          </p>
+        ) : null}
+
         {feedback ? (
           <p
             className="mt-3 text-center text-xl font-black"
@@ -771,7 +809,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           >
             {feedback.correct
               ? en.question.correct
-              : `${en.question.retry} · ${label(question.answer)}`}
+              : isRead
+                ? en.question.notQuite
+                : `${en.question.retry} · ${label(question.answer)}`}
           </p>
         ) : null}
       </div>

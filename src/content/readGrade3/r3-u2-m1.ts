@@ -55,7 +55,7 @@ export const scienceAnimalClues: ContentModule = {
     {
       type: 'clue-tap',
       skill: 'read-science-facts',
-      params: { s: [0, 4] },
+      params: { s: [0, 7] },
       answer: () => 1, // kalimat kedua memuat fungsi adaptasi
       text: () => 'Which sentence explains HOW the animal feature helps it survive?',
       visual: (p) => {
@@ -80,6 +80,18 @@ export const scienceAnimalClues: ContentModule = {
             title: 'Poison Dart Frog',
             sentences: ['Tiny poison dart frogs wear neon yellow and blue skin.', 'The brilliant colors warn predators that their skin tastes toxic.'],
           },
+          {
+            title: 'Duck Feet',
+            sentences: ['A duck has webbed feet.', 'The webs push water so the duck can paddle.'],
+          },
+          {
+            title: 'Cactus Spines',
+            sentences: ['A cactus grows sharp spines.', 'The spines stop thirsty animals from eating the plant.'],
+          },
+          {
+            title: 'Penguin Wings',
+            sentences: ['A penguin has short stiff wings.', 'Those flippers push the bird through cold water.'],
+          },
         ];
         return {
           kind: 'evidence-text',
@@ -91,7 +103,7 @@ export const scienceAnimalClues: ContentModule = {
     {
       type: 'choose-text',
       skill: 'read-science-facts',
-      params: { c: [0, 4] },
+      params: { c: [0, 7] },
       answer: () => 0,
       text: (p) => {
         const stories = [
@@ -100,6 +112,9 @@ export const scienceAnimalClues: ContentModule = {
           'Cacti have shallow widespread root networks rather than one deep taproot. Why do desert cacti have wide root networks?',
           'Vampire bats have heat-sensing pits near their noses. What do heat sensors help them locate in the dark?',
           'Porcupines have thousands of sharp barbed quills across their backs. What happens when a curious wolf approaches too close?',
+          'Ducks have webbed feet. How do the webs help?',
+          'Cactus spines are sharp. How do the spines help the plant?',
+          'Penguins have short stiff wings. How do those wings help in the sea?',
         ];
         return stories[p.c as number] ?? '';
       },
@@ -110,6 +125,9 @@ export const scienceAnimalClues: ContentModule = {
           ['To quickly catch every drop of brief desert rain', 'To hide from desert sun', 'To anchor in deep rock', 'To stay cold'],
           ['Warm blood vessels beneath animal skin', 'Cold mountain caves', 'Ripe sweet fruits', 'Underground rivers'],
           ['The sharp quills stick into the predator for defense', 'The porcupine flies away', 'The porcupine changes color', 'It shares food'],
+          ['They push water so the duck can paddle', 'They keep the duck warm', 'They help the duck climb trees', 'They make the duck fly'],
+          ['They stop animals from eating the plant', 'They store extra rain', 'They attract bees', 'They make the cactus taller'],
+          ['They push the bird through the water', 'They help it soar over mountains', 'They change color in winter', 'They catch fish in the air'],
         ];
         return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
       },
