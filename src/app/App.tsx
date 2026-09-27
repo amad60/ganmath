@@ -7,7 +7,7 @@ import { dueReviewsForGrade, toDateString } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
-import { readModulesList, readRegistryFor } from '../content/readIndex';
+import { readModulesList, readPathOrderFor, readRegistryFor } from '../content/readIndex';
 import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
@@ -54,6 +54,7 @@ export function App() {
   const updateSettings = useProgress((s) => s.updateSettings);
   const replaceAll = useProgress((s) => s.replaceAll);
   const setGrade = useProgress((s) => s.setGrade);
+  const setReadGrade = useProgress((s) => s.setReadGrade);
   const setTrack = useProgress((s) => s.setTrack);
   const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
@@ -109,18 +110,26 @@ export function App() {
       units: [...byUnit.values()],
       grades: [
         ...GRADES.map((g) => ({ grade: g, moduleIds: [...pathOrderFor(g)] })),
-        { grade: 101, moduleIds: readModulesList.map((m) => m.id) },
+        { grade: 101, moduleIds: readPathOrderFor(1) },
+        { grade: 102, moduleIds: readPathOrderFor(2) },
+        { grade: 103, moduleIds: readPathOrderFor(3) },
       ],
     };
   }, []);
 
   const reviews = useMemo(
     () =>
-      dueReviewsForGrade(data.modules, today, grade).map((r) => ({
+      dueReviewsForGrade(
+        data.modules,
+        today,
+        grade,
+        undefined,
+        activeTrack === 'read' ? 'r' : 'g',
+      ).map((r) => ({
         moduleId: r.moduleId,
         title: moduleById(r.moduleId).title,
       })),
-    [data.modules, today, grade],
+    [data.modules, today, grade, activeTrack],
   );
 
   useEffect(() => {
@@ -331,6 +340,7 @@ export function App() {
         <ParentScreen
           data={data}
           onGrade={setGrade}
+          onReadGrade={setReadGrade}
           onSettings={updateSettings}
           onImport={(state) => {
             replaceAll(state);
@@ -369,7 +379,7 @@ export function App() {
             onTestOut={(id) => startSession(id, 'testout')}
             onSkipUnit={startUnitTest}
             onMaster={(id) => startSession(id, 'master')}
-            onNextGrade={setGrade}
+            onNextGrade={activeTrack === 'read' ? setReadGrade : setGrade}
             grade={grade}
             nextStepLabel={next ? en.step[stepFor(next)] : en.step.done}
             reviews={reviews}

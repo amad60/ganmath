@@ -32,11 +32,15 @@ describe('Integrasi Parent Area & Rewards untuk Track Read', () => {
     expect(screen.getByText('Math Progress by grade')).toBeInTheDocument();
     expect(screen.getByText('Reading Progress (Literasi)')).toBeInTheDocument();
     expect(screen.getByText('Read Level 1')).toBeInTheDocument();
+    expect(screen.getByText('Jump to Reading Level')).toBeInTheDocument();
   });
 
   it('BadgesScreen memiliki badge membaca dan mendukung track read', () => {
     expect(BADGES['bookworm-1']).toBeDefined();
     expect(BADGES['story-detective']).toBeDefined();
+    expect(BADGES['read-graduate-1']).toBeDefined();
+    expect(BADGES['read-graduate-2']).toBeDefined();
+    expect(BADGES['read-graduate-3']).toBeDefined();
 
     render(
       <BadgesScreen

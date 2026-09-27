@@ -6,6 +6,11 @@ import { whoIsInTheStory } from '../../content/readGrade1/r1-u1-m1';
 import { whereDoesItHappen } from '../../content/readGrade1/r1-u1-m2';
 import { orderOfEvents } from '../../content/readGrade1/r1-u2-m1';
 import { whyDidItHappen } from '../../content/readGrade1/r1-u3-m1';
+import { mainIdeaSummary } from '../../content/readGrade2/r2-u1-m1';
+import { factVsOpinion } from '../../content/readGrade2/r2-u2-m1';
+import { characterFeelings } from '../../content/readGrade2/r2-u3-m1';
+import { howToFollowSteps } from '../../content/readGrade3/r3-u1-m1';
+import { scienceAnimalClues } from '../../content/readGrade3/r3-u2-m1';
 
 describe('Literasi Pemahaman Teks (Reading Mechanics)', () => {
   it('EvidenceText: anak bisa mengetuk kalimat sebagai bukti (clue-tap)', () => {
@@ -59,10 +64,20 @@ describe('Literasi Pemahaman Teks (Reading Mechanics)', () => {
     expect(updatedOrder).toEqual([1, 0, 2]);
   });
 
-  it('Modul-modul Read Grade 1 terdefinisi lengkap dengan rules dan stages CPA', () => {
-    const modules = [whoIsInTheStory, whereDoesItHappen, orderOfEvents, whyDidItHappen];
+  it('Modul-modul Read Grade 1, 2, dan 3 terdefinisi lengkap dengan rules dan stages CPA', () => {
+    const modules = [
+      whoIsInTheStory,
+      whereDoesItHappen,
+      orderOfEvents,
+      whyDidItHappen,
+      mainIdeaSummary,
+      factVsOpinion,
+      characterFeelings,
+      howToFollowSteps,
+      scienceAnimalClues,
+    ];
     for (const m of modules) {
-      expect(m.id).toMatch(/^r1-/);
+      expect(m.id).toMatch(/^[r](\d+)-/);
       expect(m.rules.length).toBeGreaterThanOrEqual(2);
       expect(m.learn.length).toBeGreaterThanOrEqual(3);
     }

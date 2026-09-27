@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BADGES, type BadgeId } from '../../engine/gamification';
 import type { ModuleState } from '../../engine/types';
 import { all, pathOrderFor, unitTitles, moduleById } from '../../content';
-import { readModulesList, readPathOrder, readUnitTitles } from '../../content/readIndex';
+import { readModulesList, readPathOrderFor, readUnitTitles } from '../../content/readIndex';
 import { BadgeCard, Button, Header, Icon, ProgressBar, Sheet, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
@@ -37,7 +37,7 @@ export function BadgesScreen({
   const [open, setOpen] = useState<BadgeId | null>(null);
 
   const isRead = activeTrack === 'read';
-  const pathOrder = isRead ? readPathOrder : pathOrderFor(grade);
+  const pathOrder = isRead ? readPathOrderFor(grade) : pathOrderFor(grade);
   const allIds = Object.keys(BADGES) as BadgeId[];
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
 
@@ -53,7 +53,7 @@ export function BadgesScreen({
   const shown = showAll ? ordered : ordered.slice(0, PREVIEW_COUNT);
 
   const units = isRead
-    ? [...new Set(readModulesList.map((m) => m.unitId))]
+    ? [...new Set(readModulesList.filter((m) => m.grade === grade).map((m) => m.unitId))]
     : [...new Set(all.filter((m) => m.grade === grade).map((m) => m.unitId))].sort(
         (a, b) => Number(a.split('-u')[1] ?? 0) - Number(b.split('-u')[1] ?? 0),
       );
@@ -154,7 +154,7 @@ export function BadgesScreen({
         </section>
 
         <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-black">{isRead ? 'Reading Level 1' : `Grade ${grade}`}</h2>
+          <h2 className="text-xl font-black">{isRead ? `Reading Level ${grade}` : `Grade ${grade}`}</h2>
           <ProgressBar value={done} max={pathOrder.length} label={`${done}/${pathOrder.length}`} />
           <p className="text-ink-soft text-[14px]">
             {isRead

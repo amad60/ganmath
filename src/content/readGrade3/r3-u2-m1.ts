@@ -1,0 +1,118 @@
+import type { ContentModule } from '../types';
+
+export const scienceAnimalClues: ContentModule = {
+  id: 'r3-u2-m1',
+  unitId: 'r3-u2',
+  grade: 3,
+  title: 'Animal Adaptations',
+  icon: '🦎',
+  prereq: ['r3-u1-m1'],
+  skills: ['read-science-facts'],
+  kind: 'concept',
+  fluencyTracked: false,
+  questionTypes: ['clue-tap', 'choose-text'],
+  visuals: ['evidence-text'],
+  vocab: ['adaptation', 'habitat', 'camouflage', 'prey', 'predator', 'survive'],
+
+  learn: [
+    {
+      stage: 'concrete',
+      prompt: 'Animals have special body parts to survive.',
+      visual: {
+        kind: 'evidence-text',
+        title: 'Chameleons',
+        sentences: [
+          'Chameleons change color to blend into green leaves.',
+          'Camouflage hides them from hungry predator birds.',
+        ],
+      },
+      action: 'watch',
+    },
+    {
+      stage: 'pictorial',
+      prompt: 'Informational texts explain why animals look and act so.',
+      visual: {
+        kind: 'evidence-text',
+        title: 'Desert Camel',
+        sentences: ['Long double eyelashes keep sand out of camel eyes during winds.'],
+      },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Adaptation is a special feature that helps survival.',
+      visual: {
+        kind: 'evidence-text',
+        title: 'Feature ➔ Survival',
+        sentences: ['Duck webbed feet act like swimming flippers in water.'],
+      },
+      action: 'watch',
+      caption: 'feature ➔ survival',
+    },
+  ],
+
+  rules: [
+    {
+      type: 'clue-tap',
+      skill: 'read-science-facts',
+      params: { s: [0, 4] },
+      answer: () => 1, // kalimat kedua memuat fungsi adaptasi
+      text: () => 'Which sentence explains HOW the animal feature helps it survive?',
+      visual: (p) => {
+        const stories = [
+          {
+            title: 'Arctic Fox',
+            sentences: ['The arctic fox has thick pure white fur in winter.', 'This warm coat traps body heat and blends with white snow.'],
+          },
+          {
+            title: 'Giraffe Neck',
+            sentences: ['A giraffe has a six-foot long muscular neck.', 'The tall reach lets it pluck fresh leaves from high acacia branches.'],
+          },
+          {
+            title: 'Barn Owl Ears',
+            sentences: ['Barn owls have asymmetrical ear openings behind feathers.', 'The uneven ears help pinpoint tiny rustling mice in total darkness.'],
+          },
+          {
+            title: 'Desert Kangaroo Rat',
+            sentences: ['Kangaroo rats live in parched sandy deserts.', 'Their efficient kidneys extract all moisture from dry seeds without drinking.'],
+          },
+          {
+            title: 'Poison Dart Frog',
+            sentences: ['Tiny poison dart frogs wear neon yellow and blue skin.', 'The brilliant colors warn predators that their skin tastes toxic.'],
+          },
+        ];
+        return {
+          kind: 'evidence-text',
+          title: stories[p.s as number]?.title,
+          sentences: stories[p.s as number]?.sentences ?? [],
+        };
+      },
+    },
+    {
+      type: 'choose-text',
+      skill: 'read-science-facts',
+      params: { c: [0, 4] },
+      answer: () => 0,
+      text: (p) => {
+        const stories = [
+          'Woodpeckers have thick spongy skulls and stiff tail feathers that brace against tree trunks like a kickstand while hammering. Why do woodpeckers have stiff tail feathers?',
+          'Polar bears have wide rough pads on their large paws. What is the main purpose of wide pads on ice?',
+          'Cacti have shallow widespread root networks rather than one deep taproot. Why do desert cacti have wide root networks?',
+          'Vampire bats have heat-sensing pits near their noses. What do heat sensors help them locate in the dark?',
+          'Porcupines have thousands of sharp barbed quills across their backs. What happens when a curious wolf approaches too close?',
+        ];
+        return stories[p.c as number] ?? '';
+      },
+      options: (p) => {
+        const list = [
+          ['To brace against the tree trunk while hammering', 'To fly faster in wind', 'To sweep tree sawdust away', 'To attract mates'],
+          ['To prevent slipping and distribute weight on ice', 'To swim across oceans', 'To dig deep holes', 'To climb tall trees'],
+          ['To quickly catch every drop of brief desert rain', 'To hide from desert sun', 'To anchor in deep rock', 'To stay cold'],
+          ['Warm blood vessels beneath animal skin', 'Cold mountain caves', 'Ripe sweet fruits', 'Underground rivers'],
+          ['The sharp quills stick into the predator for defense', 'The porcupine flies away', 'The porcupine changes color', 'It shares food'],
+        ];
+        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
+      },
+    },
+  ],
+};

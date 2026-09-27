@@ -34,6 +34,7 @@ export type MapScreenProps = {
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
 const LAST_GRADE = 6;
+const LAST_READ_GRADE = 3;
 
 export function MapScreen(props: MapScreenProps) {
   const {
@@ -91,7 +92,8 @@ export function MapScreen(props: MapScreenProps) {
    * Yang menentukan naik kelas adalah seluruh path benar-benar dilewati.
    */
   const gradeComplete = pathOrder.length > 0 && done === pathOrder.length;
-  const hasNextGrade = gradeComplete && grade < LAST_GRADE;
+  const maxGrade = activeTrack === 'read' ? LAST_READ_GRADE : LAST_GRADE;
+  const hasNextGrade = gradeComplete && grade < maxGrade;
 
   /**
    * Peta dikelompokkan per UNIT, tapi mengikuti **potongan berurutan** di path order —
@@ -149,14 +151,17 @@ export function MapScreen(props: MapScreenProps) {
             <button
               type="button"
               onClick={onParent}
-              aria-label={`Grade ${grade} — change grade`}
+              aria-label={`${activeTrack === 'read' ? 'Level' : 'Grade'} ${grade} — change grade`}
               className="-mx-1.5 -my-2.5 flex min-h-11 min-w-11 items-center justify-center px-1.5 py-2.5"
             >
               <span
                 className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px] font-black"
-                style={{ background: 'var(--c-primary-soft)', color: 'var(--c-primary)' }}
+                style={{
+                  background: activeTrack === 'read' ? '#d1fae5' : 'var(--c-primary-soft)',
+                  color: activeTrack === 'read' ? '#065f46' : 'var(--c-primary)',
+                }}
               >
-                G{grade}
+                {activeTrack === 'read' ? `R${grade}` : `G${grade}`}
               </span>
             </button>
           </div>
@@ -294,7 +299,7 @@ export function MapScreen(props: MapScreenProps) {
                     ) : null}
                   </span>
                 </button>
-                {grade <= 6 ? (
+                {activeTrack === 'math' && grade <= 6 ? (
                   <button
                     type="button"
                     aria-label={`Preview animation for ${unit?.title ?? unitId}`}

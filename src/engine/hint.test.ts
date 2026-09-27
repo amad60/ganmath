@@ -162,5 +162,9 @@ describe('hintFor — bantuan harus tentang soal INI', () => {
     const question = q({ text: 'Which sentence tells WHO is in the story?', params: {}, answer: 0, type: 'clue-tap' });
     const h = hintFor(moduleById('r1-u1-m1').learn, question);
     expect(h?.visual.kind).toBe('evidence-text');
+
+    const q2 = q({ text: 'Which sentence states the MAIN IDEA of the story?', params: {}, answer: 0, type: 'clue-tap' });
+    const h2 = hintFor(moduleById('r2-u1-m1').learn, q2);
+    expect(h2?.visual.kind).toBe('evidence-text');
   });
 });

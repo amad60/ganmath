@@ -94,11 +94,13 @@ export function dueReviewsForGrade(
   today: string,
   grade: number,
   limit: number = MAX_REVIEWS_PER_DAY,
+  prefix: 'g' | 'r' = 'g',
 ): DueReview[] {
   const due = dueReviews(modules, today, 50);
   const prior: DueReview[] = [];
   const current: DueReview[] = [];
   for (const r of due) {
+    if (!r.moduleId.startsWith(prefix)) continue;
     const g = gradeOfModuleId(r.moduleId);
     if (g == null) continue;
     if (g === grade) current.push(r);

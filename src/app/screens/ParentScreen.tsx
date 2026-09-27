@@ -1,7 +1,11 @@
 import { useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
 import { all, availableGrades, moduleById, pathOrderFor, unitTitles } from '../../content';
-import { readModulesList, readPathOrder, readUnitTitles } from '../../content/readIndex';
+import {
+  readModulesList,
+  readPathOrderFor,
+  readUnitTitles,
+} from '../../content/readIndex';
 import { gradeReport } from '../../engine/report';
 import { GradeProgress } from './GradeProgress';
 import { storageIsAvailable } from '../../store/progress';
@@ -16,6 +20,7 @@ import { CloudSyncPanel } from './CloudSync';
 export type ParentScreenProps = {
   data: ProgressState;
   onGrade: (grade: number) => void;
+  onReadGrade?: (readGrade: number) => void;
   onSettings: (patch: Partial<Settings>) => void;
   onImport: (state: ProgressState) => void;
   onReset: () => void;
@@ -32,6 +37,7 @@ function accuracyOf(s: ModuleState | undefined): number | null {
 export function ParentScreen({
   data,
   onGrade,
+  onReadGrade,
   onSettings,
   onImport,
   onReset,
@@ -82,16 +88,19 @@ export function ParentScreen({
   const shown = reports.filter((r) => r.startedOn || r.grade === activeGrade);
   const hidden = reports.filter((r) => !shown.includes(r)).map((r) => r.grade);
 
-  // Laporan Read Grade 1
-  const readReport = gradeReport(
-    1,
-    readPathOrder.map((id) => {
-      const m = moduleById(id);
-      return { id, title: m.title, unitId: m.unitId };
-    }),
-    data.modules,
-    (uid) => readUnitTitles[uid]?.title ?? uid,
+  // Laporan Read Grade 1, 2, 3
+  const readReports = [1, 2, 3].map((rg) =>
+    gradeReport(
+      rg,
+      readPathOrderFor(rg).map((id) => {
+        const m = moduleById(id);
+        return { id, title: m.title, unitId: m.unitId };
+      }),
+      data.modules,
+      (uid) => readUnitTitles[uid]?.title ?? uid,
+    ),
   );
+  const shownRead = readReports.filter((r) => r.startedOn);
 
   const pickFile = async (file: File | undefined) => {
     if (!file) return;
@@ -135,13 +144,13 @@ export function ParentScreen({
           ) : null}
         </section>
 
-        {readReport.cleared > 0 || readReport.startedOn ? (
+        {shownRead.length > 0 ? (
           <section>
             <div className="mb-2 flex items-center gap-2">
               <span className="text-xl">📖</span>
               <h2 className="text-xl font-black">Reading Progress (Literasi)</h2>
             </div>
-            <GradeProgress reports={[readReport]} openGrade={1} trackTitle="Read Level" />
+            <GradeProgress reports={shownRead} openGrade={data.profile.readGrade ?? 1} trackTitle="Read Level" />
           </section>
         ) : null}
 
@@ -242,6 +251,33 @@ export function ParentScreen({
             Switching grade never erases anything — progress is kept per module, so you can
             switch back any time.
           </p>
+
+          <div className="mt-2 border-t border-[var(--c-line)] pt-3">
+            <h3 className="mb-2 text-base font-black">Jump to Reading Level</h3>
+            <div className="grid grid-cols-3 gap-2">
+              {[1, 2, 3].map((rg) => {
+                const active = rg === (data.profile.readGrade ?? 1);
+                const count = readPathOrderFor(rg).length;
+                return (
+                  <button
+                    key={`read-${rg}`}
+                    type="button"
+                    onClick={() => onReadGrade?.(rg)}
+                    aria-pressed={active}
+                    className="rounded-[var(--r-md)] px-2 py-2 text-[15px] font-black"
+                    style={{
+                      background: active ? '#059669' : '#d1fae5',
+                      color: active ? '#ffffff' : '#065f46',
+                      border: `2px solid ${active ? '#059669' : 'var(--c-line)'}`,
+                    }}
+                  >
+                    <span className="block">Level {rg}</span>
+                    <span className="block text-[11px] font-bold opacity-80">{count} modules</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         <CloudSyncPanel />
