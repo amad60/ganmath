@@ -146,6 +146,8 @@ export const RENDERABLE_TYPES: QType[] = [
   'missing-number',
   'compare-symbol',
   'number-line-drop',
+  'clue-tap',
+  'sequence-order',
 ];
 
 /**

@@ -71,9 +71,9 @@ export function dueReviews(
   return due.slice(0, limit);
 }
 
-/** Grade dari ID modul (`g2-u1-m1` → 2). Konvensi ID tidak pernah berubah. */
+/** Grade dari ID modul (`g2-u1-m1` → 2, `r1-u1-m1` → 1). Konvensi ID tidak pernah berubah. */
 export function gradeOfModuleId(id: string): number | null {
-  const m = /^g(\d+)-/.exec(id);
+  const m = /^[gr](\d+)-/.exec(id);
   return m ? Number(m[1]) : null;
 }
 

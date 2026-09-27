@@ -590,8 +590,12 @@ export function registryFor(grade: number): Registry {
   };
 }
 
+import { readModules, readModulesList, readUnitTitles } from './readIndex';
+
 export function unitModules(unitId: string): ContentModule[] {
-  return all.filter((m) => m.unitId === unitId);
+  const fromMath = all.filter((m) => m.unitId === unitId);
+  if (fromMath.length > 0) return fromMath;
+  return readModulesList.filter((m) => m.unitId === unitId);
 }
 
 /**
@@ -635,7 +639,7 @@ export function unitTestDef(unitId: string): ContentModule {
 }
 
 export function moduleById(id: string): ContentModule {
-  const m = modules[id];
+  const m = modules[id] ?? readModules[id];
   if (!m) throw new Error(`Modul tidak terdaftar: ${id}`);
   return m;
 }
@@ -684,4 +688,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g6-u5': { title: 'Unit 5 · Solids', color: 'var(--c-unit-5)' },
   'g6-u6': { title: 'Unit 6 · Coordinates', color: 'var(--c-unit-6)' },
   'g6-u7': { title: 'Unit 7 · Statistics & Chance', color: 'var(--c-unit-7)' },
+  ...readUnitTitles,
 };

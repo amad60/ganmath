@@ -33,4 +33,12 @@ describe('winningState', () => {
     expect(winningState(learned, newer)).toBe('cloud');
     expect(winningState(newer, learned)).toBe('local');
   });
+
+  it('cloud yang memiliki modul read tidak dianggap kosong', () => {
+    const readLearned = {
+      updatedAt: '2026-09-27T08:00:00.000Z',
+      modules: { 'r1-u1-m1': { status: 'mastered' } },
+    };
+    expect(looksFresh(readLearned.modules)).toBe(false);
+  });
 });

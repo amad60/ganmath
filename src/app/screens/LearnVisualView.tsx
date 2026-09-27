@@ -23,6 +23,8 @@ import {
   TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
+import { EvidenceText } from '../../components/reading/EvidenceText';
+import { SequenceCards } from '../../components/reading/SequenceCards';
 import type { LearnVisual } from '../../content/types';
 
 export type LearnVisualViewProps = {
@@ -256,5 +258,9 @@ export function LearnVisualView({
           showOrigin={visual.showOrigin}
         />
       );
+    case 'evidence-text':
+      return <EvidenceText sentences={visual.sentences} title={visual.title} interactive={false} />;
+    case 'sequence-cards':
+      return <SequenceCards cards={visual.cards} interactive={false} />;
   }
 }

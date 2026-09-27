@@ -157,4 +157,10 @@ describe('hintFor — bantuan harus tentang soal INI', () => {
     expect(h?.prompt).toBe('Start at −6. Jump 9.');
     expect(h?.visual).toMatchObject({ kind: 'number-line', value: -6 });
   });
+
+  it('modul Read r1-u1-m1 mengambil langkah pictorial sebagai hint', () => {
+    const question = q({ text: 'Which sentence tells WHO is in the story?', params: {}, answer: 0, type: 'clue-tap' });
+    const h = hintFor(moduleById('r1-u1-m1').learn, question);
+    expect(h?.visual.kind).toBe('evidence-text');
+  });
 });

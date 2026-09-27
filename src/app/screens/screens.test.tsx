@@ -1037,6 +1037,15 @@ describe('MapScreen — pintu jump level', () => {
     expect(screen.getByRole('button', { name: /Replay/i })).toBeInTheDocument();
   });
 
+  it('menampilkan switcher Math dan Read di header Map', () => {
+    const onTrackChange = vi.fn();
+    render(<MapScreen {...mapProps({ activeTrack: 'math', onTrackChange })} />);
+    const readBtn = screen.getByRole('button', { name: 'Switch to Read track' });
+    expect(readBtn).toBeInTheDocument();
+    fireEvent.click(readBtn);
+    expect(onTrackChange).toHaveBeenCalledWith('read');
+  });
+
   /**
    * Tamat satu grade dulu berarti jalan buntu: "All done for now!" dan tidak ada satu
    * pun jalan ke grade berikutnya — pintunya cuma ada di Parent Area, di balik gerbang

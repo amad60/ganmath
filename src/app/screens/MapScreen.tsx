@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ModuleState } from '../../engine/types';
 import { isUnlocked } from '../../engine/unlock';
 import { moduleById, registryFor, unitModules, unitTitles } from '../../content';
+import { readRegistryFor } from '../../content/readIndex';
 import { Button, Icon, ProgressBar, Sheet, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
@@ -26,6 +27,8 @@ export type MapScreenProps = {
   onSkipUnit: (unitId: string) => void;
   onParent: () => void;
   onBadges: () => void;
+  activeTrack?: 'math' | 'read';
+  onTrackChange?: (track: 'math' | 'read') => void;
   install?: { label: string; onAccept: () => void; onDismiss: () => void } | null;
 };
 
@@ -50,6 +53,8 @@ export function MapScreen(props: MapScreenProps) {
     onSkipUnit,
     onParent,
     onBadges,
+    activeTrack = 'math',
+    onTrackChange,
     install,
   } = props;
 
@@ -77,7 +82,7 @@ export function MapScreen(props: MapScreenProps) {
     nextRef.current?.scrollIntoView?.({ block: 'center' });
   }, [nextId]);
 
-  const registry = registryFor(grade);
+  const registry = activeTrack === 'read' ? readRegistryFor(grade) : registryFor(grade);
   const pathOrder = registry.pathOrder;
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
   const nextDef = nextId ? moduleById(nextId) : null;
@@ -160,6 +165,44 @@ export function MapScreen(props: MapScreenProps) {
             <IconButton label="Parent area" onClick={onParent} name="parent" />
           </div>
         </div>
+
+        {/* Switcher Track: Math ⇄ Read */}
+        <div className="mb-2.5 flex items-center justify-center">
+          <div
+            className="flex items-center rounded-full p-1 shadow-xs"
+            style={{ background: 'var(--c-surface-sunk)', border: '1.5px solid var(--c-line)' }}
+          >
+            <button
+              type="button"
+              aria-label="Switch to Math track"
+              onClick={() => onTrackChange?.('math')}
+              className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-black transition-all"
+              style={{
+                background: activeTrack === 'math' ? 'var(--c-surface)' : 'transparent',
+                color: activeTrack === 'math' ? 'var(--c-primary)' : 'var(--c-ink-soft)',
+                boxShadow: activeTrack === 'math' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
+            >
+              <span>📐</span>
+              <span>Math</span>
+            </button>
+            <button
+              type="button"
+              aria-label="Switch to Read track"
+              onClick={() => onTrackChange?.('read')}
+              className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-black transition-all"
+              style={{
+                background: activeTrack === 'read' ? 'var(--c-surface)' : 'transparent',
+                color: activeTrack === 'read' ? '#059669' : 'var(--c-ink-soft)',
+                boxShadow: activeTrack === 'read' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+              }}
+            >
+              <span>📖</span>
+              <span>Read</span>
+            </button>
+          </div>
+        </div>
+
         <ProgressBar
           value={done}
           max={pathOrder.length}

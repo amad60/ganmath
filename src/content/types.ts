@@ -118,7 +118,9 @@ export type LearnVisual =
       tap?: boolean;
       /** Kalimat lambang di bawah gambar, mis. "2 halves make 1 circle". */
       note?: string;
-    };
+    }
+  | { kind: 'evidence-text'; sentences: string[]; title?: string }
+  | { kind: 'sequence-cards'; cards: { text: string; icon?: string }[] };
 
 export type LearnStep = {
   stage: 'concrete' | 'pictorial' | 'abstract';

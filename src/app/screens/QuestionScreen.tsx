@@ -39,6 +39,8 @@ import {
   TallyChart,
   TenFrame,
 } from '../../components/manipulatives';
+import { EvidenceText } from '../../components/reading/EvidenceText';
+import { SequenceCards } from '../../components/reading/SequenceCards';
 import { Mascot, type MascotMood } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
 import { sfx, unlockAudio } from '../sfx';
@@ -283,6 +285,10 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
       );
     case 'number-bond':
       return <NumberBond whole={visual.whole} parts={visual.parts} ask={visual.ask} />;
+    case 'evidence-text':
+      return <EvidenceText sentences={visual.sentences} title={visual.title} interactive={false} />;
+    case 'sequence-cards':
+      return <SequenceCards cards={visual.cards} interactive={false} />;
   }
 }
 
@@ -406,6 +412,10 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const isCompare = question?.type === 'compare-symbol';
   const isText = question?.type === 'choose-text';
   const isLine = question?.type === 'number-line-drop';
+  const isClueTap = question?.type === 'clue-tap';
+  const isSequence = question?.type === 'sequence-order';
+
+  const [sequenceOrder, setSequenceOrder] = useState<number[]>([]);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => {
@@ -414,6 +424,11 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     });
     setTyped('');
     setLinePick(null);
+    setSequenceOrder(
+      question?.visual?.kind === 'sequence-cards'
+        ? question.visual.cards.map((_, i) => i)
+        : [],
+    );
     setHintOpen(false);
     setHintUsed(false);
     setFeedback(null);
@@ -528,7 +543,26 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           className="flex w-full flex-col items-center gap-4"
           style={{ animation: 'question-in 260ms var(--ease-std)' }}
         >
-          {activeVisual ? <QuestionVisualView visual={activeVisual} /> : null}
+          {isClueTap && activeVisual?.kind === 'evidence-text' ? (
+            <EvidenceText
+              sentences={activeVisual.sentences}
+              title={activeVisual.title}
+              selectedIndex={feedback ? feedback.value : null}
+              onSelect={(idx) => {
+                if (!feedback) answer(idx);
+              }}
+              interactive={feedback == null}
+            />
+          ) : isSequence && activeVisual?.kind === 'sequence-cards' ? (
+            <SequenceCards
+              cards={activeVisual.cards}
+              order={sequenceOrder}
+              onChange={setSequenceOrder}
+              interactive={feedback == null}
+            />
+          ) : activeVisual ? (
+            <QuestionVisualView visual={activeVisual} />
+          ) : null}
           <QuestionText text={question.text} />
         </div>
 
@@ -624,7 +658,24 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       </main>
 
       <div className="safe-bottom shrink-0 px-6 pt-2">
-        {isLine ? (
+        {isClueTap ? (
+          <p className="text-ink-soft text-center text-sm font-bold">
+            Tap the sentence that shows the clue! ☝️
+          </p>
+        ) : isSequence ? (
+          <Button
+            full
+            feedback={feedback ? (feedback.correct ? 'correct' : 'retry') : 'idle'}
+            disabled={feedback != null}
+            onClick={() => {
+              // Jawaban adalah string gabungan index urutan, mis. [0,1,2] -> hash 123
+              const code = sequenceOrder.reduce((acc, val, i) => acc + val * Math.pow(10, i), 0);
+              answer(code);
+            }}
+          >
+            {en.question.check}
+          </Button>
+        ) : isLine ? (
           <div className="flex flex-col gap-3">
             <NumberLine
               min={question.range?.[0] ?? 0}

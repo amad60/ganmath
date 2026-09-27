@@ -7,6 +7,7 @@ import { dueReviewsForGrade, toDateString } from '../engine/review';
 import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
+import { readRegistryFor } from '../content/readIndex';
 import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
@@ -53,6 +54,7 @@ export function App() {
   const updateSettings = useProgress((s) => s.updateSettings);
   const replaceAll = useProgress((s) => s.replaceAll);
   const setGrade = useProgress((s) => s.setGrade);
+  const setTrack = useProgress((s) => s.setTrack);
   const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
   const { ready: cloudReady } = useCloudSync();
@@ -73,8 +75,12 @@ export function App() {
   const [gateOpen, setGateOpen] = useState(false);
 
   const today = toDateString(new Date());
-  const grade = data.profile.grade ?? 1;
-  const registry = useMemo(() => registryFor(grade), [grade]);
+  const activeTrack = data.profile.activeTrack ?? 'math';
+  const grade = activeTrack === 'read' ? (data.profile.readGrade ?? 1) : (data.profile.grade ?? 1);
+  const registry = useMemo(
+    () => (activeTrack === 'read' ? readRegistryFor(grade) : registryFor(grade)),
+    [activeTrack, grade],
+  );
   const next = useMemo(() => nextModule(data.modules, registry), [data.modules, registry]);
   const pwa = usePwa(Object.keys(data.modules).length > 0);
 
@@ -361,6 +367,8 @@ export function App() {
             onReview={(id) => startSession(id, 'review')}
             onBadges={() => setScreen({ name: 'badges' })}
             onParent={() => setGateOpen(true)}
+            activeTrack={activeTrack}
+            onTrackChange={(t) => setTrack(t)}
             install={
               pwa.canInstall && !installDismissed
                 ? {

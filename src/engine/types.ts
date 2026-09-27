@@ -35,7 +35,9 @@ export type QType =
   | 'coin-pick'
   | 'pattern-next'
   | 'bar-model'
-  | 'grid-array';
+  | 'grid-array'
+  | 'clue-tap'
+  | 'sequence-order';
 
 export type VisualId =
   | 'ten-frame'
@@ -60,7 +62,9 @@ export type VisualId =
   | 'counter-objects'
   | 'position'
   | 'solid-shapes'
-  | 'composed-shape';
+  | 'composed-shape'
+  | 'evidence-text'
+  | 'sequence-cards';
 
 export type DistractorKind = 'near' | 'digit-swap' | 'random';
 
@@ -143,7 +147,9 @@ export type QuestionVisual =
   | ({ kind: 'solid-shapes' } & SolidShapesVisual)
   | { kind: 'composed-shape'; name: ComposedName }
   | { kind: 'column-sum'; a: number; b: number; op?: '+' | '−'; showTotal?: boolean }
-  | { kind: 'number-bond'; whole: number | null; parts: [number | null, number | null]; ask?: 'whole' | 'part0' | 'part1' };
+  | { kind: 'number-bond'; whole: number | null; parts: [number | null, number | null]; ask?: 'whole' | 'part0' | 'part1' }
+  | { kind: 'evidence-text'; sentences: string[]; title?: string }
+  | { kind: 'sequence-cards'; cards: { text: string; icon?: string }[] };
 
 /**
  * Bangun ruang Grade 1 — dinamai seperti benda yang dipegang anak. Beda dari

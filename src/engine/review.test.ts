@@ -86,6 +86,7 @@ describe('ulangan lintas grade', () => {
   it('membaca grade dari ID modul', () => {
     expect(gradeOfModuleId('g1-u2-m4')).toBe(1);
     expect(gradeOfModuleId('g2-u1-m1')).toBe(2);
+    expect(gradeOfModuleId('r1-u1-m1')).toBe(1);
     expect(gradeOfModuleId('unit:g1-u2')).toBeNull();
   });
 

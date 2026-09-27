@@ -223,6 +223,14 @@ Grade (1–6)
 internasional** (Common Core / Singapore Math) untuk urutan konsep dan tipe soal.
 Kalau ada silabus dari sekolah anak, itu jadi acuan pelengkap.
 
+### Dua Jalur Belajar: Math & Read
+GanMath memiliki dua track mandiri yang bisa diganti melalui switcher di Map Screen:
+- **Math Track (📐):** Kurikulum matematika SD Grade 1–6 (240 modul).
+- **Read Track (📖):** Literasi pemahaman teks (*deep reading & critical thinking*) Grade 1–3
+  dengan mekanik bukti kalimat (`EvidenceText` / `clue-tap`), urutan alur (`SequenceCards`),
+  dan sebab-akibat. Progres grade terpisah (`profile.grade` vs `profile.readGrade`),
+  tetapi poin XP, streak, dan sync cloud terpadu satu akun.
+
 Garis besar (dirinci di Fase 1–2):
 - **Grade 1:** numbers to 20 lalu 100, counting, addition & subtraction dasar, shapes,
   comparison, pengenalan time & money.
