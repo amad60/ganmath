@@ -112,7 +112,7 @@ export const characterFeelings: ContentModule = {
           'Budi stamped his foot, crossed his arms tight, and frowned at the broken robot. How does Budi feel?',
           'Mimi peeked around the tree, wagged her tail, and crept closer to the yarn ball. How does Mimi feel?',
           'Grandma closed her eyes, leaned back in the rocking chair, and breathed deeply. How does Grandma feel?',
-          'Lina clapped and spun when she saw the red bike. How does Lina feel?',
+          'The music started. Lina clapped and spun in a happy circle. How does Lina feel?',
           'Rafi dropped his bag and sighed when the bus left. How does Rafi feel?',
           'Sari stood very still and held a sleeve when the lights went out. How does Sari feel?',
         ];
@@ -125,7 +125,7 @@ export const characterFeelings: ContentModule = {
           ['Frustrated or angry', 'Excited', 'Peaceful', 'Shy'],
           ['Playful and curious', 'Sad', 'Terrified', 'Grumpy'],
           ['Relaxed and peaceful', 'Excited to dance', 'Worried', 'Curious'],
-          ['Excited and happy', 'Angry', 'Bored', 'Sleepy'],
+          ['Excited to dance', 'Angry', 'Bored', 'Sleepy'],
           ['Disappointed', 'Proud', 'Playful', 'Hungry'],
           ['Frightened', 'Proud', 'Relaxed', 'Silly'],
         ];
