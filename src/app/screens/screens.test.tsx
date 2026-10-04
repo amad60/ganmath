@@ -1622,7 +1622,8 @@ describe('layar soal & materi tidak boleh melebihi tinggi layar', () => {
     const { container } = render(
       <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
     );
-    expect(shell(container).className).toContain('h-full');
+    expect(shell(container).className).toContain('screen-fit');
+    expect(shell(container).className).toContain('overflow-hidden');
     expect(shell(container).className).not.toContain('min-h-full');
 
     const main = container.querySelector('main') as HTMLElement;
@@ -1658,6 +1659,22 @@ describe('layar soal & materi tidak boleh melebihi tinggi layar', () => {
     const box = container.querySelector('[aria-live="polite"]');
     expect(box).not.toBeNull();
     expect(box?.closest('main')).toBeNull();
+  });
+
+  it('kalimat soal menempel di atas keypad, tidak ikut menggulung', () => {
+    const typedId = pathOrder.find((id) =>
+      moduleById(id).questionTypes.some((t) => t === 'keypad' || t === 'missing-number'),
+    );
+    const s = createSession(moduleById(typedId as string), 'practice', 3, 0);
+    const { container } = render(
+      <QuestionScreen session={s} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    const block = container.querySelector('#question-block');
+    const keypad = container.querySelector('.keypad-fit');
+    expect(block).not.toBeNull();
+    expect(block?.closest('main')).toBeNull();
+    expect(keypad).not.toBeNull();
+    expect(block!.compareDocumentPosition(keypad!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });
 

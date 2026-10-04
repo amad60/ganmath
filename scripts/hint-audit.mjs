@@ -43,9 +43,9 @@ const MEASURE=()=>{const vw=innerWidth,vh=innerHeight,bad=[];const nm=e=>`${e.ta
  // selama bantuan tertutup, jadi elemen inilah satu-satunya jawaban jujur atas
  // "apakah bantuan sedang tampil".
  const panel=document.getElementById('hint-panel')?.firstElementChild??null;
- // Yang wajib tetap terlihat adalah KALIMAT soalnya (anak terakhir di blok soal),
- // bukan ilustrasinya — sisi atas gambar boleh terpotong, pertanyaannya tidak.
- const soal=document.querySelector('#question-block > :last-child');
+ // Kalimat soal duduk di luar area gulung, tepat di atas keypad. Yang diukur
+ // adalah apakah kalimat itu masuk viewport, bukan apakah ia ada di dalam main.
+ const soal=document.querySelector('#question-block p');
  const close=[...document.querySelectorAll('button')].find(b=>b.getAttribute('aria-label')==='Hide hint')??null;
  const toggle=document.querySelector('button[aria-controls="hint-panel"]');
  const r=e=>e?e.getBoundingClientRect():null;
@@ -57,7 +57,7 @@ const MEASURE=()=>{const vw=innerWidth,vh=innerHeight,bad=[];const nm=e=>`${e.ta
    hintTerlihat: inside(pr),
    // Soal yang tergulung habis dari layar: anak melihat bantuannya tapi lupa
    // pertanyaannya. Boleh terjadi HANYA kalau bantuannya memang tidak muat.
-   soalTerlihat: inside(r(soal)),
+   soalTerlihat: r(soal) ? r(soal).top >= -1 && r(soal).bottom <= vh + 1 : null,
    // Muat BERDUA, bukan bantuannya saja: yang menentukan apakah soal boleh tetap
    // terlihat adalah tinggi bantuan + tinggi kalimat soal, bukan salah satunya.
    muatBerdua: pr&&soal ? pr.height+soal.getBoundingClientRect().height<=m.clientHeight : null,

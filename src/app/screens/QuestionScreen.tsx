@@ -515,7 +515,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     isText ? question.options?.[c] : isCompare ? COMPARE_LABEL[c as -1 | 0 | 1] : formatAnswer(c);
 
   return (
-    <div className="mx-auto flex h-full max-w-[430px] flex-col">
+    <div className="screen-fit mx-auto flex w-full max-w-[430px] flex-col overflow-hidden">
       <Header
         onBack={onExit}
         tone={isQuiz ? 'mastery' : 'plain'}
@@ -550,13 +550,14 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             tadinya kosong melompong dan terlihat seperti halaman gagal dimuat.
             `my-auto` menaruh Gan tepat di tengah ruang sisa: ruangnya jadi terpakai,
             dan reaksi wajahnya memberi umpan balik yang tidak bisa diberikan angka. */}
-        {!activeVisual ? <Mascot mood={mood} size={190} className="my-auto opacity-90" /> : null}
+        {!activeVisual ? (
+          <Mascot mood={mood} size={190} className="question-mascot my-auto opacity-90" />
+        ) : null}
 
         {/* key = id soal: setiap soal baru memainkan animasi masuknya sendiri,
             jadi pergantian soal terasa sebagai perpindahan, bukan teks yang berkedip. */}
         <div
           key={question.id}
-          id="question-block"
           className="flex w-full flex-col items-center gap-4"
           style={{ animation: 'question-in 260ms var(--ease-std)' }}
         >
@@ -588,7 +589,6 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           ) : activeVisual ? (
             <QuestionVisualView visual={activeVisual} />
           ) : null}
-          <QuestionText text={question.text} />
         </div>
 
         {/* Bantuan hanya muncul SETELAH hint ditekan, dan hilang lagi begitu ditutup.
@@ -660,6 +660,20 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         ) : null}
         </div>
 
+        </div>
+      </main>
+
+      {/* Kalimat soal di LUAR area gulung, menempel di atas keypad.
+          Di iPhone 12 mini (Safari ~630px) keypad 4 baris menelan sisa layar.
+          Kalau soalnya ikut menggulung, yang terlihat cuma gambar di atas dan
+          tombol di bawah — pertanyaannya sendiri tertutup keyboard. */}
+      <div
+        key={question.id}
+        id="question-block"
+        className="flex w-full shrink-0 flex-col items-center gap-2 px-6 pt-1"
+        style={{ animation: 'question-in 260ms var(--ease-std)' }}
+      >
+        <QuestionText text={question.text} />
         {!noHint && hasHint && (hintsLeft > 0 || hintUsed) ? (
           <Button
             variant="ghost"
@@ -684,9 +698,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             {hintOpen ? `✕ ${en.question.hintHide}` : `💡 ${en.question.hintLeft(hintsLeft)}`}
           </Button>
         ) : null}
-
-        </div>
-      </main>
+      </div>
 
       <div className="safe-bottom shrink-0 px-6 pt-2">
         {isClueTap ? (
@@ -752,7 +764,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             ))}
           </div>
         ) : (
-          <div className="flex w-full flex-col gap-2">
+          <div className="keypad-fit flex w-full flex-col gap-2">
             {/* Angka yang sedang diketik menempel DI ATAS keypad, di luar area yang
                 menggulung. Saat isinya panjang (gambar 3D + soal dua baris) kotak ini
                 dulu ikut terdorong ke bawah keypad: anak mengetik tanpa bisa melihat
@@ -760,7 +772,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             <div
               // min-w, bukan w: kotaknya tetap seukuran semula untuk jawaban pendek,
               // tapi jawaban 4–6 digit melebar alih-alih terpotong.
-              className="flex h-16 min-w-32 self-center items-center justify-center rounded-[var(--r-md)] px-4 text-[40px] font-black"
+              className="answer-readout flex h-16 min-w-32 self-center items-center justify-center rounded-[var(--r-md)] px-4 text-[40px] font-black"
               style={{
                 background: 'var(--c-surface)',
                 border: '3px solid var(--c-line)',

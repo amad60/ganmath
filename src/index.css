@@ -74,6 +74,43 @@ body {
   padding-bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
+/* Layar soal mengikuti tinggi yang benar-benar terlihat.
+   `100%` dan `100vh` di Safari iPhone lebih tinggi daripada daerah di atas
+   toolbar, jadi keypad duduk di luar layar dan kalimat soal tergulung ke
+   belakangnya. `dvh` menyusut bersama toolbar. `100%` tetap untuk browser lama. */
+.screen-fit {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin-inline: auto;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+/* iPhone 12 mini di Safari tingginya sekitar 630px. Keypad 4 × 66px menelan
+   kalimat soal. Tombol tetap di atas sasaran 44px. Aturan ini di luar layer
+   Tailwind supaya menang dari `min-h-[66px]`. */
+@media (max-height: 740px) {
+  .keypad-fit .grid {
+    gap: 8px;
+  }
+  .keypad-fit button {
+    min-height: 48px;
+    height: 48px;
+    font-size: 28px;
+  }
+  .answer-readout {
+    height: 52px;
+    font-size: 32px;
+  }
+  .question-mascot {
+    width: 88px;
+    height: 88px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
