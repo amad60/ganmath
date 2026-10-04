@@ -1052,6 +1052,8 @@ describe('MapScreen — pintu jump level', () => {
     expect(readBtn).toBeInTheDocument();
     fireEvent.click(readBtn);
     expect(onTrackChange).toHaveBeenCalledWith('read');
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to Science track' }));
+    expect(onTrackChange).toHaveBeenCalledWith('science');
   });
 
   /**

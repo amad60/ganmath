@@ -29,6 +29,7 @@ export type ProgressStore = {
   setProfile: (name: string, avatar: Avatar) => void;
   setGrade: (grade: number) => void;
   setReadGrade: (readGrade: number) => void;
+  setScienceGrade: (scienceGrade: number) => void;
   setTrack: (track: import('./schema').LearningTrack) => void;
   masterModules: (ids: string[], date: string, curriculum?: CurriculumIndex) => string[];
   markLearnComplete: (moduleId: string, date: string) => void;
@@ -146,6 +147,9 @@ export function createProgressStore(
 
         setReadGrade: (readGrade) =>
           set((s) => ({ data: touch({ ...s.data, profile: { ...s.data.profile, readGrade } }) })),
+
+        setScienceGrade: (scienceGrade) =>
+          set((s) => ({ data: touch({ ...s.data, profile: { ...s.data.profile, scienceGrade } }) })),
 
         setTrack: (activeTrack) =>
           set((s) => ({ data: touch({ ...s.data, profile: { ...s.data.profile, activeTrack } }) })),

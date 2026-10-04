@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { lintContent } from './lint';
 import { all, registry } from './index';
+import { scienceModulesList, scienceRegistryFor } from './scienceIndex';
 import { enumerate, generateSet } from '../engine/generator';
 import { createSession } from '../engine/session';
 import { mulberry32 } from '../engine/rng';
@@ -11,6 +12,11 @@ import { snapToStep, stepFor } from '../components/manipulatives/scale';
 describe('linter konten', () => {
   it('seluruh konten yang terdaftar lolos semua aturan', () => {
     const problems = lintContent(all, registry);
+    expect(problems).toEqual([]);
+  });
+
+  it('konten Science Level 1 lolos semua aturan', () => {
+    const problems = lintContent(scienceModulesList, scienceRegistryFor(1));
     expect(problems).toEqual([]);
   });
 

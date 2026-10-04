@@ -7,6 +7,12 @@ import {
   readPathOrderFor,
   readUnitTitles,
 } from '../../content/readIndex';
+import {
+  SCIENCE_LEVELS,
+  scienceModulesList,
+  sciencePathOrderFor,
+  scienceUnitTitles,
+} from '../../content/scienceIndex';
 import { gradeReport } from '../../engine/report';
 import { GradeProgress } from './GradeProgress';
 import { storageIsAvailable } from '../../store/progress';
@@ -22,6 +28,7 @@ export type ParentScreenProps = {
   data: ProgressState;
   onGrade: (grade: number) => void;
   onReadGrade?: (readGrade: number) => void;
+  onScienceGrade?: (scienceGrade: number) => void;
   onSettings: (patch: Partial<Settings>) => void;
   onImport: (state: ProgressState) => void;
   onReset: () => void;
@@ -39,6 +46,7 @@ export function ParentScreen({
   data,
   onGrade,
   onReadGrade,
+  onScienceGrade,
   onSettings,
   onImport,
   onReset,
@@ -103,6 +111,20 @@ export function ParentScreen({
   );
   const shownRead = readReports.filter((r) => r.startedOn);
 
+  const scienceReports = SCIENCE_LEVELS.map((sg) =>
+    gradeReport(
+      sg,
+      sciencePathOrderFor(sg).map((id) => {
+        const m = moduleById(id);
+        return { id, title: m.title, unitId: m.unitId };
+      }),
+      data.modules,
+      (uid) => scienceUnitTitles[uid]?.title ?? uid,
+    ),
+  );
+  const scienceGrade = data.profile.scienceGrade ?? 1;
+  const shownScience = scienceReports.filter((r) => r.startedOn);
+
   const pickFile = async (file: File | undefined) => {
     if (!file) return;
     const result = await readProgressFile(file);
@@ -114,7 +136,7 @@ export function ParentScreen({
     });
   };
 
-  const totalAllModules = all.length + readModulesList.length;
+  const totalAllModules = all.length + readModulesList.length + scienceModulesList.length;
 
   return (
     <div className="mx-auto flex min-h-full max-w-[430px] flex-col">
@@ -239,6 +261,43 @@ export function ParentScreen({
                 <GradeProgress reports={shownRead} openGrade={data.profile.readGrade ?? 1} trackTitle="Read Level" />
               </section>
             ) : null}
+
+            {shownScience.length > 0 ? (
+              <section>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-xl">🔬</span>
+                  <h2 className="text-xl font-black">Science Progress</h2>
+                </div>
+                <GradeProgress reports={shownScience} openGrade={scienceGrade} trackTitle="Science Level" />
+              </section>
+            ) : null}
+
+            <section className="flex flex-col gap-2">
+              <h3 className="text-base font-black">Jump to Science Level</h3>
+              <div className="grid grid-cols-4 gap-2">
+                {SCIENCE_LEVELS.map((sg) => {
+                  const active = sg === scienceGrade;
+                  const count = sciencePathOrderFor(sg).length;
+                  return (
+                    <button
+                      key={`science-${sg}`}
+                      type="button"
+                      onClick={() => onScienceGrade?.(sg)}
+                      aria-pressed={active}
+                      className="rounded-[var(--r-md)] px-2 py-2 text-[15px] font-black"
+                      style={{
+                        background: active ? '#0284c7' : '#e0f2fe',
+                        color: active ? '#ffffff' : '#0369a1',
+                        border: `2px solid ${active ? '#0284c7' : 'var(--c-line)'}`,
+                      }}
+                    >
+                      <span className="block">Level {sg}</span>
+                      <span className="block text-[11px] font-bold opacity-80">{count} modules</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
 
             <section className="flex flex-col gap-2">
               <h3 className="text-base font-black">Jump to Reading Level</h3>

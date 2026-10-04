@@ -188,6 +188,7 @@ export type BadgeId =
   | 'read-graduate-2'
   | 'read-graduate-3'
   | 'read-graduate-4'
+  | 'science-graduate-1'
   | 'graduate-1'
   | 'graduate-2'
   | 'graduate-3'
@@ -233,6 +234,7 @@ export const BADGES: Record<BadgeId, { icon: string; title: string; hint: string
   'read-graduate-2': { icon: '📚', title: 'Read Level 2 Graduate', hint: 'Finish all Level 2 reading units' },
   'read-graduate-3': { icon: '🎓', title: 'Read Level 3 Graduate', hint: 'Finish all Level 3 reading units' },
   'read-graduate-4': { icon: '🏅', title: 'Read Level 4 Graduate', hint: 'Finish all Level 4 reading units' },
+  'science-graduate-1': { icon: '🔬', title: 'Science Level 1 Graduate', hint: 'Finish all Level 1 science units' },
   'graduate-1': { icon: '🎓', title: 'Grade 1 Graduate', hint: 'Finish the whole of Grade 1' },
   'graduate-2': { icon: '🎓', title: 'Grade 2 Graduate', hint: 'Finish the whole of Grade 2' },
   'graduate-3': { icon: '🎓', title: 'Grade 3 Graduate', hint: 'Finish the whole of Grade 3' },
@@ -375,6 +377,7 @@ export function depthBadges(owned: string[], depth: DepthSummary): BadgeId[] {
   if (depth.gradesCleared.includes(102)) add('read-graduate-2');
   if (depth.gradesCleared.includes(103)) add('read-graduate-3');
   if (depth.gradesCleared.includes(104)) add('read-graduate-4');
+  if (depth.gradesCleared.includes(201)) add('science-graduate-1');
 
   return out;
 }

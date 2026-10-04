@@ -30,7 +30,7 @@ export type Streak = {
   freezesWeek: string | null;
 };
 
-export type LearningTrack = 'math' | 'read';
+export type LearningTrack = 'math' | 'read' | 'science';
 
 export type ProgressState = {
   schemaVersion: number;
@@ -45,6 +45,8 @@ export type ProgressState = {
     grade?: number;
     /** Kelas yang sedang ditempuh di Read (mulai dari 1). */
     readGrade?: number;
+    /** Level yang sedang ditempuh di Science (mulai dari 1). */
+    scienceGrade?: number;
   };
   xp: number;
   level: number;
@@ -59,7 +61,7 @@ export function createInitialState(now = new Date().toISOString()): ProgressStat
     schemaVersion: CURRENT_SCHEMA_VERSION,
     createdAt: now,
     updatedAt: now,
-    profile: { name: '', avatar: 'cat', grade: 1, readGrade: 1, activeTrack: 'math' },
+    profile: { name: '', avatar: 'cat', grade: 1, readGrade: 1, scienceGrade: 1, activeTrack: 'math' },
     xp: 0,
     level: 1,
     badges: [],

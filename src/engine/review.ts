@@ -73,7 +73,7 @@ export function dueReviews(
 
 /** Grade dari ID modul (`g2-u1-m1` → 2, `r1-u1-m1` → 1). Konvensi ID tidak pernah berubah. */
 export function gradeOfModuleId(id: string): number | null {
-  const m = /^[gr](\d+)-/.exec(id);
+  const m = /^[grs](\d+)-/.exec(id);
   return m ? Number(m[1]) : null;
 }
 
@@ -94,7 +94,7 @@ export function dueReviewsForGrade(
   today: string,
   grade: number,
   limit: number = MAX_REVIEWS_PER_DAY,
-  prefix: 'g' | 'r' = 'g',
+  prefix: 'g' | 'r' | 's' = 'g',
 ): DueReview[] {
   const due = dueReviews(modules, today, 50);
   const prior: DueReview[] = [];

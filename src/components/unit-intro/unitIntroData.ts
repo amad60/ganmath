@@ -562,6 +562,45 @@ export const READ_INTROS: Record<string, UnitIntroDef> = {
   },
 };
 
+export const SCIENCE_INTROS: Record<string, UnitIntroDef> = {
+  's1-u1': {
+    unitId: 's1-u1',
+    grade: 1,
+    title: 'Unit 1 · Living Things',
+    subtitle: 'Water, food, and air',
+    concept: 'Living things need water, food, and air to stay alive!',
+    mascotMood: 'happy',
+    accentColor: '#0284c7',
+  },
+  's1-u2': {
+    unitId: 's1-u2',
+    grade: 1,
+    title: 'Unit 2 · Body and Senses',
+    subtitle: 'See, hear, smell, taste, feel',
+    concept: 'Eyes see, ears hear, and skin feels hot or cold!',
+    mascotMood: 'thinking',
+    accentColor: '#0369a1',
+  },
+  's1-u3': {
+    unitId: 's1-u3',
+    grade: 1,
+    title: 'Unit 3 · Materials',
+    subtitle: 'Hard, soft, and change',
+    concept: 'Some things sink, some float, and ice melts in the sun!',
+    mascotMood: 'encourage',
+    accentColor: '#0ea5e9',
+  },
+  's1-u4': {
+    unitId: 's1-u4',
+    grade: 1,
+    title: 'Unit 4 · Weather',
+    subtitle: 'Sun, rain, and wind',
+    concept: 'Look at the sky. The sun warms, rain falls, and wind pushes!',
+    mascotMood: 'celebrate',
+    accentColor: '#38bdf8',
+  },
+};
+
 export const ALL_UNIT_INTROS: Record<string, UnitIntroDef> = {
   ...GRADE_1_INTROS,
   ...GRADE_2_INTROS,
@@ -570,6 +609,7 @@ export const ALL_UNIT_INTROS: Record<string, UnitIntroDef> = {
   ...GRADE_5_INTROS,
   ...GRADE_6_INTROS,
   ...READ_INTROS,
+  ...SCIENCE_INTROS,
 };
 
 export function getUnitIntro(unitId: string): UnitIntroDef | null {

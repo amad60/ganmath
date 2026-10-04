@@ -28,5 +28,12 @@ describe('Track Switching — Math ⇄ Read di Store', () => {
     expect(store.getState().data.profile.activeTrack).toBe('math');
     expect(store.getState().data.profile.grade).toBe(2);
     expect(store.getState().data.profile.readGrade).toBe(2);
+
+    store.getState().setTrack('science');
+    store.getState().setScienceGrade(1);
+    expect(store.getState().data.profile.activeTrack).toBe('science');
+    expect(store.getState().data.profile.scienceGrade).toBe(1);
+    expect(store.getState().data.profile.grade).toBe(2);
+    expect(store.getState().data.profile.readGrade).toBe(2);
   });
 });

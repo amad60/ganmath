@@ -3,6 +3,7 @@ import type { ModuleState } from '../../engine/types';
 import { isUnlocked } from '../../engine/unlock';
 import { moduleById, registryFor, unitModules, unitTitles } from '../../content';
 import { READ_LEVELS, readRegistryFor } from '../../content/readIndex';
+import { SCIENCE_LEVELS, scienceRegistryFor } from '../../content/scienceIndex';
 import { Button, Icon, ProgressBar, Sheet, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
@@ -27,14 +28,21 @@ export type MapScreenProps = {
   onSkipUnit: (unitId: string) => void;
   onParent: () => void;
   onBadges: () => void;
-  activeTrack?: 'math' | 'read';
-  onTrackChange?: (track: 'math' | 'read') => void;
+  activeTrack?: 'math' | 'read' | 'science';
+  onTrackChange?: (track: 'math' | 'read' | 'science') => void;
   install?: { label: string; onAccept: () => void; onDismiss: () => void } | null;
 };
 
 const CLEARED = ['mastered', 'retained', 'practiced'];
 const LAST_GRADE = 6;
 const LAST_READ_GRADE = READ_LEVELS[READ_LEVELS.length - 1] ?? 1;
+const LAST_SCIENCE_GRADE = SCIENCE_LEVELS[SCIENCE_LEVELS.length - 1] ?? 1;
+
+const TRACK_CHIP = {
+  math: { mark: 'G', bg: 'var(--c-primary-soft)', ink: 'var(--c-primary)', word: 'Grade' },
+  read: { mark: 'R', bg: '#d1fae5', ink: '#065f46', word: 'Level' },
+  science: { mark: 'S', bg: '#e0f2fe', ink: '#0369a1', word: 'Level' },
+} as const;
 
 export function MapScreen(props: MapScreenProps) {
   const {
@@ -83,7 +91,12 @@ export function MapScreen(props: MapScreenProps) {
     nextRef.current?.scrollIntoView?.({ block: 'center' });
   }, [nextId]);
 
-  const registry = activeTrack === 'read' ? readRegistryFor(grade) : registryFor(grade);
+  const registry =
+    activeTrack === 'read'
+      ? readRegistryFor(grade)
+      : activeTrack === 'science'
+        ? scienceRegistryFor(grade)
+        : registryFor(grade);
   const pathOrder = registry.pathOrder;
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
   const nextDef = nextId ? moduleById(nextId) : null;
@@ -92,7 +105,9 @@ export function MapScreen(props: MapScreenProps) {
    * Yang menentukan naik kelas adalah seluruh path benar-benar dilewati.
    */
   const gradeComplete = pathOrder.length > 0 && done === pathOrder.length;
-  const maxGrade = activeTrack === 'read' ? LAST_READ_GRADE : LAST_GRADE;
+  const maxGrade =
+    activeTrack === 'read' ? LAST_READ_GRADE : activeTrack === 'science' ? LAST_SCIENCE_GRADE : LAST_GRADE;
+  const chip = TRACK_CHIP[activeTrack];
   const hasNextGrade = gradeComplete && grade < maxGrade;
 
   /**
@@ -151,17 +166,15 @@ export function MapScreen(props: MapScreenProps) {
             <button
               type="button"
               onClick={onParent}
-              aria-label={`${activeTrack === 'read' ? 'Level' : 'Grade'} ${grade} — change grade`}
+              aria-label={`${chip.word} ${grade} — change grade`}
               className="-mx-1.5 -my-2.5 flex min-h-11 min-w-11 items-center justify-center px-1.5 py-2.5"
             >
               <span
                 className="rounded-[var(--r-pill)] px-2 py-0.5 text-[13px] font-black"
-                style={{
-                  background: activeTrack === 'read' ? '#d1fae5' : 'var(--c-primary-soft)',
-                  color: activeTrack === 'read' ? '#065f46' : 'var(--c-primary)',
-                }}
+                style={{ background: chip.bg, color: chip.ink }}
               >
-                {activeTrack === 'read' ? `R${grade}` : `G${grade}`}
+                {chip.mark}
+                {grade}
               </span>
             </button>
           </div>
@@ -171,40 +184,35 @@ export function MapScreen(props: MapScreenProps) {
           </div>
         </div>
 
-        {/* Switcher Track: Math ⇄ Read */}
+        {/* Satu baris: Math, Read, Science. Di 375px ketiga kata tetap utuh. */}
         <div className="mb-2.5 flex items-center justify-center">
           <div
             className="flex items-center rounded-full p-1 shadow-xs"
             style={{ background: 'var(--c-surface-sunk)', border: '1.5px solid var(--c-line)' }}
           >
-            <button
-              type="button"
-              aria-label="Switch to Math track"
-              onClick={() => onTrackChange?.('math')}
-              className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-black transition-all"
-              style={{
-                background: activeTrack === 'math' ? 'var(--c-surface)' : 'transparent',
-                color: activeTrack === 'math' ? 'var(--c-primary)' : 'var(--c-ink-soft)',
-                boxShadow: activeTrack === 'math' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-              }}
-            >
-              <span>📐</span>
-              <span>Math</span>
-            </button>
-            <button
-              type="button"
-              aria-label="Switch to Read track"
-              onClick={() => onTrackChange?.('read')}
-              className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-black transition-all"
-              style={{
-                background: activeTrack === 'read' ? 'var(--c-surface)' : 'transparent',
-                color: activeTrack === 'read' ? '#059669' : 'var(--c-ink-soft)',
-                boxShadow: activeTrack === 'read' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-              }}
-            >
-              <span>📖</span>
-              <span>Read</span>
-            </button>
+            {(
+              [
+                ['math', '📐', 'Math', 'var(--c-primary)'],
+                ['read', '📖', 'Read', '#059669'],
+                ['science', '🔬', 'Science', '#0284c7'],
+              ] as const
+            ).map(([id, icon, label, color]) => (
+              <button
+                key={id}
+                type="button"
+                aria-label={`Switch to ${label} track`}
+                onClick={() => onTrackChange?.(id)}
+                className="flex min-h-11 items-center gap-1 rounded-full px-2.5 text-[13px] font-black"
+                style={{
+                  background: activeTrack === id ? 'var(--c-surface)' : 'transparent',
+                  color: activeTrack === id ? color : 'var(--c-ink-soft)',
+                  boxShadow: activeTrack === id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                }}
+              >
+                <span>{icon}</span>
+                <span>{label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
@@ -299,7 +307,9 @@ export function MapScreen(props: MapScreenProps) {
                     ) : null}
                   </span>
                 </button>
-                {(activeTrack === 'math' && grade <= 6) || (activeTrack === 'read' && grade <= 3) ? (
+                {(activeTrack === 'math' && grade <= 6) ||
+                (activeTrack === 'read' && grade <= 3) ||
+                activeTrack === 'science' ? (
                   <button
                     type="button"
                     aria-label={`Preview animation for ${unit?.title ?? unitId}`}

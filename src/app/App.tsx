@@ -8,6 +8,12 @@ import { emptyModuleState, GRADE_THRESHOLDS } from '../engine/types';
 import type { SessionKind } from '../engine/types';
 import { all, moduleById, pathOrderFor, registryFor, unitModules, unitTestDef } from '../content';
 import { READ_LEVELS, readModulesList, readPathOrderFor, readRegistryFor } from '../content/readIndex';
+import {
+  SCIENCE_LEVELS,
+  scienceModulesList,
+  sciencePathOrderFor,
+  scienceRegistryFor,
+} from '../content/scienceIndex';
 import { GRADES, type CurriculumIndex } from '../engine/gamification';
 import { useProgress } from '../store/progress';
 import { en } from '../i18n/en';
@@ -55,6 +61,7 @@ export function App() {
   const replaceAll = useProgress((s) => s.replaceAll);
   const setGrade = useProgress((s) => s.setGrade);
   const setReadGrade = useProgress((s) => s.setReadGrade);
+  const setScienceGrade = useProgress((s) => s.setScienceGrade);
   const setTrack = useProgress((s) => s.setTrack);
   const masterModules = useProgress((s) => s.masterModules);
   const reset = useProgress((s) => s.reset);
@@ -77,11 +84,17 @@ export function App() {
 
   const today = toDateString(new Date());
   const activeTrack = data.profile.activeTrack ?? 'math';
-  const grade = activeTrack === 'read' ? (data.profile.readGrade ?? 1) : (data.profile.grade ?? 1);
-  const registry = useMemo(
-    () => (activeTrack === 'read' ? readRegistryFor(grade) : registryFor(grade)),
-    [activeTrack, grade],
-  );
+  const grade =
+    activeTrack === 'read'
+      ? (data.profile.readGrade ?? 1)
+      : activeTrack === 'science'
+        ? (data.profile.scienceGrade ?? 1)
+        : (data.profile.grade ?? 1);
+  const registry = useMemo(() => {
+    if (activeTrack === 'read') return readRegistryFor(grade);
+    if (activeTrack === 'science') return scienceRegistryFor(grade);
+    return registryFor(grade);
+  }, [activeTrack, grade]);
   const next = useMemo(() => nextModule(data.modules, registry), [data.modules, registry]);
   const pwa = usePwa(Object.keys(data.modules).length > 0);
 
@@ -99,7 +112,7 @@ export function App() {
    * hanya karena registry aktifnya berganti.
    */
   const curriculum = useMemo<CurriculumIndex>(() => {
-    const combined = [...all, ...readModulesList];
+    const combined = [...all, ...readModulesList, ...scienceModulesList];
     const byUnit = new Map<string, string[]>();
     for (const m of combined) {
       const list = byUnit.get(m.unitId);
@@ -111,6 +124,7 @@ export function App() {
       grades: [
         ...GRADES.map((g) => ({ grade: g, moduleIds: [...pathOrderFor(g)] })),
         ...READ_LEVELS.map((g) => ({ grade: 100 + g, moduleIds: readPathOrderFor(g) })),
+        ...SCIENCE_LEVELS.map((g) => ({ grade: 200 + g, moduleIds: sciencePathOrderFor(g) })),
       ],
     };
   }, []);
@@ -122,7 +136,7 @@ export function App() {
         today,
         grade,
         undefined,
-        activeTrack === 'read' ? 'r' : 'g',
+        activeTrack === 'read' ? 'r' : activeTrack === 'science' ? 's' : 'g',
       ).map((r) => ({
         moduleId: r.moduleId,
         title: moduleById(r.moduleId).title,
@@ -218,7 +232,11 @@ export function App() {
 
     const def = moduleById(final.moduleId);
     const unitModuleIds = (
-      final.moduleId.startsWith('r') ? readModulesList : all
+      final.moduleId.startsWith('s')
+        ? scienceModulesList
+        : final.moduleId.startsWith('r')
+          ? readModulesList
+          : all
     )
       .filter((m) => m.unitId === def.unitId)
       .map((m) => m.id);
@@ -339,6 +357,7 @@ export function App() {
           data={data}
           onGrade={setGrade}
           onReadGrade={setReadGrade}
+          onScienceGrade={setScienceGrade}
           onSettings={updateSettings}
           onImport={(state) => {
             replaceAll(state);
@@ -377,7 +396,9 @@ export function App() {
             onTestOut={(id) => startSession(id, 'testout')}
             onSkipUnit={startUnitTest}
             onMaster={(id) => startSession(id, 'master')}
-            onNextGrade={activeTrack === 'read' ? setReadGrade : setGrade}
+            onNextGrade={
+              activeTrack === 'read' ? setReadGrade : activeTrack === 'science' ? setScienceGrade : setGrade
+            }
             grade={grade}
             nextStepLabel={next ? en.step[stepFor(next)] : en.step.done}
             reviews={reviews}

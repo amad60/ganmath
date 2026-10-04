@@ -158,6 +158,19 @@ describe('hintFor — bantuan harus tentang soal INI', () => {
     expect(h?.visual).toMatchObject({ kind: 'number-line', value: -6, hopTo: 3 });
   });
 
+  it('soal science tidak jadi ten-frame meski params.n ada', () => {
+    const question = q({
+      text: 'A plant in a dry pot looks sad. What does it need?',
+      params: { n: 4 },
+      answer: 0,
+      type: 'choose-text',
+      skill: 'sci-needs',
+    });
+    const h = hintFor(moduleById('s1-u1-m1').learn, question);
+    expect(h?.visual.kind).toBe('evidence-text');
+    expect(h?.prompt).toBe('Look at what it needs.');
+  });
+
   it('modul Read r1-u1-m1 mengambil langkah pictorial sebagai hint', () => {
     const question = q({ text: 'Which sentence tells WHO is in the story?', params: {}, answer: 0, type: 'clue-tap' });
     const h = hintFor(moduleById('r1-u1-m1').learn, question);

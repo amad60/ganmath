@@ -591,11 +591,14 @@ export function registryFor(grade: number): Registry {
 }
 
 import { readModules, readModulesList, readUnitTitles } from './readIndex';
+import { scienceModules, scienceModulesList, scienceUnitTitles } from './scienceIndex';
 
 export function unitModules(unitId: string): ContentModule[] {
   const fromMath = all.filter((m) => m.unitId === unitId);
   if (fromMath.length > 0) return fromMath;
-  return readModulesList.filter((m) => m.unitId === unitId);
+  const fromRead = readModulesList.filter((m) => m.unitId === unitId);
+  if (fromRead.length > 0) return fromRead;
+  return scienceModulesList.filter((m) => m.unitId === unitId);
 }
 
 /**
@@ -639,7 +642,7 @@ export function unitTestDef(unitId: string): ContentModule {
 }
 
 export function moduleById(id: string): ContentModule {
-  const m = modules[id] ?? readModules[id];
+  const m = modules[id] ?? readModules[id] ?? scienceModules[id];
   if (!m) throw new Error(`Modul tidak terdaftar: ${id}`);
   return m;
 }
@@ -689,4 +692,5 @@ export const unitTitles: Record<string, { title: string; color: string }> = {
   'g6-u6': { title: 'Unit 6 · Coordinates', color: 'var(--c-unit-6)' },
   'g6-u7': { title: 'Unit 7 · Statistics & Chance', color: 'var(--c-unit-7)' },
   ...readUnitTitles,
+  ...scienceUnitTitles,
 };

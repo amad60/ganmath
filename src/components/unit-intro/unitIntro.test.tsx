@@ -9,6 +9,7 @@ import {
   GRADE_5_INTROS,
   GRADE_6_INTROS,
   READ_INTROS,
+  SCIENCE_INTROS,
 } from './unitIntroData';
 
 describe('UnitIntroModal — animasi dan panduan unit', () => {
@@ -83,6 +84,14 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
       const intro = READ_INTROS[unitId];
       expect(intro).toBeDefined();
       expect(intro?.title).toBeDefined();
+      expect(intro?.concept.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('semua unit Science Level 1 punya intro', () => {
+    for (const unitId of ['s1-u1', 's1-u2', 's1-u3', 's1-u4']) {
+      const intro = SCIENCE_INTROS[unitId];
+      expect(intro?.title).toContain('Unit');
       expect(intro?.concept.length).toBeGreaterThan(10);
     }
   });

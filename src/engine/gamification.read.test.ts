@@ -95,4 +95,17 @@ describe('Gamification — perolehan XP modul Read', () => {
     expect(earned).not.toContain('read-graduate-3');
     expect(earned).not.toContain('read-graduate-4');
   });
+
+  it('memberikan badge kelulusan Science Level 1', async () => {
+    const { depthBadges } = await import('./gamification');
+    const earned = depthBadges([], {
+      modulesCleared: 4,
+      unitsCleared: 4,
+      gradesCleared: [201],
+      thirdStars: 0,
+      retained: 0,
+    });
+    expect(earned).toContain('science-graduate-1');
+    expect(earned).not.toContain('graduate-1');
+  });
 });

@@ -403,6 +403,16 @@ function learnStep(learn: LearnStep[] | undefined, chosen?: number): LearnStep |
  *  4. Langkah pictorial terakhir, sebagai jaring pengaman.
  */
 export function hintFor(learn: LearnStep[] | undefined, question: Question): HintContent | null {
+  // Science bukan hitungan. Mesin angka akan membaca "air" atau indeks pilihan
+  // sebagai operasi, lalu menampilkan ten-frame yang bukan soalnya.
+  if (question.skill.startsWith('sci-')) {
+    if (question.hint != null) {
+      const chosen = learnStep(learn, question.hint);
+      if (chosen) return fromStep(chosen);
+    }
+    const pictured = learnStep(learn, undefined);
+    return pictured ? fromStep(pictured) : null;
+  }
   const built =
     fromArithmetic(question) ??
     fromCompare(question) ??

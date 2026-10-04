@@ -3,6 +3,7 @@ import { BADGES, type BadgeId } from '../../engine/gamification';
 import type { ModuleState } from '../../engine/types';
 import { all, pathOrderFor, unitTitles, moduleById } from '../../content';
 import { readModulesList, readPathOrderFor, readUnitTitles } from '../../content/readIndex';
+import { scienceModulesList, sciencePathOrderFor } from '../../content/scienceIndex';
 import { BadgeCard, Button, Header, Icon, ProgressBar, Sheet, StarRow } from '../../components/ui';
 import { Mascot } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
@@ -14,7 +15,7 @@ export type BadgesScreenProps = {
   streakCurrent: number;
   nextId: string | null;
   grade: number;
-  activeTrack?: 'math' | 'read';
+  activeTrack?: 'math' | 'read' | 'science';
   onBack: () => void;
 };
 
@@ -37,7 +38,12 @@ export function BadgesScreen({
   const [open, setOpen] = useState<BadgeId | null>(null);
 
   const isRead = activeTrack === 'read';
-  const pathOrder = isRead ? readPathOrderFor(grade) : pathOrderFor(grade);
+  const isScience = activeTrack === 'science';
+  const pathOrder = isRead
+    ? readPathOrderFor(grade)
+    : isScience
+      ? sciencePathOrderFor(grade)
+      : pathOrderFor(grade);
   const allIds = Object.keys(BADGES) as BadgeId[];
   const done = pathOrder.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
 
@@ -52,9 +58,10 @@ export function BadgesScreen({
   ];
   const shown = showAll ? ordered : ordered.slice(0, PREVIEW_COUNT);
 
+  const trackList = isRead ? readModulesList : isScience ? scienceModulesList : all;
   const units = isRead
     ? [...new Set(readModulesList.filter((m) => m.grade === grade).map((m) => m.unitId))]
-    : [...new Set(all.filter((m) => m.grade === grade).map((m) => m.unitId))].sort(
+    : [...new Set(trackList.filter((m) => m.grade === grade).map((m) => m.unitId))].sort(
         (a, b) => Number(a.split('-u')[1] ?? 0) - Number(b.split('-u')[1] ?? 0),
       );
 
@@ -154,15 +161,19 @@ export function BadgesScreen({
         </section>
 
         <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-black">{isRead ? `Reading Level ${grade}` : `Grade ${grade}`}</h2>
+          <h2 className="text-xl font-black">
+            {isRead ? `Reading Level ${grade}` : isScience ? `Science Level ${grade}` : `Grade ${grade}`}
+          </h2>
           <ProgressBar value={done} max={pathOrder.length} label={`${done}/${pathOrder.length}`} />
           <p className="text-ink-soft text-[14px]">
             {isRead
               ? 'Reading comprehension builds from details to sequence, reasons, and clues.'
-              : 'On the map, shapes and measuring are mixed between the number units on purpose — switching topics helps things stick.'}
+              : isScience
+                ? 'Science looks at living things, the body, materials, and the weather.'
+                : 'On the map, shapes and measuring are mixed between the number units on purpose — switching topics helps things stick.'}
           </p>
           {units.map((unitId) => {
-            const ids = (isRead ? readModulesList : all)
+            const ids = trackList
               .filter((m) => m.unitId === unitId)
               .map((m) => m.id);
             const cleared = ids.filter((id) => CLEARED.includes(states[id]?.status ?? '')).length;
