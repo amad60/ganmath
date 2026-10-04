@@ -25,6 +25,11 @@ describe('linter konten', () => {
     expect(problems).toEqual([]);
   });
 
+  it('konten Science Level 3 lolos semua aturan', () => {
+    const problems = lintContent(scienceModulesList, scienceRegistryFor(3));
+    expect(problems).toEqual([]);
+  });
+
   const broken = (patch: Partial<ContentModule>): ContentModule[] => {
     const base = all[0] as ContentModule;
     return [{ ...base, ...patch }];

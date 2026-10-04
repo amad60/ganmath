@@ -88,8 +88,8 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
     }
   });
 
-  it('semua unit Science Level 1 dan 2 punya intro', () => {
-    for (const level of [1, 2]) {
+  it('semua unit Science Level 1 sampai 3 punya intro', () => {
+    for (const level of [1, 2, 3]) {
       for (let n = 1; n <= 10; n++) {
         const intro = SCIENCE_INTROS[`s${level}-u${n}`];
         expect(intro?.title).toContain('Unit');

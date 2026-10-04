@@ -1105,6 +1105,29 @@ describe('MapScreen — pintu jump level', () => {
     expect(onNextGrade).toHaveBeenCalledWith(2);
   });
 
+  it('Science Level 2 yang tamat membuka Level 3', async () => {
+    const { sciencePathOrderFor } = await import('../../content/scienceIndex');
+    const onNextGrade = vi.fn();
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      masteredAt: '2026-09-01',
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states = Object.fromEntries(sciencePathOrderFor(2).map((id) => [id, done]));
+    render(
+      <MapScreen
+        {...mapProps({ states, nextId: null, grade: 2, activeTrack: 'science', onNextGrade })}
+      />,
+    );
+    expect(screen.getByText(/You finished Level 2/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Start Level 3/ }));
+    expect(onNextGrade).toHaveBeenCalledWith(3);
+  });
+
   it('ulangan Grade 1 tetap muncul di peta Grade 2', () => {
     const onReview = vi.fn();
     render(

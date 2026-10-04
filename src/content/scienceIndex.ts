@@ -20,6 +20,16 @@ import { lightAndShadow } from './scienceGrade2/s2-u7-m1';
 import { whoEatsWhat } from './scienceGrade2/s2-u8-m1';
 import { soilAndRain } from './scienceGrade2/s2-u9-m1';
 import { careForEarth } from './scienceGrade2/s2-u10-m1';
+import { leavesMakeFood } from './scienceGrade3/s3-u1-m1';
+import { bodyCoverings } from './scienceGrade3/s3-u2-m1';
+import { homeChanges } from './scienceGrade3/s3-u3-m1';
+import { airTakesSpace } from './scienceGrade3/s3-u4-m1';
+import { fallAndSlow } from './scienceGrade3/s3-u5-m1';
+import { rampsAndLevers } from './scienceGrade3/s3-u6-m1';
+import { soundTravels } from './scienceGrade3/s3-u7-m1';
+import { closedPath } from './scienceGrade3/s3-u8-m1';
+import { waterGoesAround } from './scienceGrade3/s3-u9-m1';
+import { rotFeedsSoil } from './scienceGrade3/s3-u10-m1';
 
 export const scienceModulesList: ContentModule[] = [
   whatLivingThingsNeed,
@@ -42,10 +52,20 @@ export const scienceModulesList: ContentModule[] = [
   whoEatsWhat,
   soilAndRain,
   careForEarth,
+  leavesMakeFood,
+  bodyCoverings,
+  homeChanges,
+  airTakesSpace,
+  fallAndSlow,
+  rampsAndLevers,
+  soundTravels,
+  closedPath,
+  waterGoesAround,
+  rotFeedsSoil,
 ];
 
 /** Level science yang sudah punya jalur. */
-export const SCIENCE_LEVELS = [1, 2] as const;
+export const SCIENCE_LEVELS = [1, 2, 3] as const;
 
 export const scienceModules: Record<string, ContentModule> = Object.fromEntries(
   scienceModulesList.map((m) => [m.id, m]),
@@ -86,4 +106,14 @@ export const scienceUnitTitles: Record<string, { title: string; color: string }>
   's2-u8': { title: 'Unit 8 · Who Eats What', color: '#1e40af' },
   's2-u9': { title: 'Unit 9 · Soil and Rain', color: '#1e3a8a' },
   's2-u10': { title: 'Unit 10 · Care for Earth', color: '#3730a3' },
+  's3-u1': { title: 'Unit 1 · Leaves Make Food', color: '#7c2d12' },
+  's3-u2': { title: 'Unit 2 · Body Coverings', color: '#9a3412' },
+  's3-u3': { title: 'Unit 3 · When a Home Changes', color: '#9f1239' },
+  's3-u4': { title: 'Unit 4 · Air Takes Space', color: '#831843' },
+  's3-u5': { title: 'Unit 5 · Falling and Slowing', color: '#6b21a8' },
+  's3-u6': { title: 'Unit 6 · Ramps and Levers', color: '#581c87' },
+  's3-u7': { title: 'Unit 7 · Sound Travels', color: '#5b21b6' },
+  's3-u8': { title: 'Unit 8 · A Closed Path', color: '#4c1d95' },
+  's3-u9': { title: 'Unit 9 · Water Goes Around', color: '#312e81' },
+  's3-u10': { title: 'Unit 10 · Rot Feeds the Soil', color: '#3b0764' },
 };
