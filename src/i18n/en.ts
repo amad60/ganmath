@@ -53,8 +53,11 @@ export const en = {
     unitDone: (n: number) => `All ${n} done`,
     allDone: 'All done for now!',
     gradeDone: (g: number) => `You finished Grade ${g}!`,
+    levelDone: (g: number) => `You finished Level ${g}!`,
     startGrade: (g: number) => `Start Grade ${g}`,
+    startLevel: (g: number) => `Start Level ${g}`,
     everythingDone: 'You finished every grade. Amazing.',
+    everyLevelDone: 'You finished every level. Amazing.',
     gradeProgress: (done: number, total: number) => `${done}/${total}`,
   },
 

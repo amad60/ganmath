@@ -88,11 +88,13 @@ describe('UnitIntroModal — animasi dan panduan unit', () => {
     }
   });
 
-  it('semua unit Science Level 1 punya intro', () => {
-    for (const unitId of ['s1-u1', 's1-u2', 's1-u3', 's1-u4', 's1-u5', 's1-u6', 's1-u7', 's1-u8', 's1-u9', 's1-u10']) {
-      const intro = SCIENCE_INTROS[unitId];
-      expect(intro?.title).toContain('Unit');
-      expect(intro?.concept.length).toBeGreaterThan(10);
+  it('semua unit Science Level 1 dan 2 punya intro', () => {
+    for (const level of [1, 2]) {
+      for (let n = 1; n <= 10; n++) {
+        const intro = SCIENCE_INTROS[`s${level}-u${n}`];
+        expect(intro?.title).toContain('Unit');
+        expect(intro?.concept.length).toBeGreaterThan(10);
+      }
     }
   });
 

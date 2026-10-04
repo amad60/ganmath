@@ -10,6 +10,16 @@ import { dayAndNight } from './scienceGrade1/s1-u7-m1';
 import { pushAndPull } from './scienceGrade1/s1-u8-m1';
 import { loudAndQuiet } from './scienceGrade1/s1-u9-m1';
 import { lookAfterThem } from './scienceGrade1/s1-u10-m1';
+import { seedsGrow } from './scienceGrade2/s2-u1-m1';
+import { animalHomes } from './scienceGrade2/s2-u2-m1';
+import { lifeCycles } from './scienceGrade2/s2-u3-m1';
+import { solidAndLiquid } from './scienceGrade2/s2-u4-m1';
+import { heatAndCold } from './scienceGrade2/s2-u5-m1';
+import { magnetsPull } from './scienceGrade2/s2-u6-m1';
+import { lightAndShadow } from './scienceGrade2/s2-u7-m1';
+import { whoEatsWhat } from './scienceGrade2/s2-u8-m1';
+import { soilAndRain } from './scienceGrade2/s2-u9-m1';
+import { careForEarth } from './scienceGrade2/s2-u10-m1';
 
 export const scienceModulesList: ContentModule[] = [
   whatLivingThingsNeed,
@@ -22,10 +32,20 @@ export const scienceModulesList: ContentModule[] = [
   pushAndPull,
   loudAndQuiet,
   lookAfterThem,
+  seedsGrow,
+  animalHomes,
+  lifeCycles,
+  solidAndLiquid,
+  heatAndCold,
+  magnetsPull,
+  lightAndShadow,
+  whoEatsWhat,
+  soilAndRain,
+  careForEarth,
 ];
 
 /** Level science yang sudah punya jalur. */
-export const SCIENCE_LEVELS = [1] as const;
+export const SCIENCE_LEVELS = [1, 2] as const;
 
 export const scienceModules: Record<string, ContentModule> = Object.fromEntries(
   scienceModulesList.map((m) => [m.id, m]),
@@ -56,4 +76,14 @@ export const scienceUnitTitles: Record<string, { title: string; color: string }>
   's1-u8': { title: 'Unit 8 · Push and Pull', color: '#0891b2' },
   's1-u9': { title: 'Unit 9 · Loud and Quiet', color: '#155e75' },
   's1-u10': { title: 'Unit 10 · Look After Them', color: '#1e3a8a' },
+  's2-u1': { title: 'Unit 1 · Seeds Grow', color: '#0f766e' },
+  's2-u2': { title: 'Unit 2 · Animal Homes', color: '#115e59' },
+  's2-u3': { title: 'Unit 3 · Life Cycles', color: '#047857' },
+  's2-u4': { title: 'Unit 4 · Solid and Liquid', color: '#065f46' },
+  's2-u5': { title: 'Unit 5 · Heat and Cold', color: '#134e4a' },
+  's2-u6': { title: 'Unit 6 · Magnets', color: '#166534' },
+  's2-u7': { title: 'Unit 7 · Light and Shadow', color: '#14532d' },
+  's2-u8': { title: 'Unit 8 · Who Eats What', color: '#1e40af' },
+  's2-u9': { title: 'Unit 9 · Soil and Rain', color: '#1e3a8a' },
+  's2-u10': { title: 'Unit 10 · Care for Earth', color: '#3730a3' },
 };

@@ -169,7 +169,9 @@ export function BadgesScreen({
             {isRead
               ? 'Reading comprehension builds from details to sequence, reasons, and clues.'
               : isScience
-                ? 'Science looks at living things, the body, materials, and the weather.'
+                ? grade >= 2
+                  ? 'Science Level 2 asks what happens next: growth, homes, heat, light, and care.'
+                  : 'Science looks at living things, the body, materials, and the weather.'
                 : 'On the map, shapes and measuring are mixed between the number units on purpose — switching topics helps things stick.'}
           </p>
           {units.map((unitId) => {

@@ -513,10 +513,16 @@ export function MapScreen(props: MapScreenProps) {
           <div className="flex flex-col items-center gap-3 py-8">
             <Mascot mood="celebrate" size={100} />
             <p className="text-center text-[20px] font-black">
-              {gradeComplete ? en.map.gradeDone(grade) : en.map.allDone}
+              {gradeComplete
+                ? activeTrack === 'math'
+                  ? en.map.gradeDone(grade)
+                  : en.map.levelDone(grade)
+                : en.map.allDone}
             </p>
             {gradeComplete && !hasNextGrade ? (
-              <p className="text-ink-soft text-center font-bold">{en.map.everythingDone}</p>
+              <p className="text-ink-soft text-center font-bold">
+                {activeTrack === 'math' ? en.map.everythingDone : en.map.everyLevelDone}
+              </p>
             ) : null}
           </div>
         ) : null}
@@ -545,7 +551,7 @@ export function MapScreen(props: MapScreenProps) {
             // Langkah berikutnya bukan lagi sebuah modul, tapi sebuah kelas. Ia
             // menempati tombol utama yang sama supaya anak tidak perlu mencarinya.
             <Button full onClick={() => onNextGrade(grade + 1)}>
-              {en.map.startGrade(grade + 1)}
+              {activeTrack === 'math' ? en.map.startGrade(grade + 1) : en.map.startLevel(grade + 1)}
             </Button>
           )}
         </div>
