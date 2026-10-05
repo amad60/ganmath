@@ -250,7 +250,11 @@ export type SceneFx =
   | 'fall'
   | 'slide-left'
   | 'slide-right'
-  | 'pulse';
+  | 'pulse'
+  // Level 2 (magnet menarik dari jauh): `slide-*` hanya bergeser 80% lebar bendanya
+  // sendiri — klip kecil cuma bergeser sejari, tarikan magnetnya tidak terlihat.
+  | 'pull-left'
+  | 'pull-up';
 
 /**
  * Bangun ruang Grade 1 — dinamai seperti benda yang dipegang anak. Beda dari

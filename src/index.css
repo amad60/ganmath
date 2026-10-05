@@ -460,3 +460,23 @@ body {
     transform: scale(1.3);
   }
 }
+
+/* Level 2 — tarikan magnet. Jaraknya kelipatan lebar/tinggi benda itu sendiri
+   (bukan 80% seperti slide-*), supaya klip kecil terlihat MELOMPAT dari jauh ke
+   magnet. Tetap transform saja, berakhir di posisi data. */
+@keyframes sci-pull-left {
+  from {
+    transform: translateX(300%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes sci-pull-up {
+  from {
+    transform: translateY(400%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

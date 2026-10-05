@@ -89,7 +89,9 @@ describe('Science Level 1 di layar', () => {
   it('intro unit s1 memutar adegan modulnya, bukan roket generik', async () => {
     vi.useFakeTimers();
     for (let n = 1; n <= 10; n++) expect(scienceIntroScene(`s1-u${n}`), `s1-u${n}`).toBeTruthy();
-    expect(scienceIntroScene('s2-u1')).toBeNull();
+    for (let n = 1; n <= 10; n++) expect(scienceIntroScene(`s2-u${n}`), `s2-u${n}`).toBeTruthy();
+    // Unit yang tidak ada (atau belum dikonversi) tetap jatuh ke roket generik.
+    expect(scienceIntroScene('s9-u1')).toBeNull();
     render(<UnitIntroModal unitId="s1-u3" onClose={() => {}} />);
     act(() => {
       vi.advanceTimersByTime(100);
