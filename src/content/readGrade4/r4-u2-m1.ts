@@ -103,7 +103,7 @@ export const authorsPurpose: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['author', 'purpose', 'inform', 'entertain', 'persuade', 'act'],
+  vocab: ['author', 'purpose', 'inform', 'entertain', 'persuade', 'act', 'ask'],
 
   learn: [
     {
@@ -118,13 +118,18 @@ export const authorsPurpose: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'A plea asks the reader to act.',
+      prompt: 'Tap where the author asks you to act.',
       visual: {
         kind: 'evidence-text',
-        title: 'Persuade',
-        sentences: ['Please help is a clue that the author wants action.'],
+        title: 'Feed the Birds',
+        sentences: [
+          'Birds visit our yard in winter.',
+          'Food is hard for them to find.',
+          'Please hang a seed feeder by your window.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

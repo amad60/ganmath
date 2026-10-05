@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { lintContent } from './lint';
 import { all, registry } from './index';
 import { scienceModulesList, scienceRegistryFor } from './scienceIndex';
+import { READ_LEVELS, readRegistryFor } from './readIndex';
 import { enumerate, generateSet } from '../engine/generator';
 import { createSession } from '../engine/session';
 import { mulberry32 } from '../engine/rng';
@@ -27,6 +28,25 @@ describe('linter konten', () => {
 
   it('konten Science Level 3 lolos semua aturan', () => {
     const problems = lintContent(scienceModulesList, scienceRegistryFor(3));
+    expect(problems).toEqual([]);
+  });
+
+  /**
+   * Konten Read belum lolos lint penuh (kosakata materi lamanya belum dideklarasikan),
+   * jadi yang dijaga di sini hanya yang ditambahkan Phase 2: setiap modul Read punya
+   * satu langkah `tap-clue` yang bisa diselesaikan, dan prompt-nya ≤8 kata dari
+   * kosakata yang sudah dikenal. Langkah lain dibuang dari salinan supaya utang lama
+   * tidak menutupi pelanggaran baru.
+   */
+  it.each(READ_LEVELS)('materi Read Level %i: langkah tap-clue bisa dikerjakan dan lolos kosakata', (g) => {
+    const reg = readRegistryFor(g);
+    const mods = reg.pathOrder.map((id) => {
+      const m = reg.modules[id] as ContentModule;
+      return { ...m, learn: m.learn.filter((l) => l.action === 'tap-clue'), rules: [] };
+    });
+    for (const m of mods) expect(m.learn, m.id).toHaveLength(1);
+    const problems = lintContent(mods, { modules: Object.fromEntries(mods.map((m) => [m.id, m])), pathOrder: reg.pathOrder })
+      .filter((p) => ['learn-action', 'learn-target', 'prompt-length', 'vocab'].includes(p.rule));
     expect(problems).toEqual([]);
   });
 
@@ -386,6 +406,47 @@ describe('linter konten', () => {
       ],
     });
     expect(lintContent(shape, reg(shape)).some((p) => p.rule === 'learn-action')).toBe(true);
+  });
+
+  it('tap-clue: hanya di evidence-text, dan target harus indeks kalimat yang ada', () => {
+    const story = { kind: 'evidence-text' as const, sentences: ['Ana ran.', 'It rained.'] };
+    const ok = broken({
+      learn: [{ stage: 'concrete', prompt: 'Tap one.', visual: story, action: 'tap-clue', target: 1 }],
+    });
+    expect(lintContent(ok, reg(ok)).some((p) => p.rule === 'learn-action')).toBe(false);
+
+    const outside = broken({
+      learn: [{ stage: 'concrete', prompt: 'Tap one.', visual: story, action: 'tap-clue', target: 2 }],
+    });
+    expect(lintContent(outside, reg(outside)).some((p) => p.rule === 'learn-action')).toBe(true);
+
+    const lonely = broken({
+      learn: [
+        {
+          stage: 'concrete',
+          prompt: 'Tap one.',
+          visual: { kind: 'evidence-text', sentences: ['Ana ran.'] },
+          action: 'tap-clue',
+          target: 0,
+        },
+      ],
+    });
+    expect(lintContent(lonely, reg(lonely)).some((p) => p.rule === 'learn-action')).toBe(true);
+
+    const wrongVisual = broken({
+      learn: [
+        {
+          stage: 'concrete',
+          prompt: 'Tap one.',
+          visual: { kind: 'counter-objects', count: 3 },
+          action: 'tap-clue',
+          target: 1,
+        },
+      ],
+    });
+    expect(lintContent(wrongVisual, reg(wrongVisual)).some((p) => p.rule === 'learn-action')).toBe(
+      true,
+    );
   });
 
   it('menolak pilihan kata yang tinggal dua setelah tulisan kembar dibuang', () => {

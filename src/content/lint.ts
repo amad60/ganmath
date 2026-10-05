@@ -83,6 +83,7 @@ export const ACTION_VISUALS: Record<Exclude<LearnStep['action'], 'watch'>, Learn
     'tap-count': ['counter-objects', 'shape2d', 'composed-shape', 'fraction', 'money'],
     'tap-fill': ['ten-frame'],
     'drop-on-line': ['number-line'],
+    'tap-clue': ['evidence-text'],
   };
 
 /**
@@ -126,6 +127,17 @@ export function learnStepBlocked(step: LearnStep): string | null {
   }
   if (v.kind === 'ten-frame' && target > (v.capacity ?? 10)) {
     return `minta ${target} tapi frame hanya memuat ${v.capacity ?? 10}`;
+  }
+  // tap-clue: target adalah INDEKS kalimat. Indeks di luar cerita = tidak ada
+  // kalimat yang bisa benar, dan anak mengetuk semuanya tanpa pernah lolos.
+  if (
+    v.kind === 'evidence-text' &&
+    (!Number.isInteger(target) || target < 0 || target >= v.sentences.length)
+  ) {
+    return `kalimat bukti #${target} tidak ada — cerita hanya punya ${v.sentences.length} kalimat`;
+  }
+  if (v.kind === 'evidence-text' && v.sentences.length < 2) {
+    return 'cerita satu kalimat: tidak ada yang perlu dipilih';
   }
   if (v.kind === 'money' && target > v.items.length) {
     return `minta ${target} tap tapi hanya ada ${v.items.length} uang`;

@@ -58,8 +58,23 @@ export function EvidenceText({
             tone === 'correct' ? 'var(--c-correct)' : tone === 'wrong' ? 'var(--c-retry)' : null;
 
           if (!interactive) {
+            // Panel Hint menampilkan langkah `tap-clue` sebagai contoh yang SUDAH
+            // dikerjakan: kalimat buktinya disorot, tapi tetap bukan tombol.
             return (
-              <p key={idx} className="text-base font-bold leading-relaxed text-[var(--c-ink)]">
+              <p
+                key={idx}
+                className="text-base font-bold leading-relaxed"
+                style={
+                  toneColor
+                    ? {
+                        color: toneColor,
+                        background: 'var(--c-correct-soft)',
+                        borderRadius: 'var(--r-md)',
+                        padding: '2px 8px',
+                      }
+                    : { color: 'var(--c-ink)' }
+                }
+              >
                 {sentence}
               </p>
             );

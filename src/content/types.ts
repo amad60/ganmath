@@ -136,8 +136,13 @@ export type LearnStep = {
    * Aksi yang diminta. `watch` = lihat gambarnya; Next menunggu jeda look
    * (`WATCH_LOOK_MS`) atau flash selesai, bukan aktif seketika.
    */
-  action: 'tap-count' | 'tap-fill' | 'drop-on-line' | 'watch';
-  /** Nilai yang harus dicapai anak sebelum tombol Next aktif. */
+  action: 'tap-count' | 'tap-fill' | 'drop-on-line' | 'watch' | 'tap-clue';
+  /**
+   * Nilai yang harus dicapai anak sebelum tombol Next aktif.
+   * `tap-clue` (hanya di `evidence-text`): INDEKS kalimat bukti yang harus diketuk —
+   * bukan jumlah. Materi Read dulu seluruhnya `watch`, padahal kuisnya meminta anak
+   * mengetuk kalimat bukti; aksi ini membuat materi berlatih mekanik yang sama.
+   */
   target?: number;
   /** Teks aksi di bawah visual, mis. "Tap each apple." */
   hint?: string;

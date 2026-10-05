@@ -22,6 +22,12 @@ export type MapScreenProps = {
   onOpen: (moduleId: string) => void;
   onReview: (moduleId: string) => void;
   onMaster: (moduleId: string) => void;
+  /**
+   * Buka ulang materi modul yang sudah pernah dipelajari ("See lesson"), tanpa
+   * menyentuh progres. Hanya tampil kalau `learnCompletedAt` terisi — modul yang
+   * belum pernah dipelajari sudah membuka materinya sendiri saat ditekan.
+   */
+  onRelearn?: (moduleId: string) => void;
   /** Naik ke grade berikutnya setelah grade ini tamat. */
   onNextGrade: (grade: number) => void;
   onTestOut: (moduleId: string) => void;
@@ -57,6 +63,7 @@ export function MapScreen(props: MapScreenProps) {
     onOpen,
     onReview,
     onMaster,
+    onRelearn,
     onNextGrade,
     onTestOut,
     onSkipUnit,
@@ -479,6 +486,21 @@ export function MapScreen(props: MapScreenProps) {
                                   ? en.map.lockedHint
                                   : ''}
                       </span>
+
+                      {/* Node yang ditekan langsung meluncurkan sesi (sedang dikerjakan,
+                          atau tinggal Speed Round) tidak punya lembar pilihan — jadi
+                          pintu ke materinya ditaruh di bawah node itu sendiri. Node yang
+                          sudah tuntas memakai tombol di lembarnya. */}
+                      {onRelearn && unlocked && st?.learnCompletedAt && !(isCleared && !needsSpeed) ? (
+                        <button
+                          type="button"
+                          onClick={() => onRelearn(id)}
+                          className="mt-1 flex min-h-11 items-center rounded-full px-3 text-[14px] font-bold"
+                          style={{ color: 'var(--c-primary)', background: 'var(--c-primary-soft)' }}
+                        >
+                          {en.learn.seeLesson}
+                        </button>
+                      ) : null}
                     </div>
                   </div>
                 );
@@ -628,6 +650,19 @@ export function MapScreen(props: MapScreenProps) {
               }}
             >
               {en.map.doMaster}
+            </Button>
+          ) : null}
+          {onRelearn && chosenState?.learnCompletedAt ? (
+            <Button
+              variant="ghost"
+              full
+              onClick={() => {
+                const id = chosen;
+                setChosen(null);
+                if (id) onRelearn(id);
+              }}
+            >
+              {en.learn.seeLesson}
             </Button>
           ) : null}
           <Button variant="ghost" full onClick={() => setChosen(null)}>

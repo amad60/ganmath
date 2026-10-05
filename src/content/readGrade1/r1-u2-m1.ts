@@ -12,7 +12,7 @@ export const orderOfEvents: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'clue-tap'],
   visuals: ['sequence-cards', 'evidence-text'],
-  vocab: ['first', 'next', 'last', 'seed', 'flower', 'watered', 'bloom'],
+  vocab: ['first', 'next', 'last', 'seed', 'flower', 'watered', 'bloom', 'happen'],
 
   learn: [
     {
@@ -30,13 +30,18 @@ export const orderOfEvents: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'First happens at the start. Last is the end.',
+      prompt: 'Tap what happens first.',
       visual: {
         kind: 'evidence-text',
-        title: 'Making Toast',
-        sentences: ['First, put bread in the toaster.', 'Next, wait until it pops up.', 'Last, spread sweet jam on top.'],
+        title: 'Mixed-Up Toast',
+        sentences: [
+          'Last, Ana eats the warm toast.',
+          'First, she puts bread in the toaster.',
+          'Next, the toast pops up.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

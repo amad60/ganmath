@@ -12,7 +12,7 @@ export const howToFollowSteps: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['recipe', 'instructions', 'step', 'mix', 'bake', 'prepare', 'caution'],
+  vocab: ['recipe', 'instructions', 'step', 'mix', 'bake', 'prepare', 'caution', 'before', 'last'],
 
   learn: [
     {
@@ -31,13 +31,18 @@ export const howToFollowSteps: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Follow steps in exact order for safe results.',
+      prompt: 'Tap the step before the last one.',
       visual: {
         kind: 'evidence-text',
-        title: 'Safety Rule',
-        sentences: ['Always wash fresh fruits before cutting them.'],
+        title: 'Fruit Cup',
+        sentences: [
+          'Wash the apple in clean water.',
+          'Cut the apple into small pieces.',
+          'Put the pieces in a cup.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

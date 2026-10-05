@@ -76,6 +76,22 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      Ini **bukan kuis**: tidak dinilai, tidak masuk hitungan apa pun, boleh diulang tanpa
      batas, dan salah tidak pernah mengunci anak keluar. Ia pintu — anak meninggalkan materi
      dengan menerapkan idenya sekali, selagi gambarnya masih di layar.
+   - **Materi boleh dibuka lagi kapan saja ("📖 See lesson"), tanpa menyentuh progres.**
+     Tombolnya ada di lembar modul tuntas, di bawah node yang sedang dikerjakan / tinggal
+     Speed Round (hanya kalau `learnCompletedAt` terisi), dan di layar hasil sesudah kuis
+     atau ulangan yang belum lolos akurasi. Mode ini (`Screen 'learn'` + `review: true`)
+     TIDAK memanggil `markLearnComplete` — fungsi itu me-nol-kan `consecutiveFails`, jadi
+     mengintip materi akan menghapus jalur "diajar dengan cara lain" (§7) — dan tidak
+     memulai latihan; tombol terakhirnya "Done", kembali ke peta. Menyelesaikan materi
+     pertama kali memberi **`XP_LEARN` (10)**, sekali per modul (`xpForLearn`).
+   - **Materi Read melatih mekanik kuisnya sendiri (`tap-clue`).** Dulu semua langkah
+     Learn Read `watch`, padahal kuisnya meminta mengetuk kalimat bukti. Sekarang langkah
+     `pictorial` di ke-17 modul Read adalah cerita mini 3 kalimat dengan tepat SATU kalimat
+     bukti; `target` = indeks kalimat itu (bukan jumlah — gerbangnya `found`, bukan
+     `value >= target`). Salah ketuk: kalimat itu dikunci + "Not that one. Look again.",
+     tanpa skor dan tanpa membuka jawabannya. Lint `learn-action` menolak `tap-clue` di
+     luar `evidence-text`, indeks di luar cerita, atau cerita satu kalimat. Di panel Hint
+     langkah ini tampil sebagai contoh yang sudah dikerjakan (kalimat buktinya disorot).
    - **Tombol Hint wajib menolong soal yang SEDANG ditanyakan.** Ia satu-satunya
      pertolongan dalam sesi untuk anak yang macet sendirian. Gambarnya dibangun
      dari angka soal itu (`engine/hint.ts`): `26 + 37` disusun **13 (6+7) + 50
@@ -366,7 +382,8 @@ terjadi. Dikunci test "empat ulangan berjarak, bukan tiga".
 ## 8. Gamifikasi & Reward
 
 - **Stars** per modul (1–3, dari **akurasi**; bintang ke-3 dari kecepatan — lihat §6).
-- **XP** per sesi; level naik dari akumulasi XP. **Kurva melambat setelah level 10** —
+- **XP** per sesi, plus `XP_LEARN` (10) saat materi sebuah modul selesai pertama kali;
+  level naik dari akumulasi XP. **Kurva melambat setelah level 10** —
   sepuluh level pertama tetap 100 XP rata supaya tidak ada anak yang turun level, lalu
   biayanya naik sampai 1200 XP. Dengan kurva rata yang lama, tamat Grade 6 mendarat di
   level 432; angka itu tidak berarti apa-apa bagi anak, dan ia dipajang di peta.

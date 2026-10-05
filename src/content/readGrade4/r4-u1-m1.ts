@@ -103,7 +103,7 @@ export const compareTwoTexts: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['alike', 'only', 'both', 'differ', 'same'],
+  vocab: ['alike', 'only', 'both', 'differ', 'same', 'place'],
 
   learn: [
     {
@@ -118,13 +118,18 @@ export const compareTwoTexts: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Look for what is the same.',
+      prompt: 'Tap how the two places are alike.',
       visual: {
         kind: 'evidence-text',
-        title: 'Both',
-        sentences: ['A sentence about both places tells what is alike.'],
+        title: 'Lake and Pool',
+        sentences: [
+          'The lake has fish and frogs.',
+          'The pool has a long slide.',
+          'People swim in both places.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

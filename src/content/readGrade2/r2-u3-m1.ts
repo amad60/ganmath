@@ -27,16 +27,18 @@ export const characterFeelings: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Actions and words give clues to feelings.',
+      prompt: 'Tap the sentence that shows a feeling.',
       visual: {
         kind: 'evidence-text',
-        title: 'Action ➔ Emotion',
+        title: 'Big Race',
         sentences: [
-          'Smiling and jumping = Excited!',
-          'Trembling knees and quiet voice = Nervous.',
+          'Timi stood at the start line.',
+          'His knees shook and his hands felt cold.',
+          'Then the race began.',
         ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

@@ -12,7 +12,7 @@ export const scienceAnimalClues: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['adaptation', 'habitat', 'camouflage', 'prey', 'predator', 'survive'],
+  vocab: ['adaptation', 'habitat', 'camouflage', 'prey', 'predator', 'survive', 'feature', 'help'],
 
   learn: [
     {
@@ -30,13 +30,18 @@ export const scienceAnimalClues: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Informational texts explain why animals look and act so.',
+      prompt: 'Tap how the feature helps it survive.',
       visual: {
         kind: 'evidence-text',
         title: 'Desert Camel',
-        sentences: ['Long double eyelashes keep sand out of camel eyes during winds.'],
+        sentences: [
+          'A camel has long, thick eyelashes.',
+          'The eyelashes keep blowing sand out of its eyes.',
+          'Camels walk slowly.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

@@ -12,7 +12,7 @@ export const mysteryClues: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'clue-tap'],
   visuals: ['evidence-text'],
-  vocab: ['mystery', 'hidden', 'whistle', 'clues', 'solve', 'infer'],
+  vocab: ['mystery', 'hidden', 'whistle', 'clues', 'solve', 'infer', 'beach'],
 
   learn: [
     {
@@ -27,13 +27,18 @@ export const mysteryClues: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The story does not say rabbit, but you know!',
+      prompt: 'Tap the clue that shows the beach.',
       visual: {
         kind: 'evidence-text',
-        title: 'Answer: A Rabbit!',
-        sentences: ['Soft fur + hops + eats carrots = Rabbit!'],
+        title: 'Where Is Dewi?',
+        sentences: [
+          'Waves splashed on the sand by Dewi.',
+          "She held Mom's hand.",
+          'She smiled at Mom.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 0,
     },
     {
       stage: 'abstract',

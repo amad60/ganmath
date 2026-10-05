@@ -12,7 +12,7 @@ export const whyDidItHappen: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['because', 'mud', 'puddle', 'wet', 'melt', 'thirsty', 'drank'],
+  vocab: ['because', 'mud', 'puddle', 'wet', 'melt', 'thirsty', 'drank', 'why'],
 
   learn: [
     {
@@ -27,13 +27,18 @@ export const whyDidItHappen: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Look for the reason why.',
+      prompt: 'Tap the sentence that tells why.',
       visual: {
         kind: 'evidence-text',
-        title: 'Hot Sun',
-        sentences: ['The hot sun shone on the ice cream.', 'The sweet ice cream melted fast.'],
+        title: 'Why Did It Melt?',
+        sentences: [
+          'Ana had an ice cream.',
+          'The hot sun shone on it.',
+          'The ice cream melted fast.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

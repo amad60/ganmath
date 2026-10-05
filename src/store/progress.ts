@@ -7,6 +7,7 @@ import {
   newBadges,
   summarizeDepth,
   updateStreak,
+  xpForLearn,
   xpForSession,
   type CurriculumIndex,
 } from '../engine/gamification';
@@ -185,6 +186,8 @@ export function createProgressStore(
         markLearnComplete: (moduleId, date) =>
           set((s) => {
             const prev = s.data.modules[moduleId] ?? emptyModuleState();
+            // Dihitung dari state SEBELUM learnCompletedAt diisi — sekali per modul.
+            const xp = s.data.xp + xpForLearn(prev);
             const next: ModuleState = {
               ...prev,
               learnCompletedAt: prev.learnCompletedAt ?? date,
@@ -193,7 +196,14 @@ export function createProgressStore(
               // nol, kalau tidak dia akan dikirim ke materi terus-menerus.
               consecutiveFails: 0,
             };
-            return { data: touch({ ...s.data, modules: { ...s.data.modules, [moduleId]: next } }) };
+            return {
+              data: touch({
+                ...s.data,
+                modules: { ...s.data.modules, [moduleId]: next },
+                xp,
+                level: levelForXp(xp),
+              }),
+            };
           }),
 
         recordSession: (def, result, ctx) => {

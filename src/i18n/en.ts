@@ -64,6 +64,11 @@ export const en = {
   learn: {
     next: 'Next',
     start: 'Start practice',
+    /** Tombol terakhir saat materi dibuka ulang ("See lesson") — tidak ada latihan yang menyusul. */
+    done: 'Done',
+    seeLesson: '📖 See lesson',
+    tapClue: 'Tap the clue sentence.',
+    clueRetry: 'Not that one. Look again.',
     stepOf: (i: number, n: number) => `Step ${i} of ${n}`,
     tapToContinue: 'Do it to continue.',
     lookToContinue: 'Look at the picture.',

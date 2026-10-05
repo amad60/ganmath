@@ -674,6 +674,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                 <LearnVisualView
                   visual={hint.visual}
                   value={hint.doneValue}
+                  clue={hint.clue}
                   onValue={() => {}}
                   interactive={false}
                   compact

@@ -50,6 +50,13 @@ export type LearnVisualViewProps = {
   bundled?: boolean;
   /** Pecahan `watch`: anak mengetuk bagian yang diarsir. */
   fractionTap?: boolean;
+  /**
+   * Cerita bukti: kalimat bukti yang sudah ketemu, disorot benar. Dipakai langkah
+   * `tap-clue` sesudah anak mengetuknya, dan panel Hint (contoh yang sudah dikerjakan).
+   */
+  clue?: number;
+  /** Cerita bukti: kalimat yang sudah diketuk dan bukan buktinya. Terkunci. */
+  rejected?: number[];
 };
 
 /** Menerjemahkan data materi jadi manipulatif. Komponen tidak tahu isi modulnya. */
@@ -64,6 +71,8 @@ export function LearnVisualView({
   reveal,
   bundled,
   fractionTap,
+  clue,
+  rejected,
 }: LearnVisualViewProps) {
   switch (visual.kind) {
     case 'counter-objects':
@@ -302,7 +311,19 @@ export function LearnVisualView({
         />
       );
     case 'evidence-text':
-      return <EvidenceText sentences={visual.sentences} title={visual.title} interactive={false} />;
+      return (
+        // Interaktif hanya untuk langkah `tap-clue`: ketukan dikirim sebagai INDEKS
+        // kalimat lewat onValue, layar Learn yang memutuskan benar/salahnya.
+        <EvidenceText
+          sentences={visual.sentences}
+          title={visual.title}
+          interactive={interactive}
+          onSelect={interactive ? onValue : undefined}
+          rejectedIndices={rejected}
+          selectedIndex={clue ?? null}
+          selectedTone={clue != null ? 'correct' : null}
+        />
+      );
     case 'sequence-cards':
       return <SequenceCards cards={visual.cards} interactive={false} />;
   }

@@ -27,13 +27,18 @@ export const whereDoesItHappen: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Look for words that tell the place.',
+      prompt: 'Tap the sentence that tells where.',
       visual: {
         kind: 'evidence-text',
         title: 'Morning Song',
-        sentences: ['The little bird sings high in the tree.'],
+        sentences: [
+          'A little bird woke up.',
+          'It sang a sweet song.',
+          'It sat high in the tall tree.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

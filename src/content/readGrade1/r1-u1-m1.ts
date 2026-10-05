@@ -12,7 +12,7 @@ export const whoIsInTheStory: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['cat', 'dog', 'park', 'tree', 'sat', 'ran', 'clue'],
+  vocab: ['cat', 'dog', 'park', 'tree', 'sat', 'ran', 'clue', 'sentence', 'who'],
 
   learn: [
     {
@@ -27,13 +27,18 @@ export const whoIsInTheStory: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Look for the name in the sentence.',
+      prompt: 'Tap the sentence that tells who.',
       visual: {
         kind: 'evidence-text',
-        title: 'Budi at the Park',
-        sentences: ['Budi went to the park.', 'He kicked a red ball.'],
+        title: 'At the Park',
+        sentences: [
+          'The sun was warm.',
+          'Budi kicked a red ball.',
+          'The ball went far.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

@@ -6,6 +6,11 @@ export type HintContent = {
   visual: LearnVisual;
   /** Langkah aksi ditampilkan sudah selesai (lihat QuestionScreen). */
   doneValue: number;
+  /**
+   * Langkah `tap-clue`: indeks kalimat bukti yang disorot. `target`-nya indeks,
+   * bukan jumlah, jadi tidak boleh dikirim lewat `doneValue`.
+   */
+  clue?: number;
 };
 
 function column(left: number, right: number, op: '+' | '−'): LearnVisual {
@@ -387,7 +392,8 @@ function fromStep(step: LearnStep): HintContent {
   return {
     prompt: step.prompt,
     visual: step.visual,
-    doneValue: step.action === 'watch' ? 0 : (step.target ?? 0),
+    doneValue: step.action === 'watch' || step.action === 'tap-clue' ? 0 : (step.target ?? 0),
+    ...(step.action === 'tap-clue' && step.target != null ? { clue: step.target } : {}),
   };
 }
 

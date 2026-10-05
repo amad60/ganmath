@@ -27,16 +27,18 @@ export const factVsOpinion: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'An opinion tells what someone thinks or feels.',
+      prompt: 'Tap the sentence that is a fact.',
       visual: {
         kind: 'evidence-text',
-        title: 'Fact vs Opinion',
+        title: 'Spiders',
         sentences: [
-          'Fact: Spiders have eight legs.',
-          'Opinion: Spiders are super scary.',
+          'Spiders are super scary.',
+          'Webs are the prettiest thing.',
+          'Spiders have eight legs.',
         ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

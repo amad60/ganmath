@@ -37,7 +37,18 @@ type Screen =
   | { name: 'map' }
   | { name: 'badges' }
   | { name: 'parent' }
-  | { name: 'learn'; moduleId: string }
+  | {
+      name: 'learn';
+      moduleId: string;
+      /**
+       * Materi dibuka ulang ("See lesson") untuk modul yang SUDAH pernah dipelajari.
+       * Tidak menyentuh progres sama sekali: markLearnComplete me-nol-kan
+       * `consecutiveFails`, jadi anak yang mengintip materi di tengah rentetan gagal
+       * akan diam-diam menghapus jalur "kembali ke materi dengan cara lain" (§7).
+       * Dan tidak memulai latihan — anak datang untuk melihat, bukan untuk dites.
+       */
+      review?: boolean;
+    }
   | { name: 'session'; moduleId: string }
   | {
       name: 'result';
@@ -197,6 +208,9 @@ export function App() {
     startSession(moduleId, step satisfies SessionKind);
   };
 
+  /** "See lesson": buka ulang materi tanpa menyentuh progres (lihat Screen 'learn'). */
+  const relearn = (moduleId: string) => setScreen({ name: 'learn', moduleId, review: true });
+
   /** Judul modul berikutnya, dipakai layar hasil sebagai KETERANGAN (bukan tombol). */
   const nextTitle = (): string | null => {
     const after = nextModule(data.modules, registry);
@@ -291,8 +305,13 @@ export function App() {
       return (
         <LearnScreen
           module={moduleById(screen.moduleId)}
+          review={screen.review}
           onExit={() => setScreen({ name: 'map' })}
           onDone={() => {
+            if (screen.review) {
+              setScreen({ name: 'map' });
+              return;
+            }
             markLearnComplete(screen.moduleId, today);
             startSession(screen.moduleId, 'practice');
           }}
@@ -333,6 +352,8 @@ export function App() {
           }
           nextTitle={nextTitle()}
           onBackToMap={() => setScreen({ name: 'map' })}
+          // Tes satu unit tidak punya materinya sendiri — tidak ada pelajaran untuk dibuka.
+          onRelearn={isUnitTest ? undefined : () => relearn(screen.moduleId)}
         />
       );
     }
@@ -396,6 +417,7 @@ export function App() {
             onTestOut={(id) => startSession(id, 'testout')}
             onSkipUnit={startUnitTest}
             onMaster={(id) => startSession(id, 'master')}
+            onRelearn={relearn}
             onNextGrade={
               activeTrack === 'read' ? setReadGrade : activeTrack === 'science' ? setScienceGrade : setGrade
             }

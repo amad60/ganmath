@@ -4,6 +4,7 @@ import { buildBackup, backupFileName, parseBackup, summarize } from './backup';
 import { migrate } from './migrations';
 import { createInitialState } from './schema';
 import { addModule, session } from '../engine/fixtures';
+import { XP_LEARN } from '../engine/gamification';
 import { looksWiped, shouldRemindBackup, type Meta } from './meta';
 
 describe('store + persist', () => {
@@ -33,6 +34,15 @@ describe('store + persist', () => {
     const def = addModule();
     s.getState().recordSession(def, session({ correct: 9 })); // 90% < 95%
     expect(s.getState().moduleState(def.id).status).toBe('learning');
+  });
+
+  it('menyelesaikan materi pertama kali memberi XP_LEARN, sekali saja', () => {
+    const s = createProgressStore(memoryStorage());
+    s.getState().markLearnComplete('g1-u1-m1', '2026-10-05');
+    expect(s.getState().data.xp).toBe(XP_LEARN);
+    s.getState().markLearnComplete('g1-u1-m1', '2026-10-06');
+    expect(s.getState().data.xp).toBe(XP_LEARN);
+    expect(s.getState().moduleState('g1-u1-m1').learnCompletedAt).toBe('2026-10-05');
   });
 
   it('modul yang belum tersentuh mengembalikan state kosong, bukan undefined', () => {

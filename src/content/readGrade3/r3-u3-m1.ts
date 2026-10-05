@@ -103,7 +103,7 @@ export const problemAndSolution: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['problem', 'solution', 'fixed', 'solved', 'wrong'],
+  vocab: ['problem', 'solution', 'fixed', 'solved', 'wrong', 'sentence'],
 
   learn: [
     {
@@ -118,13 +118,18 @@ export const problemAndSolution: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'A solution is what fixes it.',
+      prompt: 'Tap the sentence that tells the solution.',
       visual: {
         kind: 'evidence-text',
-        title: 'The Fix',
-        sentences: ['Tying a new knot is the solution.'],
+        title: 'Flat Tire',
+        sentences: [
+          'Budi rode his bike to the park.',
+          'The front tire went flat.',
+          'Dad pumped air into the tire.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

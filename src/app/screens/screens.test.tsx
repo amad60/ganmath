@@ -23,6 +23,9 @@ import type { ModuleDef, ModuleState, Question } from '../../engine/types';
 import { generateSet } from '../../engine/generator';
 import { mulberry32 } from '../../engine/rng';
 import { session as fakeSession } from '../../engine/fixtures';
+import { App } from '../App';
+import { useProgress } from '../../store/progress';
+import { loadSession } from '../../store/session';
 
 /**
  * Test-test ini ada karena bug nyata yang lolos ke tangan anak: warna benar/salah
@@ -390,6 +393,27 @@ describe('QuestionScreen — anak harus tahu sisa berapa lagi', () => {
 describe('ResultScreen — layar gagal tidak boleh terasa seperti vonis', () => {
   const def = moduleById('g1-u1-m1');
   const failing = evaluate(def, emptyModuleState(), fakeSession({ correct: 4 }));
+
+  it('kuis yang belum lolos menawarkan "See lesson"; kuis yang lolos tidak', () => {
+    const onRelearn = vi.fn();
+    const props = {
+      module: def,
+      xpGained: 20,
+      earnedBadges: [],
+      sessionsNeeded: 2,
+      nextTitle: null,
+      onBackToMap: () => {},
+      onRelearn,
+    };
+    const { unmount } = render(<ResultScreen {...props} kind="quiz" evaluation={failing} />);
+    fireEvent.click(screen.getByRole('button', { name: /See lesson/ }));
+    expect(onRelearn).toHaveBeenCalled();
+    unmount();
+
+    const passing = evaluate(def, emptyModuleState(), fakeSession({ correct: 10 }));
+    render(<ResultScreen {...props} kind="quiz" evaluation={passing} />);
+    expect(screen.queryByRole('button', { name: /See lesson/ })).not.toBeInTheDocument();
+  });
 
   it('bintang tetap berwarna emas meski belum didapat', () => {
     const { container } = render(
@@ -1056,6 +1080,45 @@ describe('MapScreen — pintu jump level', () => {
     ...over,
   });
 
+  it('"See lesson" hanya untuk modul yang materinya sudah pernah selesai', () => {
+    const first = pathOrder[0] as string;
+    const onRelearn = vi.fn();
+    const { unmount } = render(<MapScreen {...mapProps({ onRelearn })} />);
+    expect(screen.queryByRole('button', { name: /See lesson/ })).not.toBeInTheDocument();
+    unmount();
+
+    const learning: ModuleState = {
+      ...emptyModuleState(),
+      status: 'learning',
+      learnCompletedAt: '2026-10-01',
+    };
+    render(<MapScreen {...mapProps({ onRelearn, states: { [first]: learning } })} />);
+    fireEvent.click(screen.getByRole('button', { name: /See lesson/ }));
+    expect(onRelearn).toHaveBeenCalledWith(first);
+  });
+
+  it('"See lesson" juga ada di lembar modul yang sudah tuntas', () => {
+    const first = pathOrder[0] as string;
+    const onRelearn = vi.fn();
+    const mastered: ModuleState = {
+      ...emptyModuleState(),
+      status: 'mastered',
+      stars: 2,
+      learnCompletedAt: '2026-10-01',
+      masteredAt: '2026-10-02',
+    };
+    render(
+      <MapScreen
+        {...mapProps({ onRelearn, states: { [first]: mastered }, nextId: pathOrder[1] as string })}
+      />,
+    );
+    // Node tuntas tidak memasang tombolnya di bawah node — lembarnya yang memuatnya.
+    expect(screen.queryByRole('button', { name: /See lesson/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: moduleById(first).title }));
+    fireEvent.click(screen.getByRole('button', { name: /See lesson/ }));
+    expect(onRelearn).toHaveBeenCalledWith(first);
+  });
+
   /**
    * Bug nyata yang sampai ke tangan anak: dia menjawab 100% benar di "Add to 10"
    * tapi lambat, jadi statusnya `practiced`. Karena `practiced` ikut dihitung
@@ -1585,6 +1648,8 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
       'composed-shape': { kind: 'composed-shape', name: 'square-2-triangles', tap: true },
       fraction: { kind: 'fraction', parts: 2, shaded: 0, tap: true },
       money: { kind: 'money', items: [1000, 500, 2000] },
+      // tap-clue: kalimat bukti harus jadi tombol yang mengirim indeksnya balik.
+      'evidence-text': { kind: 'evidence-text', sentences: ['Ana ran.', 'It rained.'] },
     };
     for (const kinds of Object.values(ACTION_VISUALS)) {
       for (const kind of kinds) {
@@ -1607,6 +1672,79 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
         unmount();
       }
     }
+  });
+
+  /**
+   * Materi Read dulu seluruhnya `watch`: anak membaca cerita, lalu kuisnya meminta
+   * dia mengetuk kalimat bukti — mekanik yang tidak pernah dia latih di materi.
+   */
+  it('tap-clue: salah dikunci tanpa membuka jawaban, benar membuka Next', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('r1-u1-m1');
+    const stepIndex = mod.learn.findIndex((l) => l.action === 'tap-clue');
+    expect(stepIndex).toBeGreaterThan(0);
+    const step = mod.learn[stepIndex]!;
+    if (step.visual.kind !== 'evidence-text') throw new Error('bukan cerita bukti');
+    const sentences = step.visual.sentences;
+    render(<LearnScreen module={mod} onDone={() => {}} onExit={() => {}} />);
+
+    for (let i = 0; i < stepIndex; i++) {
+      act(() => {
+        vi.advanceTimersByTime(WATCH_LOOK_MS);
+      });
+      fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+    }
+
+    const next = screen.getByRole('button', { name: /next|start/i });
+    expect(next).toBeDisabled();
+    expect(screen.getByText('Tap the clue sentence.')).toBeInTheDocument();
+    // Ditunggu lebih lama dari jeda look: tap-clue tidak boleh terbuka sendiri.
+    act(() => {
+      vi.advanceTimersByTime(WATCH_LOOK_MS * 3);
+    });
+    expect(next).toBeDisabled();
+
+    const wrong = sentences.findIndex((_, i) => i !== step.target);
+    const sentenceButton = (i: number) =>
+      screen.getAllByRole('button').find((b) => b.textContent?.includes(sentences[i]!))!;
+    fireEvent.click(sentenceButton(wrong));
+    expect(screen.getByText('Not that one. Look again.')).toBeInTheDocument();
+    expect(next).toBeDisabled();
+    expect(sentenceButton(wrong)).toHaveAttribute('aria-disabled', 'true');
+    // Jawabannya tidak dibuka: kalimat bukti belum ditandai apa pun.
+    expect(sentenceButton(step.target!)).toHaveAttribute('aria-pressed', 'false');
+
+    fireEvent.click(sentenceButton(step.target!));
+    expect(next).not.toBeDisabled();
+    expect(sentenceButton(step.target!)).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByText('Not that one. Look again.')).not.toBeInTheDocument();
+    vi.useRealTimers();
+  });
+
+  it('setiap modul Read punya tepat satu langkah tap-clue', async () => {
+    const { readModulesList } = await import('../../content/readIndex');
+    for (const m of readModulesList) {
+      expect(m.learn.filter((l) => l.action === 'tap-clue'), m.id).toHaveLength(1);
+    }
+  });
+
+  it('materi yang dibuka ulang ("See lesson") ditutup dengan Done, bukan Start practice', () => {
+    vi.useFakeTimers();
+    const done = vi.fn();
+    const mod = moduleById('g1-u1-m1');
+    const SEED = 20261005;
+    const check = learnCheck(mod, SEED);
+    render(<LearnScreen module={mod} seed={SEED} review onDone={done} onExit={() => {}} />);
+    for (let i = 0; i < mod.learn.length; i++) {
+      enableLearnNext();
+      fireEvent.click(screen.getByRole('button', { name: /next|start/i }));
+    }
+    const benar = String(check!.options ? check!.options[check!.question.answer] : check!.question.answer);
+    fireEvent.click(screen.getAllByRole('button').find((b) => b.textContent === benar)!);
+    expect(screen.queryByRole('button', { name: /start practice/i })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    expect(done).toHaveBeenCalled();
+    vi.useRealTimers();
   });
 
   it('langkah watch: Next terkunci sampai jeda look selesai', () => {
@@ -1866,5 +2004,64 @@ describe('ParentScreen — kemajuan per grade', () => {
     fireEvent.click(units[0]!);
     expect(units[0]).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getAllByText(/first try/).length).toBeGreaterThan(0);
+  });
+});
+
+/**
+ * "See lesson" membuka ulang materi TANPA menyentuh progres. markLearnComplete
+ * me-nol-kan `consecutiveFails`; kalau mengintip materi ikut memanggilnya, anak di
+ * tengah rentetan gagal diam-diam kehilangan jalur "diajar dengan cara lain" (§7).
+ * Dan Done tidak boleh meluncurkan latihan — dia datang untuk melihat, bukan dites.
+ */
+describe('App — See lesson tidak mengubah progres', () => {
+  it('materi yang dibuka ulang kembali ke peta, state modul & XP tidak berubah', () => {
+    vi.useFakeTimers();
+    const mod = moduleById(pathOrder[0] as string);
+    const before: ModuleState = {
+      ...emptyModuleState(),
+      status: 'learning',
+      learnCompletedAt: '2026-10-01',
+      consecutiveFails: 2,
+    };
+    const initial = createInitialState();
+    useProgress.setState({
+      data: {
+        ...initial,
+        profile: { ...initial.profile, name: 'Sun' },
+        xp: 40,
+        modules: { [mod.id]: before },
+      },
+    });
+
+    render(<App />);
+    // Seed pengecekan dikunci saat LearnScreen dipasang; jam palsu membuatnya diketahui.
+    const seed = Date.now();
+    fireEvent.click(screen.getByRole('button', { name: /See lesson/ }));
+    const check = learnCheck(mod, seed);
+
+    for (let i = 0; i < mod.learn.length; i++) {
+      act(() => {
+        vi.advanceTimersByTime(QUICK_LOOK_FLASH_MS);
+      });
+      const next = screen.getByRole('button', { name: /^(Next|Done)$/ });
+      if (next.hasAttribute('disabled')) {
+        for (const b of screen.getAllByRole('button')) {
+          if (/^(Object|Cell) /.test(b.getAttribute('aria-label') ?? '')) fireEvent.click(b);
+        }
+      }
+      fireEvent.click(screen.getByRole('button', { name: /^(Next|Done)$/ }));
+    }
+    const benar = String(check!.options ? check!.options[check!.question.answer] : check!.question.answer);
+    fireEvent.click(screen.getAllByRole('button').find((b) => b.textContent === benar)!);
+    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+
+    // Kembali di peta, tanpa sesi latihan yang berjalan.
+    expect(screen.getByRole('button', { name: /See lesson/ })).toBeInTheDocument();
+    expect(loadSession()).toBeNull();
+    expect(useProgress.getState().data.modules[mod.id]).toEqual(before);
+    expect(useProgress.getState().data.xp).toBe(40);
+
+    useProgress.getState().reset();
+    vi.useRealTimers();
   });
 });

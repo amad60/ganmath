@@ -12,7 +12,7 @@ export const mainIdeaSummary: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['idea', 'mostly', 'topic', 'about', 'bees', 'hive'],
+  vocab: ['idea', 'mostly', 'topic', 'about', 'bees', 'hive', 'sentence'],
 
   learn: [
     {
@@ -31,13 +31,18 @@ export const mainIdeaSummary: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The big idea covers the whole text.',
+      prompt: 'Tap the big idea sentence.',
       visual: {
         kind: 'evidence-text',
-        title: 'Main Sentence',
-        sentences: ['Honeybees are hard workers.'],
+        title: 'Busy Ants',
+        sentences: [
+          'Ants are hard workers.',
+          'They carry crumbs home.',
+          'They dig long tunnels.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 0,
     },
     {
       stage: 'abstract',

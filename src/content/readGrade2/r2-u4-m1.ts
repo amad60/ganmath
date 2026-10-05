@@ -121,13 +121,18 @@ export const supportingDetails: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Skip a sentence that leaves the topic.',
+      prompt: 'Tap the detail about the big idea.',
       visual: {
         kind: 'evidence-text',
-        title: 'Stay on Topic',
-        sentences: ['Pollen on their legs is a detail. A sentence about the moon is not.'],
+        title: 'Busy Bees',
+        sentences: [
+          'Bees work hard for their hive.',
+          'The moon was bright that night.',
+          'They carry pollen on their legs.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

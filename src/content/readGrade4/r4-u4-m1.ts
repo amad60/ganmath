@@ -103,7 +103,7 @@ export const storyTheme: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['lesson', 'theme', 'matters', 'story', 'teach'],
+  vocab: ['lesson', 'theme', 'matters', 'story', 'teach', 'happened'],
 
   learn: [
     {
@@ -118,13 +118,18 @@ export const storyTheme: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The lesson is bigger than one event.',
+      prompt: 'Tap the lesson, not what happened.',
       visual: {
         kind: 'evidence-text',
-        title: 'Lesson',
-        sentences: ['Giving the coat is the event. Kindness is the lesson.'],
+        title: 'The Lost Ball',
+        sentences: [
+          'Being honest helps people trust you.',
+          'Sari found a ball in the park.',
+          'She gave it back to the boy who lost it.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 0,
     },
     {
       stage: 'abstract',

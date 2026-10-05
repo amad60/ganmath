@@ -10,6 +10,8 @@ import {
   newBadges,
   summarizeDepth,
   updateStreak,
+  XP_LEARN,
+  xpForLearn,
   xpForSession,
   xpIntoLevel,
   type BadgeId,
@@ -25,6 +27,12 @@ describe('XP & level', () => {
     expect(xpForSession(r, { passed: false, mastered: false, thirdStar: false })).toBe(40);
     expect(xpForSession(r, { passed: true, mastered: false, thirdStar: false })).toBe(60);
     expect(xpForSession(r, { passed: true, mastered: true, thirdStar: false })).toBe(110);
+  });
+
+  it('materi dibayar XP_LEARN sekali per modul, tidak tiap kali dibuka ulang', () => {
+    expect(XP_LEARN).toBe(10);
+    expect(xpForLearn(state())).toBe(XP_LEARN);
+    expect(xpForLearn(state({ learnCompletedAt: '2026-10-01' }))).toBe(0);
   });
 
   it('soal ulangan tidak memberi XP tambahan', () => {

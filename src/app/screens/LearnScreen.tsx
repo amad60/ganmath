@@ -27,7 +27,16 @@ export type LearnScreenProps = {
   /** Seed soal pengecekan. Dibiarkan kosong di app; diisi test dan skrip audit
    *  supaya soalnya bisa diulang persis. */
   seed?: number;
+  /**
+   * Materi dibuka ulang dari peta / layar hasil ("See lesson"). Tombol terakhir
+   * menjadi "Done", bukan "Start practice" — yang menyusul hanya kembali, bukan
+   * latihan. App yang menjamin progres tidak disentuh; layar ini hanya labelnya.
+   */
+  review?: boolean;
 };
+
+/** Jejak satu langkah `tap-clue`: kalimat yang sudah ditolak, dan apakah buktinya ketemu. */
+type ClueState = { rejected: number[]; found: boolean };
 
 /**
  * Tombol Next TIDAK aktif sampai anak benar-benar melakukan aksinya —
@@ -46,7 +55,7 @@ export type LearnScreenProps = {
  * keluar ke peta — anak yang salah ketuk Next bisa melihat lagi, anak yang mau
  * berhenti tidak perlu mundur satu-satu.
  */
-export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScreenProps) {
+export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: LearnScreenProps) {
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<number[]>(() => module.learn.map(() => 0));
   const [looked, setLooked] = useState<boolean[]>(() => module.learn.map(() => false));
@@ -55,6 +64,9 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
   const [opened, setOpened] = useState<number[]>(() => module.learn.map(() => 0));
   const [bundled, setBundled] = useState<boolean[]>(() => module.learn.map(() => false));
   const [showUnitIntro, setShowUnitIntro] = useState(false);
+  const [clues, setClues] = useState<ClueState[]>(() =>
+    module.learn.map(() => ({ rejected: [], found: false })),
+  );
   const reduced = useReducedMotion();
 
   // Seed awal dikunci per kunjungan. Salah di pengecekan menaikkan seed, jadi
@@ -66,6 +78,16 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
   const onCheck = check != null && step === module.learn.length;
   const current = module.learn[step];
   const value = current ? (values[step] ?? 0) : 0;
+  /**
+   * `tap-clue` memakai `target` sebagai INDEKS kalimat, bukan jumlah — gerbang
+   * umum `value >= target` akan langsung lolos untuk kalimat ke-0. Jadi langkah
+   * ini punya gerbangnya sendiri: kalimat buktinya benar-benar diketuk.
+   */
+  const clueStep =
+    !onCheck && current?.action === 'tap-clue' && current.visual.kind === 'evidence-text'
+      ? current.visual
+      : null;
+  const clue = clues[step] ?? { rejected: [], found: false };
 
   const work = useMemo(
     () => (current?.action === 'watch' ? watchWork(current.visual) : null),
@@ -102,11 +124,13 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
   const rowsDone = work?.kind === 'rows' && (opened[step] ?? 0) >= work.rows - 1;
   const reached = onCheck
     ? correct
-    : work
-      ? columnDone || fractionDone || bundleDone || rowsDone
-      : current!.action === 'watch'
-        ? Boolean(looked[step])
-        : current!.target != null && value >= current!.target;
+    : clueStep
+      ? clue.found
+      : work
+        ? columnDone || fractionDone || bundleDone || rowsDone
+        : current!.action === 'watch'
+          ? Boolean(looked[step])
+          : current!.target != null && value >= current!.target;
   const last = step === total - 1;
   const canPrev = step > 0;
   const flashing =
@@ -116,6 +140,28 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
     setValues((prev) => {
       const next = [...prev];
       next[step] = n;
+      return next;
+    });
+  };
+
+  /**
+   * Ketukan di cerita bukti. Salah: kalimat itu dikunci dan satu baris pendek
+   * muncul — tanpa skor, tanpa membuka kalimat yang benar. Kalau jawabannya
+   * dibuka di ketukan salah pertama, anak cukup mengetuk asal lalu membaca
+   * sorotannya; yang dilatih justru membaca ulang ceritanya.
+   */
+  const tapClue = (index: number) => {
+    if (!current || clue.found) return;
+    unlockAudio();
+    const hit = index === current.target;
+    if (hit) sfx.correct();
+    else sfx.tap();
+    setClues((prev) => {
+      const next = [...prev];
+      const was = next[step] ?? { rejected: [], found: false };
+      next[step] = hit
+        ? { ...was, found: true }
+        : { ...was, rejected: was.rejected.includes(index) ? was.rejected : [...was.rejected, index] };
       return next;
     });
   };
@@ -222,7 +268,7 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
               key={step}
               visual={current!.visual}
               value={value}
-              onValue={setValue}
+              onValue={clueStep ? tapClue : setValue}
               interactive={interactive}
               onFlashEnd={markLooked}
               reveal={
@@ -234,7 +280,13 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
               }
               bundled={work?.kind === 'bundle' ? Boolean(bundled[step]) : false}
               fractionTap={work?.kind === 'fraction'}
+              clue={clueStep && clue.found ? current!.target : undefined}
+              rejected={clueStep ? clue.rejected : undefined}
             />
+
+            {clueStep && !clue.found && clue.rejected.length > 0 ? (
+              <p className="text-ink-soft text-center text-[18px] font-bold">{en.learn.clueRetry}</p>
+            ) : null}
 
             {current!.caption ? (
               <p className="text-3xl font-black tabular-nums">{current!.caption}</p>
@@ -293,7 +345,7 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
             ) : null}
 
             {/* Umpan balik saat target tercapai — anak tahu dia sudah benar sebelum Next. */}
-            {interactive && reached && current!.target != null ? (
+            {interactive && reached && current!.target != null && !clueStep ? (
               <p className="text-xl font-black" style={{ color: 'var(--c-correct)' }}>
                 ✓ {current!.target}
               </p>
@@ -311,14 +363,16 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp }: LearnScr
             </Button>
           ) : null}
           <Button full={!canPrev} className={canPrev ? 'min-w-0 flex-1' : ''} disabled={!reached} onClick={advance}>
-            {last ? en.learn.start : en.learn.next}
+            {last ? (review ? en.learn.done : en.learn.start) : en.learn.next}
           </Button>
         </div>
         {!reached ? (
           <p className="text-ink-soft mt-2 text-center text-[15px]">
             {onCheck
               ? en.learn.checkHint
-              : work?.kind === 'fraction'
+              : clueStep
+                ? en.learn.tapClue
+                : work?.kind === 'fraction'
                 ? en.learn.tapParts
                 : work
                   ? en.learn.tapToContinue

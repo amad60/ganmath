@@ -19,6 +19,12 @@ export type ResultScreenProps = {
   /** Judul modul berikutnya — ditampilkan sebagai KETERANGAN, bukan tombol. */
   nextTitle: string | null;
   onBackToMap: () => void;
+  /**
+   * Buka ulang materi modul ini ("See lesson"). Hanya ditawarkan sesudah kuis atau
+   * ulangan yang belum lolos akurasi: di situlah anak paling butuh melihat idenya
+   * lagi, dan itu sebuah pilihan — tombol utamanya tetap kembali ke peta.
+   */
+  onRelearn?: () => void;
 };
 
 /**
@@ -44,6 +50,7 @@ export function ResultScreen({
   sessionsNeeded,
   nextTitle,
   onBackToMap,
+  onRelearn,
 }: ResultScreenProps) {
   const { next, detail } = evaluation;
   const mastered = next.status === 'mastered' || next.status === 'retained';
@@ -76,6 +83,8 @@ export function ResultScreen({
     if (earnedBadges.length > 0) sfx.badge();
     else if (cleared || gotStar) sfx.star();
   }, [earnedBadges.length, cleared, gotStar]);
+
+  const failedCheck = (kind === 'quiz' || kind === 'review') && !detail.accuracyPass;
 
   const testedOut = evaluation.events.some((e) => e.type === 'tested-out');
   const testoutFailed = evaluation.events.some((e) => e.type === 'testout-failed');
@@ -160,7 +169,12 @@ export function ResultScreen({
         ) : null}
       </div>
 
-      <div className="mt-auto w-full pb-1">
+      <div className="mt-auto flex w-full flex-col gap-3 pb-1">
+        {failedCheck && onRelearn ? (
+          <Button variant="ghost" full onClick={onRelearn}>
+            {en.learn.seeLesson}
+          </Button>
+        ) : null}
         <Button full onClick={onBackToMap}>
           {en.result.backToMap}
         </Button>

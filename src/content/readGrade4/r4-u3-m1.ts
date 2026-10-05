@@ -103,7 +103,7 @@ export const contextClues: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['context', 'means', 'clue', 'word', 'nearby'],
+  vocab: ['context', 'means', 'clue', 'word', 'nearby', 'drenched'],
 
   learn: [
     {
@@ -118,13 +118,18 @@ export const contextClues: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The clue sits close to the new word.',
+      prompt: 'Tap the clue for what drenched means.',
       visual: {
         kind: 'evidence-text',
-        title: 'Clue',
-        sentences: ['Almost none left tells you scarce means not enough.'],
+        title: 'Drenched',
+        sentences: [
+          'Rafi walked home after school.',
+          'He came in the door drenched.',
+          'Water dripped from his hair and shirt.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 2,
     },
     {
       stage: 'abstract',

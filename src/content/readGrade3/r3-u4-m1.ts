@@ -103,7 +103,7 @@ export const informationOrder: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['earliest', 'order', 'before', 'after', 'step'],
+  vocab: ['earliest', 'order', 'before', 'after', 'step', 'happen'],
 
   learn: [
     {
@@ -118,13 +118,18 @@ export const informationOrder: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The earliest step sets up the rest.',
+      prompt: 'Tap what happens earliest.',
       visual: {
         kind: 'evidence-text',
-        title: 'Earliest',
-        sentences: ['The seed comes before the flower.'],
+        title: 'Butterfly',
+        sentences: [
+          'A butterfly opens its wings.',
+          'A tiny egg sits on a leaf.',
+          'A caterpillar eats and grows.',
+        ],
       },
-      action: 'watch',
+      action: 'tap-clue',
+      target: 1,
     },
     {
       stage: 'abstract',

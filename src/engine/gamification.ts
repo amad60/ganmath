@@ -7,6 +7,15 @@ export const XP_PER_CORRECT = 5;
 export const XP_SESSION_PASSED = 20;
 export const XP_MASTERED = 50;
 export const XP_THIRD_STAR = 30;
+/**
+ * XP pertama kali materi sebuah modul diselesaikan. Tanpa ini Learn adalah satu-
+ * satunya bagian app yang tidak pernah dibayar: anak membaca, mengetuk, menjawab
+ * pengecekan pemahaman — lalu bar XP diam, dan yang terbaca dari kursinya adalah
+ * "hadiahnya ada di tes". Itu persis rasa "terlalu seperti ujian" yang ingin
+ * dihilangkan. Sekali per modul, supaya membuka ulang materi ("See lesson") tidak
+ * berubah jadi mesin XP.
+ */
+export const XP_LEARN = 10;
 export const XP_PER_LEVEL = 100;
 
 /**
@@ -31,9 +40,12 @@ export function xpToNextLevel(level: number): number {
 }
 
 /**
- * XP HANYA lahir dari soal dan penguasaan — tidak pernah dari "membuka app" atau
- * "bermain lama". Ini penawar langsung untuk kegagalan Prodigy: hadiah untuk waktu
- * di app, bukan untuk belajar (docs/research/04-app-mechanics.md §4.2).
+ * XP lahir dari BELAJAR: soal, penguasaan, dan menyelesaikan materi pertama kali
+ * (`XP_LEARN`, lihat `xpForLearn`) — tidak pernah dari "membuka app" atau "bermain
+ * lama". Ini penawar langsung untuk kegagalan Prodigy: hadiah untuk waktu di app,
+ * bukan untuk belajar (docs/research/04-app-mechanics.md §4.2). Materi boleh dibayar
+ * karena ia menuntut aksi (Next terkunci sampai aksinya dilakukan) dan ditutup
+ * pengecekan pemahaman — bukan sekadar waktu di layar.
  */
 export function xpForSession(
   result: SessionResult,
@@ -46,6 +58,16 @@ export function xpForSession(
     (opts.mastered ? XP_MASTERED : 0) +
     (opts.thirdStar ? XP_THIRD_STAR : 0)
   );
+}
+
+/**
+ * XP untuk menyelesaikan materi: `XP_LEARN` hanya kalau `learnCompletedAt` belum
+ * pernah terisi. Ulang materi lewat "See lesson" tidak memanggil markLearnComplete
+ * sama sekali, dan materi kedua kali sesudah gagal beruntun memang jalur belajar,
+ * tapi bukan materi BARU — keduanya 0.
+ */
+export function xpForLearn(prev: Pick<ModuleState, 'learnCompletedAt'>): number {
+  return prev.learnCompletedAt ? 0 : XP_LEARN;
 }
 
 export function levelForXp(xp: number): number {
