@@ -12,8 +12,17 @@ function column(left: number, right: number, op: '+' | '−'): LearnVisual {
   return { kind: 'column-sum', a: left, b: right, op, showTotal: false };
 }
 
-/** Berapa kali Hint boleh dibuka dalam satu sesi latihan. */
-export const HINTS_PER_PRACTICE = 2;
+/**
+ * Berapa soal pertama latihan yang bantuannya terbuka SENDIRI.
+ *
+ * Latihan dulu dimulai dingin: materi sekali lewat, lalu soal tanpa pendamping, dan
+ * Hint dijatah 2 kali. Untuk anak yang belajar sendirian itu membuat latihan terasa
+ * seperti tes. Tiga soal pertama sekarang dikerjakan bersama gambarnya (contoh yang
+ * dibimbing), lalu bantuannya memudar — anak masih bisa membukanya kapan saja,
+ * tanpa jatah. Bantuan yang terbuka sendiri TIDAK dicatat sebagai `hintUsed`:
+ * anak tidak memintanya.
+ */
+export const GUIDED_PRACTICE = 3;
 
 const MINUS = '−';
 

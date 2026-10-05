@@ -15,7 +15,7 @@ function q(patch: Partial<Question> & Pick<Question, 'text' | 'answer' | 'params
 }
 
 describe('scaffoldForQuestion — Fading support di sesi practice', () => {
-  it('memberikan column-sum tanpa jawaban pada 2 soal pertama sesi practice', () => {
+  it('memberikan column-sum tanpa jawaban pada 3 soal pertama sesi practice', () => {
     const question = q({ text: '26 + 37 = ?', params: { a: 26, b: 37 }, answer: 63 });
 
     // Soal ke-0 (soal pertama): dapat scaffold tangga bantu
@@ -38,9 +38,12 @@ describe('scaffoldForQuestion — Fading support di sesi practice', () => {
       showTotal: false,
     });
 
-    // Soal ke-2 dan seterusnya: memudar (fading) -> null agar mandiri
-    const s2 = scaffoldForQuestion(question, 2, 'practice');
-    expect(s2).toBeNull();
+    // Soal ke-2 (soal ketiga): masih dibimbing
+    expect(scaffoldForQuestion(question, 2, 'practice')).toEqual(s1);
+
+    // Soal ke-3 dan seterusnya: memudar (fading) -> null agar mandiri
+    const s3 = scaffoldForQuestion(question, 3, 'practice');
+    expect(s3).toBeNull();
   });
 
   it('tidak pernah memberikan scaffold pada sesi ujian (quiz, speed, master, review)', () => {

@@ -706,9 +706,25 @@ describe('ErrorBoundary — app tidak boleh gagal tanpa suara', () => {
  * "Look at the picture." tanpa gambar apa pun di layar.
  */
 describe('QuestionScreen — Hint harus benar-benar menolong', () => {
+  /**
+   * Tiga soal pertama latihan membuka bantuannya sendiri (`GUIDED_PRACTICE`). Test di
+   * blok ini menguji Hint yang DIMINTA anak, jadi sesinya dimulai dari soal ke-4.
+   */
+  const past = {
+    questionId: 'past',
+    type: 'keypad' as const,
+    skill: 'add',
+    correct: true,
+    thinkMs: 1000,
+    totalMs: 1200,
+    retried: false,
+    hintUsed: false,
+    story: false,
+  };
   const play = (moduleId: string, kind: 'practice' | 'quiz') => {
     const def = moduleById(moduleId);
-    return createSession(def, kind, 5, 0);
+    const s = createSession(def, kind, 5, 0);
+    return { ...s, results: [past, past, past] };
   };
 
   it('menekan Hint di soal penjumlahan menampilkan angka SOAL INI, bukan contoh Learn', () => {
@@ -752,8 +768,6 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
-    // key = 0 di sesi practice (soal pertama) sekarang punya scaffold otomatis di question-block
-    // saat hint dibuka, kita memeriksa isi panel hint secara spesifik
     fireEvent.click(screen.getByRole('button', { name: /Hint/ }));
     const panel = document.getElementById('hint-panel')!;
     expect(within(panel).getByText('Ones first. 6 + 7.')).toBeInTheDocument();
@@ -826,7 +840,7 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
       />,
     );
     // Tombol bantuan di layar ini
-    const opener = () => screen.getByRole('button', { name: /Hint ·/i });
+    const opener = () => screen.getByRole('button', { name: /💡 Hint/ });
     const closer = () => screen.getByRole('button', { name: /✕ Hide hint/i });
 
     fireEvent.click(opener());
@@ -858,7 +872,7 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /Hint ·/i }));
+    fireEvent.click(screen.getByRole('button', { name: /💡 Hint/ }));
     expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(screen.queryByText(/Look at the picture/)).not.toBeInTheDocument();
@@ -880,7 +894,7 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
         onExit={() => {}}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /Hint ·/i }));
+    fireEvent.click(screen.getByRole('button', { name: /💡 Hint/ }));
     const hideBtn = screen.getAllByRole('button', { name: 'Hide hint' })[0]!;
     fireEvent.click(hideBtn);
 
@@ -894,6 +908,79 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     vi.runAllTimers();
     vi.useRealTimers();
     expect(seen).toEqual([true]);
+  });
+
+  it('tiga soal pertama latihan dibuka bersama gambarnya, tanpa dicatat sebagai dibantu', () => {
+    const seen: boolean[] = [];
+    const session = createSession(moduleById('g1-u2-m2'), 'practice', 5, 0);
+    render(
+      <QuestionScreen
+        session={session}
+        onSession={(next) => seen.push(next.results.at(-1)?.hintUsed ?? false)}
+        onFinish={() => {}}
+        onExit={() => {}}
+      />,
+    );
+    expect(screen.getByText(/Look at the picture/)).toBeInTheDocument();
+    vi.useFakeTimers();
+    const q = session.pending[0]!.question;
+    for (const digit of String(q.answer)) {
+      fireEvent.click(screen.getByRole('button', { name: digit }));
+    }
+    fireEvent.click(screen.getByRole('button', { name: /Check/i }));
+    vi.runAllTimers();
+    vi.useRealTimers();
+    expect(seen).toEqual([false]);
+  });
+
+  it('salah jawab di latihan membuka penjelasan dan menunggu Next', () => {
+    const moves: number[] = [];
+    const session = play('g1-u2-m2', 'practice');
+    render(
+      <QuestionScreen
+        session={session}
+        onSession={(next) => moves.push(next.results.length)}
+        onFinish={(next) => moves.push(next.results.length)}
+        onExit={() => {}}
+      />,
+    );
+    expect(screen.queryByText(/Let's look again/)).not.toBeInTheDocument();
+    vi.useFakeTimers();
+    const q = session.pending[0]!.question;
+    const wrong = String(q.answer === 9 ? 8 : 9);
+    fireEvent.click(screen.getByRole('button', { name: wrong }));
+    fireEvent.click(screen.getByRole('button', { name: /Check/i }));
+    vi.runAllTimers();
+    vi.useRealTimers();
+    // Tidak lanjut sendiri: anak membaca dulu gambarnya.
+    expect(moves).toEqual([]);
+    expect(screen.getByText(/Let's look again/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(moves).toEqual([4]);
+  });
+
+  it('salah jawab di kuis tetap tanpa penjelasan dan lanjut sendiri', () => {
+    const moves: number[] = [];
+    const session = play('g1-u2-m2', 'quiz');
+    render(
+      <QuestionScreen
+        session={session}
+        onSession={(next) => moves.push(next.results.length)}
+        onFinish={(next) => moves.push(next.results.length)}
+        onExit={() => {}}
+      />,
+    );
+    vi.useFakeTimers();
+    const q = session.pending[0]!.question;
+    const wrong = q.choices
+      ? q.choices.find((c) => c !== q.answer)!
+      : q.answer === 9 ? 8 : 9;
+    fireEvent.click(screen.getByRole('button', { name: String(wrong) }));
+    if (!q.choices) fireEvent.click(screen.getByRole('button', { name: /Check/i }));
+    vi.runAllTimers();
+    vi.useRealTimers();
+    expect(screen.queryByText(/Let's look again/)).not.toBeInTheDocument();
+    expect(moves).toEqual([4]);
   });
 
   it('Hint tidak pernah ditawarkan di sesi yang diperlakukan sebagai ujian', () => {
@@ -923,7 +1010,7 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     }
   });
 
-  it('Hint latihan hilang setelah dipakai 2 kali', () => {
+  it('Hint latihan tidak dijatah — tetap ada setelah dipakai berkali-kali', () => {
     const session = createSession(moduleById('g1-u2-m2'), 'practice', 5, 0);
     const used = {
       questionId: 'past',
@@ -938,13 +1025,13 @@ describe('QuestionScreen — Hint harus benar-benar menolong', () => {
     };
     render(
       <QuestionScreen
-        session={{ ...session, results: [used, used] }}
+        session={{ ...session, results: [used, used, used, used] }}
         onSession={() => {}}
         onFinish={() => {}}
         onExit={() => {}}
       />,
     );
-    expect(screen.queryByRole('button', { name: /Hint/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /💡 Hint/ })).toBeInTheDocument();
   });
 });
 

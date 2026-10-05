@@ -39,6 +39,24 @@ describe('Read tidak bisa diluluskan dengan mengetuk posisi', () => {
     expect(next.results[0]?.correct).toBe(false);
   });
 
+  it('latihan baca: yang kembali adalah cerita LAIN, bukan cerita yang tadi salah', () => {
+    const session = createSession(mysteryClues, 'practice', 7, 1_000);
+    const q = currentQuestion(session)!;
+    const next = submitAnswer(session, {
+      correct: false,
+      thinkMs: 400,
+      totalMs: 800,
+      hintUsed: false,
+      nowMs: 2_000,
+      def: mysteryClues,
+    });
+    const sibling = next.requeue[0]?.question;
+    expect(sibling).toBeTruthy();
+    expect(sibling!.type).toBe(q.type);
+    expect(sibling!.id).not.toBe(q.id);
+    expect(JSON.stringify(sibling!.visual) + sibling!.text).not.toBe(JSON.stringify(q.visual) + q.text);
+  });
+
   it('setiap modul Read baru bisa menghasilkan sesi latihan', () => {
     for (const mod of readModulesList.filter((m) => m.grade >= 2)) {
       const session = createSession(mod, 'practice', 42, 1_000);

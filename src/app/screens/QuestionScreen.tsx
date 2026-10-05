@@ -10,8 +10,8 @@ import {
 } from '../../engine/session';
 import { Button, Header, Keypad, SessionDots, type Feedback } from '../../components/ui';
 import { LearnVisualView } from './LearnVisualView';
-import { modules as moduleRegistry } from '../../content';
-import { HINTS_PER_PRACTICE, hintFor } from '../../engine/hint';
+import { moduleById } from '../../content';
+import { GUIDED_PRACTICE, hintFor } from '../../engine/hint';
 import { scaffoldForQuestion } from '../../engine/scaffolding';
 import type { DotState } from '../../components/ui/SessionDots';
 import {
@@ -319,7 +319,20 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
  * yang memilihnya lewat `QuestionRule.hint`.
  */
 function hintOf(moduleId: string, question: Question) {
-  return hintFor(moduleRegistry[moduleId]?.learn, question);
+  return hintFor(moduleOf(moduleId)?.learn, question);
+}
+
+/**
+ * Modul sesi ini dari KETIGA jalur. Dulu yang dicari hanya registri Math, jadi soal
+ * Read dan Science tidak pernah punya Hint — cabang `sci-` di `hintFor` mati.
+ * Tes unit tidak terdaftar sebagai modul; di sana bantuan memang tidak dipakai.
+ */
+function moduleOf(moduleId: string) {
+  try {
+    return moduleById(moduleId);
+  } catch {
+    return undefined;
+  }
 }
 
 export function QuestionScreen({ session, onSession, onFinish, onExit }: QuestionScreenProps) {
@@ -354,6 +367,18 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const [hintOpen, setHintOpen] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
   const hint = question ? hintOf(session.moduleId, question) : null;
+  /**
+   * Latihan dimulai bersama gambarnya: bantuan TERBUKA SENDIRI di tiga soal pertama
+   * (`GUIDED_PRACTICE`). Terbuka sendiri ≠ diminta, jadi `hintUsed` tidak disentuh.
+   */
+  const guided = session.kind === 'practice' && done < GUIDED_PRACTICE && hint != null;
+  /**
+   * Salah jawab di latihan = momen belajar, bukan "Not quite" 1,6 detik lalu lanjut.
+   * Gambar bantuan soal ini dibuka, dan soal berikutnya baru datang saat anak
+   * menekan Next. Jawaban benarnya tetap TIDAK ditandai — bantuan memang tidak
+   * pernah memuat jawaban akhir (`engine/hint.ts`).
+   */
+  const [explaining, setExplaining] = useState<SessionState | null>(null);
   const hintRef = useRef<HTMLDivElement | null>(null);
 
   // Escape menutup bantuan — kebiasaan baku untuk apa pun yang menimpa layar,
@@ -407,10 +432,6 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     session.kind === 'quiz' || session.kind === 'master' || session.kind === 'testout';
   const noHint =
     isQuiz || session.kind === 'speed' || session.kind === 'review';
-  const hintsLeft = Math.max(
-    0,
-    HINTS_PER_PRACTICE - session.results.filter((r) => r.hintUsed).length,
-  );
   const isCompare = question?.type === 'compare-symbol';
   const isText = question?.type === 'choose-text';
   const isLine = question?.type === 'number-line-drop';
@@ -431,8 +452,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         ? question.visual.cards.map((_, i) => i)
         : [],
     );
-    setHintOpen(false);
+    setHintOpen(guided);
     setHintUsed(false);
+    setExplaining(null);
     setFeedback(null);
     setRejected([]);
     return () => cancelAnimationFrame(id);
@@ -486,7 +508,14 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       totalMs: Math.max(0, now - shownAt.current),
       hintUsed,
       nowMs: Date.now(),
+      def: moduleOf(session.moduleId),
     });
+
+    if (!scored && session.kind === 'practice' && hasHint) {
+      setHintOpen(true);
+      setExplaining(next);
+      return;
+    }
 
     window.setTimeout(
       () => {
@@ -620,7 +649,9 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                 menemukan cara menutup — yang dari tempat duduknya sama saja dengan
                 tidak bisa ditutup. */}
             <div className="flex w-full items-center justify-between gap-2">
-              <p className="text-ink-soft text-[18px] font-bold">{en.question.showMe}</p>
+              <p className="text-ink-soft text-[18px] font-bold">
+                {explaining ? en.question.letsSee : en.question.showMe}
+              </p>
               <button
                 type="button"
                 aria-label={en.question.hintHide}
@@ -674,7 +705,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
         style={{ animation: 'question-in 260ms var(--ease-std)' }}
       >
         <QuestionText text={question.text} />
-        {!noHint && hasHint && (hintsLeft > 0 || hintUsed) ? (
+        {!noHint && hasHint && !explaining ? (
           <Button
             variant="ghost"
             aria-expanded={hintOpen}
@@ -692,10 +723,11 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
               }
               setHintOpen(true);
               // Sengaja TIDAK pernah dikembalikan ke false: lihat catatan di state.
-              setHintUsed(true);
+              // Soal yang dibimbing tidak dihitung: bantuannya sudah ditawarkan app.
+              if (!guided) setHintUsed(true);
             }}
           >
-            {hintOpen ? `✕ ${en.question.hintHide}` : `💡 ${en.question.hintLeft(hintsLeft)}`}
+            {hintOpen ? `✕ ${en.question.hintHide}` : `💡 ${en.question.hint}`}
           </Button>
         ) : null}
       </div>
@@ -824,6 +856,23 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
           >
             {feedback.correct ? en.question.correct : en.question.notQuite}
           </p>
+        ) : null}
+
+        {explaining ? (
+          <div className="mt-2">
+            <Button
+              full
+              onClick={() => {
+                sfx.tap();
+                const next = explaining;
+                setExplaining(null);
+                if (isFinished(next, Date.now())) onFinish(next);
+                else onSession(next);
+              }}
+            >
+              {en.learn.next}
+            </Button>
+          </div>
         ) : null}
       </div>
     </div>

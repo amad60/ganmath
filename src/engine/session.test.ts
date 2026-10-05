@@ -89,6 +89,32 @@ describe('session runner', () => {
     expect(s.pending.some((p) => p.question.id === first?.id)).toBe(false);
   });
 
+  it('latihan: soal pilihan yang salah diganti KEMBARANNYA — aturan sama, soal beda', () => {
+    let s = createSession(def, 'practice', 5, T0);
+    const first = currentQuestion(s)!;
+    expect(first.type).toBe('choose-number');
+    s = submitAnswer(s, { correct: false, thinkMs: 2000, totalMs: 3000, hintUsed: false, nowMs: T0, def });
+    const sibling = s.requeue[0]?.question;
+    expect(sibling).toBeTruthy();
+    expect(sibling!.type).toBe(first.type);
+    expect(sibling!.skill).toBe(first.skill);
+    expect(sibling!.text).not.toBe(first.text);
+    // Kembarannya dijawab salah lagi → tidak berantai.
+    while (s.pending.length && !s.pending[0]!.retried) {
+      s = submitAnswer(s, { correct: true, thinkMs: 1000, totalMs: 1500, hintUsed: false, nowMs: T0, def });
+    }
+    expect(s.pending[0]?.question.text).toBe(sibling!.text);
+    s = submitAnswer(s, { correct: false, thinkMs: 1000, totalMs: 1500, hintUsed: false, nowMs: T0, def });
+    expect(s.requeue).toHaveLength(0);
+    expect(s.results.at(-1)?.retried).toBe(true);
+  });
+
+  it('kuis tidak pernah memberi soal kembaran', () => {
+    let s = createSession(def, 'quiz', 5, T0);
+    s = submitAnswer(s, { correct: false, thinkMs: 2000, totalMs: 3000, hintUsed: false, nowMs: T0, def });
+    expect(s.requeue.filter((r) => r.question.type === 'choose-number')).toHaveLength(0);
+  });
+
   it('soal ulangan tidak diulang lagi kalau salah lagi (tidak ada lingkaran tak berujung)', () => {
     let s = createSession(def, 'practice', 6, T0);
     for (let i = 0; i < 12; i++) {

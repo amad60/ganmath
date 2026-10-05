@@ -86,6 +86,12 @@ export type SessionState = {
    * persis bug "garis finis mundur" yang dulu membuat panjang sesi dipatok.
    */
   total: number;
+  /**
+   * Soal yang sudah dijawab (teks + gambar), supaya soal kembaran dari
+   * `freshSibling` tidak pernah soal yang sudah lewat. Opsional: sesi tersimpan
+   * dari versi lama dipulihkan tanpa field ini.
+   */
+  seen?: string[];
 };
 
 export function createSession(
@@ -125,7 +131,44 @@ export type AnswerInput = {
   totalMs: number;
   hintUsed: boolean;
   nowMs: number;
+  /**
+   * Modul sesi ini. Hanya dipakai latihan untuk membuat soal PENGGANTI setelah
+   * jawaban pilihan yang salah (`freshSibling`). Kosong = perilaku lama.
+   */
+  def?: ModuleDef;
 };
+
+function seenKey(q: Question): string {
+  return `${q.type}:${q.text}:${q.visual ? JSON.stringify(q.visual) : ''}`;
+}
+
+/**
+ * Soal BARU dari aturan yang sama dengan `q`, yang belum pernah dilihat di sesi ini.
+ *
+ * Soal pilihan yang salah tidak boleh diulang persis — ulangan plus tanda "Yes!"
+ * menjadi kunci jawaban (lihat `submitAnswer`). Tapi tanpa ulangan sama sekali,
+ * anak yang baru saja melihat penjelasannya tidak pernah mendapat kesempatan
+ * menerapkannya. Soal kembarannya menutup keduanya: idenya sama, jawabannya lain.
+ * Polanya sama dengan kartu "Now you try." di Learn (`learnCheck.ts`).
+ */
+export function freshSibling(
+  def: ModuleDef,
+  q: Question,
+  seed: number,
+  seen: Set<string>,
+): Question | null {
+  const rule = def.rules.find((r) => r.type === q.type && r.skill === q.skill);
+  if (!rule) return null;
+  let questions: Question[];
+  try {
+    questions = generateSet({ ...def, rules: [rule] }, 6, mulberry32(seed)).questions;
+  } catch {
+    return null;
+  }
+  return questions.find((c) => !seen.has(seenKey(c)) && c.answer !== q.answer) ??
+    questions.find((c) => !seen.has(seenKey(c))) ??
+    null;
+}
 
 export function submitAnswer(state: SessionState, input: AnswerInput): SessionState {
   const head = state.pending[0];
@@ -159,6 +202,23 @@ export function submitAnswer(state: SessionState, input: AnswerInput): SessionSt
     head.question.type === 'clue-tap';
   if (!input.correct && !head.retried && state.kind !== 'master' && !reading && !choiceLeak) {
     requeue.push({ question: head.question, readyAfter: answered + 2 });
+  } else if (
+    !input.correct &&
+    !head.retried &&
+    state.kind === 'practice' &&
+    (reading || choiceLeak) &&
+    input.def
+  ) {
+    // Latihan: bukan soal yang sama (kunci jawaban), tapi kembarannya — anak baru
+    // saja melihat penjelasannya dan perlu menerapkannya sekali lagi.
+    const seen = new Set([
+      ...state.pending.map((p) => seenKey(p.question)),
+      ...state.requeue.map((r) => seenKey(r.question)),
+      seenKey(head.question),
+      ...(state.seen ?? []),
+    ]);
+    const sibling = freshSibling(input.def, head.question, state.seed + answered * 7919, seen);
+    if (sibling) requeue.push({ question: sibling, readyAfter: answered + 1 });
   }
 
   let pending = state.pending.slice(1);
@@ -172,6 +232,7 @@ export function submitAnswer(state: SessionState, input: AnswerInput): SessionSt
     pending,
     results: [...state.results, result],
     requeue: requeue.filter((r) => r.readyAfter > answered),
+    seen: [...(state.seen ?? []), seenKey(head.question)],
   };
 }
 

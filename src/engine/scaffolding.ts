@@ -1,14 +1,14 @@
 import type { QuestionVisual } from '../engine/types';
 import type { Question } from './types';
-import { operandsOf } from './hint';
+import { GUIDED_PRACTICE, operandsOf } from './hint';
 
 /**
  * Scaffolding (Fading Support) untuk sesi Practice:
  *
  * Pada sesi Practice:
- * - Soal ke-0 & ke-1 (dua soal pertama): berikan scaffold visual parsial
+ * - Soal ke-0 s/d ke-2 (tiga soal pertama): berikan scaffold visual parsial
  *   (misal dekomposisi angka / kolom bantu kosong / bar model) jika soal belum memiliki gambar.
- * - Soal ke-2 dan seterusnya: bantuan memudar (fading) agar anak mandiri menyelesaikan soal murni simbolik.
+ * - Soal ke-3 dan seterusnya: bantuan memudar (fading) agar anak mandiri menyelesaikan soal murni simbolik.
  *
  * Sesi ujian (Mastery Check / quiz / master / speed / testout) TIDAK PERNAH memakai scaffold ini.
  */
@@ -20,8 +20,9 @@ export function scaffoldForQuestion(
   // Hanya berlaku di sesi 'practice'
   if (sessionKind !== 'practice') return null;
 
-  // Hanya 2 soal pertama yang mendapatkan scaffold pembimbing (fading support)
-  if (questionIndex >= 2) return null;
+  // Hanya 3 soal pertama yang mendapatkan scaffold pembimbing (fading support),
+  // sejalan dengan bantuan yang terbuka sendiri (`GUIDED_PRACTICE` di hint.ts).
+  if (questionIndex >= GUIDED_PRACTICE) return null;
 
   // Jika soal aslinya sudah memiliki gambar sendiri (jam, pecahan, sudut, bangun), jangan ditimpa
   if (question.visual) return null;

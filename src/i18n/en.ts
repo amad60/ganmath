@@ -85,7 +85,6 @@ export const en = {
 
   question: {
     hint: 'Hint',
-    hintLeft: (n: number) => (n === 1 ? 'Hint · 1 left' : `Hint · ${n} left`),
     hintHide: 'Hide hint',
     check: 'Check',
     correct: 'Yes!',
@@ -99,6 +98,7 @@ export const en = {
     speed: 'Speed Round',
     master: 'Master Round',
     showMe: 'Look at the picture.',
+    letsSee: "Let's look again.",
     pickOnLine: 'Tap the line first',
   },
 

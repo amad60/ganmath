@@ -87,12 +87,14 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      Bukan ten-frame dari parameter `n` (`6 + 7` dulu jadi
      enam titik), dan bukan langkah Learn 47+38=85. Langkah Learn hanya dipakai
      untuk modul bergagasan banyak (`QuestionRule.hint`, dijaga lint `hint-step`).
-     Angka terakhir tidak ditulis: `26 + 37` berhenti di **13** dan **50**, anak yang menjumlahkannya. Hint hanya ada di Practice, paling banyak **2 kali** per sesi. Speed Round, ulangan, dan ujian tidak punya tombol Hint.
+     Angka terakhir tidak ditulis: `26 + 37` berhenti di **13** dan **50**, anak yang menjumlahkannya. Hint hanya ada di Practice, **tanpa jatah** (sejak 2026-10-05; dulu 2 kali). Speed Round, ulangan, dan ujian tidak punya tombol Hint.
+   - **Salah jawab di Practice = pelajaran mini.** Panel bantuan soal itu terbuka sendiri ("Let's look again.") dan soal berikutnya menunggu Next — tidak lagi "Not quite" 1,6 detik lalu lanjut. Jawaban benar tetap tidak ditandai. Soal pilihan/baca yang salah diganti **soal kembaran** dari aturan yang sama (`freshSibling` di `engine/session.ts`), bukan soal yang sama. Hint kini juga berlaku untuk Read dan Science (dulu layar soal hanya mencari modul Math, jadi keduanya tidak pernah punya Hint).
      Langkah aksi tampil sebagai contoh yang SUDAH dikerjakan, dan gambar di panel
      Hint digambar ringkas (`compact`) supaya gambar soalnya tidak terdorong keluar layar.
-   - **Scaffolding berjenjang di sesi Practice (fading support).** Dua soal pertama sesi
-     latihan (soal 0 & 1) otomatis memunculkan visual pembimbing/tangga bantu (mis. kolom bersusun
-     tanpa jumlah akhir) jika soal aslinya belum bergambar. Pada soal ke-2 dan seterusnya, bantuan
+   - **Scaffolding berjenjang di sesi Practice (fading support).** Tiga soal pertama sesi
+     latihan (`GUIDED_PRACTICE`) membuka panel bantuannya sendiri — tidak dicatat sebagai
+     `hintUsed` — dan otomatis memunculkan visual pembimbing/tangga bantu (mis. kolom bersusun
+     tanpa jumlah akhir) jika soal aslinya belum bergambar. Pada soal ke-3 dan seterusnya, bantuan
      visual memudar (*fading*) agar anak mandiri menyelesaikan soal murni simbolik. Sesi ujian
      (Mastery Check, Speed Round, Master Round, Review) tidak pernah memakai scaffold ini.
    - **Bantuan yang bisa dibuka wajib bisa DITUTUP lagi, dan dibuka lagi.** Pernah putus di
