@@ -150,5 +150,6 @@ kuis 10, kuis tanpa hint.
 Belum: Learn Math tahap abstract.
 
 Susulan: kosakata Read lama dirapikan, sehingga Read lolos lint penuh di keempat level
-(75 kata dideklarasikan atau diganti, 3 prompt dipendekkan). Science Level 2–3 sedang
-dikonversi ke format adegan.
+(75 kata dideklarasikan atau diganti, 3 prompt dipendekkan). Science Level 2–3 juga
+sudah memakai format adegan + `pick-picture`, jadi ketiga level Science (30 modul)
+sekarang dikerjakan, bukan dibaca.

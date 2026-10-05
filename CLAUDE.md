@@ -261,7 +261,8 @@ GanMath memiliki tiga track mandiri yang bisa diganti melalui switcher di Map Sc
   kartu kalimat konsep. Soal **`pick-picture`** ("What happens next?") dijawab dengan
   mengetuk satu dari tiga kartu GAMBAR tanpa tulisan — kartunya diacak generator (jawaban
   ikut dipindah), salah tidak membuka kartu benar, dan tidak diantrekan ulang. Intro unit
-  `s1-*` memutar adegan concrete modulnya sendiri. Level 2–3 masih memakai mesin Read.
+  `s*` memutar adegan concrete modulnya sendiri. **Ketiga level (30 modul) sudah memakai
+  format ini** — Level 2 dan 3 dikonversi 2026-10-05 dengan pola yang sama.
 
 Garis besar (dirinci di Fase 1–2):
 - **Grade 1:** numbers to 20 lalu 100, counting, addition & subtraction dasar, shapes,
