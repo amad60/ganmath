@@ -425,6 +425,14 @@ export function hintFor(learn: LearnStep[] | undefined, question: Question): Hin
       const chosen = learnStep(learn, question.hint);
       if (chosen) return fromStep(chosen);
     }
+    // Adegan "ubah satu hal" (concrete), BUKAN adegan tebak (predict): adegan tebak
+    // memutar hasil yang benar, dan sebagian soal latihan menanyakan skenario yang
+    // sama persis — Hint-nya akan menjadi kunci jawaban. Adegan concrete menunjukkan
+    // sebab-akibatnya tanpa menjawab soal apa pun.
+    const explored = learn?.find(
+      (s) => s.visual.kind === 'science-scene' && s.visual.mode !== 'predict',
+    );
+    if (explored) return fromStep(explored);
     const pictured = learnStep(learn, undefined);
     return pictured ? fromStep(pictured) : null;
   }

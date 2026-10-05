@@ -199,7 +199,8 @@ export function submitAnswer(state: SessionState, input: AnswerInput): SessionSt
     head.question.type === 'choose-number' ||
     head.question.type === 'choose-text' ||
     head.question.type === 'compare-symbol' ||
-    head.question.type === 'clue-tap';
+    head.question.type === 'clue-tap' ||
+    head.question.type === 'pick-picture';
   if (!input.correct && !head.retried && state.kind !== 'master' && !reading && !choiceLeak) {
     requeue.push({ question: head.question, readyAfter: answered + 2 });
   } else if (

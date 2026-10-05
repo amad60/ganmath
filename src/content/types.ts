@@ -4,6 +4,7 @@ import type {
   ModuleDef,
   NetVisual,
   PositionVisual,
+  ScienceSceneVisual,
   SolidShapesVisual,
   SolidVisual,
 } from '../engine/types';
@@ -125,7 +126,8 @@ export type LearnVisual =
       note?: string;
     }
   | { kind: 'evidence-text'; sentences: string[]; title?: string }
-  | { kind: 'sequence-cards'; cards: { text: string; icon?: string }[] };
+  | { kind: 'sequence-cards'; cards: { text: string; icon?: string }[] }
+  | ({ kind: 'science-scene' } & ScienceSceneVisual);
 
 export type LearnStep = {
   stage: 'concrete' | 'pictorial' | 'abstract';
@@ -136,7 +138,10 @@ export type LearnStep = {
    * Aksi yang diminta. `watch` = lihat gambarnya; Next menunggu jeda look
    * (`WATCH_LOOK_MS`) atau flash selesai, bukan aktif seketika.
    */
-  action: 'tap-count' | 'tap-fill' | 'drop-on-line' | 'watch' | 'tap-clue';
+  action: 'tap-count' | 'tap-fill' | 'drop-on-line' | 'watch' | 'tap-clue'
+    // `explore`: adegan sains — target = banyak pilihan yang dicoba (`change`,
+    // `tap-part`), atau 1 untuk `predict` (memilih lalu melihat hasilnya).
+    | 'explore';
   /**
    * Nilai yang harus dicapai anak sebelum tombol Next aktif.
    * `tap-clue` (hanya di `evidence-text`): INDEKS kalimat bukti yang harus diketuk —

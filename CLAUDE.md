@@ -241,13 +241,27 @@ Grade (1–6)
 internasional** (Common Core / Singapore Math) untuk urutan konsep dan tipe soal.
 Kalau ada silabus dari sekolah anak, itu jadi acuan pelengkap.
 
-### Dua Jalur Belajar: Math & Read
-GanMath memiliki dua track mandiri yang bisa diganti melalui switcher di Map Screen:
+### Tiga Jalur Belajar: Math, Read & Science
+GanMath memiliki tiga track mandiri yang bisa diganti melalui switcher di Map Screen:
 - **Math Track (📐):** Kurikulum matematika SD Grade 1–6 (240 modul).
 - **Read Track (📖):** Literasi pemahaman teks (*deep reading & critical thinking*) Grade 1–3
   dengan mekanik bukti kalimat (`EvidenceText` / `clue-tap`), urutan alur (`SequenceCards`),
   dan sebab-akibat. Progres grade terpisah (`profile.grade` vs `profile.readGrade`),
   tetapi poin XP, streak, dan sync cloud terpadu satu akun.
+- **Science Track (🔬):** Level 1–3, 30 modul (`src/content/scienceGrade1..3`). Level 1
+  **bukan lagi mesin Read dengan kalimat sains** (docs/design/learn-vs-test-2026-10-05.md):
+  anak mengubah satu hal lalu MELIHAT akibatnya. Satu komponen yang dipakai ulang,
+  `ScienceScene` (`src/components/science/`), visual `science-scene` (emoji + posisi
+  persen, tanpa pustaka animasi) dengan tiga gerakan: `change` (ketuk 💧/🚫, gambar
+  berubah, keterangan muncul SETELAH geraknya ≤800ms), `tap-part` (ketuk bagian gambar,
+  namanya muncul), `predict` (pilih 1 dari 3 kartu "apa yang terjadi?", hasil yang BENAR
+  selalu diputar — salah = "Let's see!", bukan silang merah). Aksi Learn-nya `explore`;
+  target = banyak pilihan berbeda yang dicoba (`predict` = 1), dijaga lint `learn-action`.
+  Tiap modul Level 1: concrete = `change`/`tap-part`, pictorial = `predict`, abstract =
+  kartu kalimat konsep. Soal **`pick-picture`** ("What happens next?") dijawab dengan
+  mengetuk satu dari tiga kartu GAMBAR tanpa tulisan — kartunya diacak generator (jawaban
+  ikut dipindah), salah tidak membuka kartu benar, dan tidak diantrekan ulang. Intro unit
+  `s1-*` memutar adegan concrete modulnya sendiri. Level 2–3 masih memakai mesin Read.
 
 Garis besar (dirinci di Fase 1–2):
 - **Grade 1:** numbers to 20 lalu 100, counting, addition & subtraction dasar, shapes,

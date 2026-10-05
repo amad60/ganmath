@@ -117,3 +117,35 @@ terasa seperti sains, bukan seperti baca.
 Untuk Math dan Read, yang perlu ditambah bukan soal baru. Yang perlu ditambah adalah
 waktu membangun ide sebelum deretan 8 + 10 + 10. Dokumen ini tidak memilih desain
 itu; ia hanya menetapkan bahwa kesenjangannya ada.
+
+## Dikerjakan — 2026-10-05
+
+Tiga perubahan, tiap fase satu deploy. Mastery tidak disentuh: dua kuis, latihan 8,
+kuis 10, kuis tanpa hint.
+
+1. **Latihan mengajar** (`f7fd55c`).
+   - Salah jawab di latihan membuka gambar bantuan soal itu ("Let's look again."),
+     lalu menunggu Next.
+   - Soal pilihan atau baca yang salah diganti soal kembaran dari aturan yang sama
+     (`freshSibling`).
+   - Tiga soal pertama latihan dibimbing. Bimbingan ini tidak dicatat sebagai
+     `hintUsed`.
+   - Hint latihan tidak dijatah lagi.
+   - Hint Read/Science tadinya mati, karena layar soal hanya mencari modul Math.
+     Sekarang sudah hidup.
+2. **Materi bisa dibuka ulang** (`a6c92a7`).
+   - Tombol "See lesson" di peta dan setelah kuis gagal, tanpa mengubah progres.
+   - +10 XP saat materi selesai.
+   - Ke-17 modul Read punya langkah `tap-clue`: anak mengetuk kalimat bukti di
+     cerita pendek.
+3. **Science Level 1 jadi sains.**
+   - Komponen `ScienceScene` dengan tiga gerakan: `change`, `tap-part`, dan
+     `predict`.
+   - Action Learn `explore`.
+   - Soal `pick-picture` ("What happens next?" bergambar).
+   - Intro unit memutar adegannya.
+   - Hint Science memakai adegan `change`, bukan `predict`. Adegan `predict`
+     memutar hasil yang benar, jadi bisa menjadi kunci jawaban.
+
+Belum: Science Level 2–3 (menunggu Level 1 dicoba anak), kosakata Read lama yang
+belum lolos lint (142 kata, 6 prompt terlalu panjang), dan Learn Math tahap abstract.

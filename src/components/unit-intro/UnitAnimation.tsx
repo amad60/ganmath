@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useReducedMotion } from '../manipulatives/useReducedMotion';
+import { ScienceScene } from '../science/ScienceScene';
+import { scienceModulesList } from '../../content/scienceIndex';
+import type { ScienceSceneVisual } from '../../engine/types';
 
 export type UnitAnimationProps = {
   unitId: string;
@@ -20,6 +23,22 @@ export function UnitAnimation({ unitId, replayKey = 0 }: UnitAnimationProps) {
     return <div className="h-[180px] w-full" />;
   }
 
+  // Science Level 1: intro memutar adegan concrete modulnya sendiri — tanaman yang
+  // disiram dan tidak, es di matahari dan di dingin — bukan roket generik. Anak
+  // melihat sebab-akibat unit itu sebelum menyentuhnya. Tingginya ikut adegan,
+  // bukan kotak 190px: gambar 4:3 plus keterangan tidak muat di sana.
+  const scene = unitId.startsWith('s1-') ? scienceIntroScene(unitId) : null;
+  if (scene) {
+    return (
+      <div
+        className="flex w-full flex-col items-center rounded-[var(--r-md)] px-2 py-3"
+        style={{ background: 'var(--c-surface-sunk)', border: '2px solid var(--c-line)' }}
+      >
+        <ScienceScene key={replayKey} visual={scene} compact />
+      </div>
+    );
+  }
+
   return (
     <div
       className="relative flex h-[190px] w-full items-center justify-center overflow-hidden rounded-[var(--r-md)] px-2 py-3"
@@ -31,6 +50,21 @@ export function UnitAnimation({ unitId, replayKey = 0 }: UnitAnimationProps) {
       {renderUnitVisual(unitId, reduced)}
     </div>
   );
+}
+
+/**
+ * Adegan `change`/`tap-part` pertama di unit Science Level 1, atau null kalau unit
+ * itu belum punya — unit seperti itu tetap jatuh ke animasi bawaan.
+ */
+export function scienceIntroScene(unitId: string): ScienceSceneVisual | null {
+  for (const m of scienceModulesList) {
+    if (m.unitId !== unitId) continue;
+    for (const step of m.learn) {
+      const v = step.visual;
+      if (v.kind === 'science-scene' && v.mode !== 'predict') return v;
+    }
+  }
+  return null;
 }
 
 function renderUnitVisual(unitId: string, reduced: boolean) {

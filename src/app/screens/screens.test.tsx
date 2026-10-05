@@ -1650,7 +1650,19 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
       money: { kind: 'money', items: [1000, 500, 2000] },
       // tap-clue: kalimat bukti harus jadi tombol yang mengirim indeksnya balik.
       'evidence-text': { kind: 'evidence-text', sentences: ['Ana ran.', 'It rained.'] },
+      'science-scene': {
+        kind: 'science-scene',
+        mode: 'change',
+        base: [{ icon: '🌱', x: 50, y: 60 }],
+        options: [
+          { icon: '💧', label: 'Water', caption: 'It grows.', result: [{ icon: '🌿', x: 50, y: 60 }] },
+          { icon: '🚫', label: 'No water', caption: 'It dries up.', result: [{ icon: '🥀', x: 50, y: 60 }] },
+        ],
+      },
     };
+    // Adegan sains melapor SETELAH geraknya selesai (keterangan muncul belakangan),
+    // jadi jamnya dimajukan; manipulatif lain melapor seketika dan tidak terpengaruh.
+    vi.useFakeTimers();
     for (const kinds of Object.values(ACTION_VISUALS)) {
       for (const kind of kinds) {
         const visual = samples[kind];
@@ -1667,11 +1679,15 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
           const controls = screen.queryAllByRole('button');
           expect(controls.length, `visual "${kind}" tidak punya kontrol apa pun`).toBeGreaterThan(0);
           fireEvent.click(controls[0]!);
+          act(() => {
+            vi.advanceTimersByTime(2000);
+          });
           expect(onValue, `visual "${kind}" tidak mengirim nilai balik`).toHaveBeenCalled();
         }
         unmount();
       }
     }
+    vi.useRealTimers();
   });
 
   /**

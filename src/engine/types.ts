@@ -37,7 +37,9 @@ export type QType =
   | 'bar-model'
   | 'grid-array'
   | 'clue-tap'
-  | 'sequence-order';
+  | 'sequence-order'
+  // Science: "What happens next?" dijawab dengan MENGETUK GAMBAR, bukan kalimat.
+  | 'pick-picture';
 
 export type VisualId =
   | 'ten-frame'
@@ -64,7 +66,8 @@ export type VisualId =
   | 'solid-shapes'
   | 'composed-shape'
   | 'evidence-text'
-  | 'sequence-cards';
+  | 'sequence-cards'
+  | 'science-scene';
 
 export type DistractorKind = 'near' | 'digit-swap' | 'random';
 
@@ -149,7 +152,105 @@ export type QuestionVisual =
   | { kind: 'column-sum'; a: number; b: number; op?: '+' | '−'; showTotal?: boolean }
   | { kind: 'number-bond'; whole: number | null; parts: [number | null, number | null]; ask?: 'whole' | 'part0' | 'part1' }
   | { kind: 'evidence-text'; sentences: string[]; title?: string }
-  | { kind: 'sequence-cards'; cards: { text: string; icon?: string }[] };
+  | { kind: 'sequence-cards'; cards: { text: string; icon?: string }[] }
+  | ({ kind: 'science-scene' } & ScienceSceneVisual);
+
+/**
+ * Adegan sains: anak MENGUBAH satu hal lalu MELIHAT akibatnya.
+ *
+ * Science Level 1 dulu memakai mesin Read apa adanya — dua kalimat di kartu, lalu
+ * soal memilih kalimat. Anak bisa lulus dengan mencocokkan kata ("water" di soal
+ * dan "water" di jawaban) tanpa pernah melihat tanaman layu karena tidak disiram.
+ * Sains untuk anak 6 tahun adalah sebab-akibat yang TERLIHAT, jadi satu jenis
+ * gambar yang dipakai ulang di sepuluh modul — bukan sepuluh mesin — dengan tiga
+ * gerakan (docs/design/learn-vs-test-2026-10-05.md, "Arah"):
+ *
+ * - `change`   : anak mengetuk tombol pilihan (💧 / 🚫), gambarnya berubah ke
+ *                `result` pilihan itu, keterangan muncul SETELAH gerakannya.
+ * - `tap-part` : anak mengetuk bagian gambar (benda ber-`part`), bagian itu
+ *                menyala dan namanya + keterangannya muncul.
+ * - `predict`  : anak memilih satu dari 2–3 kartu "apa yang terjadi?", lalu hasil
+ *                yang BENAR (`correct`) selalu diputar, walaupun tebakannya salah.
+ *
+ * Data murni (emoji + posisi persen), jadi lint bisa membaca ulang keterangan dan
+ * label yang benar-benar tampil, dan soal `pick-picture` bisa memakai bentuk yang
+ * sama tanpa komponen kedua.
+ */
+export type ScienceSceneVisual = {
+  mode: 'change' | 'tap-part' | 'predict';
+  /** Gambar awal, sebelum anak mengubah apa pun. */
+  base: SceneItem[];
+  /** Latar gambar awal. Pilihan boleh menimpanya (siang → malam). */
+  bg?: SceneBg;
+  options: SceneOption[];
+  /** `predict`: indeks hasil yang benar — yang SELALU diputar setelah memilih. */
+  correct?: number;
+};
+
+/** Latar adegan. Warna material (langit, air), bukan warna tema. */
+export type SceneBg = 'day' | 'night' | 'cloudy' | 'water' | 'room' | 'plain';
+
+export type SceneOption = {
+  /** Emoji tombol/kartu. Di soal `pick-picture` inilah SATU-SATUNYA yang dilihat anak. */
+  icon: string;
+  /** ≤8 kata. Ditulis di tombol `change`, jadi nama bagian di `tap-part`. */
+  label: string;
+  /** Gambar setelah pilihan ini (`change`, `predict`). `tap-part` tidak memakainya. */
+  result?: SceneItem[];
+  bg?: SceneBg;
+  /** Keterangan pendek yang muncul SETELAH gambarnya bergerak. ≤8 kata. */
+  caption: string;
+};
+
+/**
+ * Satu benda di adegan. Posisi dalam persen supaya gambarnya ikut lebar layar
+ * tanpa hitungan piksel di data modul.
+ */
+export type SceneItem = {
+  /** Emoji. Kosong kalau benda ini `bar` (batang, akar, tanah). */
+  icon: string;
+  /** Titik tengah, persen lebar / tinggi adegan (0–100). */
+  x: number;
+  y: number;
+  /** Tinggi emoji dalam persen lebar adegan. Default 16. */
+  size?: number;
+  /** Bentuk polos untuk yang tidak punya emoji: batang tanaman, akar, tanah, tali. */
+  bar?: { w: number; h: number; color: SceneColor };
+  /** Diputar statis (derajat). Berlaku juga untuk `bar` — akar yang menyebar. */
+  rotate?: number;
+  /** Dicerminkan horizontal — ikan menghadap kiri, dsb. */
+  flip?: boolean;
+  /** Dibuat pudar: tanaman layu, benda yang hilang. */
+  dim?: boolean;
+  /** `tap-part`: benda ini bagian dari `options[part]`. Boleh beberapa benda satu bagian. */
+  part?: number;
+  /**
+   * Gerak sekali jalan saat gambar ini muncul — INILAH akibat yang dilihat anak.
+   * Maksimal 3 benda per gambar (dijaga lint): anggaran animasi ≤4 elemen
+   * bergerak bersamaan, satu sudah dipakai lapisan gambarnya sendiri.
+   */
+  fx?: SceneFx;
+};
+
+export type SceneColor = 'green' | 'brown' | 'blue' | 'gray' | 'yellow' | 'white' | 'red';
+
+/**
+ * Gerak yang tersedia. Semuanya hanya `transform`/`opacity` (docs/design/animation.md §3).
+ * `droop` dan `fade` BERHENTI di keadaan akhirnya (layu, menghilang); sisanya
+ * berakhir di posisi yang ditulis datanya.
+ */
+export type SceneFx =
+  | 'pop'
+  | 'grow'
+  | 'shrink'
+  | 'droop'
+  | 'fade'
+  | 'shake'
+  | 'rise'
+  | 'fall'
+  | 'slide-left'
+  | 'slide-right'
+  | 'pulse';
 
 /**
  * Bangun ruang Grade 1 — dinamai seperti benda yang dipegang anak. Beda dari

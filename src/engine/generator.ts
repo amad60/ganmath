@@ -238,6 +238,26 @@ export function generateSet(
           };
           q.answer = nextAt;
         }
+      } else if (pool.rule.type === 'pick-picture' && q.visual?.kind === 'science-scene') {
+        // Kartu gambar DIACAK seperti kalimat clue-tap, dan indeks jawaban ikut
+        // pindah. Konten menulis hasil yang benar di kartu yang sama setiap kali
+        // (paling mudah dibaca penulisnya); tanpa acak, anak belajar "kartu kiri".
+        const cards = q.visual.options;
+        const order = shuffle(rng, cards.map((_, i) => i));
+        const nextAt = order.indexOf(q.answer);
+        if (nextAt >= 0) {
+          // `correct` dibuang: jawabannya hidup di `q.answer`, dan data gambar soal
+          // tidak boleh membawa kunci jawaban ke layar.
+          const shuffled = { ...q.visual, options: order.map((i) => cards[i]!) };
+          delete shuffled.correct;
+          q.visual = shuffled;
+          q.answer = nextAt;
+        }
+        // Tombol jawaban = kartu, berurutan sesuai gambar yang sudah diacak. `options`
+        // berisi EMOJI-nya, jadi layar mana pun yang merender `options[c]` (mis. kartu
+        // "Now you try." di Learn) tetap menampilkan gambar, bukan kalimat.
+        q.choices = q.visual.options.map((_, i) => i);
+        q.options = q.visual.options.map((o) => o.icon);
       } else if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];
         q.options = labels;

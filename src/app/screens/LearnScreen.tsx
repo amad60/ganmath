@@ -345,7 +345,8 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
             ) : null}
 
             {/* Umpan balik saat target tercapai — anak tahu dia sudah benar sebelum Next. */}
-            {interactive && reached && current!.target != null && !clueStep ? (
+            {/* Adegan sains tidak memakai angka: keterangannya sendiri sudah umpan baliknya. */}
+            {interactive && reached && current!.target != null && !clueStep && current!.action !== 'explore' ? (
               <p className="text-xl font-black" style={{ color: 'var(--c-correct)' }}>
                 ✓ {current!.target}
               </p>

@@ -84,6 +84,7 @@ export const ACTION_VISUALS: Record<Exclude<LearnStep['action'], 'watch'>, Learn
     'tap-fill': ['ten-frame'],
     'drop-on-line': ['number-line'],
     'tap-clue': ['evidence-text'],
+    explore: ['science-scene'],
   };
 
 /**
@@ -142,6 +143,57 @@ export function learnStepBlocked(step: LearnStep): string | null {
   if (v.kind === 'money' && target > v.items.length) {
     return `minta ${target} tap tapi hanya ada ${v.items.length} uang`;
   }
+  if (v.kind === 'science-scene') return sceneBlocked(v, target);
+  return null;
+}
+
+/**
+ * Adegan sains yang tidak bisa diselesaikan anak. Nilai yang dilaporkan adegan
+ * adalah banyak pilihan BERBEDA yang sudah dicoba, jadi target di atas jumlah
+ * pilihan = Next tidak pernah menyala. `predict` selalu melapor 1 (sekali tebak,
+ * lalu hasilnya diputar), jadi target lain di sana sama buntunya.
+ */
+function sceneBlocked(v: Extract<LearnVisual, { kind: 'science-scene' }>, target: number): string | null {
+  const structural = sceneProblem(v);
+  if (structural) return structural;
+  if (v.mode === 'predict' && target !== 1) return `predict melapor 1, tapi target ${target}`;
+  if (target < 1 || target > v.options.length) {
+    return `minta ${target} pilihan dicoba tapi adegan hanya punya ${v.options.length}`;
+  }
+  return null;
+}
+
+/** Bentuk adegan yang rusak, dipakai Learn dan soal `pick-picture`. */
+export function sceneProblem(
+  v: Extract<LearnVisual, { kind: 'science-scene' }>,
+  /** Soal `pick-picture` tidak memutar hasil — kartunya saja yang dilihat. */
+  needResult = true,
+): string | null {
+  if (v.options.length < 2) return 'adegan butuh minimal 2 pilihan — satu pilihan bukan percobaan';
+  if (v.mode === 'predict') {
+    if (v.correct == null || v.options[v.correct] == null) return 'predict tanpa `correct` yang sah';
+    if (v.options.length > 3) return 'predict maksimal 3 kartu';
+  }
+  // `change` memutar hasil SETIAP pilihan; `predict` hanya hasil yang benar —
+  // kartu yang salah tidak pernah diputar, jadi tidak perlu gambar akibat.
+  if (v.mode === 'change' && needResult) {
+    const empty = v.options.findIndex((o) => !o.result || o.result.length === 0);
+    if (empty >= 0) return `pilihan ${empty} tidak punya gambar hasil (\`result\`)`;
+  }
+  if (v.mode === 'predict' && needResult && !v.options[v.correct ?? -1]?.result?.length) {
+    return 'hasil yang benar tidak punya gambar (`result`) — itulah yang selalu diputar';
+  }
+  if (v.mode === 'tap-part') {
+    const missing = v.options.findIndex((_, i) => !v.base.some((b) => b.part === i));
+    if (missing >= 0) return `bagian "${v.options[missing]?.label}" tidak ada di gambar (\`part\`)`;
+  }
+  // Anggaran animasi: ≤4 elemen bergerak bersamaan, satu dipakai lapisan gambarnya.
+  for (const pic of [v.base, ...v.options.map((o) => o.result ?? [])]) {
+    const moving = pic.filter((it) => it.fx).length;
+    if (moving > 3) return `${moving} benda bergerak bersamaan (maks 3 + lapisan gambar)`;
+  }
+  const icons = v.options.map((o) => o.icon);
+  if (new Set(icons).size !== icons.length) return 'dua pilihan memakai gambar yang sama';
   return null;
 }
 
@@ -160,6 +212,7 @@ export const RENDERABLE_TYPES: QType[] = [
   'number-line-drop',
   'clue-tap',
   'sequence-order',
+  'pick-picture',
 ];
 
 /**
@@ -319,6 +372,29 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
           const isKnown = known.has(w) || (w.endsWith('s') && known.has(w.slice(0, -1)));
           if (!isKnown && !/^\d+$/.test(w)) {
             add(m.id, 'vocab', `kata "${w}" belum diperkenalkan — tambahkan ke vocab modul`);
+          }
+        }
+      }
+    }
+
+    // 2b. Tulisan di adegan sains — label tombol dan keterangan — dibaca anak sama
+    //     seperti prompt, jadi dijaga dengan aturan yang sama: ≤8 kata, kata dikenal.
+    for (const step of m.learn) {
+      if (step.visual.kind !== 'science-scene') continue;
+      for (const o of step.visual.options) {
+        for (const [field, text] of [
+          ['label', o.label],
+          ['caption', o.caption],
+        ] as const) {
+          const n = words(text).length;
+          if (n > MAX_PROMPT_WORDS) {
+            add(m.id, 'prompt-length', `adegan ${field} ${n} kata (maks ${MAX_PROMPT_WORDS}): "${text}"`);
+          }
+          for (const w of words(text)) {
+            const isKnown = known.has(w) || (w.endsWith('s') && known.has(w.slice(0, -1)));
+            if (!isKnown && !/^\d+$/.test(w)) {
+              add(m.id, 'vocab', `kata "${w}" di adegan belum diperkenalkan — tambahkan ke vocab modul`);
+            }
           }
         }
       }
@@ -763,6 +839,33 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
             `rule "${r.skill}" menyisakan ${kept.length} pilihan setelah membuang tulisan kembar ` +
               `(${dup.join(', ')}) — butuh ≥3 supaya tidak bisa ditebak`,
           );
+          break;
+        }
+      }
+    }
+
+    // 10b. Soal gambar: tiga kartu berbeda, jawaban menunjuk kartu yang ada.
+    //      Kartu yang kembar gambarnya membuat anak yang benar bisa dinilai salah,
+    //      sama seperti tombol kata yang kembar (aturan 10).
+    for (const [ri, r] of m.rules.entries()) {
+      if (r.type !== 'pick-picture') continue;
+      if (!r.visual) {
+        add(m.id, 'pick-picture', `rule#${ri} tanpa gambar adegan`);
+        continue;
+      }
+      for (const c of enumerate(r)) {
+        const v = r.visual(c);
+        if (v.kind !== 'science-scene' || v.mode !== 'predict') {
+          add(m.id, 'pick-picture', `rule#${ri} butuh adegan mode predict, dapat "${v.kind}"`);
+          break;
+        }
+        const bad = sceneProblem({ ...v, correct: r.answer(c) }, false);
+        if (bad) {
+          add(m.id, 'pick-picture', `rule#${ri} ${JSON.stringify(c)}: ${bad}`);
+          break;
+        }
+        if (v.options.length !== 3) {
+          add(m.id, 'pick-picture', `rule#${ri} ${JSON.stringify(c)}: butuh tepat 3 kartu, ada ${v.options.length}`);
           break;
         }
       }

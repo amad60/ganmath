@@ -1,4 +1,5 @@
 import type { ContentModule } from '../types';
+import { at, bar, ground, whatHappensNext } from '../scienceScene';
 
 export const howAnimalsMove: ContentModule = {
   id: 's1-u6-m1',
@@ -10,30 +11,71 @@ export const howAnimalsMove: ContentModule = {
   skills: ['sci-move'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text'],
-  visuals: ['evidence-text'],
-  vocab: ['bird', 'fly', 'fish', 'swim', 'hop', 'crawl'],
+  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  visuals: ['evidence-text', 'science-scene'],
+  vocab: ['bird', 'fly', 'fish', 'swim', 'hop', 'crawl', 'frog'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'A bird can fly.',
+      prompt: 'Pick air, water, or land.',
       visual: {
-        kind: 'evidence-text',
-        title: 'In the air',
-        sentences: ['A bird opens its wings.', 'It moves through the air.'],
+        kind: 'science-scene',
+        mode: 'change',
+        bg: 'plain',
+        base: [at('🐦', 22, 50, 18), at('🐟', 50, 50, 18), at('🐸', 78, 50, 18)],
+        options: [
+          {
+            icon: '☁️',
+            label: 'Air',
+            caption: 'A bird flies in the air.',
+            bg: 'day',
+            result: [at('☁️', 76, 20, 18), at('🐦', 40, 42, 22, { fx: 'slide-right' })],
+          },
+          {
+            icon: '🌊',
+            label: 'Water',
+            caption: 'A fish swims in the water.',
+            bg: 'water',
+            result: [
+              at('🐟', 44, 56, 22, { flip: true, fx: 'slide-right' }),
+              at('🫧', 66, 34, 10, { fx: 'rise' }),
+            ],
+          },
+          {
+            icon: '🌳',
+            label: 'Land',
+            caption: 'A frog hops on the land.',
+            bg: 'day',
+            result: [at('🐸', 40, 70, 22, { fx: 'rise' }), at('🐛', 76, 84, 12, { fx: 'slide-left' }), ground()],
+          },
+        ],
       },
-      action: 'watch',
+      action: 'explore',
+      target: 3,
     },
     {
       stage: 'pictorial',
-      prompt: 'Look at the picture.',
+      prompt: 'A fish is on the land.',
       visual: {
-        kind: 'evidence-text',
-        title: 'How it goes',
-        sentences: ['See the animal.', 'See how its body moves.'],
+        kind: 'science-scene',
+        mode: 'predict',
+        bg: 'day',
+        base: [at('🐟', 50, 76, 20, { rotate: 10 }), ground()],
+        options: [
+          { icon: '🐇', label: 'It hops away', caption: 'It hops away.' },
+          {
+            icon: '😣',
+            label: 'It can not swim',
+            caption: 'A fish needs water to swim.',
+            result: [at('🐟', 50, 76, 20, { rotate: 10, fx: 'shake' }), at('💧', 80, 30, 12, { fx: 'pop' }), ground()],
+          },
+          { icon: '🐦', label: 'It flies', caption: 'It flies.' },
+        ],
+        correct: 1,
       },
-      action: 'watch',
+      action: 'explore',
+      target: 1,
     },
     {
       stage: 'abstract',
@@ -110,5 +152,52 @@ export const howAnimalsMove: ContentModule = {
         return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
       },
     },
+    whatHappensNext('sci-move', [
+      {
+        bg: 'day',
+        base: [bar(18, 70, 40, 6, 'brown'), at('🐦', 22, 58, 18)],
+        cards: [
+          { icon: '🪽', label: 'It flies' },
+          { icon: '🏊', label: 'It swims' },
+          { icon: '🐌', label: 'It crawls' },
+        ],
+      },
+      {
+        bg: 'water',
+        base: [at('🐟', 50, 54, 24, { flip: true }), at('🫧', 72, 30, 10)],
+        cards: [
+          { icon: '🏊', label: 'It swims' },
+          { icon: '🪽', label: 'It flies' },
+          { icon: '🦘', label: 'It hops' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐸', 40, 72, 22), ground()],
+        cards: [
+          { icon: '🦘', label: 'It hops' },
+          { icon: '🪽', label: 'It flies' },
+          { icon: '🏊', label: 'It swims in the sky' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐛', 50, 78, 20), ground()],
+        cards: [
+          { icon: '🐌', label: 'It crawls' },
+          { icon: '🪽', label: 'It flies' },
+          { icon: '🦘', label: 'It hops high' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐇', 46, 72, 24), ground()],
+        cards: [
+          { icon: '🦘', label: 'It hops' },
+          { icon: '🏊', label: 'It swims' },
+          { icon: '🪽', label: 'It flies' },
+        ],
+      },
+    ]),
   ],
 };

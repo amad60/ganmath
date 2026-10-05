@@ -1,4 +1,5 @@
 import type { ContentModule } from '../types';
+import { at, ground, whatHappensNext } from '../scienceScene';
 
 export const materialsChange: ContentModule = {
   id: 's1-u3-m1',
@@ -10,30 +11,75 @@ export const materialsChange: ContentModule = {
   skills: ['sci-materials'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text'],
-  visuals: ['evidence-text'],
-  vocab: ['rock', 'hard', 'heavy', 'leaf', 'soft', 'light', 'ice', 'melt', 'watch', 'object', 'look'],
+  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  visuals: ['evidence-text', 'science-scene'],
+  vocab: ['rock', 'hard', 'heavy', 'leaf', 'soft', 'light', 'ice', 'melt', 'watch', 'object', 'look', 'sun', 'chocolate', 'stay', 'get'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'A rock is hard and heavy.',
+      prompt: 'Put the ice in the sun, or cold.',
       visual: {
-        kind: 'evidence-text',
-        title: 'Rock and leaf',
-        sentences: ['A rock does not bend.', 'A leaf folds in the hand.'],
+        kind: 'science-scene',
+        mode: 'change',
+        bg: 'room',
+        base: [at('🧊', 50, 62, 24), ground('gray')],
+        options: [
+          {
+            icon: '☀️',
+            label: 'Sun',
+            caption: 'The ice melts into water.',
+            bg: 'day',
+            result: [
+              at('☀️', 82, 18, 16, { fx: 'pop' }),
+              at('🧊', 50, 70, 12, { dim: true, fx: 'shrink' }),
+              at('💧', 66, 80, 12, { fx: 'pop' }),
+              ground('gray'),
+            ],
+          },
+          {
+            icon: '❄️',
+            label: 'Cold',
+            caption: 'In the cold, ice stays hard.',
+            result: [
+              at('❄️', 20, 20, 12),
+              at('❄️', 80, 24, 10),
+              at('🧊', 50, 62, 24, { fx: 'pulse' }),
+              ground('gray'),
+            ],
+          },
+        ],
       },
-      action: 'watch',
+      action: 'explore',
+      target: 2,
     },
     {
       stage: 'pictorial',
-      prompt: 'Watch the object.',
+      prompt: 'Chocolate in the sun. What next?',
       visual: {
-        kind: 'evidence-text',
-        title: 'Watch it',
-        sentences: ['One object meets water or sun.', 'See what changes.'],
+        kind: 'science-scene',
+        mode: 'predict',
+        bg: 'day',
+        base: [at('☀️', 82, 18, 16), at('🍫', 50, 64, 24), ground('gray')],
+        options: [
+          { icon: '🧊', label: 'It gets hard', caption: 'It gets hard.' },
+          {
+            icon: '🫠',
+            label: 'It melts',
+            caption: 'The sun melts the chocolate.',
+            result: [
+              at('☀️', 82, 18, 16),
+              at('🍫', 50, 70, 22, { dim: true, fx: 'droop' }),
+              at('🫠', 24, 40, 14, { fx: 'pop' }),
+              ground('gray'),
+            ],
+          },
+          { icon: '🌱', label: 'It grows', caption: 'It grows.' },
+        ],
+        correct: 1,
       },
-      action: 'watch',
+      action: 'explore',
+      target: 1,
     },
     {
       stage: 'abstract',
@@ -110,5 +156,52 @@ export const materialsChange: ContentModule = {
         return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
       },
     },
+    whatHappensNext('sci-materials', [
+      {
+        bg: 'day',
+        base: [at('☀️', 82, 18, 16), at('🧊', 50, 64, 24), ground('gray')],
+        cards: [
+          { icon: '💧', label: 'It melts into water' },
+          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🌱', label: 'It grows' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('☀️', 82, 18, 16), at('🍫', 50, 64, 24), ground('gray')],
+        cards: [
+          { icon: '🫠', label: 'It melts' },
+          { icon: '🧊', label: 'It gets cold' },
+          { icon: '🎈', label: 'It flies' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('❄️', 24, 22, 14), at('❄️', 78, 26, 12), at('💧', 50, 64, 24)],
+        cards: [
+          { icon: '🧊', label: 'It turns to ice' },
+          { icon: '🔥', label: 'It gets hot' },
+          { icon: '🌱', label: 'It grows' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('☀️', 82, 18, 16), at('🍦', 50, 62, 26), ground('gray')],
+        cards: [
+          { icon: '🫠', label: 'It melts' },
+          { icon: '🪨', label: 'It gets hard' },
+          { icon: '🌳', label: 'It grows' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🔥', 30, 62, 20), at('🕯️', 62, 60, 26)],
+        cards: [
+          { icon: '🫠', label: 'It melts' },
+          { icon: '❄️', label: 'It freezes' },
+          { icon: '🌱', label: 'It grows' },
+        ],
+      },
+    ]),
   ],
 };

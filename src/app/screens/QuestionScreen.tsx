@@ -41,6 +41,7 @@ import {
 } from '../../components/manipulatives';
 import { EvidenceText } from '../../components/reading/EvidenceText';
 import { SequenceCards } from '../../components/reading/SequenceCards';
+import { ScienceScene } from '../../components/science/ScienceScene';
 import { Mascot, type MascotMood } from '../../components/mascot/Mascot';
 import { en } from '../../i18n/en';
 import { sfx, unlockAudio } from '../sfx';
@@ -289,6 +290,9 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
       return <EvidenceText sentences={visual.sentences} title={visual.title} interactive={false} />;
     case 'sequence-cards':
       return <SequenceCards cards={visual.cards} interactive={false} />;
+    case 'science-scene':
+      // `still`: hanya gambar awal. Memutar hasilnya di soal sama dengan menjawabnya.
+      return <ScienceScene visual={visual} still />;
   }
 }
 
@@ -437,6 +441,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const isLine = question?.type === 'number-line-drop';
   const isClueTap = question?.type === 'clue-tap';
   const isSequence = question?.type === 'sequence-order';
+  const isPicture = question?.type === 'pick-picture';
 
   const [sequenceOrder, setSequenceOrder] = useState<number[]>([]);
 
@@ -772,6 +777,27 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             >
               {linePick == null ? en.question.pickOnLine : `${en.question.check} · ${linePick}`}
             </Button>
+          </div>
+        ) : isPicture && activeVisual?.kind === 'science-scene' ? (
+          // Kartu GAMBAR, tanpa tulisan: soal ini sengaja tidak bisa dijawab dengan
+          // mencocokkan kata. Namanya hanya untuk pembaca layar. Salah = kartu itu
+          // saja yang berwarna; kartu yang benar tidak dibuka (sama seperti choose-text).
+          <div className="grid grid-cols-3 gap-3">
+            {activeVisual.options.map((o, c) => (
+              <Button
+                key={c}
+                variant="answer"
+                aria-label={o.label}
+                onPointerDown={touch}
+                onClick={() => (feedback ? undefined : answer(c))}
+                aria-disabled={feedback != null}
+                textSize={48}
+                className={`min-h-[96px] ${feedback != null ? 'pointer-events-none' : ''}`}
+                feedback={choiceFeedback(c)}
+              >
+                {o.icon}
+              </Button>
+            ))}
           </div>
         ) : question.choices ? (
           <div className={`grid gap-3 ${isCompare ? 'grid-cols-3' : 'grid-cols-2'}`}>

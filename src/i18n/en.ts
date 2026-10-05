@@ -88,6 +88,14 @@ export const en = {
     madeTen: '10 ones make 1 ten.',
   },
 
+  science: {
+    yes: 'Yes!',
+    // Tebakan salah di adegan "apa yang terjadi?" bukan vonis — hasilnya tetap diputar.
+    letsSee: "Let's see!",
+    tapParts: 'Tap each part.',
+    whatNext: 'What happens next?',
+  },
+
   question: {
     hint: 'Hint',
     hintHide: 'Hide hint',

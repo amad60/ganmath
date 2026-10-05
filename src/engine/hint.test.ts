@@ -1,3 +1,4 @@
+import { scienceModulesList } from '../content/scienceIndex';
 import { describe, expect, it } from 'vitest';
 import { hintFor, operandsOf } from './hint';
 import { moduleById } from '../content';
@@ -167,8 +168,17 @@ describe('hintFor — bantuan harus tentang soal INI', () => {
       skill: 'sci-needs',
     });
     const h = hintFor(moduleById('s1-u1-m1').learn, question);
-    expect(h?.visual.kind).toBe('evidence-text');
-    expect(h?.prompt).toBe('Look at what it needs.');
+    // Science Level 1: Hint memutar adegan "ubah satu hal", bukan kartu kalimat.
+    expect(h?.visual.kind).toBe('science-scene');
+  });
+
+  it('Hint Science tidak pernah memakai adegan tebak — hasilnya bisa jadi kunci jawaban', () => {
+    for (const mod of scienceModulesList.filter((m) => m.grade === 1)) {
+      const question = q({ text: 'What happens next?', params: {}, answer: 0, type: 'pick-picture', skill: mod.skills[0]! });
+      const h = hintFor(mod.learn, question);
+      expect(h?.visual.kind, mod.id).toBe('science-scene');
+      if (h?.visual.kind === 'science-scene') expect(h.visual.mode, mod.id).not.toBe('predict');
+    }
   });
 
   it('modul Read r1-u1-m1 mengambil langkah pictorial sebagai hint', () => {

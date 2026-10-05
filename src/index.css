@@ -336,3 +336,127 @@ body {
   }
 }
 
+
+/* --- Adegan sains (src/components/science/ScienceScene.tsx) ---
+   Hanya transform/opacity. Semuanya sekali jalan; `droop` dan `fade` BERHENTI di
+   keadaan akhirnya (tanaman layu, es mencair) karena itulah akibat yang harus
+   tetap terlihat setelah geraknya selesai. */
+@keyframes scene-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes sci-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes sci-grow {
+  from {
+    transform: scale(0.45);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes sci-shrink {
+  from {
+    transform: scale(1.7);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes sci-droop {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(35deg) translateY(8%);
+  }
+}
+@keyframes sci-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+@keyframes sci-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  20% {
+    transform: translateX(-10%) rotate(-8deg);
+  }
+  40% {
+    transform: translateX(10%) rotate(8deg);
+  }
+  60% {
+    transform: translateX(-8%) rotate(-6deg);
+  }
+  80% {
+    transform: translateX(6%) rotate(4deg);
+  }
+}
+@keyframes sci-rise {
+  from {
+    transform: translateY(70%);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes sci-fall {
+  from {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes sci-slide-left {
+  from {
+    transform: translateX(80%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes sci-slide-right {
+  from {
+    transform: translateX(-80%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes sci-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.3);
+  }
+}

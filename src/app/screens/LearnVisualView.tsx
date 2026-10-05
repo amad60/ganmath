@@ -25,6 +25,7 @@ import {
 } from '../../components/manipulatives';
 import { EvidenceText } from '../../components/reading/EvidenceText';
 import { SequenceCards } from '../../components/reading/SequenceCards';
+import { ScienceScene } from '../../components/science/ScienceScene';
 import type { LearnVisual } from '../../content/types';
 import { en } from '../../i18n/en';
 
@@ -326,5 +327,16 @@ export function LearnVisualView({
       );
     case 'sequence-cards':
       return <SequenceCards cards={visual.cards} interactive={false} />;
+    case 'science-scene':
+      // Tidak interaktif (panel Hint, langkah watch) = adegan memutar pilihannya
+      // sendiri sekali, supaya sebab-akibatnya tetap TERLIHAT bergerak.
+      return (
+        <ScienceScene
+          visual={visual}
+          interactive={interactive}
+          onValue={interactive ? onValue : undefined}
+          compact={compact}
+        />
+      );
   }
 }
