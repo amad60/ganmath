@@ -13,6 +13,7 @@ import { LearnVisualView } from './LearnVisualView';
 import { Button, Keypad } from '../../components/ui';
 import { createSession } from '../../engine/session';
 import { evaluate } from '../../engine/mastery';
+import { learnBlank } from '../../engine/learnBlank';
 import { learnCheck } from '../../engine/learnCheck';
 import { QUICK_LOOK_FLASH_MS, WATCH_LOOK_MS } from '../../engine/learnPacing';
 import { emptyModuleState, MAX_ANSWER_DIGITS } from '../../engine/types';
@@ -1545,6 +1546,15 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
         vi.advanceTimersByTime(QUICK_LOOK_FLASH_MS);
       });
     }
+    fillLearnBlank();
+  }
+
+  /** Isian lambang tahap abstract: coba pilihan satu per satu sampai yang benar. */
+  function fillLearnBlank() {
+    for (const b of document.querySelectorAll<HTMLButtonElement>('[data-part="tap-target"]')) {
+      if (!screen.getByRole('button', { name: /next|start/i }).hasAttribute('disabled')) return;
+      if (!b.disabled) fireEvent.click(b);
+    }
   }
 
   it('sudut segitiga di g1-u6-m1 bisa disentuh sampai Next terbuka', () => {
@@ -1801,6 +1811,15 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     fireEvent.click(screen.getByRole('button', { name: 'Add the tens' }));
     expect(screen.getByLabelText(/47 plus 38/)).toHaveTextContent('15');
     expect(screen.getByLabelText(/47 plus 38/)).not.toHaveTextContent('85');
+    // Kolomnya selesai; sekarang anak MENULIS hasilnya di kalimat lambangnya.
+    const blank = learnBlank(mod.learn[2]!)!;
+    expect(blank).toBeTruthy();
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+    expect(screen.getByLabelText('missing number')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: blank.choices.find((c) => c !== blank.answer)! }));
+    expect(screen.getByText('Look at the picture again.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next|start/i })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: blank.answer }));
     expect(screen.getByRole('button', { name: /next|start/i })).not.toBeDisabled();
     vi.useRealTimers();
   });
@@ -2064,6 +2083,10 @@ describe('App — See lesson tidak mengubah progres', () => {
         for (const b of screen.getAllByRole('button')) {
           if (/^(Object|Cell) /.test(b.getAttribute('aria-label') ?? '')) fireEvent.click(b);
         }
+      }
+      for (const b of document.querySelectorAll<HTMLButtonElement>('[data-part="tap-target"]')) {
+        if (!screen.getByRole('button', { name: /^(Next|Done)$/ }).hasAttribute('disabled')) break;
+        if (!b.disabled) fireEvent.click(b);
       }
       fireEvent.click(screen.getByRole('button', { name: /^(Next|Done)$/ }));
     }

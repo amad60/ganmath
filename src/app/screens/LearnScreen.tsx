@@ -12,6 +12,7 @@ import type { ColumnPlace } from '../../components/manipulatives/columnPlaces';
 import { sfx, unlockAudio } from '../sfx';
 import { UnitIntroModal } from '../../components/unit-intro/UnitIntroModal';
 import { watchWork } from './learnWork';
+import { learnBlank } from '../../engine/learnBlank';
 
 function columnLabel(op: '+' | '−', place: ColumnPlace): string {
   if (op === '−') return place === 'tens' ? en.learn.takeTens : en.learn.takeOnes;
@@ -67,6 +68,9 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
   const [clues, setClues] = useState<ClueState[]>(() =>
     module.learn.map(() => ({ rejected: [], found: false })),
   );
+  const [blanks, setBlanks] = useState<{ rejected: string[]; solved: boolean }[]>(() =>
+    module.learn.map(() => ({ rejected: [], solved: false })),
+  );
   const reduced = useReducedMotion();
 
   // Seed awal dikunci per kunjungan. Salah di pengecekan menaikkan seed, jadi
@@ -93,6 +97,13 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
     () => (current?.action === 'watch' ? watchWork(current.visual) : null),
     [current],
   );
+
+  /**
+   * Tahap abstract: angka terakhir kalimat lambangnya kosong, dan anak mengisinya
+   * dari gambar (`engine/learnBlank.ts`). Dulu 319 langkah abstract Math cuma dibaca.
+   */
+  const blank = useMemo(() => (!onCheck && current ? learnBlank(current) : null), [current, onCheck]);
+  const blankState = blanks[step] ?? { rejected: [], solved: false };
 
   const markLooked = () => {
     setLooked((prev) => {
@@ -122,7 +133,11 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
   const fractionDone = work?.kind === 'fraction' && value >= work.need;
   const bundleDone = work?.kind === 'bundle' && Boolean(bundled[step]);
   const rowsDone = work?.kind === 'rows' && (opened[step] ?? 0) >= work.rows - 1;
-  const reached = onCheck
+  const workDone = columnDone || fractionDone || bundleDone || rowsDone;
+  // Langkah yang punya tugas (buka kolom, ikat sepuluh) mengerjakan tugasnya dulu;
+  // isian lambangnya baru muncul sesudah gambarnya lengkap.
+  const blankOpen = blank != null && (!work || workDone);
+  const baseReached = onCheck
     ? correct
     : clueStep
       ? clue.found
@@ -131,6 +146,7 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
         : current!.action === 'watch'
           ? Boolean(looked[step])
           : current!.target != null && value >= current!.target;
+  const reached = baseReached && (blank == null || blankState.solved);
   const last = step === total - 1;
   const canPrev = step > 0;
   const flashing =
@@ -162,6 +178,21 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
       next[step] = hit
         ? { ...was, found: true }
         : { ...was, rejected: was.rejected.includes(index) ? was.rejected : [...was.rejected, index] };
+      return next;
+    });
+  };
+
+  /** Salah: pilihan itu dikunci, tanpa skor dan tanpa membuka jawabannya. */
+  const pickBlank = (choice: string) => {
+    if (!blank || blankState.solved || blankState.rejected.includes(choice)) return;
+    unlockAudio();
+    const hit = choice === blank.answer;
+    if (hit) sfx.correct();
+    else sfx.tap();
+    setBlanks((prev) => {
+      const next = [...prev];
+      const was = next[step] ?? { rejected: [], solved: false };
+      next[step] = hit ? { ...was, solved: true } : { ...was, rejected: [...was.rejected, choice] };
       return next;
     });
   };
@@ -217,7 +248,28 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
         <div className="flex items-center gap-3">
           <Mascot mood={reached ? 'happy' : interactive ? 'thinking' : 'idle'} size={64} />
           <p className="flex-1 text-xl font-bold">
-            {onCheck ? en.learn.checkPrompt : current!.prompt}
+            {onCheck ? (
+              en.learn.checkPrompt
+            ) : blank ? (
+              <>
+                {blank.before}
+                <span
+                  aria-label={blankState.solved ? blank.answer : en.learn.blankMissing}
+                  className="mx-0.5 inline-flex min-w-[2.2em] justify-center rounded-[var(--r-sm)] px-1.5 tabular-nums"
+                  style={{
+                    border: `3px ${blankState.solved ? 'solid' : 'dashed'} ${
+                      blankState.solved ? 'var(--c-correct)' : 'var(--c-primary)'
+                    }`,
+                    color: blankState.solved ? 'var(--c-correct)' : 'var(--c-primary)',
+                  }}
+                >
+                  {blankState.solved ? blank.answer : '?'}
+                </span>
+                {blank.after}
+              </>
+            ) : (
+              current!.prompt
+            )}
           </p>
         </div>
 
@@ -288,8 +340,40 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
               <p className="text-ink-soft text-center text-[18px] font-bold">{en.learn.clueRetry}</p>
             ) : null}
 
-            {current!.caption ? (
+            {current!.caption && !(blank?.hideCaption && !blankState.solved) ? (
               <p className="text-3xl font-black tabular-nums">{current!.caption}</p>
+            ) : null}
+
+            {blankOpen && blank ? (
+              <div className="flex w-full flex-col items-center gap-2">
+                <div className="grid w-full grid-cols-3 gap-3">
+                  {blank.choices.map((c) => {
+                    const out = blankState.rejected.includes(c);
+                    const win = blankState.solved && c === blank.answer;
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        data-part="tap-target"
+                        disabled={out || blankState.solved}
+                        onClick={() => pickBlank(c)}
+                        className="flex min-h-[56px] items-center justify-center rounded-[var(--r-md)] text-[24px] font-black tabular-nums"
+                        style={{
+                          background: win ? 'var(--c-correct-soft)' : 'var(--c-surface)',
+                          border: `3px solid ${win ? 'var(--c-correct)' : 'var(--c-line)'}`,
+                          boxShadow: out ? 'none' : '0 4px 0 rgb(0 0 0 / 0.12)',
+                          opacity: out ? 0.4 : 1,
+                        }}
+                      >
+                        {c}
+                      </button>
+                    );
+                  })}
+                </div>
+                {!blankState.solved && blankState.rejected.length > 0 ? (
+                  <p className="text-ink-soft text-center text-[18px] font-bold">{en.learn.blankRetry}</p>
+                ) : null}
+              </div>
             ) : null}
 
             {work?.kind === 'column' && !columnDone ? (
@@ -373,6 +457,8 @@ export function LearnScreen({ module, onDone, onExit, seed: seedProp, review }: 
               ? en.learn.checkHint
               : clueStep
                 ? en.learn.tapClue
+                : blankOpen
+                ? en.learn.blankHint
                 : work?.kind === 'fraction'
                 ? en.learn.tapParts
                 : work

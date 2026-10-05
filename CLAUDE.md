@@ -84,6 +84,15 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      mengintip materi akan menghapus jalur "diajar dengan cara lain" (§7) — dan tidak
      memulai latihan; tombol terakhirnya "Done", kembali ke peta. Menyelesaikan materi
      pertama kali memberi **`XP_LEARN` (10)**, sekali per modul (`xpForLearn`).
+   - **Tahap abstract Math meminta anak MENULIS lambangnya** (`engine/learnBlank.ts`).
+     Dulu 319 langkah abstract, nol yang meminta apa pun. Sekarang angka terakhir di kalimat
+     lambangnya dikosongkan ("We write it as 4 + 5 = ?") dan anak memilih dari tiga pilihan,
+     berdasarkan gambar di atasnya — 142 langkah di 127 modul, dibangun dari prompt yang sudah
+     ada, bukan ditulis ulang. Pengecohnya salah yang nyata (lupa menyimpan 85→75, nilai
+     tempat ±100, desimal ±0,1). Jam, pecahan, angka berpemisah, rupiah ("100.000"), dan
+     kalimat tanya tidak dikosongkan. Caption yang memuat jawabannya disembunyikan sampai
+     terisi. Langkah yang punya tugas (buka kolom, ikat sepuluh) mengerjakan tugasnya dulu.
+     Salah = pilihan itu dikunci, tanpa skor.
    - **Materi Read melatih mekanik kuisnya sendiri (`tap-clue`).** Dulu semua langkah
      Learn Read `watch`, padahal kuisnya meminta mengetuk kalimat bukti. Sekarang langkah
      `pictorial` di ke-17 modul Read adalah cerita mini 3 kalimat dengan tepat SATU kalimat

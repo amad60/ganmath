@@ -147,7 +147,9 @@ kuis 10, kuis tanpa hint.
    - Hint Science memakai adegan `change`, bukan `predict`. Adegan `predict`
      memutar hasil yang benar, jadi bisa menjadi kunci jawaban.
 
-Belum: Learn Math tahap abstract.
+Learn Math tahap abstract kini meminta anak mengisi angka terakhir kalimat lambangnya
+(`learnBlank`, 142 langkah di 127 modul). Langkah abstract tanpa angka (kalimat aturan,
+misalnya "Percent means out of one hundred.") tetap `watch`.
 
 Susulan: kosakata Read lama dirapikan, sehingga Read lolos lint penuh di keempat level
 (75 kata dideklarasikan atau diganti, 3 prompt dipendekkan). Science Level 2–3 juga

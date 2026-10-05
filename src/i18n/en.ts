@@ -63,6 +63,9 @@ export const en = {
 
   learn: {
     next: 'Next',
+    blankMissing: 'missing number',
+    blankHint: 'Pick the missing number.',
+    blankRetry: 'Look at the picture again.',
     start: 'Start practice',
     /** Tombol terakhir saat materi dibuka ulang ("See lesson") — tidak ada latihan yang menyusul. */
     done: 'Done',
