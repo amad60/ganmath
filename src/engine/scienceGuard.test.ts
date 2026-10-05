@@ -11,7 +11,9 @@ import type { Question } from './types';
  * benar. Penjaga ini mencerminkan readGuard: soal pilihan yang bisa diluluskan
  * dengan mengetuk POSISI (selalu kartu kiri) tidak mengukur sains sama sekali.
  */
-const level1 = scienceModulesList.filter((m) => m.grade === 1);
+/** Level yang sudah memakai adegan + `pick-picture`. Tambahkan level di sini saat dikonversi. */
+const SCENE_LEVELS: number[] = [1];
+const level1 = scienceModulesList.filter((m) => SCENE_LEVELS.includes(m.grade));
 
 function pictureQuestions(seeds: number): Question[] {
   const out: Question[] = [];
@@ -26,7 +28,7 @@ function pictureQuestions(seeds: number): Question[] {
 
 describe('Science Level 1 — soal gambar tidak bisa diluluskan dengan menebak posisi', () => {
   it('setiap modul Level 1 punya aturan pick-picture dengan 5 skenario', () => {
-    expect(level1).toHaveLength(10);
+    expect(level1).toHaveLength(10 * SCENE_LEVELS.length);
     for (const mod of level1) {
       expect(mod.questionTypes).toContain('pick-picture');
       const rule = mod.rules.find((r) => r.type === 'pick-picture');

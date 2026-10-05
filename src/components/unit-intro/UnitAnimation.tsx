@@ -23,11 +23,11 @@ export function UnitAnimation({ unitId, replayKey = 0 }: UnitAnimationProps) {
     return <div className="h-[180px] w-full" />;
   }
 
-  // Science Level 1: intro memutar adegan concrete modulnya sendiri — tanaman yang
+  // Science (setiap level yang sudah punya adegan): intro memutar adegan concrete modulnya sendiri — tanaman yang
   // disiram dan tidak, es di matahari dan di dingin — bukan roket generik. Anak
   // melihat sebab-akibat unit itu sebelum menyentuhnya. Tingginya ikut adegan,
   // bukan kotak 190px: gambar 4:3 plus keterangan tidak muat di sana.
-  const scene = unitId.startsWith('s1-') ? scienceIntroScene(unitId) : null;
+  const scene = /^s\d+-/.test(unitId) ? scienceIntroScene(unitId) : null;
   if (scene) {
     return (
       <div
