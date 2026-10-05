@@ -463,6 +463,13 @@ modul, bintang, badge, dan streak TIDAK PERNAH dihapus dari sana.
   Pintu masuk: layar nama di HP baru ("Used GanMath on another phone?") dan
   Parent Area. Bukan akun anak, bukan login di peta. Detail: `docs/tech/cloud-sync.md`.
 - **PWA**: installable ke home screen, jalan offline.
+- **Update PWA tidak pernah reload sendiri**, tapi DICEK aktif (`usePwa` + `updateCheck.ts`):
+  saat app kembali ke depan (throttle 1 menit), tiap jam, dan lewat tombol **Check for
+  updates** di Parent Area → Settings, yang menjawab "latest" / "ready" / offline dan
+  menampilkan versi build (`__APP_BUILD__`: commit + tanggal, dari `COMMIT_REF` Netlify).
+  Dulu hanya browser yang mengecek, dan itu hanya saat halaman dimuat ulang — PWA di HP
+  nyaris tidak pernah dimuat ulang, jadi tawaran update baru muncul setelah app dimatikan
+  paksa.
 - Tidak ada iklan. Tidak ada tracking pihak ketiga. Cloud hanya menyimpan progress
   yang sudah ada di HP, di belakang RLS akun orang tua.
 

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import type { UpdateStatus } from '../updateCheck';
 import type { ModuleState } from '../../engine/types';
 import { all, availableGrades, moduleById, pathOrderFor, unitTitles } from '../../content';
 import {
@@ -33,7 +34,31 @@ export type ParentScreenProps = {
   onImport: (state: ProgressState) => void;
   onReset: () => void;
   onBack: () => void;
+  /** Cek dan pasang versi baru app (`usePwa`). Kosong = bagian versinya tidak tampil. */
+  appUpdate?: {
+    status: UpdateStatus;
+    needRefresh: boolean;
+    check: () => void;
+    apply: () => void;
+  };
 };
+
+const UPDATE_LINE: Partial<Record<UpdateStatus, string>> = {
+  latest: '✓ You have the latest version.',
+  offline: 'No internet. Try again when online.',
+  unsupported: 'Updates are checked in the installed app only.',
+  error: 'Could not check. Try again.',
+};
+
+/** "3460ee6 · 5 Oct 2026" — commit yang sedang berjalan, untuk dicocokkan dengan deploy. */
+function buildLabel(): string {
+  const day = new Date(__APP_BUILD__.time).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+  return `${__APP_BUILD__.sha} · ${day}`;
+}
 
 const CLEARED = ['mastered', 'retained'];
 
@@ -51,6 +76,7 @@ export function ParentScreen({
   onImport,
   onReset,
   onBack,
+  appUpdate,
 }: ParentScreenProps) {
   const [tab, setTab] = useState<'progress' | 'settings' | 'sync'>('progress');
   const activeGrade = data.profile.grade ?? 1;
@@ -376,6 +402,39 @@ export function ParentScreen({
                 <option value="1">100%</option>
               </select>
             </div>
+          </section>
+        ) : null}
+
+        {tab === 'settings' && appUpdate ? (
+          <section className="flex flex-col gap-3">
+            <h2 className="text-xl font-black">App version</h2>
+            <p className="text-ink-soft text-[16px] font-bold">Version {buildLabel()}</p>
+            {appUpdate.needRefresh || appUpdate.status === 'available' ? (
+              <>
+                <p className="text-[18px] font-bold" style={{ color: 'var(--c-primary)' }}>
+                  A new version is ready.
+                </p>
+                <Button full onClick={appUpdate.apply}>
+                  Update now
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  full
+                  disabled={appUpdate.status === 'checking'}
+                  onClick={appUpdate.check}
+                >
+                  {appUpdate.status === 'checking' ? 'Checking…' : 'Check for updates'}
+                </Button>
+                {UPDATE_LINE[appUpdate.status] ? (
+                  <p className="text-ink-soft text-center text-[16px] font-bold" role="status">
+                    {UPDATE_LINE[appUpdate.status]}
+                  </p>
+                ) : null}
+              </>
+            )}
           </section>
         ) : null}
 

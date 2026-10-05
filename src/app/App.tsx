@@ -389,6 +389,12 @@ export function App() {
             setScreen({ name: 'map' });
           }}
           onBack={() => setScreen({ name: 'map' })}
+          appUpdate={{
+            status: pwa.updateStatus,
+            needRefresh: pwa.needRefresh,
+            check: pwa.checkUpdate,
+            apply: pwa.applyUpdate,
+          }}
         />
       );
 

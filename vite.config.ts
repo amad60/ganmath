@@ -3,8 +3,29 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
+import { execSync } from 'node:child_process';
+
+/**
+ * Identitas build yang DILIHAT orang tua di Settings ("Version 3460ee6 · 5 Oct").
+ * Tanpa ini "sudah versi terbaru?" tidak bisa dijawab — tidak ada yang bisa
+ * dibandingkan dengan commit yang baru di-push. Netlify memberi `COMMIT_REF`;
+ * di mesin lokal diambil dari git, dan kalau git pun tidak ada, 'dev'.
+ */
+function buildSha(): string {
+  if (process.env.COMMIT_REF) return process.env.COMMIT_REF.slice(0, 7);
+  try {
+    return execSync('git rev-parse --short=7 HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+  } catch {
+    return 'dev';
+  }
+}
 
 export default defineConfig({
+  define: {
+    __APP_BUILD__: JSON.stringify({ sha: buildSha(), time: new Date().toISOString() }),
+  },
   plugins: [
     react(),
     tailwindcss(),
