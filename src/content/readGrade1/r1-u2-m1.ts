@@ -12,7 +12,7 @@ export const orderOfEvents: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'clue-tap'],
   visuals: ['sequence-cards', 'evidence-text'],
-  vocab: ['first', 'next', 'last', 'seed', 'flower', 'watered', 'bloom', 'happen'],
+  vocab: ['first', 'next', 'last', 'seed', 'flower', 'watered', 'bloom', 'happen', 'stories', 'beginning', 'middle', 'order', 'time'],
 
   learn: [
     {

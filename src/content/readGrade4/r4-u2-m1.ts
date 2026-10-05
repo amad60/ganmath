@@ -103,7 +103,7 @@ export const authorsPurpose: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['author', 'purpose', 'inform', 'entertain', 'persuade', 'act', 'ask'],
+  vocab: ['author', 'purpose', 'inform', 'entertain', 'persuade', 'act', 'ask', 'why', 'reason'],
 
   learn: [
     {
@@ -133,7 +133,7 @@ export const authorsPurpose: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Purpose is why the text exists.',
+      prompt: 'Purpose is why the author writes.',
       visual: {
         kind: 'evidence-text',
         title: 'Purpose',

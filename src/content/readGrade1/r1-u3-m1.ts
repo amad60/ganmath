@@ -12,7 +12,7 @@ export const whyDidItHappen: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['because', 'mud', 'puddle', 'wet', 'melt', 'thirsty', 'drank', 'why'],
+  vocab: ['because', 'mud', 'puddle', 'wet', 'melt', 'thirsty', 'drank', 'why', 'reason', 'cause', 'event', 'drink'],
 
   learn: [
     {

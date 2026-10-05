@@ -103,7 +103,7 @@ export const problemAndSolution: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['problem', 'solution', 'fixed', 'solved', 'wrong', 'sentence'],
+  vocab: ['problem', 'solution', 'fixed', 'solved', 'wrong', 'sentence', 'something', 'fix'],
 
   learn: [
     {

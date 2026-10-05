@@ -12,12 +12,12 @@ export const factVsOpinion: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['fact', 'opinion', 'true', 'feeling', 'prove', 'best'],
+  vocab: ['fact', 'opinion', 'true', 'feeling', 'prove', 'best', 'cute', 'word'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'A fact is always true and can be proven.',
+      prompt: 'A fact is true. You can prove it.',
       visual: {
         kind: 'evidence-text',
         title: 'Cats',
@@ -42,14 +42,14 @@ export const factVsOpinion: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Words like best, cute, and delicious show opinions.',
+      prompt: 'Best and cute are opinion words.',
       visual: {
         kind: 'evidence-text',
         title: 'Look for Clues',
         sentences: ['Ice cream is cold (fact). Ice cream is the best snack (opinion).'],
       },
       action: 'watch',
-      caption: 'fact vs opinion',
+      caption: 'fact or opinion',
     },
   ],
 

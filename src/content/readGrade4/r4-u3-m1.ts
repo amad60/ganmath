@@ -103,7 +103,7 @@ export const contextClues: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['context', 'means', 'clue', 'word', 'nearby', 'drenched'],
+  vocab: ['context', 'means', 'clue', 'word', 'nearby', 'drenched', 'sentence', 'explain'],
 
   learn: [
     {

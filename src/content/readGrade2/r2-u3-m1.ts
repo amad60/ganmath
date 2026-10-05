@@ -12,12 +12,12 @@ export const characterFeelings: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['proud', 'nervous', 'excited', 'disappointed', 'cheered', 'clenched'],
+  vocab: ['proud', 'nervous', 'excited', 'disappointed', 'cheered', 'clenched', 'character', 'author', 'just', 'happy'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Characters show feelings through actions.',
+      prompt: 'Characters show feelings by what they do.',
       visual: {
         kind: 'evidence-text',
         title: 'Spilled Juice',
@@ -42,14 +42,14 @@ export const characterFeelings: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Authors show emotions instead of just telling.',
+      prompt: 'Authors show feelings, not just tell.',
       visual: {
         kind: 'evidence-text',
         title: 'Show, Don\'t Tell',
         sentences: ['Budi leaped into the air and cheered with two thumbs up!'],
       },
       action: 'watch',
-      caption: 'cheered ➔ joyful',
+      caption: 'cheered ➔ happy',
     },
   ],
 

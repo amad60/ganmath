@@ -103,7 +103,7 @@ export const compareTwoTexts: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['alike', 'only', 'both', 'differ', 'same', 'place'],
+  vocab: ['alike', 'only', 'both', 'differ', 'same', 'place', 'text', 'share', 'topic', 'different', 'be', 'true'],
 
   learn: [
     {

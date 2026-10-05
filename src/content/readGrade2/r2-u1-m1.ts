@@ -12,7 +12,7 @@ export const mainIdeaSummary: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['idea', 'mostly', 'topic', 'about', 'bees', 'hive', 'sentence'],
+  vocab: ['idea', 'mostly', 'topic', 'about', 'bees', 'hive', 'sentence', 'paragraph', 'main', 'text', 'detail'],
 
   learn: [
     {
@@ -46,7 +46,7 @@ export const mainIdeaSummary: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Main idea means what the text is mostly about.',
+      prompt: 'Main idea: what the text is about.',
       visual: {
         kind: 'evidence-text',
         title: 'Big Idea',

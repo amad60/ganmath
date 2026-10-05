@@ -12,7 +12,7 @@ export const mysteryClues: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'clue-tap'],
   visuals: ['evidence-text'],
-  vocab: ['mystery', 'hidden', 'whistle', 'clues', 'solve', 'infer', 'beach'],
+  vocab: ['mystery', 'hidden', 'whistle', 'clues', 'solve', 'infer', 'beach', 'look', 'means', 'guess', 'idea'],
 
   learn: [
     {
@@ -42,7 +42,7 @@ export const mysteryClues: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Infer means guessing from smart clues.',
+      prompt: 'Infer means use clues to guess.',
       visual: {
         kind: 'evidence-text',
         title: 'Smart Detective',

@@ -103,7 +103,7 @@ export const storyTheme: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['lesson', 'theme', 'matters', 'story', 'teach', 'happened'],
+  vocab: ['lesson', 'theme', 'matters', 'story', 'teach', 'happened', 'event'],
 
   learn: [
     {
@@ -133,14 +133,14 @@ export const storyTheme: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Theme is the idea the story teaches.',
+      prompt: 'Theme is the lesson a story gives.',
       visual: {
         kind: 'evidence-text',
         title: 'Theme',
         sentences: ['Ask what the story wants you to understand.'],
       },
       action: 'watch',
-      caption: 'events ➔ lesson',
+      caption: 'event ➔ lesson',
     },
   ],
 

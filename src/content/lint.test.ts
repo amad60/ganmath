@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { lintContent } from './lint';
 import { all, registry } from './index';
 import { scienceModulesList, scienceRegistryFor } from './scienceIndex';
-import { READ_LEVELS, readRegistryFor } from './readIndex';
+import { READ_LEVELS, readModulesList, readRegistryFor } from './readIndex';
 import { enumerate, generateSet } from '../engine/generator';
 import { createSession } from '../engine/session';
 import { mulberry32 } from '../engine/rng';
@@ -32,22 +32,22 @@ describe('linter konten', () => {
   });
 
   /**
-   * Konten Read belum lolos lint penuh (kosakata materi lamanya belum dideklarasikan),
-   * jadi yang dijaga di sini hanya yang ditambahkan Phase 2: setiap modul Read punya
-   * satu langkah `tap-clue` yang bisa diselesaikan, dan prompt-nya ≤8 kata dari
-   * kosakata yang sudah dikenal. Langkah lain dibuang dari salinan supaya utang lama
-   * tidak menutupi pelanggaran baru.
+   * Konten Read sekarang lolos lint PENUH, sama seperti Math dan Science. Dulu yang
+   * dijaga hanya langkah `tap-clue`, karena kosakata materi lamanya belum dideklarasikan
+   * (75 kata, 3 prompt lebih dari 8 kata). Istilah inti membaca (story, main idea, detail)
+   * dideklarasikan di modulnya; kata yang sulit tanpa perlu (proven, ingredients) diganti.
    */
-  it.each(READ_LEVELS)('materi Read Level %i: langkah tap-clue bisa dikerjakan dan lolos kosakata', (g) => {
-    const reg = readRegistryFor(g);
-    const mods = reg.pathOrder.map((id) => {
-      const m = reg.modules[id] as ContentModule;
-      return { ...m, learn: m.learn.filter((l) => l.action === 'tap-clue'), rules: [] };
-    });
-    for (const m of mods) expect(m.learn, m.id).toHaveLength(1);
-    const problems = lintContent(mods, { modules: Object.fromEntries(mods.map((m) => [m.id, m])), pathOrder: reg.pathOrder })
-      .filter((p) => ['learn-action', 'learn-target', 'prompt-length', 'vocab'].includes(p.rule));
+  it.each(READ_LEVELS)('konten Read Level %i lolos semua aturan', (g) => {
+    const problems = lintContent(readModulesList, readRegistryFor(g));
     expect(problems).toEqual([]);
+  });
+
+  it.each(READ_LEVELS)('materi Read Level %i: setiap modul punya tepat satu langkah tap-clue', (g) => {
+    const reg = readRegistryFor(g);
+    for (const id of reg.pathOrder) {
+      const m = reg.modules[id] as ContentModule;
+      expect(m.learn.filter((l) => l.action === 'tap-clue'), m.id).toHaveLength(1);
+    }
   });
 
   const broken = (patch: Partial<ContentModule>): ContentModule[] => {

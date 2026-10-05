@@ -12,7 +12,7 @@ export const scienceAnimalClues: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['adaptation', 'habitat', 'camouflage', 'prey', 'predator', 'survive', 'feature', 'help'],
+  vocab: ['adaptation', 'habitat', 'camouflage', 'prey', 'predator', 'survive', 'feature', 'help', 'animal', 'special', 'body', 'part'],
 
   learn: [
     {
@@ -45,14 +45,14 @@ export const scienceAnimalClues: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Adaptation is a special feature that helps survival.',
+      prompt: 'Adaptations help animals survive.',
       visual: {
         kind: 'evidence-text',
         title: 'Feature ➔ Survival',
         sentences: ['Duck webbed feet act like swimming flippers in water.'],
       },
       action: 'watch',
-      caption: 'feature ➔ survival',
+      caption: 'feature ➔ survive',
     },
   ],
 

@@ -12,12 +12,12 @@ export const howToFollowSteps: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['recipe', 'instructions', 'step', 'mix', 'bake', 'prepare', 'caution', 'before', 'last'],
+  vocab: ['recipe', 'instructions', 'step', 'mix', 'bake', 'prepare', 'caution', 'before', 'last', 'order', 'list', 'need'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Informational texts give clear step-by-step directions.',
+      prompt: 'A recipe gives steps in order.',
       visual: {
         kind: 'evidence-text',
         title: 'Banana Smoothie Steps',
@@ -46,14 +46,14 @@ export const howToFollowSteps: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Ingredients tell what you need; steps tell what to do.',
+      prompt: 'A list tells what you need.',
       visual: {
         kind: 'evidence-text',
         title: 'Recipe Anatomy',
         sentences: ['Ingredients: list of items. Directions: list of actions.'],
       },
       action: 'watch',
-      caption: 'items ➔ actions',
+      caption: 'need ➔ do',
     },
   ],
 

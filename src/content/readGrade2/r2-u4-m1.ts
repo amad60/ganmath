@@ -103,7 +103,7 @@ export const supportingDetails: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['detail', 'supports', 'topic', 'about', 'idea'],
+  vocab: ['detail', 'supports', 'topic', 'about', 'idea', 'support'],
 
   learn: [
     {

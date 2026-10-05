@@ -12,7 +12,7 @@ export const whereDoesItHappen: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['kitchen', 'farm', 'pond', 'grass', 'house', 'lake', 'room'],
+  vocab: ['kitchen', 'farm', 'pond', 'grass', 'house', 'lake', 'room', 'garden', 'happen'],
 
   learn: [
     {

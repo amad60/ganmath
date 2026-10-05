@@ -103,7 +103,7 @@ export const informationOrder: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['earliest', 'order', 'before', 'after', 'step', 'happen'],
+  vocab: ['earliest', 'order', 'before', 'after', 'step', 'happen', 'text'],
 
   learn: [
     {

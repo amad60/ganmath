@@ -12,7 +12,7 @@ export const whoIsInTheStory: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['clue-tap', 'choose-text'],
   visuals: ['evidence-text'],
-  vocab: ['cat', 'dog', 'park', 'tree', 'sat', 'ran', 'clue', 'sentence', 'who'],
+  vocab: ['cat', 'dog', 'park', 'tree', 'sat', 'ran', 'clue', 'sentence', 'who', 'story', 'name', 'ana'],
 
   learn: [
     {

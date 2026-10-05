@@ -147,5 +147,8 @@ kuis 10, kuis tanpa hint.
    - Hint Science memakai adegan `change`, bukan `predict`. Adegan `predict`
      memutar hasil yang benar, jadi bisa menjadi kunci jawaban.
 
-Belum: Science Level 2–3 (menunggu Level 1 dicoba anak), kosakata Read lama yang
-belum lolos lint (142 kata, 6 prompt terlalu panjang), dan Learn Math tahap abstract.
+Belum: Learn Math tahap abstract.
+
+Susulan: kosakata Read lama dirapikan, sehingga Read lolos lint penuh di keempat level
+(75 kata dideklarasikan atau diganti, 3 prompt dipendekkan). Science Level 2–3 sedang
+dikonversi ke format adegan.
