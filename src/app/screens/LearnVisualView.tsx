@@ -199,6 +199,7 @@ export function LearnVisualView({
           max={visual.max}
           step={visual.step}
           showValues={visual.showValues}
+          columns={visual.columns}
           labels={visual.labels}
         />
       );

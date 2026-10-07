@@ -108,6 +108,8 @@ export type QuestionVisual =
       step?: number;
       /** Tulis nilai di ujung tiap batang. Matikan saat itu yang ditanyakan. */
       showValues?: boolean;
+      /** Batang tegak, garis datar di tiap angka. Untuk diagram yang dibaca nilainya. */
+      columns?: boolean;
       labels?: string[];
     }
   | { kind: 'fraction'; parts: number; shaded: number; shape?: 'circle' | 'square'; unequal?: boolean }

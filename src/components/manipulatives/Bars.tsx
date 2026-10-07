@@ -16,6 +16,12 @@ export type BarsProps = {
   step?: number;
   /** Tulis nilai di ujung tiap batang. Matikan saat itu yang ditanyakan soal. */
   showValues?: boolean;
+  /**
+   * Batang tegak dengan garis datar di tiap angka. Untuk diagram yang harus
+   * DIBACA nilainya. Mode `values` biasa tetap batang mendatar — garis ukurnya
+   * tegak, dan itu model perbandingan, bukan diagram batang.
+   */
+  columns?: boolean;
   labels?: string[];
   colors?: string[];
   /** Lebar gambar bersumbu dalam piksel. Tidak dipakai mode perbandingan. */
@@ -31,6 +37,10 @@ const BAR_GAP = 12;
 const MAX_BARS = 8;
 /** Lebar acuan `maxTicksFor`: garis selebar layar soal (CLAUDE.md §10). */
 const REF_W = 342;
+
+/** Tinggi bidang diagram tegak. 11 angka (0–10) masih muat tanpa saling menimpa. */
+const COL_H = 168;
+const COL_GAP = 18;
 
 const LABEL_FONT = 15;
 const LABEL_CHAR_W = 9;
@@ -70,12 +80,212 @@ type Text = {
  * dari `scale.ts` — aturan yang sama dengan garis bilangan dan bidang koordinat,
  * bukan penomoran ketiga yang bisa menyimpang sendiri.
  */
+/**
+ * Diagram batang tegak: angka di kiri, garis datar di tiap angka, ujung batang
+ * jatuh di garis yang sama dengan angkanya. Tanpa garis itu anak hanya bisa
+ * membandingkan, tidak bisa membaca "berapa".
+ */
+function UprightBars({
+  vals,
+  labels,
+  palette,
+  top,
+  step,
+  showValues,
+  reduced,
+}: {
+  vals: number[];
+  labels?: string[];
+  palette: string[];
+  top: number;
+  step: number;
+  showValues?: boolean;
+  reduced: boolean;
+}) {
+  const n = vals.length;
+  const avail = 250;
+  const barW = Math.min(44, Math.max(16, (avail - COL_GAP * Math.max(0, n - 1)) / Math.max(1, n)));
+  const plotW = n * barW + Math.max(0, n - 1) * COL_GAP;
+  const tickChars = String(top).length;
+  const gutL = tickChars * TICK_CHAR_W + 10;
+  const plotLeft = gutL;
+  const plotTop = TICK_FONT / 2 + 4;
+  const plotBottom = plotTop + COL_H;
+  const Y = (v: number) => plotBottom - (v / top) * COL_H;
+
+  const maxTicks = Math.max(3, Math.floor(COL_H / (TICK_FONT + 4)) + 1);
+  const ticks = ticksFor(0, top, step, maxTicks);
+
+  const texts: Text[] = [];
+  for (const t of ticks) {
+    texts.push({
+      part: 'tick-label',
+      text: String(t),
+      x: plotLeft - 6,
+      y: Y(t),
+      anchor: 'end',
+      font: TICK_FONT,
+      charW: TICK_CHAR_W,
+      weight: 700,
+      fill: 'var(--c-ink-soft)',
+    });
+  }
+
+  const bars = vals.map((v, i) => {
+    const h = Math.max(2, (v / top) * COL_H);
+    return {
+      key: `b${i}`,
+      v,
+      x: plotLeft + i * (barW + COL_GAP),
+      y: plotBottom - h,
+      h,
+      color: palette[i % palette.length],
+    };
+  });
+
+  for (const [i, b] of bars.entries()) {
+    const name = labels?.[i] ?? '';
+    if (name) {
+      texts.push({
+        part: 'bar-name',
+        text: name,
+        x: b.x + barW / 2,
+        y: plotBottom + 8 + LABEL_FONT / 2,
+        anchor: 'middle',
+        font: LABEL_FONT,
+        charW: LABEL_CHAR_W,
+        weight: 800,
+        fill: 'var(--c-ink)',
+      });
+    }
+    if (showValues) {
+      texts.push({
+        part: 'bar-value',
+        text: String(b.v),
+        x: b.x + barW / 2,
+        y: b.y - 8,
+        anchor: 'middle',
+        font: VALUE_FONT,
+        charW: VALUE_CHAR_W,
+        weight: 800,
+        fill: 'var(--c-ink)',
+      });
+    }
+  }
+
+  const xs: number[] = [0, plotLeft, plotLeft + plotW];
+  const ys: number[] = [plotTop, plotBottom];
+  for (const b of bars) {
+    xs.push(b.x, b.x + barW);
+    ys.push(b.y, b.y + b.h);
+  }
+  for (const t of texts) {
+    const w = t.text.length * t.charW;
+    xs.push(t.anchor === 'end' ? t.x - w : t.anchor === 'start' ? t.x : t.x - w / 2);
+    xs.push(t.anchor === 'end' ? t.x : t.anchor === 'start' ? t.x + w : t.x + w / 2);
+    ys.push(t.y - t.font / 2, t.y + t.font / 2);
+  }
+
+  const pad = 4;
+  const vbX = Math.min(...xs) - pad;
+  const vbY = Math.min(...ys) - pad;
+  const vbW = Math.max(...xs) - vbX + pad;
+  const vbH = Math.max(...ys) - vbY + pad;
+  const grow = teachingDuration(320, reduced);
+  const delay = teachingDuration(90, reduced);
+
+  const said = ['bar chart'];
+  for (const [i, b] of bars.entries()) said.push(`${labels?.[i] ?? `bar ${i + 1}`} is ${b.v}`);
+
+  return (
+    <svg
+      viewBox={`${vbX.toFixed(2)} ${vbY.toFixed(2)} ${vbW.toFixed(2)} ${vbH.toFixed(2)}`}
+      width={Math.round(vbW)}
+      height={Math.round(vbH)}
+      role="img"
+      aria-label={said.join(', ')}
+      style={{ display: 'block', maxWidth: '100%', height: 'auto' }}
+    >
+      {ticks.map((t) =>
+        t === 0 ? null : (
+          <line
+            key={`g${t}`}
+            data-part="grid-line"
+            x1={plotLeft}
+            y1={Y(t)}
+            x2={plotLeft + plotW}
+            y2={Y(t)}
+            stroke="var(--c-line)"
+            strokeWidth="1"
+          />
+        ),
+      )}
+
+      {bars.map((b, i) => (
+        <rect
+          key={b.key}
+          data-part="bar"
+          x={b.x}
+          y={b.y}
+          width={barW}
+          height={b.h}
+          rx="4"
+          fill={b.color}
+          style={{
+            transformBox: 'fill-box',
+            transformOrigin: 'center bottom',
+            animation: `bar-grow-up ${grow}ms var(--ease-std) ${i * delay}ms both`,
+          }}
+        />
+      ))}
+
+      <line
+        data-part="axis"
+        x1={plotLeft}
+        y1={plotTop}
+        x2={plotLeft}
+        y2={plotBottom}
+        stroke="var(--c-ink)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <line
+        data-part="axis"
+        x1={plotLeft}
+        y1={plotBottom}
+        x2={plotLeft + plotW}
+        y2={plotBottom}
+        stroke="var(--c-ink)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+
+      {texts.map((t, i) => (
+        <text
+          key={`${t.part}${i}`}
+          data-part={t.part}
+          x={t.x}
+          y={t.y}
+          textAnchor={t.anchor}
+          dominantBaseline="middle"
+          fontSize={t.font}
+          fontWeight={t.weight}
+          fill={t.fill}
+        >
+          {t.text}
+        </text>
+      ))}
+    </svg>
+  );
+}
+
 export function Bars({
   lengths,
   values,
   max,
   step,
   showValues,
+  columns,
   labels,
   colors,
   size = 320,
@@ -118,6 +328,20 @@ export function Bars({
   const asked = max != null && max > 0 ? Math.ceil((max - 1e-9) / step0) * step0 : 0;
   const top = Math.max(step0, asked, Math.ceil((biggest - 1e-9) / step0) * step0);
   const s = step && step > 0 ? step : stepFor(0, top);
+
+  if (columns) {
+    return (
+      <UprightBars
+        vals={vals}
+        labels={labels}
+        palette={palette}
+        top={top}
+        step={s}
+        showValues={showValues}
+        reduced={reduced}
+      />
+    );
+  }
 
   const nameChars = vals.reduce((m, _, i) => Math.max(m, (labels?.[i] ?? '').length), 0);
   const gutL = nameChars > 0 ? nameChars * LABEL_CHAR_W + 8 : 0;

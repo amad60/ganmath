@@ -225,6 +225,15 @@ body {
   }
 }
 
+@keyframes bar-grow-up {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 /* Keyframes untuk Unit Intro Animations */
 @keyframes apple-hop {
   0% {

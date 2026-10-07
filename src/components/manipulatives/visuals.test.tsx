@@ -1352,6 +1352,31 @@ describe('Bars — batang perbandingan dan batang bernilai', () => {
     );
     expect(container.querySelectorAll('[data-part="bar-value"]')).toHaveLength(2);
   });
+
+  it('diagram tegak punya garis datar, dan ujung batang jatuh di angkanya', () => {
+    const { container } = render(
+      <Bars values={[4, 8]} labels={['A', 'B']} max={10} step={1} columns />,
+    );
+    const lines = [...container.querySelectorAll('[data-part="grid-line"]')];
+    expect(lines.length).toBeGreaterThan(0);
+    for (const line of lines) {
+      expect(line.getAttribute('y1')).toBe(line.getAttribute('y2'));
+      expect(Number(line.getAttribute('x2'))).toBeGreaterThan(Number(line.getAttribute('x1')));
+    }
+    expect(tickLabels(container)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const label4 = [...container.querySelectorAll('[data-part="tick-label"]')].find(
+      (t) => t.textContent === '4',
+    );
+    const bar4 = bars(container)[0];
+    expect(Number(bar4?.getAttribute('y'))).toBeCloseTo(Number(label4?.getAttribute('y')), 4);
+    const h = bars(container).map((b) => Number(b.getAttribute('height')));
+    expect((h[1] as number) / (h[0] as number)).toBeCloseTo(2, 2);
+    expect(container.querySelectorAll('[data-part="bar-value"]')).toHaveLength(0);
+    const svg = container.querySelector('svg') as SVGSVGElement;
+    expect(Number(svg.getAttribute('width'))).toBeLessThanOrEqual(342);
+    expect(Number(svg.getAttribute('height'))).toBeLessThanOrEqual(342);
+    expectInsideViewBox(container);
+  });
 });
 
 describe('ArrayGrid — penanda bulat untuk benda, petak persegi untuk luas', () => {

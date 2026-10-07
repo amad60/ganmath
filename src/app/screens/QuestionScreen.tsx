@@ -167,6 +167,7 @@ export function QuestionVisualView({ visual }: { visual: NonNullable<Question['v
           max={visual.max}
           step={visual.step}
           showValues={visual.showValues}
+          columns={visual.columns}
           labels={visual.labels}
         />
       );
