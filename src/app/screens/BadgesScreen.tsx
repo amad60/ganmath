@@ -169,9 +169,13 @@ export function BadgesScreen({
             {isRead
               ? 'Reading comprehension builds from details to sequence, reasons, and clues.'
               : isScience
-                ? grade >= 4
-                  ? 'Science Level 4 asks how parts work together: roots, muscles, light, and a food chain.'
-                  : grade >= 3
+                ? grade >= 6
+                  ? 'Science Level 6 asks about the whole picture: fuel, a turning earth, and how living things fit.'
+                  : grade >= 5
+                    ? 'Science Level 5 asks what a fair test shows: one change, and whether it can come back.'
+                    : grade >= 4
+                      ? 'Science Level 4 asks how parts work together: roots, muscles, light, and a food chain.'
+                      : grade >= 3
                     ? 'Science Level 3 asks why: leaves, air, forces, sound, and the water cycle.'
                     : grade >= 2
                     ? 'Science Level 2 asks what happens next: growth, homes, heat, light, and care.'

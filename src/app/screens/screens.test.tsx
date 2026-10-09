@@ -1302,8 +1302,9 @@ describe('MapScreen — pintu jump level', () => {
     expect(onNextGrade).toHaveBeenCalledWith(4);
   });
 
-  it('Science Level 4 yang tamat tidak membuka Level 5', async () => {
+  it('Science Level 4 yang tamat membuka Level 5', async () => {
     const { sciencePathOrderFor } = await import('../../content/scienceIndex');
+    const onNextGrade = vi.fn();
     const done: ModuleState = {
       status: 'mastered',
       stars: 2,
@@ -1314,8 +1315,53 @@ describe('MapScreen — pintu jump level', () => {
       totals: { sessions: 2, questions: 20, correct: 20 },
     };
     const states = Object.fromEntries(sciencePathOrderFor(4).map((id) => [id, done]));
-    render(<MapScreen {...mapProps({ states, nextId: null, grade: 4, activeTrack: 'science' })} />);
-    expect(screen.queryByRole('button', { name: /Start Level 5/ })).not.toBeInTheDocument();
+    render(
+      <MapScreen
+        {...mapProps({ states, nextId: null, grade: 4, activeTrack: 'science', onNextGrade })}
+      />,
+    );
+    expect(screen.getByText(/You finished Level 4/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Start Level 5/ }));
+    expect(onNextGrade).toHaveBeenCalledWith(5);
+  });
+
+  it('Science Level 5 yang tamat membuka Level 6', async () => {
+    const { sciencePathOrderFor } = await import('../../content/scienceIndex');
+    const onNextGrade = vi.fn();
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      masteredAt: '2026-09-01',
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states = Object.fromEntries(sciencePathOrderFor(5).map((id) => [id, done]));
+    render(
+      <MapScreen
+        {...mapProps({ states, nextId: null, grade: 5, activeTrack: 'science', onNextGrade })}
+      />,
+    );
+    expect(screen.getByText(/You finished Level 5/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Start Level 6/ }));
+    expect(onNextGrade).toHaveBeenCalledWith(6);
+  });
+
+  it('Science Level 6 yang tamat tidak membuka Level 7', async () => {
+    const { sciencePathOrderFor } = await import('../../content/scienceIndex');
+    const done: ModuleState = {
+      status: 'mastered',
+      stars: 2,
+      reviewStage: 1,
+      masteredAt: '2026-09-01',
+      consecutiveFails: 0,
+      attempts: [],
+      totals: { sessions: 2, questions: 20, correct: 20 },
+    };
+    const states = Object.fromEntries(sciencePathOrderFor(6).map((id) => [id, done]));
+    render(<MapScreen {...mapProps({ states, nextId: null, grade: 6, activeTrack: 'science' })} />);
+    expect(screen.queryByRole('button', { name: /Start Level 7/ })).not.toBeInTheDocument();
     expect(screen.getByText(/finished every level/i)).toBeInTheDocument();
   });
 

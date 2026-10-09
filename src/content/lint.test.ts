@@ -36,6 +36,16 @@ describe('linter konten', () => {
     expect(problems).toEqual([]);
   });
 
+  it('konten Science Level 5 lolos semua aturan', () => {
+    const problems = lintContent(scienceModulesList, scienceRegistryFor(5));
+    expect(problems).toEqual([]);
+  });
+
+  it('konten Science Level 6 lolos semua aturan', () => {
+    const problems = lintContent(scienceModulesList, scienceRegistryFor(6));
+    expect(problems).toEqual([]);
+  });
+
   /**
    * Konten Read sekarang lolos lint PENUH, sama seperti Math dan Science. Dulu yang
    * dijaga hanya langkah `tap-clue`, karena kosakata materi lamanya belum dideklarasikan

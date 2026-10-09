@@ -40,6 +40,26 @@ import { floatOrSink } from './scienceGrade4/s4-u7-m1';
 import { coldMakesDrops } from './scienceGrade4/s4-u8-m1';
 import { longerDays } from './scienceGrade4/s4-u9-m1';
 import { oneLinkBreaks } from './scienceGrade4/s4-u10-m1';
+import { onlyOneChange } from './scienceGrade5/s5-u1-m1';
+import { itComesBack } from './scienceGrade5/s5-u2-m1';
+import { leftBehind } from './scienceGrade5/s5-u3-m1';
+import { heatMoves } from './scienceGrade5/s5-u4-m1';
+import { caughtOrThrough } from './scienceGrade5/s5-u5-m1';
+import { shadowGrowsShort } from './scienceGrade5/s5-u6-m1';
+import { evenPush } from './scienceGrade5/s5-u7-m1';
+import { highOrLow } from './scienceGrade5/s5-u8-m1';
+import { bornThatWay } from './scienceGrade5/s5-u9-m1';
+import { manyDrips } from './scienceGrade5/s5-u10-m1';
+import { foodIsFuel } from './scienceGrade6/s6-u1-m1';
+import { springBack } from './scienceGrade6/s6-u2-m1';
+import { earthTurns } from './scienceGrade6/s6-u3-m1';
+import { beakFitsFood } from './scienceGrade6/s6-u4-m1';
+import { tooManyEaters } from './scienceGrade6/s6-u5-m1';
+import { wrapKeepsWarm } from './scienceGrade6/s6-u6-m1';
+import { downToTheGround } from './scienceGrade6/s6-u7-m1';
+import { warmAndWetRots } from './scienceGrade6/s6-u8-m1';
+import { pickTheIronOut } from './scienceGrade6/s6-u9-m1';
+import { afterYouRun } from './scienceGrade6/s6-u10-m1';
 
 export const scienceModulesList: ContentModule[] = [
   whatLivingThingsNeed,
@@ -82,10 +102,30 @@ export const scienceModulesList: ContentModule[] = [
   coldMakesDrops,
   longerDays,
   oneLinkBreaks,
+  onlyOneChange,
+  itComesBack,
+  leftBehind,
+  heatMoves,
+  caughtOrThrough,
+  shadowGrowsShort,
+  evenPush,
+  highOrLow,
+  bornThatWay,
+  manyDrips,
+  foodIsFuel,
+  springBack,
+  earthTurns,
+  beakFitsFood,
+  tooManyEaters,
+  wrapKeepsWarm,
+  downToTheGround,
+  warmAndWetRots,
+  pickTheIronOut,
+  afterYouRun,
 ];
 
 /** Level science yang sudah punya jalur. */
-export const SCIENCE_LEVELS = [1, 2, 3, 4] as const;
+export const SCIENCE_LEVELS = [1, 2, 3, 4, 5, 6] as const;
 
 export const scienceModules: Record<string, ContentModule> = Object.fromEntries(
   scienceModulesList.map((m) => [m.id, m]),
@@ -146,4 +186,24 @@ export const scienceUnitTitles: Record<string, { title: string; color: string }>
   's4-u8': { title: 'Unit 8 · Cold Makes Drops', color: '#1e1b4b' },
   's4-u9': { title: 'Unit 9 · Longer Days', color: '#3f6212' },
   's4-u10': { title: 'Unit 10 · One Link Breaks', color: '#4a044e' },
+  's5-u1': { title: 'Unit 1 · Only One Change', color: '#0c4a6e' },
+  's5-u2': { title: 'Unit 2 · It Comes Back', color: '#7f1d1d' },
+  's5-u3': { title: 'Unit 3 · Left Behind', color: '#1e3a8a' },
+  's5-u4': { title: 'Unit 4 · Heat Moves', color: '#3f6212' },
+  's5-u5': { title: 'Unit 5 · Caught or Through', color: '#4c1d95' },
+  's5-u6': { title: 'Unit 6 · Shadow Grows Short', color: '#134e4a' },
+  's5-u7': { title: 'Unit 7 · Even Push', color: '#9a3412' },
+  's5-u8': { title: 'Unit 8 · High or Low', color: '#1e1b4b' },
+  's5-u9': { title: 'Unit 9 · Born That Way', color: '#365314' },
+  's5-u10': { title: 'Unit 10 · Many Drips', color: '#292524' },
+  's6-u1': { title: 'Unit 1 · Food Is Fuel', color: '#4a044e' },
+  's6-u2': { title: 'Unit 2 · Spring Back', color: '#155e75' },
+  's6-u3': { title: 'Unit 3 · Earth Turns', color: '#1c1917' },
+  's6-u4': { title: 'Unit 4 · Beak Fits Food', color: '#701a75' },
+  's6-u5': { title: 'Unit 5 · Too Many Eaters', color: '#14532d' },
+  's6-u6': { title: 'Unit 6 · Wrap Keeps Warm', color: '#7c2d12' },
+  's6-u7': { title: 'Unit 7 · Down to the Ground', color: '#0f172a' },
+  's6-u8': { title: 'Unit 8 · Warm and Wet Rots', color: '#581c87' },
+  's6-u9': { title: 'Unit 9 · Pick the Iron Out', color: '#1e293b' },
+  's6-u10': { title: 'Unit 10 · After You Run', color: '#3b0764' },
 };

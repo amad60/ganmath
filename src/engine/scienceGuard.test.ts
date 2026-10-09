@@ -12,7 +12,7 @@ import type { Question } from './types';
  * dengan mengetuk POSISI (selalu kartu kiri) tidak mengukur sains sama sekali.
  */
 /** Level yang sudah memakai adegan + `pick-picture`. Tambahkan level di sini saat dikonversi. */
-const SCENE_LEVELS: number[] = [1, 2, 3, 4];
+const SCENE_LEVELS: number[] = [1, 2, 3, 4, 5, 6];
 const level1 = scienceModulesList.filter((m) => SCENE_LEVELS.includes(m.grade));
 
 function pictureQuestions(seeds: number): Question[] {

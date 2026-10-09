@@ -300,7 +300,7 @@ export function ParentScreen({
 
             <section className="flex flex-col gap-2">
               <h3 className="text-base font-black">Jump to Science Level</h3>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {SCIENCE_LEVELS.map((sg) => {
                   const active = sg === scienceGrade;
                   const count = sciencePathOrderFor(sg).length;
