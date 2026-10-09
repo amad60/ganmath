@@ -11,7 +11,7 @@ export const dayAndNight: ContentModule = {
   skills: ['sci-day-night'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['night', 'dark', 'cool', 'moon', 'star', 'down', 'rainbow'],
 
@@ -92,68 +92,6 @@ export const dayAndNight: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-day-night',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows day or night?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Breakfast',
-            sentences: ['Budi sits at the table.', 'Bright sun lights the kitchen.'],
-          },
-          {
-            title: 'Bedtime',
-            sentences: ['The house is still.', 'The moon shines in the dark sky.'],
-          },
-          {
-            title: 'Play time',
-            sentences: ['Children go outside.', 'The day is warm and bright.'],
-          },
-          {
-            title: 'Stars',
-            sentences: ['Everyone is quiet.', 'Little stars twinkle at night.'],
-          },
-          {
-            title: 'School bell',
-            sentences: ['The bag is by the door.', 'It is morning and the sun is up.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-day-night',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'The yard is bright and warm. What time is it?',
-          'The sky is dark and the moon is up. What time is it?',
-          'You can see little lights twinkling. What are they?',
-          'What is in the sky when the day is bright?',
-          'The air is cool and you need a lamp. What time is it?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Day', 'Night', 'Winter', 'A cave'],
-          ['Night', 'Noon', 'Day', 'Sunrise only'],
-          ['Stars', 'Leaves', 'Rocks', 'Fish'],
-          ['The sun', 'The moon', 'A lamp', 'A star'],
-          ['Night', 'Day', 'Noon', 'Morning sun'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-day-night', [
       {
         bg: 'day',
@@ -198,6 +136,34 @@ export const dayAndNight: ContentModule = {
           { icon: '😎', label: 'It is bright' },
           { icon: '🌙', label: 'It is dark' },
           { icon: '⭐', label: 'Stars come out' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('☀️', 50, 28, 28), at('⚽', 50, 70, 16)],
+        cards: [
+          { icon: '⚽', label: 'We play' },
+          { icon: '😴', label: 'We sleep' },
+          { icon: '❄️', label: 'It snows' },
+        ],
+      },
+      {
+        bg: 'night',
+        base: [at('🌙', 30, 28, 22), at('✨', 70, 24, 14)],
+        cards: [
+          { icon: '😴', label: 'We sleep' },
+          { icon: '🏊', label: 'We swim' },
+          { icon: '🎂', label: 'A cake comes' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🌇', 50, 48, 36)],
+        cards: [
+          { icon: '🌙', label: 'Night comes' },
+          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🥁', label: 'A drum plays' },
         ],
       },
     ]),

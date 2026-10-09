@@ -11,7 +11,7 @@ export const rotFeedsSoil: ContentModule = {
   skills: ['sci-rot'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['dead', 'leaf', 'rot', 'soil', 'feed', 'wait', 'days', 'many', 'plant', 'seed', 'grow', 'grows', 'turn', 'turns', 'into', 'apple', 'bigger', 'rock', 'sits'],
 
@@ -93,68 +93,6 @@ export const rotFeedsSoil: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-rot',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the rot?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'On the soil',
-            sentences: ['A dead leaf lies on the soil.', 'It rots and becomes part of the soil.'],
-          },
-          {
-            title: 'Under',
-            sentences: ['Worms pull the leaf under.', 'The rot feeds the soil.'],
-          },
-          {
-            title: 'The log',
-            sentences: ['A log sits on the forest floor.', 'It slowly rots and breaks apart.'],
-          },
-          {
-            title: 'Dark soil',
-            sentences: ['The soil is dark and soft.', 'Rotted leaves helped make it.'],
-          },
-          {
-            title: 'A fresh fall',
-            sentences: ['A fresh leaf falls.', 'Over time it rots and feeds the soil.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-rot',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A dead leaf stays on the ground for a long time. What happens?',
-          'Why is rot good for a plant?',
-          'What helps dead leaves break down?',
-          'A forest floor is full of old leaves. What do they become?',
-          'If nothing ever rotted, what would be missing?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It rots into the soil', 'It becomes a battery', 'It lights up', 'It turns to metal'],
-          ['It feeds the soil', 'It dries every pond', 'It stops all light', 'It makes a gap in a wire'],
-          ['Rot', 'A closed bulb path', 'A magnet only', 'Thick fur'],
-          ['Part of the soil', 'A balloon of air', 'A ramp', 'A cloud at once'],
-          ['Food for the soil', 'Extra fur', 'More gaps in wires', 'A louder sound'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-rot', [
       {
         bg: 'day',
@@ -199,6 +137,34 @@ export const rotFeedsSoil: ContentModule = {
           { icon: '🧸', label: 'It stays the same' },
           { icon: '🪱', label: 'It rots away' },
           { icon: '🌳', label: 'It grows' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🍎', 50, 64, 22), at('🟫', 50, 82, 16)],
+        cards: [
+          { icon: '🍂', label: 'It rots' },
+          { icon: '🌳', label: 'It grows into a tree' },
+          { icon: '🔥', label: 'It burns' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🪵', 50, 60, 28), at('💧', 28, 40, 12)],
+        cards: [
+          { icon: '🍂', label: 'It rots' },
+          { icon: '🌱', label: 'It sprouts leaves' },
+          { icon: '❄️', label: 'It freezes' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🧴', 50, 60, 24), at('🟫', 50, 82, 16)],
+        cards: [
+          { icon: '🧴', label: 'It stays' },
+          { icon: '🍂', label: 'It rots away' },
+          { icon: '🌸', label: 'It blooms' },
         ],
       },
     ]),

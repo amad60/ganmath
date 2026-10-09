@@ -11,7 +11,7 @@ export const pushAndPull: ContentModule = {
   skills: ['sci-push-pull'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['move', 'pull', 'bring', 'cart', 'door', 'shut'],
 
@@ -86,68 +86,6 @@ export const pushAndPull: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-push-pull',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the push or pull?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'The door',
-            sentences: ['Rudi stands by the door.', 'He pushes the door away from him.'],
-          },
-          {
-            title: 'The wagon',
-            sentences: ['The wagon has a handle.', 'Lina pulls the wagon toward her.'],
-          },
-          {
-            title: 'The swing',
-            sentences: ['Ana sits on the swing.', 'Dad gives the swing a push.'],
-          },
-          {
-            title: 'The drawer',
-            sentences: ['The drawer is shut.', 'Siti pulls the drawer open.'],
-          },
-          {
-            title: 'The cart',
-            sentences: ['The cart is full.', 'Budi pushes the cart across the room.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-push-pull',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Hands press the box and it slides away. What is that?',
-          'You tug the wagon toward you. What is that?',
-          'Dad sends the swing forward. What did he do?',
-          'Siti tugs the drawer toward her body. What is that?',
-          'Budi presses the cart and it rolls off. What is that?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['A push', 'A pull', 'A melt', 'A swim'],
-          ['A pull', 'A push', 'A hop', 'A fly'],
-          ['A push', 'A pull', 'A smell', 'A root'],
-          ['A pull', 'A push', 'A night', 'A cloud'],
-          ['A push', 'A pull', 'A flower', 'A whisper'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-push-pull', [
       {
         bg: 'day',
@@ -192,6 +130,34 @@ export const pushAndPull: ContentModule = {
           { icon: '🏃', label: 'The kid goes too' },
           { icon: '😴', label: 'The kid sleeps' },
           { icon: '🪽', label: 'The kid flies' },
+        ],
+      },
+    
+      {
+        bg: 'room',
+        base: [at('🚪', 50, 52, 32), at('👉', 24, 58, 16)],
+        cards: [
+          { icon: '🔓', label: 'It opens' },
+          { icon: '💧', label: 'It melts' },
+          { icon: '😴', label: 'It sleeps' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🚃', 58, 62, 26), at('✋', 28, 58, 16)],
+        cards: [
+          { icon: '🤗', label: 'It comes close' },
+          { icon: '🌋', label: 'It erupts' },
+          { icon: '🌧️', label: 'It rains' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('⚽', 58, 62, 22), at('👟', 30, 64, 16)],
+        cards: [
+          { icon: '💨', label: 'It rolls away' },
+          { icon: '🌱', label: 'It grows' },
+          { icon: '🔔', label: 'It rings' },
         ],
       },
     ]),

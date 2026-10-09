@@ -11,7 +11,7 @@ export const soundTravels: ContentModule = {
   skills: ['sci-sound-travel'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['shake', 'sound', 'far', 'quiet', 'near', 'loud', 'drum', 'hear', 'dog', 'bark', 'barks', 'stand'],
 
@@ -98,68 +98,6 @@ export const soundTravels: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-sound-travel',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the sound?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'The string',
-            sentences: ['He plucks the string.', 'The string shakes and a sound comes.'],
-          },
-          {
-            title: 'Down the hall',
-            sentences: ['She stands far away.', 'The sound is quieter there.'],
-          },
-          {
-            title: 'Covered ears',
-            sentences: ['The drum is loud.', 'Covered ears make it hard to hear.'],
-          },
-          {
-            title: 'The drum',
-            sentences: ['The drum skin is tapped.', 'It shakes and the sound moves through the air.'],
-          },
-          {
-            title: 'Closer',
-            sentences: ['She walks toward the bell.', 'The sound is louder up close.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-sound-travel',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A string is plucked and it shakes. What do you hear?',
-          'You walk far from a drum. What happens to the sound?',
-          'What does sound move through to reach you?',
-          'You cover your ears. What changes?',
-          'A bell is tapped and keeps shaking. What do you hear?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['A sound', 'Nothing, a shake is silent', 'Only light', 'Only a pale leaf'],
-          ['It gets quiet', 'It gets louder', 'It becomes light', 'It turns to soil'],
-          ['Air', 'A box with no air', 'Fur only', 'Soil only'],
-          ['The sound is harder to hear', 'The drum gets louder', 'The string stops being string', 'The air turns to water'],
-          ['A sound', 'Nothing at all', 'Only light', 'Only wind with no sound'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-sound-travel', [
       {
         bg: 'room',
@@ -204,6 +142,34 @@ export const soundTravels: ContentModule = {
           { icon: '🔈', label: 'A quiet ring' },
           { icon: '📢', label: 'A loud ring' },
           { icon: '🍎', label: 'An apple falls' },
+        ],
+      },
+    
+      {
+        bg: 'room',
+        base: [at('🔔', 36, 54, 24), at('👂', 74, 52, 18)],
+        cards: [
+          { icon: '🔊', label: 'A loud sound' },
+          { icon: '🤫', label: 'No sound' },
+          { icon: '🌈', label: 'A rainbow' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🔔', 22, 54, 18), at('👂', 80, 54, 16)],
+        cards: [
+          { icon: '🔉', label: 'A quiet sound' },
+          { icon: '📢', label: 'A loud bark' },
+          { icon: '🔥', label: 'A fire' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🚪', 30, 54, 26), at('👂', 72, 54, 18)],
+        cards: [
+          { icon: '🔉', label: 'A quieter knock' },
+          { icon: '🌋', label: 'An eruption' },
+          { icon: '❄️', label: 'Snow' },
         ],
       },
     ]),

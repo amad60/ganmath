@@ -11,7 +11,7 @@ export const animalHomes: ContentModule = {
   skills: ['sci-homes'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['home', 'fish', 'live', 'bird', 'nest', 'pond', 'swim', 'grass', 'cannot', 'breathe', 'move', 'stick', 'tree', 'dig', 'hole'],
 
@@ -85,68 +85,6 @@ export const animalHomes: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-homes',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows where it lives?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'The bowl',
-            sentences: ['The bowl is empty.', 'The fish swims in the pond.'],
-          },
-          {
-            title: 'The tree',
-            sentences: ['The tree is tall.', 'The bird sits on its nest.'],
-          },
-          {
-            title: 'The field',
-            sentences: ['The grass is green.', 'The rabbit sleeps in a hole.'],
-          },
-          {
-            title: 'The bank',
-            sentences: ['The mud is wet.', 'The frog stays by the pond.'],
-          },
-          {
-            title: 'The garden',
-            sentences: ['The soil is dark.', 'The worm lives under the soil.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-homes',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Where does a fish live?',
-          'Where does a bird keep its eggs?',
-          'A frog needs a wet home. Where does it live?',
-          'A worm stays under the ground. Where is its home?',
-          'A fish is left on dry grass. What is wrong?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['In water', 'In a nest', 'In a tree top', 'In the sun only'],
-          ['In a nest', 'In a pond', 'In a cup', 'In a block of ice'],
-          ['By a pond', 'In a dry nest', 'On a magnet', 'In a rubbish bin'],
-          ['In the soil', 'In the sky', 'In a nest', 'On a lamp'],
-          ['It needs water', 'It needs a nest', 'It needs a magnet', 'It needs a drum'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext(
       'sci-homes',
       [
@@ -190,7 +128,35 @@ export const animalHomes: ContentModule = {
             { icon: '🧊', label: 'On ice' },
           ],
         },
-      ],
+      
+      {
+        bg: 'day',
+        base: [at('🐝', 50, 52, 26)],
+        cards: [
+          { icon: '🍯', label: 'In a hive' },
+          { icon: '🌊', label: 'In the sea' },
+          { icon: '❄️', label: 'On ice' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐜', 50, 64, 22)],
+        cards: [
+          { icon: '🕳️', label: 'In the soil' },
+          { icon: '🌊', label: 'In the sea' },
+          { icon: '☁️', label: 'In a cloud' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐿️', 48, 56, 26)],
+        cards: [
+          { icon: '🌳', label: 'In a tree' },
+          { icon: '🌊', label: 'In the sea' },
+          { icon: '🧊', label: 'On ice' },
+        ],
+      },
+    ],
       // Soal rumah hewan: gambarnya hewan, kartunya tempat — "apa yang terjadi"
       // tidak cocok untuk hewan yang hanya berdiri.
       'Where does it live?',

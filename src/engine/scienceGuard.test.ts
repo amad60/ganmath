@@ -27,14 +27,15 @@ function pictureQuestions(seeds: number): Question[] {
 }
 
 describe('Science Level 1 — soal gambar tidak bisa diluluskan dengan menebak posisi', () => {
-  it('setiap modul Level 1 punya aturan pick-picture dengan 5 skenario', () => {
+  it('setiap modul Science hanya soal gambar, minimal 8 skenario', () => {
     expect(level1).toHaveLength(10 * SCENE_LEVELS.length);
     for (const mod of level1) {
-      expect(mod.questionTypes).toContain('pick-picture');
-      const rule = mod.rules.find((r) => r.type === 'pick-picture');
+      expect(mod.questionTypes, mod.id).toEqual(['pick-picture']);
+      expect(mod.rules.every((r) => r.type === 'pick-picture'), mod.id).toBe(true);
+      const rule = mod.rules[0];
       expect(rule, mod.id).toBeTruthy();
       const [lo, hi] = rule!.params.p!;
-      expect(hi - lo + 1, mod.id).toBe(5);
+      expect(hi - lo + 1, mod.id).toBeGreaterThanOrEqual(8);
     }
   });
 
@@ -99,7 +100,7 @@ describe('Science Level 1 — soal gambar tidak bisa diluluskan dengan menebak p
   it('setiap modul Level 1 menghasilkan sesi latihan dan kuis yang mencakup semua tipe', () => {
     for (const mod of level1) {
       const practice = createSession(mod, 'practice', 42, 1_000);
-      expect(practice.pending.length, mod.id).toBeGreaterThanOrEqual(6);
+      expect(practice.pending.length, mod.id).toBeGreaterThanOrEqual(8);
 
       const quiz = createSession(mod, 'quiz', 42, 1_000);
       const types = new Set(quiz.pending.map((p) => p.question.type));

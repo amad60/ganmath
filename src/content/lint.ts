@@ -427,7 +427,21 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
     }
 
     // 4. Tipe soal
-    if (m.questionTypes.length < 2) add(m.id, 'question-types', 'butuh minimal 2 tipe soal');
+    // Science hanya `pick-picture`: variasinya ada di skenario gambar, bukan di
+    // widget kedua. Soal kalimat di situ bisa diluluskan dengan mencocokkan kata.
+    const pictureOnly = m.questionTypes.length === 1 && m.questionTypes[0] === 'pick-picture';
+    if (m.questionTypes.length < 2 && !pictureOnly) {
+      add(m.id, 'question-types', 'butuh minimal 2 tipe soal');
+    }
+    if (pictureOnly) {
+      for (const r of m.rules) {
+        const span = r.params.p ? r.params.p[1] - r.params.p[0] + 1 : 0;
+        if (r.type !== 'pick-picture' || span < 8) {
+          add(m.id, 'question-types', 'soal gambar butuh minimal 8 skenario');
+          break;
+        }
+      }
+    }
     for (const t of m.questionTypes) {
       if (!RENDERABLE_TYPES.includes(t)) {
         add(m.id, 'renderable', `tipe soal "${t}" belum bisa dirender layar soal`);
@@ -439,6 +453,25 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
     for (const r of m.rules) {
       if (!m.questionTypes.includes(r.type)) {
         add(m.id, 'question-types', `rule bertipe "${r.type}" tidak terdaftar di questionTypes`);
+      }
+    }
+
+    // 4c. Soal yang jawabannya ANGKA tidak boleh digambar sebagai batang tanpa skala.
+    // `lengths` hanya bisa dibandingkan. Kalau kalimatnya juga tidak memuat angka,
+    // anak tidak punya sumber untuk jawabannya — persis "How many altogether?"
+    // di diagram Grade 2 sebelum sumbunya dipasang. Angka di kalimat, atau `values`
+    // (sumbu), atau blok yang dihitung (bukan batang) sudah cukup.
+    for (const r of m.rules) {
+      if (r.type !== 'keypad' && r.type !== 'choose-number') continue;
+      if (!r.visual) continue;
+      for (const combo of enumerate(r).slice(0, 40)) {
+        const visual = r.visual(combo);
+        if (visual.kind !== 'bars') continue;
+        if (visual.values && visual.values.length > 0) continue;
+        const text = r.text(combo);
+        if (/\d/.test(text)) continue;
+        add(m.id, 'bar-readable', `soal "${text}" minta angka dari batang tanpa skala`);
+        break;
       }
     }
 

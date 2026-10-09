@@ -11,7 +11,7 @@ export const leavesMakeFood: ContentModule = {
   skills: ['sci-leaves'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['look', 'leaf', 'light', 'pale', 'plant', 'green', 'stay', 'turn', 'dark', 'give', 'cover', 'under', 'fruit', 'food'],
 
@@ -90,68 +90,6 @@ export const leavesMakeFood: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-leaves',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows what the leaf does?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'By the wall',
-            sentences: ['The pot sits by the wall.', 'The leaf faces the sun and stays green.'],
-          },
-          {
-            title: 'A cover',
-            sentences: ['A box covers the leaf.', 'With no light the leaf turns pale.'],
-          },
-          {
-            title: 'The window',
-            sentences: ['She moves the plant to the window.', 'The leaf gets light and makes food.'],
-          },
-          {
-            title: 'All day dark',
-            sentences: ['The room stays dark.', 'The covered leaf droops and goes pale.'],
-          },
-          {
-            title: 'On the leaf',
-            sentences: ['The sun falls on the leaf.', 'The plant uses that light to make food.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-leaves',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A leaf gets sun all day. What can it do?',
-          'A box covers a leaf for many days. What happens?',
-          'What does a leaf need to make food?',
-          'Why does a plant grow better by a window?',
-          'No light reaches the leaf. What happens to the food-making?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Make food', 'Turn to metal', 'Become a magnet', 'Freeze solid'],
-          ['It turns pale', 'It makes more food', 'It becomes a rock', 'It lays an egg'],
-          ['Light', 'A dark box', 'A magnet', 'A block of ice'],
-          ['The leaf gets light', 'The leaf gets no air', 'The pot is metal', 'The soil is a magnet'],
-          ['It stops', 'It gets faster', 'It makes ice', 'It pulls metal'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-leaves', [
       {
         bg: 'night',
@@ -196,6 +134,34 @@ export const leavesMakeFood: ContentModule = {
           { icon: '🌿', label: 'It gets green again' },
           { icon: '🧊', label: 'It freezes' },
           { icon: '🐟', label: 'It swims away' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🍃', 50, 56, 30), at('📦', 50, 50, 36)],
+        cards: [
+          { icon: '🫥', label: 'The leaf gets pale' },
+          { icon: '🍎', label: 'It makes fruit now' },
+          { icon: '❄️', label: 'It freezes' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🍃', 50, 56, 28), at('☀️', 80, 18, 16), at('💧', 28, 40, 12)],
+        cards: [
+          { icon: '🌿', label: 'The leaf stays green' },
+          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🍃', 36, 56, 22), at('🌑', 70, 40, 20)],
+        cards: [
+          { icon: '😕', label: 'That leaf gets pale' },
+          { icon: '🌺', label: 'It gets a flower' },
+          { icon: '🔥', label: 'It burns' },
         ],
       },
     ]),

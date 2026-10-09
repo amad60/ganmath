@@ -11,7 +11,7 @@ export const heatAndCold: ContentModule = {
   skills: ['sci-heat'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['heat', 'melt', 'ice', 'cold', 'freeze', 'hot', 'warm', 'hand', 'slowly', 'stay', 'butter', 'pan', 'hard', 'turn', 'water', 'grow', 'place', 'get'],
 
@@ -107,68 +107,6 @@ export const heatAndCold: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-heat',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows heat or cold?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Sunny step',
-            sentences: ['The ice sits in the sun.', 'The ice melts into water.'],
-          },
-          {
-            title: 'Cold box',
-            sentences: ['Water is in a cold box.', 'The water freezes into ice.'],
-          },
-          {
-            title: 'Warm pan',
-            sentences: ['Butter is by the warm pan.', 'The butter melts and goes soft.'],
-          },
-          {
-            title: 'Night puddle',
-            sentences: ['The puddle is out at night.', 'The cold turns it into ice.'],
-          },
-          {
-            title: 'Warm hand',
-            sentences: ['Chocolate sits in a warm hand.', 'It melts and drips.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-heat',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Ice sits in the hot sun. What happens?',
-          'Water stays in a very cold box. What happens?',
-          'What can melt ice?',
-          'What can freeze water?',
-          'Butter is left in a warm pan. What happens?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It melts', 'It freezes harder', 'It becomes a seed', 'It grows a nest'],
-          ['It freezes', 'It melts', 'It becomes wood', 'It sprouts'],
-          ['Heat', 'A dark nest', 'A quiet room', 'A magnet'],
-          ['Cold', 'A bright lamp', 'A rabbit', 'Soft rain only'],
-          ['It melts', 'It becomes a rock', 'It freezes hard', 'It grows leaves'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-heat', [
       {
         bg: 'day',
@@ -213,6 +151,34 @@ export const heatAndCold: ContentModule = {
           { icon: '🧊', label: 'It turns to ice' },
           { icon: '☀️', label: 'It gets hot' },
           { icon: '🌈', label: 'A rainbow comes' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🍭', 46, 58, 24), at('☀️', 80, 18, 16)],
+        cards: [
+          { icon: '💧', label: 'It melts' },
+          { icon: '❄️', label: 'It freezes' },
+          { icon: '🌱', label: 'It grows' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('💧', 46, 58, 18), at('❄️', 76, 30, 20)],
+        cards: [
+          { icon: '🧊', label: 'It turns to ice' },
+          { icon: '🔥', label: 'It boils' },
+          { icon: '🌸', label: 'It blooms' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🕯️', 46, 58, 28), at('🔥', 70, 36, 16)],
+        cards: [
+          { icon: '💧', label: 'The wax melts' },
+          { icon: '❄️', label: 'It freezes' },
+          { icon: '🐦', label: 'It flies' },
         ],
       },
     ]),

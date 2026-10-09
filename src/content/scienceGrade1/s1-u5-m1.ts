@@ -11,7 +11,7 @@ export const plantParts: ContentModule = {
   skills: ['sci-plant-parts'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['root', 'stem', 'flower', 'part', 'hold', 'leaves', 'seed'],
 
@@ -79,68 +79,6 @@ export const plantParts: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-plant-parts',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the plant part?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'In the soil',
-            sentences: ['Mira digs beside the plant.', 'White roots hold it in the soil.'],
-          },
-          {
-            title: 'Holding up',
-            sentences: ['The plant stands tall.', 'The green stem holds the leaves up.'],
-          },
-          {
-            title: 'Catching light',
-            sentences: ['The sun is bright.', 'Wide leaves catch the light.'],
-          },
-          {
-            title: 'Pretty top',
-            sentences: ['Bees visit the plant.', 'A yellow flower sits at the top.'],
-          },
-          {
-            title: 'Drinking',
-            sentences: ['The soil is wet.', 'Roots drink the water down below.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-plant-parts',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Which part grows under the soil and takes in water?',
-          'Which part holds the plant up?',
-          'Which part catches the sunlight?',
-          'Which part is colorful and sits at the top?',
-          'Which part drinks water from the wet soil?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Root', 'Flower', 'Seed', 'Thorn'],
-          ['Stem', 'Root', 'Petal', 'Soil'],
-          ['Leaf', 'Root', 'Rock', 'Pot'],
-          ['Flower', 'Root', 'Stem', 'Soil'],
-          ['Root', 'Flower', 'Bee', 'Sun'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-plant-parts', [
       {
         bg: 'day',
@@ -185,6 +123,34 @@ export const plantParts: ContentModule = {
           { icon: '🥀', label: 'It falls down' },
           { icon: '🌳', label: 'It grows tall' },
           { icon: '🌈', label: 'A rainbow comes' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🐝', 68, 42, 18), at('🌸', 42, 58, 28)],
+        cards: [
+          { icon: '🌰', label: 'It makes seeds' },
+          { icon: '🪨', label: 'It makes rocks' },
+          { icon: '🌙', label: 'It is night' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('💧', 50, 78, 14), at('🌱', 50, 48, 28)],
+        cards: [
+          { icon: '🌿', label: 'The plant grows' },
+          { icon: '🧊', label: 'It freezes' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🍃', 50, 40, 22), at('✂️', 28, 62, 14)],
+        cards: [
+          { icon: '🥀', label: 'The leaf dries' },
+          { icon: '🚗', label: 'It becomes a car' },
+          { icon: '🌧️', label: 'It makes rain' },
         ],
       },
     ]),

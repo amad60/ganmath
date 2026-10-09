@@ -11,7 +11,7 @@ export const howAnimalsMove: ContentModule = {
   skills: ['sci-move'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['bird', 'fly', 'fish', 'swim', 'hop', 'crawl', 'frog'],
 
@@ -90,68 +90,6 @@ export const howAnimalsMove: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-move',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows how it moves?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Above the trees',
-            sentences: ['The sky is clear.', 'The bird flaps its wings and flies.'],
-          },
-          {
-            title: 'In the pond',
-            sentences: ['The water is cool.', 'The fish wiggles and swims along.'],
-          },
-          {
-            title: 'On the path',
-            sentences: ['The grass is wet.', 'The frog hops from pad to pad.'],
-          },
-          {
-            title: 'On the log',
-            sentences: ['The log is damp.', 'The worm crawls slowly across it.'],
-          },
-          {
-            title: 'By the gate',
-            sentences: ['The yard is open.', 'The dog runs on four legs.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-move',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A sparrow leaves the branch. How does it move?',
-          'A goldfish is in the bowl. How does it move?',
-          'A frog is by the pond. How does it move?',
-          'A worm is on the soil. How does it move?',
-          'A puppy chases a ball. How does it move?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It flies', 'It swims', 'It melts', 'It sinks'],
-          ['It swims', 'It flies', 'It blooms', 'It reads'],
-          ['It hops', 'It flies', 'It sinks', 'It melts'],
-          ['It crawls', 'It flies', 'It hops high', 'It swims'],
-          ['It runs', 'It flies', 'It swims', 'It melts'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-move', [
       {
         bg: 'day',
@@ -196,6 +134,34 @@ export const howAnimalsMove: ContentModule = {
           { icon: '🦘', label: 'It hops' },
           { icon: '🏊', label: 'It swims' },
           { icon: '🪽', label: 'It flies' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🐍', 50, 62, 30)],
+        cards: [
+          { icon: '🐛', label: 'It slides' },
+          { icon: '🐦', label: 'It flies' },
+          { icon: '🐠', label: 'It swims' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐴', 48, 58, 30)],
+        cards: [
+          { icon: '🏃', label: 'It runs' },
+          { icon: '✈️', label: 'It flies' },
+          { icon: '🐠', label: 'It swims' },
+        ],
+      },
+      {
+        bg: 'water',
+        base: [at('🦆', 50, 58, 28)],
+        cards: [
+          { icon: '🏊', label: 'It swims' },
+          { icon: '🐰', label: 'It hops' },
+          { icon: '🎂', label: 'A cake comes' },
         ],
       },
     ]),

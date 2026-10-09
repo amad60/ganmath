@@ -11,7 +11,7 @@ export const lookAfterThem: ContentModule = {
   skills: ['sci-care'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['help', 'pet', 'gentle', 'kind', 'hand', 'leave', 'cat', 'sad', 'glad'],
 
@@ -82,68 +82,6 @@ export const lookAfterThem: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-care',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows good care?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Dry pot',
-            sentences: ['The leaves droop.', 'Lina pours water on the soil.'],
-          },
-          {
-            title: 'Empty bowl',
-            sentences: ['The puppy waits.', 'Budi puts food in the bowl.'],
-          },
-          {
-            title: 'Soft hands',
-            sentences: ['The kitten is small.', 'Siti pets it with gentle hands.'],
-          },
-          {
-            title: 'The park',
-            sentences: ['Paper is on the grass.', 'Rudi picks the paper up.'],
-          },
-          {
-            title: 'Fresh air',
-            sentences: ['The bird bath is empty.', 'Dewi fills it with clean water.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-care',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'The plant looks dry. What is good care?',
-          'The puppy bowl is empty. What is good care?',
-          'The kitten is small. How should you touch it?',
-          'Paper is on the grass. What is good care?',
-          'The bird bath is empty. What is good care?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Give it water', 'Hide the pot', 'Pick the leaves off', 'Shout at it'],
-          ['Give it food', 'Take the bowl', 'Close the door', 'Ignore it'],
-          ['Gentle hands', 'A hard hit', 'A loud drum', 'A strong pull'],
-          ['Pick it up', 'Add more paper', 'Bury the grass', 'Kick it'],
-          ['Fill it with water', 'Empty it more', 'Cover it', 'Tip it over'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-care', [
       {
         bg: 'room',
@@ -188,6 +126,34 @@ export const lookAfterThem: ContentModule = {
           { icon: '😋', label: 'The bird drinks' },
           { icon: '😢', label: 'The bird cries' },
           { icon: '❄️', label: 'It snows' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🌱', 50, 60, 26), at('💧', 30, 36, 14)],
+        cards: [
+          { icon: '😊', label: 'It is glad' },
+          { icon: '🥀', label: 'It dries up' },
+          { icon: '😨', label: 'It is scared' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🐶', 42, 58, 28), at('🍖', 74, 66, 16)],
+        cards: [
+          { icon: '😊', label: 'It is glad' },
+          { icon: '😢', label: 'It is sad' },
+          { icon: '❄️', label: 'It snows' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐈', 42, 58, 28), at('💧', 74, 40, 14)],
+        cards: [
+          { icon: '😊', label: 'It is glad' },
+          { icon: '🥀', label: 'It dries up' },
+          { icon: '😱', label: 'It is scared' },
         ],
       },
     ]),

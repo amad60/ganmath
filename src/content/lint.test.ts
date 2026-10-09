@@ -133,6 +133,65 @@ describe('linter konten', () => {
     expect(problems.filter((p) => p.rule === 'cpa').length).toBeGreaterThan(0);
   });
 
+  it('menolak soal angka yang batangnya tidak punya skala dan kalimatnya tanpa angka', () => {
+    const mods = broken({
+      questionTypes: ['choose-number', 'keypad'],
+      rules: [
+        {
+          type: 'choose-number',
+          skill: 'bar-chart',
+          params: { a: [1, 2], b: [1, 2] },
+          answer: (p) => (p.a as number) + (p.b as number),
+          text: () => 'How many altogether?',
+          visual: (p) => ({
+            kind: 'bars',
+            lengths: [(p.a as number) / 10, (p.b as number) / 10],
+            labels: ['A', 'B'],
+          }),
+          distractors: 'near',
+        },
+      ],
+    });
+    const problems = lintContent(mods, reg(mods));
+    expect(problems.some((p) => p.rule === 'bar-readable')).toBe(true);
+  });
+
+  it('batang berskala, atau angka di kalimat, tidak ditolak', () => {
+    const scaled = broken({
+      questionTypes: ['choose-number', 'keypad'],
+      rules: [
+        {
+          type: 'choose-number',
+          skill: 'bar-chart',
+          params: { a: [1, 2], b: [1, 2] },
+          answer: (p) => (p.a as number) + (p.b as number),
+          text: () => 'How many altogether?',
+          visual: (p) => ({
+            kind: 'bars',
+            values: [p.a as number, p.b as number],
+            labels: ['A', 'B'],
+          }),
+          distractors: 'near',
+        },
+      ],
+    });
+    const written = broken({
+      questionTypes: ['keypad', 'choose-number'],
+      rules: [
+        {
+          type: 'keypad',
+          skill: 'simple-mean',
+          params: { a: [2, 3] },
+          answer: (p) => p.a as number,
+          text: (p) => `Find the mean: ${p.a}, 4, 6.`,
+          visual: () => ({ kind: 'bars', lengths: [0.4, 0.6, 0.8], labels: ['A', 'B', 'C'] }),
+        },
+      ],
+    });
+    expect(lintContent(scaled, reg(scaled)).some((p) => p.rule === 'bar-readable')).toBe(false);
+    expect(lintContent(written, reg(written)).some((p) => p.rule === 'bar-readable')).toBe(false);
+  });
+
   it('menolak tipe soal yang belum bisa dirender layar soal', () => {
     const mods = broken({ questionTypes: ['choose-number', 'bar-model'] });
     const problems = lintContent(mods, reg(mods));

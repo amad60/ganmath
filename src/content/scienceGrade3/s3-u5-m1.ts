@@ -11,7 +11,7 @@ export const fallAndSlow: ContentModule = {
   skills: ['sci-fall'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['ball', 'fall', 'down', 'rough', 'slide', 'slow', 'smooth', 'far', 'go', 'goes', 'toy', 'fast', 'parachute', 'stay', 'stays', 'pick', 'drop'],
 
@@ -91,68 +91,6 @@ export const fallAndSlow: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-fall',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the fall or the slow-down?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Open hand',
-            sentences: ['He lets go of the ball.', 'The ball falls down.'],
-          },
-          {
-            title: 'Smooth slide',
-            sentences: ['The slide is smooth.', 'The ball races to the end.'],
-          },
-          {
-            title: 'Rough slide',
-            sentences: ['The slide is rough.', 'The rough path slows the ball.'],
-          },
-          {
-            title: 'A rock',
-            sentences: ['She drops a rock.', 'The rock falls down.'],
-          },
-          {
-            title: 'Sand',
-            sentences: ['Sand covers the slide.', 'The ball slows and stops sooner.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-fall',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'You drop a ball. Which way does it go?',
-          'A slide is rough. What happens to the ball?',
-          'A slide is smooth and steep. What happens?',
-          'Why does a rock fall when you let go?',
-          'What slows a ball on a rough path?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Down', 'Up and away', 'Only sideways', 'It floats in place'],
-          ['It slows down', 'It speeds up', 'It floats', 'It turns to air'],
-          ['The ball goes fast', 'The ball stops at once', 'The ball falls up', 'The ball becomes a leaf'],
-          ['It is pulled down', 'The air pushes it up', 'Fur holds it', 'A magnet is missing'],
-          ['The rough slide', 'A pale leaf', 'A dry pond', 'A feather'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-fall', [
       {
         bg: 'day',
@@ -197,6 +135,34 @@ export const fallAndSlow: ContentModule = {
           { icon: '🛷', label: 'It slides down' },
           { icon: '⬆️', label: 'It goes up' },
           { icon: '🌧️', label: 'It rains' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('📗', 50, 36, 22)],
+        cards: [
+          { icon: '⬇️', label: 'It falls down' },
+          { icon: '⬆️', label: 'It goes up' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('⚽', 50, 40, 18), at('🧊', 50, 74, 28)],
+        cards: [
+          { icon: '💨', label: 'It goes fast' },
+          { icon: '🐌', label: 'It goes slow' },
+          { icon: '🌱', label: 'It grows' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('⚽', 50, 40, 18), at('🟫', 50, 76, 30)],
+        cards: [
+          { icon: '🐌', label: 'It goes slow' },
+          { icon: '💨', label: 'It goes fast' },
+          { icon: '🐦', label: 'It flies up' },
         ],
       },
     ]),

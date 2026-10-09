@@ -11,7 +11,7 @@ export const careForEarth: ContentModule = {
   skills: ['sci-earth'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['rubbish', 'bin', 'waste', 'harm', 'river', 'save', 'clean', 'keeps', 'place', 'use', 'less', 'rain', 'washes', 'jumps', 'turns', 'flowers', 'fish', 'bank'],
 
@@ -122,68 +122,6 @@ export const careForEarth: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-earth',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows good care?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'By the water',
-            sentences: ['Paper is by the river.', 'Rudi puts the rubbish in the bin.'],
-          },
-          {
-            title: 'Running tap',
-            sentences: ['The tap runs and no one is there.', 'Lina turns it off to save water.'],
-          },
-          {
-            title: 'The fish',
-            sentences: ['Fish live in the river.', 'Rubbish in the river harms them.'],
-          },
-          {
-            title: 'Empty room',
-            sentences: ['No one is in the room.', 'Budi turns the lamp off.'],
-          },
-          {
-            title: 'On the grass',
-            sentences: ['Waste sits on the grass.', 'Siti carries it to the bin.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-earth',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Rubbish is next to the river. What is good care?',
-          'The tap runs and no one is using it. What should you do?',
-          'Why keep rubbish out of the river?',
-          'An empty room has the lamp on. What saves power?',
-          'Waste stays on the grass in the rain. What can happen?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Put it in the bin', 'Push it in the river', 'Leave it there', 'Kick it along'],
-          ['Turn it off', 'Open it more', 'Drop paper in it', 'Melt ice on it'],
-          ['It harms the fish', 'Fish eat paper as food', 'Rubbish helps seeds', 'It makes a magnet'],
-          ['Turn the lamp off', 'Add another lamp', 'Open the tap', 'Pull a magnet'],
-          ['It can wash into the river', 'It becomes soil at once', 'It feeds a fox', 'It freezes the pond'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext(
       'sci-earth',
       [
@@ -232,7 +170,35 @@ export const careForEarth: ContentModule = {
             { icon: '🗑️', label: 'Fill it with rubbish' },
           ],
         },
-      ],
+      
+      {
+        bg: 'day',
+        base: [at('🗑️', 30, 58, 20), at('🏞️', 68, 55, 26), at('💧', 68, 74, 12)],
+        cards: [
+          { icon: '🤢', label: 'The water gets dirty' },
+          { icon: '🌸', label: 'It turns into flowers' },
+          { icon: '✨', label: 'It gets clean' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🚰', 50, 48, 28), at('💧', 50, 74, 14)],
+        cards: [
+          { icon: '💧', label: 'Water is wasted' },
+          { icon: '🌳', label: 'A tree grows' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🫙', 50, 56, 28)],
+        cards: [
+          { icon: '🫙', label: 'Use the jar again' },
+          { icon: '🔥', label: 'Burn it' },
+          { icon: '🌊', label: 'Throw it in the river' },
+        ],
+      },
+    ],
       // Merawat bumi soal PILIHAN tindakan, jadi kartunya tindakan yang menolong.
       'Which one helps?',
     ),

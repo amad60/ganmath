@@ -11,7 +11,7 @@ export const waterGoesAround: ContentModule = {
   skills: ['sci-water-cycle'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['sun', 'heat', 'water', 'rain', 'cloud', 'heats', 'rise', 'rises', 'drop', 'drops', 'back', 'sea', 'up', 'puddle', 'road', 'go', 'goes', 'ice', 'shines', 'come'],
 
@@ -111,68 +111,6 @@ export const waterGoesAround: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-water-cycle',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows where the water goes?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Hot puddle',
-            sentences: ['The puddle sits in the sun.', 'The sun heats the water and it rises.'],
-          },
-          {
-            title: 'Wet clothes',
-            sentences: ['Wet clothes hang in the sun.', 'The water leaves and the clothes dry.'],
-          },
-          {
-            title: 'High air',
-            sentences: ['The air up high is cool.', 'Drops come together and form a cloud.'],
-          },
-          {
-            title: 'Heavy cloud',
-            sentences: ['The cloud is full of drops.', 'Rain falls from the cloud.'],
-          },
-          {
-            title: 'Again',
-            sentences: ['Rain soaks the ground.', 'The sun can heat that water again.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-water-cycle',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A puddle sits in the hot sun. What happens to the water?',
-          'Where do the drops in a cloud come from?',
-          'What falls from a cloud?',
-          'Wet clothes dry in the sun. Where did the water go?',
-          'Rain falls, then the sun heats the puddle again. What is that?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It rises into the air', 'It turns to fur', 'It becomes a rock at once', 'It lights a bulb'],
-          ['Water that rose', 'A dry pond with no water', 'A magnet', 'A metal clip'],
-          ['Rain', 'Fur', 'A lever', 'A battery'],
-          ['Up into the air', 'Into the fur', 'Into the bulb', 'It became a frog'],
-          ['The water goes around again', 'The water is gone forever', 'The cloud becomes soil', 'The rain turns to metal'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-water-cycle', [
       {
         bg: 'day',
@@ -217,6 +155,34 @@ export const waterGoesAround: ContentModule = {
           { icon: '☁️', label: 'A cloud comes' },
           { icon: '🌳', label: 'A tree grows' },
           { icon: '🔥', label: 'A fire starts' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('💧', 50, 68, 16), at('☀️', 78, 20, 18)],
+        cards: [
+          { icon: '💨', label: 'Water goes up' },
+          { icon: '🧊', label: 'It turns to ice' },
+          { icon: '🌱', label: 'It grows roots' },
+        ],
+      },
+      {
+        bg: 'cloudy',
+        base: [at('☁️', 50, 36, 32)],
+        cards: [
+          { icon: '🌧️', label: 'Rain falls' },
+          { icon: '🔥', label: 'The cloud burns' },
+          { icon: '🌵', label: 'It gets dry' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('👕', 46, 58, 26), at('☀️', 80, 18, 16)],
+        cards: [
+          { icon: '💨', label: 'The water goes up' },
+          { icon: '🌊', label: 'A flood comes' },
+          { icon: '🎂', label: 'A cake comes' },
         ],
       },
     ]),

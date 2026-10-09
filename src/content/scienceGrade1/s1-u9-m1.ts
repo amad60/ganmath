@@ -11,7 +11,7 @@ export const loudAndQuiet: ContentModule = {
   skills: ['sci-sound'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['drum', 'loud', 'quiet', 'whisper', 'sound', 'hit', 'bang'],
 
@@ -83,68 +83,6 @@ export const loudAndQuiet: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-sound',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the sound?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Band',
-            sentences: ['The children line up.', 'The drum boom fills the hall.'],
-          },
-          {
-            title: 'Library',
-            sentences: ['Rows of books are still.', 'Rina speaks in a tiny whisper.'],
-          },
-          {
-            title: 'Thunder',
-            sentences: ['Clouds cover the sky.', 'A loud boom shakes the window.'],
-          },
-          {
-            title: 'Nap',
-            sentences: ['The baby is asleep.', 'Dad hums a quiet tune.'],
-          },
-          {
-            title: 'Street',
-            sentences: ['Cars wait at the light.', 'A horn makes a loud blast.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-sound',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Hands hit a drum in the hall. How is the sound?',
-          'Rina speaks so only one friend hears. How is the sound?',
-          'A horn blasts at the light. How is the sound?',
-          'Dad hums beside a sleeping baby. How is the sound?',
-          'Thunder shakes the window. How is the sound?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Loud', 'Quiet', 'Wet', 'Soft cloth'],
-          ['Quiet', 'Loud', 'Bright', 'Hard'],
-          ['Loud', 'Quiet', 'Dark', 'Cold'],
-          ['Quiet', 'Loud', 'Sunny', 'Heavy'],
-          ['Loud', 'Quiet', 'Sweet', 'Green'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-sound', [
       {
         bg: 'room',
@@ -189,6 +127,34 @@ export const loudAndQuiet: ContentModule = {
           { icon: '🔊', label: 'A loud sound' },
           { icon: '🔈', label: 'A quiet sound' },
           { icon: '🌱', label: 'It grows' },
+        ],
+      },
+    
+      {
+        bg: 'room',
+        base: [at('🤫', 50, 52, 32)],
+        cards: [
+          { icon: '🔇', label: 'A quiet sound' },
+          { icon: '📢', label: 'A loud sound' },
+          { icon: '🌈', label: 'A rainbow' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🥁', 42, 58, 28), at('✋', 72, 48, 16)],
+        cards: [
+          { icon: '🔊', label: 'A loud sound' },
+          { icon: '🤫', label: 'A quiet sound' },
+          { icon: '❄️', label: 'It snows' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('📚', 50, 54, 30)],
+        cards: [
+          { icon: '🤫', label: 'A quiet sound' },
+          { icon: '⛈️', label: 'A storm' },
+          { icon: '🔥', label: 'A fire' },
         ],
       },
     ]),

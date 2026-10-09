@@ -11,7 +11,7 @@ export const solidAndLiquid: ContentModule = {
   skills: ['sci-states'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['solid', 'keep', 'shape', 'liquid', 'cup', 'pour', 'water', 'plate', 'bowl', 'tall', 'flat', 'wide', 'apple', 'its', 'own', 'flies', 'goes'],
 
@@ -119,68 +119,6 @@ export const solidAndLiquid: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-states',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows solid or liquid?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'New cup',
-            sentences: ['The cup is on the table.', 'The water pours and takes the cup shape.'],
-          },
-          {
-            title: 'The rock',
-            sentences: ['She taps the rock.', 'The rock keeps one shape.'],
-          },
-          {
-            title: 'Juice',
-            sentences: ['Juice sits in a jug.', 'She pours it into a new cup.'],
-          },
-          {
-            title: 'Wood block',
-            sentences: ['The block is wood.', 'It stays the same shape in a new box.'],
-          },
-          {
-            title: 'Milk',
-            sentences: ['Milk is in a bottle.', 'She pours the milk into a glass.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-states',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Water is poured into a new cup. What happens?',
-          'A rock is moved into a new box. What happens to its shape?',
-          'Which one is a liquid?',
-          'Which one is a solid?',
-          'You tip a cup of water. What does the water do?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It takes the cup shape', 'It keeps a rock shape', 'It becomes a seed', 'It flies away'],
-          ['It keeps one shape', 'It pours out', 'It becomes liquid', 'It melts away'],
-          ['Juice in a cup', 'A wood block', 'A metal clip', 'A nest'],
-          ['A rock', 'Milk', 'Water', 'Juice'],
-          ['It flows out', 'It stays a hard block', 'It becomes a nest', 'It turns to metal'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-states', [
       {
         bg: 'room',
@@ -225,6 +163,34 @@ export const solidAndLiquid: ContentModule = {
           { icon: '🍓', label: 'It keeps its shape' },
           { icon: '💦', label: 'It goes flat' },
           { icon: '🌳', label: 'It grows into a tree' },
+        ],
+      },
+    
+      {
+        bg: 'room',
+        base: [at('🧃', 40, 40, 22), at('🥤', 68, 64, 20)],
+        cards: [
+          { icon: '💧', label: 'It spills out' },
+          { icon: '🧊', label: 'It stays a block' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🪨', 50, 58, 28), at('✋', 24, 50, 16)],
+        cards: [
+          { icon: '🪨', label: 'It keeps its shape' },
+          { icon: '💧', label: 'It pours out' },
+          { icon: '🐦', label: 'It flies' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🍯', 42, 36, 20), at('🍽️', 70, 66, 18)],
+        cards: [
+          { icon: '🍯', label: 'It pours out' },
+          { icon: '🧱', label: 'It stays a block' },
+          { icon: '❄️', label: 'The room freezes' },
         ],
       },
     ]),

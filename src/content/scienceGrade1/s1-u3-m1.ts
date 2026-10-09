@@ -11,7 +11,7 @@ export const materialsChange: ContentModule = {
   skills: ['sci-materials'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['rock', 'hard', 'heavy', 'leaf', 'soft', 'light', 'ice', 'melt', 'watch', 'object', 'look', 'sun', 'chocolate', 'stay', 'get'],
 
@@ -94,68 +94,6 @@ export const materialsChange: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-materials',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows what happens?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Pebble',
-            sentences: ['The pebble drops in the bowl.', 'It goes down to the bottom.'],
-          },
-          {
-            title: 'Cork',
-            sentences: ['The cork drops in the bowl.', 'It stays on top of the water.'],
-          },
-          {
-            title: 'Ice cube',
-            sentences: ['The ice cube sits in the sun.', 'It turns into a puddle.'],
-          },
-          {
-            title: 'Sponge',
-            sentences: ['The sponge is squeezed.', 'It feels soft in the hand.'],
-          },
-          {
-            title: 'Brick',
-            sentences: ['The brick is tapped.', 'It feels hard and does not bend.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-materials',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A coin is put in water. What happens?',
-          'A leaf is put in water. What happens?',
-          'An ice cube sits in the sun. What happens?',
-          'A pillow is squeezed. How does it feel?',
-          'A stone is tapped. How does it feel?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It sinks', 'It flies', 'It sings', 'It blooms'],
-          ['It floats', 'It rings', 'It cooks', 'It reads'],
-          ['It melts', 'It grows fur', 'It lays eggs', 'It rings'],
-          ['Soft', 'Sharp', 'Loud', 'Sweet'],
-          ['Hard', 'Sweet', 'Quiet', 'Floppy'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-materials', [
       {
         bg: 'day',
@@ -200,6 +138,34 @@ export const materialsChange: ContentModule = {
           { icon: '🫠', label: 'It melts' },
           { icon: '❄️', label: 'It freezes' },
           { icon: '🌱', label: 'It grows' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🍦', 46, 58, 28), at('☀️', 80, 18, 16)],
+        cards: [
+          { icon: '💧', label: 'It melts' },
+          { icon: '❄️', label: 'It freezes' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🥛', 46, 58, 26), at('❄️', 76, 28, 18)],
+        cards: [
+          { icon: '🧊', label: 'It turns to ice' },
+          { icon: '🌱', label: 'It grows' },
+          { icon: '🔥', label: 'It burns' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🧈', 48, 60, 26), at('☀️', 80, 18, 16)],
+        cards: [
+          { icon: '🫠', label: 'It gets soft' },
+          { icon: '🪨', label: 'It gets hard' },
+          { icon: '🐦', label: 'It flies' },
         ],
       },
     ]),

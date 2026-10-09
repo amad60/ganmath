@@ -11,7 +11,7 @@ export const bodyAndSenses: ContentModule = {
   skills: ['sci-senses'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['eye', 'ear', 'hear', 'nose', 'smell', 'skin', 'feel', 'hot', 'cold', 'look', 'part', 'body', 'bell', 'ring', 'bright', 'lamp', 'drum', 'taste', 'tongue'],
 
@@ -83,68 +83,6 @@ export const bodyAndSenses: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-senses',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the sense?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Loud drum',
-            sentences: ['The room was quiet.', 'Dewi covers her ears when the drum is loud.'],
-          },
-          {
-            title: 'Bright yard',
-            sentences: ['The lamp is on.', 'Rudi shuts his eyes in the sunny yard.'],
-          },
-          {
-            title: 'Warm soup',
-            sentences: ['Soup is on the table.', 'Siti sniffs and says it smells good.'],
-          },
-          {
-            title: 'Sweet mango',
-            sentences: ['The mango is cut.', 'Leo tastes the sweet piece.'],
-          },
-          {
-            title: 'Hot pan',
-            sentences: ['The stove is on.', 'Ana pulls her hand back from the hot pan.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-senses',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A bird sings outside. Which body part hears it?',
-          'A rainbow is in the sky. Which body part sees it?',
-          'Cookies bake in the oven. Which body part smells them?',
-          'Honey is on the spoon. Which body part tastes it?',
-          'Ice is in the hand. Which body part feels the cold?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Ears', 'Eyes', 'Nose', 'Knees'],
-          ['Eyes', 'Ears', 'Tongue', 'Elbows'],
-          ['Nose', 'Ears', 'Toes', 'Hair'],
-          ['Tongue', 'Ears', 'Nose', 'Knees'],
-          ['Skin', 'Hair', 'Ears', 'Eyes'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext(
       'sci-senses',
       [
@@ -193,7 +131,35 @@ export const bodyAndSenses: ContentModule = {
             { icon: '🦶', label: 'Foot' },
           ],
         },
-      ],
+      
+      {
+        bg: 'room',
+        base: [at('🥁', 50, 52, 32)],
+        cards: [
+          { icon: '👂', label: 'Ears' },
+          { icon: '👃', label: 'Nose' },
+          { icon: '👀', label: 'Eyes' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🔥', 50, 54, 30)],
+        cards: [
+          { icon: '✋', label: 'Skin' },
+          { icon: '👂', label: 'Ears' },
+          { icon: '👅', label: 'Tongue' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🍞', 50, 54, 30)],
+        cards: [
+          { icon: '👃', label: 'Nose' },
+          { icon: '👂', label: 'Ears' },
+          { icon: '👀', label: 'Eyes' },
+        ],
+      },
+    ],
       'Which part knows?',
     ),
   ],

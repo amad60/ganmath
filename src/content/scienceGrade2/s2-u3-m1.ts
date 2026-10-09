@@ -11,7 +11,7 @@ export const lifeCycles: ContentModule = {
   skills: ['sci-cycle'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['egg', 'caterpillar', 'butterfly', 'frog', 'tadpole', 'first', 'eats', 'flies', 'lay', 'chick', 'hen', 'duck', 'back'],
 
@@ -80,68 +80,6 @@ export const lifeCycles: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-cycle',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the next change?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Still egg',
-            sentences: ['The egg is on a leaf.', 'A caterpillar comes out of the egg.'],
-          },
-          {
-            title: 'Eating',
-            sentences: ['The caterpillar eats leaves.', 'Later it becomes a butterfly.'],
-          },
-          {
-            title: 'Pond eggs',
-            sentences: ['Frog eggs sit in the pond.', 'A tadpole swims out.'],
-          },
-          {
-            title: 'New legs',
-            sentences: ['The tadpole grows legs.', 'It becomes a frog.'],
-          },
-          {
-            title: 'Again',
-            sentences: ['The butterfly opens its wings.', 'She lays an egg and the cycle starts again.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-cycle',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A butterfly egg hatches. What comes out first?',
-          'What does a caterpillar become?',
-          'A tadpole lives in the pond. What does it become?',
-          'What comes just before a butterfly?',
-          'The cycle starts again. What does the butterfly lay?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['A caterpillar', 'A full butterfly', 'A fox', 'A magnet'],
-          ['A butterfly', 'A fish', 'A rock', 'A metal clip'],
-          ['A frog', 'A bird', 'A seed', 'A shadow'],
-          ['A caterpillar', 'A fox', 'A rubbish bin', 'A lamp'],
-          ['An egg', 'A block of ice', 'A nest of metal', 'A drum'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-cycle', [
       {
         bg: 'day',
@@ -186,6 +124,34 @@ export const lifeCycles: ContentModule = {
           { icon: '🌱', label: 'A sprout' },
           { icon: '🐣', label: 'A chick' },
           { icon: '🦋', label: 'A butterfly' },
+        ],
+      },
+    
+      {
+        bg: 'water',
+        base: [at('🐤', 28, 58, 16), at('🐸', 62, 58, 24)],
+        cards: [
+          { icon: '🐸', label: 'A frog' },
+          { icon: '🥚', label: 'It goes back in the egg' },
+          { icon: '🪨', label: 'It turns to rock' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐛', 50, 60, 26)],
+        cards: [
+          { icon: '🫧', label: 'A chrysalis' },
+          { icon: '🐠', label: 'A fish' },
+          { icon: '🥁', label: 'A drum' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐣', 50, 58, 28)],
+        cards: [
+          { icon: '🐤', label: 'A chick' },
+          { icon: '🦋', label: 'A butterfly' },
+          { icon: '🌵', label: 'A cactus' },
         ],
       },
     ]),

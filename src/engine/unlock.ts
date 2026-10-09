@@ -77,7 +77,14 @@ export function validateRegistry(registry: Registry): RegistryProblem[] {
     if (def.fluencyTracked && def.kind !== 'fact') {
       problems.push({ moduleId: def.id, problem: 'fluencyTracked hanya untuk kind "fact"' });
     }
-    if (def.questionTypes.length < 2) {
+    // Satu tipe cukup kalau itu soal gambar dan banknya panjang: variasinya
+    // skenario, bukan widget kedua. Dua tipe tetap wajib di Math dan Read.
+    const pictureBank = def.rules
+      .filter((r) => r.type === 'pick-picture' && r.params.p)
+      .reduce((n, r) => n + (r.params.p![1] - r.params.p![0] + 1), 0);
+    const pictureOnly =
+      def.questionTypes.length === 1 && def.questionTypes[0] === 'pick-picture' && pictureBank >= 8;
+    if (def.questionTypes.length < 2 && !pictureOnly) {
       problems.push({ moduleId: def.id, problem: 'butuh minimal 2 questionTypes (anti-hafal)' });
     }
   }

@@ -11,7 +11,7 @@ export const airTakesSpace: ContentModule = {
   skills: ['sci-air'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['air', 'balloon', 'wind', 'move', 'blow', 'out', 'let', 'fill', 'fills', 'get', 'gets', 'boat', 'sail', 'stay', 'stays', 'sink', 'moving', 'pushes'],
 
@@ -86,68 +86,6 @@ export const airTakesSpace: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-air',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows the air?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Flat balloon',
-            sentences: ['The balloon is flat.', 'She blows air in and it grows round.'],
-          },
-          {
-            title: 'Cup in water',
-            sentences: ['The cup is pushed into the water.', 'Air inside keeps the water out.'],
-          },
-          {
-            title: 'The fan',
-            sentences: ['He waves a fan.', 'Moving air is the wind.'],
-          },
-          {
-            title: 'A bubble',
-            sentences: ['A bubble floats past.', 'Air is trapped inside the bubble.'],
-          },
-          {
-            title: 'Empty bag',
-            sentences: ['The bag looks empty.', 'Air still fills the space inside.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-air',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'You blow into a flat balloon. What happens?',
-          'A cup pushed into water stays dry inside. Why?',
-          'What is wind?',
-          'An empty bag pushes back when you squeeze it. What is in it?',
-          'You cannot see air. How can you tell it is there?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Air fills it', 'It turns to soil', 'It becomes a frog', 'It grows fur'],
-          ['Air fills the cup', 'The cup has no space', 'Water is fur', 'The cup is a leaf'],
-          ['Moving air', 'A dry pond', 'A pale leaf', 'A gap in a wire'],
-          ['Air', 'Only soil', 'A frog', 'Nothing at all'],
-          ['It fills space', 'It has a bright color', 'It is fur', 'It is a rock'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-air', [
       {
         bg: 'day',
@@ -192,6 +130,34 @@ export const airTakesSpace: ContentModule = {
           { icon: '👋', label: 'The shirt moves' },
           { icon: '🪨', label: 'It turns to rock' },
           { icon: '🌙', label: 'It is night' },
+        ],
+      },
+    
+      {
+        bg: 'water',
+        base: [at('🍾', 46, 48, 24), at('💧', 70, 70, 20)],
+        cards: [
+          { icon: '🫧', label: 'Bubbles rise' },
+          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🌱', label: 'It grows' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('🌀', 28, 50, 22), at('📄', 68, 56, 18)],
+        cards: [
+          { icon: '💨', label: 'The paper moves' },
+          { icon: '🪨', label: 'The paper stays' },
+          { icon: '🔥', label: 'It burns' },
+        ],
+      },
+      {
+        bg: 'room',
+        base: [at('⚽', 50, 58, 26), at('💨', 28, 40, 14)],
+        cards: [
+          { icon: '🎈', label: 'The ball gets bigger' },
+          { icon: '🥀', label: 'It shrinks' },
+          { icon: '🔔', label: 'It rings' },
         ],
       },
     ]),

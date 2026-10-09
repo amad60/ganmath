@@ -11,7 +11,7 @@ export const soilAndRain: ContentModule = {
   skills: ['sci-soil'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['rain', 'soak', 'soil', 'wash', 'try', 'soft', 'hard', 'washes', 'roots', 'hold', 'place', 'pour', 'dry', 'water', 'turn', 'ice', 'burns', 'plants'],
 
@@ -113,68 +113,6 @@ export const soilAndRain: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-soil',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows what the rain does?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Dry bed',
-            sentences: ['The soil is dry.', 'Rain soaks into the soil.'],
-          },
-          {
-            title: 'Hard rain',
-            sentences: ['The rain is hard and long.', 'The water washes soil down the path.'],
-          },
-          {
-            title: 'Thirsty plant',
-            sentences: ['The plant looks dry.', 'The soil holds the rain for it.'],
-          },
-          {
-            title: 'Bare path',
-            sentences: ['The path has no cover.', 'Rain runs off and takes soil with it.'],
-          },
-          {
-            title: 'Leaf cover',
-            sentences: ['She spreads leaves on the soil.', 'The soil stays and keeps the water.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-soil',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'Soft rain falls on dry soil. What happens?',
-          'Very hard rain hits bare soil. What can happen?',
-          'Why is wet soil good for a plant?',
-          'Leaves cover the soil. What do they help do?',
-          'No rain comes for a long time. What happens to the soil?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It soaks in', 'It becomes a magnet', 'It turns to metal', 'It flies off'],
-          ['Soil washes away', 'Soil becomes ice', 'Soil turns into a nest', 'Soil pulls metal'],
-          ['It holds water', 'It is a magnet', 'It is metal', 'It is a shadow'],
-          ['Keep the soil in place', 'Melt the soil', 'Freeze the rain', 'Eat the plant'],
-          ['It dries out', 'It becomes a fox', 'It turns to wood', 'It lays an egg'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-soil', [
       {
         bg: 'cloudy',
@@ -225,6 +163,34 @@ export const soilAndRain: ContentModule = {
           { icon: '💦', label: 'It runs off the rock' },
           { icon: '⬇️', label: 'It soaks into the rock' },
           { icon: '🌱', label: 'A sprout grows' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('⛰️', 50, 48, 36), at('🌧️', 50, 18, 16)],
+        cards: [
+          { icon: '💧', label: 'The soil washes away' },
+          { icon: '🧊', label: 'It turns to ice' },
+          { icon: '🔔', label: 'It rings' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🌱', 36, 62, 18), at('🌱', 64, 62, 18), at('🌧️', 50, 20, 14)],
+        cards: [
+          { icon: '🌿', label: 'Roots hold the soil' },
+          { icon: '💨', label: 'The soil blows away' },
+          { icon: '🔥', label: 'It burns' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🏜️', 50, 62, 36), at('☀️', 78, 18, 16)],
+        cards: [
+          { icon: '💨', label: 'The soil gets dry' },
+          { icon: '🌊', label: 'A sea comes' },
+          { icon: '🎂', label: 'A cake comes' },
         ],
       },
     ]),

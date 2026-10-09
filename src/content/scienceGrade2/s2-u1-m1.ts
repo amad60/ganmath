@@ -11,7 +11,7 @@ export const seedsGrow: ContentModule = {
   skills: ['sci-seeds'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['look', 'seed', 'need', 'water', 'sun', 'sprout', 'soil', 'plant', 'stay', 'weak', 'dry', 'dries', 'hot', 'day', 'into', 'turn', 'ice'],
 
@@ -105,68 +105,6 @@ export const seedsGrow: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-seeds',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows what the seed needs?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Dry pot',
-            sentences: ['The pot is dry.', 'Lina pours water on the seed.'],
-          },
-          {
-            title: 'Dark room',
-            sentences: ['The room is dark.', 'Budi moves the pot into the sun.'],
-          },
-          {
-            title: 'On the table',
-            sentences: ['The seed is on the table.', 'Siti presses it into damp soil.'],
-          },
-          {
-            title: 'No drink',
-            sentences: ['Days pass with no drink.', 'Rain wets the soil around the seed.'],
-          },
-          {
-            title: 'Cupboard',
-            sentences: ['The pot sits in a cupboard.', 'Dewi sets it where the sun can reach.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-seeds',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A dry seed gets water and sun. What happens next?',
-          'A seed stays dry in a dark box. What happens?',
-          'What does a seed need so a sprout can grow?',
-          'The soil is wet and the sun is on the pot. What grows?',
-          'No water comes for many days. What happens to the seed?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['It sprouts', 'It turns to rock', 'It becomes a magnet', 'It flies away'],
-          ['It stays a seed', 'It sprouts at once', 'It melts', 'It grows a nest'],
-          ['Water and sun', 'A magnet', 'A drum', 'A loud horn'],
-          ['A sprout', 'Only a shadow', 'A block of ice', 'A metal clip'],
-          ['It does not sprout', 'It becomes a tree that day', 'It turns to ice', 'It hops off'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-seeds', [
       {
         bg: 'day',
@@ -211,6 +149,34 @@ export const seedsGrow: ContentModule = {
           { icon: '🌱', label: 'A sprout comes up' },
           { icon: '🍏', label: 'An apple comes up' },
           { icon: '🪨', label: 'A rock comes up' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🌰', 50, 70, 16), at('🪨', 50, 48, 28)],
+        cards: [
+          { icon: '🌰', label: 'It stays a seed' },
+          { icon: '🌿', label: 'A sprout comes up' },
+          { icon: '💧', label: 'It melts' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🌰', 50, 72, 14), at('💧', 36, 40, 12), at('🌑', 78, 22, 16)],
+        cards: [
+          { icon: '🌱', label: 'A small sprout' },
+          { icon: '🌳', label: 'It grows huge' },
+          { icon: '🪨', label: 'It turns to rock' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🌱', 50, 62, 24), at('💧', 28, 36, 12), at('☀️', 80, 18, 16)],
+        cards: [
+          { icon: '🌿', label: 'It grows' },
+          { icon: '🥀', label: 'It dries up' },
+          { icon: '🔔', label: 'It rings' },
         ],
       },
     ]),

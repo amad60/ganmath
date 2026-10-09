@@ -11,7 +11,7 @@ export const homeChanges: ContentModule = {
   skills: ['sci-habitat'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['frog', 'leave', 'dry', 'pond', 'need', 'wet', 'home', 'full', 'must', 'stay', 'stays', 'tree', 'trees', 'cut', 'new', 'find', 'bird', 'rock', 'sleep', 'sleeps', 'fly', 'flies', 'there'],
 
@@ -92,68 +92,6 @@ export const homeChanges: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-habitat',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows what the change causes?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Smaller pond',
-            sentences: ['The pond gets smaller.', 'The frog leaves the dry pond.'],
-          },
-          {
-            title: 'Cut trees',
-            sentences: ['The trees are cut down.', 'The birds lose the home in the branches.'],
-          },
-          {
-            title: 'Dry river',
-            sentences: ['The river dries in the heat.', 'The fish cannot live there.'],
-          },
-          {
-            title: 'Filled in',
-            sentences: ['People fill the pond with soil.', 'Frogs must find a wet home.'],
-          },
-          {
-            title: 'Rain returns',
-            sentences: ['Rain fills the dry pond.', 'Frogs can come back.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-habitat',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A pond dries up. What do the frogs do?',
-          'Why does a frog leave a dry pond?',
-          'The forest is cut down. What happens to the birds?',
-          'Rain fills the pond again. What can happen?',
-          'A fish is left in a dry ditch. What is wrong?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['They leave', 'They grow thick fur', 'They become rocks', 'They make light'],
-          ['It needs a wet home', 'It needs a magnet', 'It likes dry sand best', 'It wants a dark box'],
-          ['They lose their home', 'They turn pale', 'They become fish', 'They freeze'],
-          ['Frogs can return', 'The water becomes fur', 'Fish grow feathers', 'The pond turns to metal'],
-          ['It has no water home', 'It has too much fur', 'It has no magnet', 'It is really a bird'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-habitat', [
       {
         bg: 'day',
@@ -198,6 +136,34 @@ export const homeChanges: ContentModule = {
           { icon: '💦', label: 'It jumps in' },
           { icon: '🏜️', label: 'It goes to the sand' },
           { icon: '🔥', label: 'It burns' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🐟', 50, 62, 24), at('🏜️', 50, 40, 40)],
+        cards: [
+          { icon: '🚶', label: 'The fish leaves' },
+          { icon: '🏊', label: 'It stays and swims' },
+          { icon: '🔥', label: 'It burns' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐦', 46, 48, 24), at('🪓', 74, 64, 16)],
+        cards: [
+          { icon: '🛫', label: 'The bird leaves' },
+          { icon: '😴', label: 'It sleeps there' },
+          { icon: '🌋', label: 'It erupts' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐻‍❄️', 46, 56, 28), at('💧', 74, 62, 16)],
+        cards: [
+          { icon: '🚶', label: 'It leaves the ice' },
+          { icon: '⛸️', label: 'It skates' },
+          { icon: '🌵', label: 'It likes the sand' },
         ],
       },
     ]),

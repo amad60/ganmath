@@ -11,7 +11,7 @@ export const bodyCoverings: ContentModule = {
   skills: ['sci-cover'],
   kind: 'concept',
   fluencyTracked: false,
-  questionTypes: ['clue-tap', 'choose-text', 'pick-picture'],
+  questionTypes: ['pick-picture'],
   visuals: ['evidence-text', 'science-scene'],
   vocab: ['fur', 'animal', 'warm', 'feather', 'bird', 'scale', 'fish', 'keep', 'keeps', 'snow', 'cold', 'get', 'gets', 'with', 'rain', 'duck', 'dry', 'wet', 'stays', 'sink', 'sinks', 'falls', 'fall', 'thick'],
 
@@ -98,68 +98,6 @@ export const bodyCoverings: ContentModule = {
   ],
 
   rules: [
-    {
-      type: 'clue-tap',
-      skill: 'sci-cover',
-      params: { s: [0, 4] },
-      answer: () => 1,
-      text: () => 'Which sentence shows how the covering helps?',
-      visual: (p) => {
-        const stories = [
-          {
-            title: 'Cold wind',
-            sentences: ['The wind is cold.', 'Thick fur keeps the animal warm.'],
-          },
-          {
-            title: 'In the pond',
-            sentences: ['The fish swims along.', 'Scales cover its body in the water.'],
-          },
-          {
-            title: 'On the branch',
-            sentences: ['The bird sits in the cold.', 'Feathers keep it warm.'],
-          },
-          {
-            title: 'Hot day',
-            sentences: ['The day is hot.', 'Thin fur lets extra heat leave.'],
-          },
-          {
-            title: 'On the pond',
-            sentences: ['The duck lands.', 'Feathers keep the water off its skin.'],
-          },
-        ];
-        return {
-          kind: 'evidence-text',
-          title: stories[p.s as number]?.title,
-          sentences: stories[p.s as number]?.sentences ?? [],
-        };
-      },
-    },
-    {
-      type: 'choose-text',
-      skill: 'sci-cover',
-      params: { c: [0, 4] },
-      answer: () => 0,
-      text: (p) => {
-        const stories = [
-          'A wolf lives where it is cold. What helps?',
-          'What covers a fish and helps it in water?',
-          'What keeps a bird warm?',
-          'An animal in a hot place has very thick fur. What is the problem?',
-          'Why does a polar bear have thick fur?',
-        ];
-        return stories[p.c as number] ?? '';
-      },
-      options: (p) => {
-        const list = [
-          ['Thick fur', 'Bare skin only', 'A metal shell', 'A pale leaf'],
-          ['Scales', 'Fur', 'Feathers', 'A wool coat'],
-          ['Feathers', 'Scales', 'A wet rock', 'A magnet'],
-          ['It stays too warm', 'It cannot see', 'It melts at once', 'It becomes a plant'],
-          ['To keep warm', 'To swim like a fish', 'To make food from light', 'To block every sound'],
-        ];
-        return list[p.c as number] ?? ['A', 'B', 'C', 'D'];
-      },
-    },
     whatHappensNext('sci-cover', [
       {
         bg: 'cloudy',
@@ -204,6 +142,34 @@ export const bodyCoverings: ContentModule = {
           { icon: '🪶', label: 'Feathers keep it warm' },
           { icon: '🧊', label: 'It turns to ice' },
           { icon: '🐟', label: 'It swims' },
+        ],
+      },
+    
+      {
+        bg: 'day',
+        base: [at('🐻‍❄️', 48, 56, 30), at('❄️', 78, 24, 16)],
+        cards: [
+          { icon: '🧥', label: 'The fur keeps it warm' },
+          { icon: '🥶', label: 'It freezes' },
+          { icon: '🔥', label: 'It gets hot' },
+        ],
+      },
+      {
+        bg: 'day',
+        base: [at('🐦', 46, 54, 26), at('💨', 76, 36, 16)],
+        cards: [
+          { icon: '🪶', label: 'Feathers keep it warm' },
+          { icon: '🥶', label: 'It gets cold' },
+          { icon: '💧', label: 'It melts' },
+        ],
+      },
+      {
+        bg: 'water',
+        base: [at('🐟', 50, 56, 28)],
+        cards: [
+          { icon: '🛡️', label: 'Scales keep it safe' },
+          { icon: '🥵', label: 'It gets hot' },
+          { icon: '🌵', label: 'It dries up' },
         ],
       },
     ]),
