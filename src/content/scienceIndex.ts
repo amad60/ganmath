@@ -30,6 +30,16 @@ import { soundTravels } from './scienceGrade3/s3-u7-m1';
 import { closedPath } from './scienceGrade3/s3-u8-m1';
 import { waterGoesAround } from './scienceGrade3/s3-u9-m1';
 import { rotFeedsSoil } from './scienceGrade3/s3-u10-m1';
+import { rootsDrink } from './scienceGrade4/s4-u1-m1';
+import { bonesAndMuscles } from './scienceGrade4/s4-u2-m1';
+import { sugarDissolves } from './scienceGrade4/s4-u3-m1';
+import { lightBounces } from './scienceGrade4/s4-u4-m1';
+import { polesPushAndPull } from './scienceGrade4/s4-u5-m1';
+import { wheelsHelp } from './scienceGrade4/s4-u6-m1';
+import { floatOrSink } from './scienceGrade4/s4-u7-m1';
+import { coldMakesDrops } from './scienceGrade4/s4-u8-m1';
+import { longerDays } from './scienceGrade4/s4-u9-m1';
+import { oneLinkBreaks } from './scienceGrade4/s4-u10-m1';
 
 export const scienceModulesList: ContentModule[] = [
   whatLivingThingsNeed,
@@ -62,10 +72,20 @@ export const scienceModulesList: ContentModule[] = [
   closedPath,
   waterGoesAround,
   rotFeedsSoil,
+  rootsDrink,
+  bonesAndMuscles,
+  sugarDissolves,
+  lightBounces,
+  polesPushAndPull,
+  wheelsHelp,
+  floatOrSink,
+  coldMakesDrops,
+  longerDays,
+  oneLinkBreaks,
 ];
 
 /** Level science yang sudah punya jalur. */
-export const SCIENCE_LEVELS = [1, 2, 3] as const;
+export const SCIENCE_LEVELS = [1, 2, 3, 4] as const;
 
 export const scienceModules: Record<string, ContentModule> = Object.fromEntries(
   scienceModulesList.map((m) => [m.id, m]),
@@ -116,4 +136,14 @@ export const scienceUnitTitles: Record<string, { title: string; color: string }>
   's3-u8': { title: 'Unit 8 · A Closed Path', color: '#4c1d95' },
   's3-u9': { title: 'Unit 9 · Water Goes Around', color: '#312e81' },
   's3-u10': { title: 'Unit 10 · Rot Feeds the Soil', color: '#3b0764' },
+  's4-u1': { title: 'Unit 1 · Roots Drink', color: '#0f172a' },
+  's4-u2': { title: 'Unit 2 · Bones and Muscles', color: '#7f1d1d' },
+  's4-u3': { title: 'Unit 3 · Sugar Dissolves', color: '#365314' },
+  's4-u4': { title: 'Unit 4 · Light Bounces', color: '#155e75' },
+  's4-u5': { title: 'Unit 5 · Poles Push and Pull', color: '#701a75' },
+  's4-u6': { title: 'Unit 6 · Wheels Help', color: '#44403c' },
+  's4-u7': { title: 'Unit 7 · Float or Sink', color: '#1e3a8a' },
+  's4-u8': { title: 'Unit 8 · Cold Makes Drops', color: '#1e1b4b' },
+  's4-u9': { title: 'Unit 9 · Longer Days', color: '#3f6212' },
+  's4-u10': { title: 'Unit 10 · One Link Breaks', color: '#4a044e' },
 };
