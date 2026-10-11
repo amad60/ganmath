@@ -137,7 +137,7 @@ export const waterGoesAround: ContentModule = {
         bg: 'cloudy',
         base: [at('☁️', 48, 18, 30), at('🌧️', 48, 34, 22), at('💧', 36, 58, 8), at('💧', 58, 64, 8), bar(50, 92, 100, 16, 'green')],
         cards: [
-          { icon: '☁️', label: 'The cloud was full' },
+          { icon: '🫧', label: 'The cloud was full' },
           { icon: '🌧️', label: 'Heat pulled it up' },
           { icon: '🧊', label: 'The cloud froze' },
         ],
@@ -187,8 +187,8 @@ export const waterGoesAround: ContentModule = {
         bg: 'cloudy',
         base: [at('☀️', 84, 14, 14), at('☁️', 34, 18, 22), at('🌧️', 36, 38, 16), at('⛰️', 30, 62, 26), bar(84, 90, 32, 18, 'blue')],
         cards: [
-          { icon: '🌧️', label: 'Rain from the cloud' },
-          { icon: '☀️', label: 'The sun pulls it up' },
+          { icon: '💦', label: 'Rain from the cloud' },
+          { icon: '☀️', label: 'Sun pulls it up' },
           { icon: '🧊', label: 'Ice in the cloud' },
         ],
       },

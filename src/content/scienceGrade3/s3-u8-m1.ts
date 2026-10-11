@@ -120,7 +120,7 @@ export const closedPath: ContentModule = {
         bg: 'night',
         base: circuit({ gap: true }),
         cards: [
-          { icon: '✂️', label: 'A gap in the path' },
+          { icon: '✂️', label: 'Gap in the path' },
           { icon: '🔗', label: 'The path is closed' },
           { icon: '💡', label: 'A gap still lights' },
         ],
@@ -151,7 +151,7 @@ export const closedPath: ContentModule = {
         base: circuit({ lit: true, device: '🌀' }),
         cards: [
           { icon: '🔗', label: 'A closed path' },
-          { icon: '✂️', label: 'A gap in the wire' },
+          { icon: '✂️', label: 'Gap in the wire' },
           { icon: '🚫', label: 'No path is needed' },
         ],
       },
@@ -160,8 +160,8 @@ export const closedPath: ContentModule = {
         bg: 'room',
         base: circuit({ lit: true, device: '⚙️' }),
         cards: [
-          { icon: '🔗', label: 'The path has no gap' },
-          { icon: '✂️', label: 'A gap makes it run' },
+          { icon: '🔗', label: 'Path has no gap' },
+          { icon: '✂️', label: 'Gap makes it run' },
           { icon: '🚫', label: 'Motors need no path' },
         ],
       },
@@ -170,9 +170,9 @@ export const closedPath: ContentModule = {
         bg: 'night',
         base: circuit({ gap: true, device: '🔦' }),
         cards: [
-          { icon: '✂️', label: 'A gap opened the path' },
+          { icon: '✂️', label: 'Gap opened the path' },
           { icon: '🔗', label: 'The path is closed' },
-          { icon: '💡', label: 'A gap does not matter' },
+          { icon: '💡', label: 'Gap does not matter' },
         ],
       },
       {
@@ -182,7 +182,7 @@ export const closedPath: ContentModule = {
         cards: [
           { icon: '✂️', label: 'The gap' },
           { icon: '🔋', label: 'The battery' },
-          { icon: '🔗', label: 'A closed path stops it' },
+          { icon: '🔗', label: 'Closed path stops it' },
         ],
       },
     ]),

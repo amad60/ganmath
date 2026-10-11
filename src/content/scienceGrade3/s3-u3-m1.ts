@@ -110,7 +110,7 @@ export const homeChanges: ContentModule = {
         cards: [
           { icon: '🪓', label: 'The tree was cut' },
           { icon: '🌳', label: 'The tree still fits' },
-          { icon: '🐸', label: 'It needs a dry pond' },
+          { icon: '🐸', label: 'Needs a dry pond' },
         ],
       },
       {

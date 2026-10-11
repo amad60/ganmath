@@ -116,7 +116,7 @@ export const leavesMakeFood: ContentModule = {
         bg: 'day',
         base: [at('☀️', 18, 16, 14), at('🍃', 26, 60, 20), at('📦', 74, 48, 20), at('🍂', 74, 66, 14, { dim: true }), ground('brown')],
         cards: [
-          { icon: '🍂', label: 'The covered leaf' },
+          { icon: '🌑', label: 'The covered leaf' },
           { icon: '🍃', label: 'The sunny leaf' },
           { icon: '🌱', label: 'The stem' },
         ],
