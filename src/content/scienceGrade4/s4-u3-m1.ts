@@ -88,8 +88,8 @@ export const sugarDissolves: ContentModule = {
         ask: 'Why can you not see the sugar?',
         base: [at('🥛', 50, 58, 32)],
         cards: [
-          { icon: '✨', label: 'It went into the water' },
-          { icon: '💨', label: 'The sugar disappeared forever' },
+          { icon: '✨', label: 'Went into water' },
+          { icon: '💨', label: 'Gone forever' },
           { icon: '🧪', label: 'The water destroyed it' },
         ],
       },
@@ -98,8 +98,8 @@ export const sugarDissolves: ContentModule = {
         ask: 'Why does this sand stay?',
         base: [at('🥛', 50, 52, 28), at('🏖️', 50, 74, 14)],
         cards: [
-          { icon: '🚫', label: 'Sand does not go in' },
-          { icon: '✨', label: 'The sand went into water' },
+          { icon: '🚫', label: 'Sand stays out' },
+          { icon: '✨', label: 'Went into water' },
           { icon: '💨', label: 'The sand disappeared forever' },
         ],
       },
@@ -108,7 +108,7 @@ export const sugarDissolves: ContentModule = {
         ask: 'What was missing for the sugar?',
         base: [at('🍬', 50, 55, 28)],
         cards: [
-          { icon: '🥛', label: 'Water for it to enter' },
+          { icon: '🥛', label: 'Water to enter' },
           { icon: '💨', label: 'It should vanish anyway' },
           { icon: '🏖️', label: 'Sand makes sugar vanish' },
         ],
@@ -118,9 +118,9 @@ export const sugarDissolves: ContentModule = {
         ask: 'What did the water do?',
         base: [at('🥣', 22, 58, 18), at('🥛', 55, 58, 26), at('🥄', 78, 36, 14)],
         cards: [
-          { icon: '✨', label: 'It took the sugar in' },
-          { icon: '💨', label: 'It made the sugar vanish' },
-          { icon: '🍬', label: 'It left a sugar pile' },
+          { icon: '✨', label: 'Took sugar in' },
+          { icon: '💨', label: 'Made sugar vanish' },
+          { icon: '🍬', label: 'Left a pile' },
         ],
       },
       {
@@ -128,7 +128,7 @@ export const sugarDissolves: ContentModule = {
         ask: 'Why can you not see the salt?',
         base: [at('🧂', 22, 40, 16), at('🥛', 60, 58, 28)],
         cards: [
-          { icon: '✨', label: 'It is still in the water' },
+          { icon: '✨', label: 'Still in the water' },
           { icon: '💨', label: 'The salt disappeared forever' },
           { icon: '🧪', label: 'The water destroyed it' },
         ],
@@ -138,8 +138,8 @@ export const sugarDissolves: ContentModule = {
         ask: 'Why does this rock stay?',
         base: [at('🥛', 50, 52, 28), at('🪨', 50, 74, 16)],
         cards: [
-          { icon: '🚫', label: 'It does not go into water' },
-          { icon: '✨', label: 'The rock went into water' },
+          { icon: '🚫', label: 'Stays out of water' },
+          { icon: '✨', label: 'Went into water' },
           { icon: '💨', label: 'The rock disappeared forever' },
         ],
       },
@@ -148,9 +148,9 @@ export const sugarDissolves: ContentModule = {
         ask: 'What keeps the sugar in there?',
         base: [at('🥣', 24, 58, 20), at('🥛', 66, 56, 26)],
         cards: [
-          { icon: '✨', label: 'It is still in the water' },
+          { icon: '✨', label: 'Still in the water' },
           { icon: '💨', label: 'It is gone forever' },
-          { icon: '🏖️', label: 'Sand is hiding the sugar' },
+          { icon: '🏖️', label: 'Sand hides it' },
         ],
       },
       {
@@ -158,9 +158,9 @@ export const sugarDissolves: ContentModule = {
         ask: 'What caused the sand to stay?',
         base: [at('🥛', 46, 58, 28), at('🥄', 72, 34, 14), at('🏖️', 48, 74, 12)],
         cards: [
-          { icon: '🚫', label: 'Sand never goes into water' },
-          { icon: '✨', label: 'Stirring put the sand in' },
-          { icon: '💨', label: 'Stirring made the sand vanish' },
+          { icon: '🚫', label: 'Sand stays out' },
+          { icon: '✨', label: 'Stirring put it in' },
+          { icon: '💨', label: 'Stirring hid it' },
         ],
       },
     ]),

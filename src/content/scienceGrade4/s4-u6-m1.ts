@@ -94,8 +94,8 @@ export const wheelsHelp: ContentModule = {
         base: [at('🧒', 16, 58, 16), at('📦', 76, 50, 22), ground('gray')],
         cards: [
           { icon: '🛞', label: 'Wheels under the box' },
-          { icon: '⚖️', label: 'The weight makes it roll' },
-          { icon: '💪', label: 'A harder push is enough' },
+          { icon: '⚖️', label: 'Weight rolls it' },
+          { icon: '💪', label: 'A harder push' },
         ],
       },
       {
@@ -103,9 +103,9 @@ export const wheelsHelp: ContentModule = {
         ask: 'Why did this heavy box stay?',
         base: [at('🧒', 30, 58, 16), at('📦', 52, 54, 22), ground('gray')],
         cards: [
-          { icon: '🚫', label: 'No wheels to roll on' },
-          { icon: '🛞', label: 'Wheels are hiding under it' },
-          { icon: '⚖️', label: 'Weight makes a box roll' },
+          { icon: '🚫', label: 'No wheels' },
+          { icon: '🛞', label: 'Wheels hide under' },
+          { icon: '⚖️', label: 'Weight rolls it' },
         ],
       },
       {
@@ -114,8 +114,8 @@ export const wheelsHelp: ContentModule = {
         base: [at('🧒', 14, 58, 16), at('🧳', 78, 50, 22), ground('gray')],
         cards: [
           { icon: '🛞', label: 'Wheels under the suitcase' },
-          { icon: '📦', label: 'Its weight made it slide' },
-          { icon: '🚫', label: 'It moved with no wheels' },
+          { icon: '📦', label: 'Weight slid it' },
+          { icon: '🚫', label: 'No wheels needed' },
         ],
       },
       {
@@ -124,8 +124,8 @@ export const wheelsHelp: ContentModule = {
         base: [at('🧒', 28, 58, 16), at('👜', 52, 54, 22), ground('gray')],
         cards: [
           { icon: '🛞', label: 'Wheels to roll on' },
-          { icon: '💪', label: 'A harder push is enough' },
-          { icon: '📦', label: 'Weight that makes it roll' },
+          { icon: '💪', label: 'A harder push' },
+          { icon: '📦', label: 'Weight rolls it' },
         ],
       },
       {
@@ -133,9 +133,9 @@ export const wheelsHelp: ContentModule = {
         ask: 'What did the wheels do?',
         base: [at('🧒', 14, 58, 14), at('🎹', 78, 48, 24), ground('gray')],
         cards: [
-          { icon: '➡️', label: 'They let the piano roll' },
+          { icon: '➡️', label: 'Let the piano roll' },
           { icon: '📦', label: 'Its weight rolled it' },
-          { icon: '🛑', label: 'They made the piano stay' },
+          { icon: '🛑', label: 'Made it stay' },
         ],
       },
       {
@@ -143,9 +143,9 @@ export const wheelsHelp: ContentModule = {
         ask: 'Why does this couch stay?',
         base: [at('🧒', 24, 58, 16), at('🛋️', 58, 52, 26), ground('gray')],
         cards: [
-          { icon: '🚫', label: 'No wheels under the couch' },
-          { icon: '📦', label: 'Its weight should roll it' },
-          { icon: '🛞', label: 'Wheels are under the couch' },
+          { icon: '🚫', label: 'No wheels under' },
+          { icon: '📦', label: 'Weight should roll' },
+          { icon: '🛞', label: 'Wheels under it' },
         ],
       },
       {
@@ -153,8 +153,8 @@ export const wheelsHelp: ContentModule = {
         ask: 'Which part lets a cart roll?',
         base: [at('🧒', 16, 58, 16), at('🛒', 76, 50, 24), ground('green')],
         cards: [
-          { icon: '🛞', label: 'The wheels on the cart' },
-          { icon: '📦', label: 'The weight of the cart' },
+          { icon: '🛞', label: 'Wheels on the cart' },
+          { icon: '📦', label: 'Weight of the cart' },
           { icon: '🚫', label: 'No wheels are needed' },
         ],
       },

@@ -88,9 +88,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'Why did the rabbit go?',
         base: [at('🏜️', 50, 58, 28), ground('yellow')],
         cards: [
-          { icon: '🌱', label: 'Its grass food is gone' },
-          { icon: '🚫', label: 'A broken link does not matter' },
-          { icon: '🐇', label: 'The rabbit needs no food' },
+          { icon: '🌱', label: 'Grass food is gone' },
+          { icon: '🚫', label: 'Breaks are fine' },
+          { icon: '🐇', label: 'Needs no food' },
         ],
       },
       {
@@ -98,9 +98,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'What keeps the rabbit here?',
         base: [at('🌱', 30, 68, 16), at('🐇', 66, 60, 20), ground('green')],
         cards: [
-          { icon: '🌿', label: 'The grass food is here' },
+          { icon: '🌿', label: 'Grass food is here' },
           { icon: '💨', label: 'The rabbit should go' },
-          { icon: '🚫', label: 'Food links do not matter' },
+          { icon: '🚫', label: 'Breaks are fine' },
         ],
       },
       {
@@ -108,9 +108,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'Why did the fox go?',
         base: [at('🌱', 32, 66, 18), at('🌱', 68, 70, 14), ground('green')],
         cards: [
-          { icon: '🐇', label: 'Its rabbit food is gone' },
-          { icon: '🌿', label: 'The fox can eat the grass' },
-          { icon: '🚫', label: 'A broken link does not matter' },
+          { icon: '🐇', label: 'Rabbit food is gone' },
+          { icon: '🌿', label: 'Eats the grass' },
+          { icon: '🚫', label: 'Breaks are fine' },
         ],
       },
       {
@@ -118,9 +118,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'What keeps the fox here?',
         base: [at('🌱', 20, 70, 14), at('🐇', 48, 62, 16), at('🦊', 76, 52, 20), ground('green')],
         cards: [
-          { icon: '🍖', label: 'It still has rabbit food' },
-          { icon: '🌿', label: 'The fox eats the grass' },
-          { icon: '💨', label: 'The fox needs no food' },
+          { icon: '🍖', label: 'Still has rabbit food' },
+          { icon: '🌿', label: 'Eats the grass' },
+          { icon: '💨', label: 'Needs no food' },
         ],
       },
       {
@@ -128,9 +128,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'Why did the bee go?',
         base: [at('🌿', 50, 64, 22), ground('green')],
         cards: [
-          { icon: '🌸', label: 'Its flower food is gone' },
-          { icon: '🐝', label: 'The bee needs no flower' },
-          { icon: '🌱', label: 'A bee can eat the grass' },
+          { icon: '🌸', label: 'Flower food is gone' },
+          { icon: '🐝', label: 'Needs no flower' },
+          { icon: '🌱', label: 'Eats the grass' },
         ],
       },
       {
@@ -138,9 +138,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'What keeps the bee here?',
         base: [at('🌸', 32, 60, 18), at('🐝', 68, 46, 18), ground('green')],
         cards: [
-          { icon: '🍯', label: 'Its flower food is here' },
+          { icon: '🍯', label: 'Flower food is here' },
           { icon: '💨', label: 'The bee should go' },
-          { icon: '🚫', label: 'A food link does not matter' },
+          { icon: '🚫', label: 'Breaks are fine' },
         ],
       },
       {
@@ -148,7 +148,7 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'Why did the big fish go?',
         base: [at('🌊', 50, 62, 32)],
         cards: [
-          { icon: '🦐', label: 'Its small food is gone' },
+          { icon: '🦐', label: 'Small food is gone' },
           { icon: '🐟', label: 'The fish needs nothing' },
           { icon: '🍃', label: 'Water is food enough' },
         ],
@@ -158,9 +158,9 @@ export const oneLinkBreaks: ContentModule = {
         ask: 'What made the big fish stay?',
         base: [at('🦐', 30, 58, 16), at('🐟', 68, 46, 22), at('🌊', 50, 80, 22)],
         cards: [
-          { icon: '🍽️', label: 'Its food link is here' },
+          { icon: '🍽️', label: 'Food link is here' },
           { icon: '💨', label: 'It should go anyway' },
-          { icon: '💧', label: 'It can eat the water' },
+          { icon: '💧', label: 'Eats the water' },
         ],
       },
     ]),

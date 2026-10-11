@@ -125,7 +125,7 @@ export const polesPushAndPull: ContentModule = {
         base: [at('🔴', 32, 50, 14), at('📄', 50, 50, 14), at('🔵', 68, 50, 14)],
         cards: [
           { icon: '🤝', label: 'Different ends still pull' },
-          { icon: '↔️', label: 'The paper makes them push' },
+          { icon: '↔️', label: 'Paper makes a push' },
           { icon: '🚫', label: 'Paper stops all pulls' },
         ],
       },
@@ -134,8 +134,8 @@ export const polesPushAndPull: ContentModule = {
         ask: 'Why are these boats apart?',
         base: [at('⛵', 16, 56, 18), at('🔴', 30, 40, 10), at('⛵', 84, 56, 18), at('🔴', 70, 40, 10)],
         cards: [
-          { icon: '↔️', label: 'Same ends push the boats' },
-          { icon: '🤝', label: 'Same ends pull the boats' },
+          { icon: '↔️', label: 'Same ends push' },
+          { icon: '🤝', label: 'Same ends pull' },
           { icon: '🧲', label: 'Magnets only pull' },
         ],
       },
@@ -154,7 +154,7 @@ export const polesPushAndPull: ContentModule = {
         ask: 'What did the same ends do?',
         base: [at('🚂', 16, 55, 20), at('🔴', 34, 38, 10), at('🚂', 84, 55, 20), at('🔴', 66, 38, 10)],
         cards: [
-          { icon: '↔️', label: 'They pushed the trains apart' },
+          { icon: '↔️', label: 'Pushed them apart' },
           { icon: '🤝', label: 'They pulled the trains' },
           { icon: '🚫', label: 'The ends did nothing' },
         ],
@@ -165,8 +165,8 @@ export const polesPushAndPull: ContentModule = {
         base: [at('🚂', 34, 55, 18), at('🔴', 46, 38, 10), at('🚂', 66, 55, 18), at('🔵', 56, 38, 10)],
         cards: [
           { icon: '🤝', label: 'The ends that differ' },
-          { icon: '↔️', label: 'The ends that are the same' },
-          { icon: '🧲', label: 'Every end pulls a train' },
+          { icon: '↔️', label: 'The same ends' },
+          { icon: '🧲', label: 'Every end pulls' },
         ],
       },
     ]),
