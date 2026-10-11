@@ -107,84 +107,83 @@ export const seedsGrow: ContentModule = {
   rules: [
     whatHappensNext('sci-seeds', [
       {
-        ask: 'A seed gets sun and rain.',
+        ask: 'The sprout dried up. What was missing?',
         bg: 'day',
-        base: [at('☀️', 84, 16, 16), at('🌧️', 36, 18, 18), bar(50, 88, 100, 24, 'brown'), at('🌰', 50, 80, 9)],
+        base: [at('☀️', 84, 16, 16), bar(50, 88, 100, 24, 'brown'), at('🥀', 50, 64, 24)],
         cards: [
-          { icon: '🌱', label: 'A sprout comes up' },
-          { icon: '🚫', label: 'The seed does nothing' },
-          { icon: '🧊', label: 'It turns to ice' },
+          { icon: '💧', label: 'Water' },
+          { icon: '🌑', label: 'Shade' },
+          { icon: '🍯', label: 'Plant food' },
         ],
       },
       {
-        ask: 'Seeds sit with no water.',
+        ask: 'This seed did not sprout. Why?',
+        bg: 'day',
+        base: [bar(50, 88, 100, 24, 'brown'), at('🌰', 50, 78, 12)],
+        cards: [
+          { icon: '💧', label: 'No water' },
+          { icon: '🌊', label: 'Too much water' },
+          { icon: '🧊', label: 'It turned to ice' },
+        ],
+      },
+      {
+        ask: 'A sprout came up. What made it grow?',
+        bg: 'day',
+        base: [bar(50, 88, 100, 24, 'brown'), at('🌱', 50, 62, 26)],
+        cards: [
+          { icon: '☀️', label: 'Water and sun' },
+          { icon: '🌑', label: 'Only darkness' },
+          { icon: '🧊', label: 'Only ice' },
+        ],
+      },
+      {
+        ask: 'This sprout looks weak. What was missing?',
+        bg: 'night',
+        base: [at('💧', 32, 36, 12), bar(50, 88, 100, 24, 'brown'), at('🌱', 50, 66, 16, { dim: true })],
+        cards: [
+          { icon: '☀️', label: 'Sun' },
+          { icon: '💧', label: 'More water' },
+          { icon: '🌰', label: 'New soil' },
+        ],
+      },
+      {
+        ask: 'A bean sprouted in soil. What did it need?',
+        bg: 'day',
+        base: [bar(50, 88, 100, 24, 'brown'), at('🫘', 34, 78, 12), at('🌱', 56, 62, 22)],
+        cards: [
+          { icon: '💧', label: 'Water and sun' },
+          { icon: '🪴', label: 'Only a pot' },
+          { icon: '🧊', label: 'Ice on top' },
+        ],
+      },
+      {
+        ask: 'A bean sprout dried up. What was missing?',
+        bg: 'day',
+        base: [at('☀️', 84, 16, 16), bar(50, 88, 100, 24, 'brown'), at('🫘', 34, 78, 12), at('🥀', 58, 64, 22)],
+        cards: [
+          { icon: '💧', label: 'Water' },
+          { icon: '☀️', label: 'More sun' },
+          { icon: '🌑', label: 'A dark lid' },
+        ],
+      },
+      {
+        ask: 'A seed in a cup did not sprout. Why?',
         bg: 'room',
-        base: [bar(50, 80, 56, 4, 'white'), at('🌰', 44, 74, 9), at('🌰', 56, 74, 9)],
+        base: [at('🥛', 50, 62, 30), at('🌰', 50, 56, 10)],
         cards: [
-          { icon: '🌰', label: 'It stays a seed' },
-          { icon: '🌳', label: 'It becomes a tree' },
-          { icon: '🌸', label: 'It gets a flower' },
+          { icon: '💧', label: 'No water' },
+          { icon: '🥛', label: 'Cups block growth' },
+          { icon: '🧊', label: 'It needed ice' },
         ],
       },
       {
-        ask: 'A sprout gets sun and rain.',
+        ask: 'This young plant grew. What keeps it going?',
         bg: 'day',
-        base: [at('☀️', 84, 16, 16), at('🌧️', 30, 18, 18), bar(50, 88, 100, 24, 'brown'), at('🌱', 50, 64, 20)],
+        base: [bar(50, 88, 100, 24, 'brown'), at('🌿', 50, 58, 28)],
         cards: [
-          { icon: '🌿', label: 'It grows' },
-          { icon: '🚫', label: 'The seed does nothing' },
-          { icon: '🐟', label: 'It swims' },
-        ],
-      },
-      {
-        ask: 'The flower is finished.',
-        bg: 'day',
-        base: [at('🌻', 50, 50, 40), bar(50, 92, 100, 16, 'brown')],
-        cards: [
-          { icon: '🌰', label: 'It makes seeds' },
-          { icon: '🧊', label: 'It makes ice' },
-          { icon: '🐦', label: 'It makes birds' },
-        ],
-      },
-      {
-        ask: 'A seed comes from the apple.',
-        bg: 'day',
-        base: [at('🍎', 28, 34, 18), at('👉', 46, 60, 10), bar(50, 88, 100, 24, 'brown'), at('🌰', 62, 80, 9)],
-        cards: [
-          { icon: '🌱', label: 'A sprout comes up' },
-          { icon: '🍏', label: 'An apple comes up' },
-          { icon: '🪨', label: 'A rock comes up' },
-        ],
-      },
-    
-      {
-        ask: 'A seed is stuck under a rock.',
-        bg: 'day',
-        base: [at('🌰', 50, 70, 16), at('🪨', 50, 48, 28)],
-        cards: [
-          { icon: '🌰', label: 'It stays a seed' },
-          { icon: '🌿', label: 'A sprout comes up' },
-          { icon: '💧', label: 'It melts' },
-        ],
-      },
-      {
-        ask: 'A seed gets a little water in the dark.',
-        bg: 'day',
-        base: [at('🌰', 50, 72, 14), at('💧', 36, 40, 12), at('🌑', 78, 22, 16)],
-        cards: [
-          { icon: '🌱', label: 'A small sprout' },
-          { icon: '🌳', label: 'It grows huge' },
-          { icon: '🚫', label: 'The seed does nothing' },
-        ],
-      },
-      {
-        ask: 'A sprout gets water and sun.',
-        bg: 'day',
-        base: [at('🌱', 50, 62, 24), at('💧', 28, 36, 12), at('☀️', 80, 18, 16)],
-        cards: [
-          { icon: '🌿', label: 'It grows' },
-          { icon: '🥀', label: 'It dries up' },
-          { icon: '🚫', label: 'The seed does nothing' },
+          { icon: '☀️', label: 'Water and sun' },
+          { icon: '📦', label: 'A dark box' },
+          { icon: '❄️', label: 'Cold air only' },
         ],
       },
     ]),

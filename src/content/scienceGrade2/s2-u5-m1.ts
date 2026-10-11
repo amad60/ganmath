@@ -109,84 +109,83 @@ export const heatAndCold: ContentModule = {
   rules: [
     whatHappensNext('sci-heat', [
       {
-        ask: 'Ice cream sits in the sun.',
+        ask: 'The ice cream is a puddle. What caused that?',
         bg: 'day',
-        base: [at('☀️', 84, 16, 18), at('🍦', 46, 58, 30)],
+        base: [bar(50, 82, 36, 4, 'gray'), bar(50, 78, 28, 6, 'yellow'), at('🍦', 50, 62, 16, { dim: true })],
         cards: [
-          { icon: '💧', label: 'It melts' },
-          { icon: '🧊', label: 'It gets hard' },
-          { icon: '🌱', label: 'It grows' },
+          { icon: '☀️', label: 'Heat' },
+          { icon: '❄️', label: 'Cold air' },
+          { icon: '🧊', label: 'A freezer' },
         ],
       },
       {
-        ask: 'A snowman sits in the sun.',
-        bg: 'day',
-        base: [at('☀️', 84, 16, 18), ground('white'), at('⛄', 46, 62, 34)],
-        cards: [
-          { icon: '💦', label: 'It melts' },
-          { icon: '❄️', label: 'It gets big' },
-          { icon: '🚫', label: 'Heat does nothing' },
-        ],
-      },
-      {
-        ask: 'Chocolate sits in the sun.',
-        bg: 'day',
-        base: [at('☀️', 84, 16, 18), bar(46, 80, 40, 4, 'gray'), at('🍫', 46, 66, 22)],
-        cards: [
-          { icon: '💧', label: 'It melts' },
-          { icon: '🧊', label: 'It gets cold' },
-          { icon: '🚫', label: 'Heat does nothing' },
-        ],
-      },
-      {
-        ask: 'The pond sits in the cold night.',
-        bg: 'night',
-        base: [at('❄️', 20, 20, 12), at('❄️', 80, 18, 12), at('🌙', 50, 16, 12), bar(50, 86, 100, 28, 'blue')],
-        cards: [
-          { icon: '🧊', label: 'The pond freezes' },
-          { icon: '🔥', label: 'The pond gets hot' },
-          { icon: '🚫', label: 'Heat does nothing' },
-        ],
-      },
-      {
-        ask: 'Water sits in the cold.',
-        bg: 'cloudy',
-        base: [at('❄️', 18, 18, 12), at('❄️', 82, 20, 12), bar(50, 78, 40, 4, 'gray'), at('💧', 50, 62, 18)],
-        cards: [
-          { icon: '🧊', label: 'It turns to ice' },
-          { icon: '☀️', label: 'It gets hot' },
-          { icon: '🚫', label: 'Heat does nothing' },
-        ],
-      },
-    
-      {
-        ask: 'Candy sits in the sun.',
-        bg: 'day',
-        base: [at('🍭', 46, 58, 24), at('☀️', 80, 18, 16)],
-        cards: [
-          { icon: '💧', label: 'It melts' },
-          { icon: '❄️', label: 'It freezes' },
-          { icon: '🌱', label: 'It grows' },
-        ],
-      },
-      {
-        ask: 'Water sits where it is cold.',
+        ask: 'The water became ice. What made it freeze?',
         bg: 'room',
-        base: [at('💧', 46, 58, 18), at('❄️', 76, 30, 20)],
+        base: [bar(50, 80, 40, 4, 'gray'), at('🧊', 50, 66, 22)],
         cards: [
-          { icon: '🧊', label: 'It turns to ice' },
-          { icon: '🔥', label: 'It boils' },
-          { icon: '🚫', label: 'Heat does nothing' },
+          { icon: '❄️', label: 'Cold' },
+          { icon: '🔥', label: 'Heat' },
+          { icon: '☀️', label: 'Sunshine' },
         ],
       },
       {
-        ask: 'Wax sits by the fire.',
-        bg: 'room',
-        base: [at('🕯️', 46, 58, 28), at('🔥', 70, 36, 16)],
+        ask: 'The snowman became a puddle. Why?',
+        bg: 'day',
+        base: [ground('green'), bar(50, 84, 40, 6, 'blue'), at('🥕', 50, 78, 10)],
         cards: [
-          { icon: '💧', label: 'The wax melts' },
-          { icon: '❄️', label: 'It freezes' },
-          { icon: '🚫', label: 'Heat does nothing' },
+          { icon: '☀️', label: 'Heat melted it' },
+          { icon: '❄️', label: 'Cold froze it more' },
+          { icon: '💨', label: 'Wind built it up' },
+        ],
+      },
+      {
+        ask: 'The butter went soft. What caused that?',
+        bg: 'room',
+        base: [bar(50, 78, 44, 4, 'gray'), bar(50, 74, 30, 4, 'yellow')],
+        cards: [
+          { icon: '🔥', label: 'Heat' },
+          { icon: '❄️', label: 'A cold room' },
+          { icon: '🧊', label: 'The pan froze' },
+        ],
+      },
+      {
+        ask: 'Water in the cup is ice. What made it?',
+        bg: 'room',
+        base: [at('🥛', 50, 64, 28), at('🧊', 50, 56, 14)],
+        cards: [
+          { icon: '❄️', label: 'Cold' },
+          { icon: '☀️', label: 'Heat from the sun' },
+          { icon: '🔥', label: 'The cup boiled it' },
+        ],
+      },
+      {
+        ask: 'This chocolate melted. What made it melt?',
+        bg: 'room',
+        base: [bar(50, 80, 40, 4, 'gray'), bar(50, 76, 28, 6, 'brown')],
+        cards: [
+          { icon: '☀️', label: 'Heat' },
+          { icon: '❄️', label: 'A cold box' },
+          { icon: '🧊', label: 'Extra ice' },
+        ],
+      },
+      {
+        ask: 'This ice is still ice. What keeps it frozen?',
+        bg: 'room',
+        base: [bar(50, 80, 40, 4, 'gray'), at('🧊', 50, 64, 24)],
+        cards: [
+          { icon: '❄️', label: 'Cold' },
+          { icon: '🔥', label: 'A hot pan' },
+          { icon: '🤲', label: 'Warm hands' },
+        ],
+      },
+      {
+        ask: 'This water did not freeze. Why?',
+        bg: 'room',
+        base: [bar(50, 80, 44, 4, 'gray'), at('💧', 50, 64, 20)],
+        cards: [
+          { icon: '🌡️', label: 'It is not cold' },
+          { icon: '🔥', label: 'Heat freezes water' },
+          { icon: '☀️', label: 'The sun makes ice' },
         ],
       },
     ]),

@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, bar, ground, whatHappensNext } from '../scienceScene';
+import { at, ground, whatHappensNext } from '../scienceScene';
 
 export const lifeCycles: ContentModule = {
   id: 's2-u3-m1',
@@ -82,84 +82,83 @@ export const lifeCycles: ContentModule = {
   rules: [
     whatHappensNext('sci-cycle', [
       {
-        ask: 'A caterpillar is eating a leaf.',
+        ask: 'A caterpillar is eating. What did it hatch from?',
         bg: 'day',
-        base: [at('🍃', 50, 60, 40), at('🐛', 50, 52, 20)],
+        base: [at('🍃', 50, 62, 36), at('🐛', 50, 52, 22)],
+        cards: [
+          { icon: '🥚', label: 'An egg' },
+          { icon: '🦋', label: 'A butterfly' },
+          { icon: '🐣', label: 'A chick' },
+        ],
+      },
+      {
+        ask: 'This is a butterfly. What did it grow from?',
+        bg: 'day',
+        base: [at('🦋', 50, 50, 36)],
+        cards: [
+          { icon: '🐛', label: 'A caterpillar' },
+          { icon: '🥚', label: 'Only an egg' },
+          { icon: '🐔', label: 'A hen' },
+        ],
+      },
+      {
+        ask: 'This caterpillar is grown. Which part comes next?',
+        bg: 'day',
+        base: [at('🐛', 50, 56, 32)],
         cards: [
           { icon: '🦋', label: 'A butterfly' },
-          { icon: '🐦', label: 'A bird' },
-          { icon: '🐟', label: 'A fish' },
+          { icon: '🥚', label: 'Back to an egg' },
+          { icon: '🐸', label: 'A frog' },
         ],
       },
       {
-        ask: 'An egg sits in the nest.',
+        ask: 'The butterfly is an adult. What helps the cycle?',
         bg: 'day',
-        base: [at('🪺', 50, 56, 36)],
-        cards: [
-          { icon: '🐣', label: 'A chick comes out' },
-          { icon: '🐛', label: 'A caterpillar comes out' },
-          { icon: '🚫', label: 'It stays this way' },
-        ],
-      },
-      {
-        ask: 'A butterfly is on a flower.',
-        bg: 'day',
-        base: [at('🌸', 50, 64, 30), at('🦋', 50, 30, 20)],
+        base: [at('🦋', 50, 46, 32)],
         cards: [
           { icon: '🥚', label: 'It lays eggs' },
-          { icon: '🐟', label: 'It becomes a fish' },
-          { icon: '🌳', label: 'It becomes a tree' },
+          { icon: '🐛', label: 'It turns into a caterpillar' },
+          { icon: '🐔', label: 'It becomes a hen' },
         ],
       },
       {
-        ask: 'A chick has just come out.',
+        ask: 'A duckling has hatched. Which part comes next?',
         bg: 'day',
-        base: [ground('green'), at('🐣', 50, 66, 30)],
+        base: [ground('green'), at('🐤', 50, 70, 24)],
         cards: [
-          { icon: '🐥', label: 'A chick' },
-          { icon: '🥚', label: 'An egg again' },
+          { icon: '🦆', label: 'A duck' },
+          { icon: '🥚', label: 'Back in the egg' },
+          { icon: '🦋', label: 'A butterfly' },
+        ],
+      },
+      {
+        ask: 'This goat is fully grown. What did it start as?',
+        bg: 'day',
+        base: [ground('green'), at('🐐', 50, 64, 32)],
+        cards: [
+          { icon: '🍼', label: 'A baby goat' },
+          { icon: '🥚', label: 'An egg' },
           { icon: '🐛', label: 'A caterpillar' },
         ],
       },
       {
-        ask: 'A seed gets rain.',
+        ask: 'A bird egg is in the nest. Which part comes next?',
         bg: 'day',
-        base: [bar(50, 88, 100, 24, 'brown'), at('🌰', 50, 80, 9), at('🌧️', 50, 20, 20)],
+        base: [at('🪺', 50, 56, 36)],
         cards: [
-          { icon: '🌱', label: 'A sprout' },
           { icon: '🐣', label: 'A chick' },
-          { icon: '🦋', label: 'A butterfly' },
-        ],
-      },
-    
-      {
-        ask: 'A tadpole has grown legs.',
-        bg: 'water',
-        base: [at('🐤', 28, 58, 16), at('🐸', 62, 58, 24)],
-        cards: [
-          { icon: '🐸', label: 'A frog' },
-          { icon: '🥚', label: 'It goes back in the egg' },
-          { icon: '🚫', label: 'It stays this way' },
+          { icon: '🐛', label: 'A caterpillar' },
+          { icon: '🐔', label: 'A grown hen' },
         ],
       },
       {
-        ask: 'A caterpillar is ready to change.',
+        ask: 'Eggs are on the leaf. Which part comes next?',
         bg: 'day',
-        base: [at('🐛', 50, 60, 26)],
+        base: [at('🍃', 50, 58, 40), at('🥚', 40, 50, 12), at('🥚', 58, 54, 12)],
         cards: [
-          { icon: '🫧', label: 'A chrysalis' },
-          { icon: '🐠', label: 'A fish' },
-          { icon: '🥁', label: 'A drum' },
-        ],
-      },
-      {
-        ask: 'A chick has hatched.',
-        bg: 'day',
-        base: [at('🐣', 50, 58, 28)],
-        cards: [
-          { icon: '🐤', label: 'A chick' },
-          { icon: '🦋', label: 'A butterfly' },
-          { icon: '🌵', label: 'A cactus' },
+          { icon: '🐛', label: 'A caterpillar' },
+          { icon: '🦋', label: 'Straight to a butterfly' },
+          { icon: '🐣', label: 'A chick' },
         ],
       },
     ]),

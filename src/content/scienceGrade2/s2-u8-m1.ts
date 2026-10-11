@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, ground, whatHappensNext } from '../scienceScene';
+import { at, bar, ground, whatHappensNext } from '../scienceScene';
 
 export const whoEatsWhat: ContentModule = {
   id: 's2-u8-m1',
@@ -90,88 +90,87 @@ export const whoEatsWhat: ContentModule = {
   ],
 
   rules: [
-    whatHappensNext(
-      'sci-food',
-      [
-        {
-          ask: 'This animal is a rabbit.',
-          base: [at('🐇', 50, 50, 34)],
-          cards: [
-            { icon: '🥕', label: 'A carrot' },
-            { icon: '🍖', label: 'Meat' },
-            { icon: '🪨', label: 'A rock' },
-          ],
-        },
-        {
-          ask: 'This animal is a cow.',
-          base: [at('🐄', 50, 50, 34)],
-          cards: [
-            { icon: '🌾', label: 'Grass' },
-            { icon: '🐟', label: 'A fish' },
-            { icon: '🪨', label: 'A rock' },
-          ],
-        },
-        {
-          ask: 'This animal is a small bird.',
-          base: [at('🐦', 50, 50, 34)],
-          cards: [
-            { icon: '🐛', label: 'A worm' },
-            { icon: '🪨', label: 'A rock' },
-            { icon: '🔩', label: 'A bolt' },
-          ],
-        },
-        {
-          ask: 'This animal is a cat.',
-          base: [at('🐈', 50, 50, 34)],
-          cards: [
-            { icon: '🐟', label: 'A fish' },
-            { icon: '🌾', label: 'Grass' },
-            { icon: '🪨', label: 'A rock' },
-          ],
-        },
-        {
-          ask: 'This animal is a panda.',
-          base: [at('🐼', 50, 50, 34)],
-          cards: [
-            { icon: '🎋', label: 'Bamboo' },
-            { icon: '🍖', label: 'Meat' },
-            { icon: '🧊', label: 'Ice' },
-          ],
-        },
-      
+    whatHappensNext('sci-food', [
       {
-        ask: 'This animal is a lion.',
+        ask: 'This rabbit is fed. What did it eat?',
         bg: 'day',
-        base: [at('🦁', 40, 58, 28)],
+        base: [ground('green'), at('🐇', 50, 68, 28)],
         cards: [
-          { icon: '🥩', label: 'Meat' },
-          { icon: '🥬', label: 'Grass' },
-          { icon: '🪨', label: 'A rock' },
+          { icon: '🌿', label: 'Grass' },
+          { icon: '🍖', label: 'Meat' },
+          { icon: '🦊', label: 'A fox' },
         ],
       },
       {
-        ask: 'This animal is a goat.',
+        ask: 'This fox is fed. What keeps it fed?',
         bg: 'day',
-        base: [at('🐐', 42, 58, 28)],
+        base: [ground('green'), at('🦊', 50, 68, 28)],
         cards: [
-          { icon: '🍃', label: 'Leaves' },
+          { icon: '🐇', label: 'Rabbits' },
+          { icon: '🌿', label: 'Grass' },
+          { icon: '🥕', label: 'Carrots' },
+        ],
+      },
+      {
+        ask: 'The rabbit looks hungry. What is missing?',
+        bg: 'day',
+        base: [bar(50, 90, 100, 16, 'brown'), at('🐇', 50, 70, 26, { dim: true })],
+        cards: [
+          { icon: '🌿', label: 'Grass' },
+          { icon: '🦊', label: 'A fox to eat' },
+          { icon: '🦴', label: 'Bones' },
+        ],
+      },
+      {
+        ask: 'The fox looks hungry. What is missing?',
+        bg: 'day',
+        base: [ground('green'), at('🌿', 24, 76, 16), at('🌿', 76, 76, 16), at('🦊', 50, 68, 26, { dim: true })],
+        cards: [
+          { icon: '🐇', label: 'Rabbits' },
+          { icon: '🌿', label: 'Grass to eat' },
+          { icon: '☀️', label: 'More sun' },
+        ],
+      },
+      {
+        ask: 'This goat is fed. What did it eat?',
+        bg: 'day',
+        base: [ground('green'), at('🐐', 50, 66, 30)],
+        cards: [
+          { icon: '🌿', label: 'Grass' },
           { icon: '🍖', label: 'A steak' },
-          { icon: '🔔', label: 'A bell' },
+          { icon: '🐟', label: 'Fish' },
         ],
       },
       {
-        ask: 'This animal is a shark.',
-        bg: 'water',
-        base: [at('🦈', 46, 56, 30)],
+        ask: 'This lion is fed. What helps feed it?',
+        bg: 'day',
+        base: [ground('green'), at('🦁', 50, 66, 30)],
         cards: [
-          { icon: '🐟', label: 'A fish' },
-          { icon: '🥕', label: 'A carrot' },
-          { icon: '🍯', label: 'Honey' },
+          { icon: '🍖', label: 'Meat' },
+          { icon: '🌿', label: 'Grass' },
+          { icon: '🥬', label: 'Leaves' },
         ],
       },
-    ],
-      // Soal rantai makanan: gambarnya hewan, kartunya makanan.
-      'What does it eat?',
-    ),
+      {
+        ask: 'The rabbit is weak. Why?',
+        bg: 'day',
+        base: [bar(50, 90, 100, 16, 'brown'), at('🐇', 50, 70, 24, { dim: true })],
+        cards: [
+          { icon: '🌿', label: 'No grass to eat' },
+          { icon: '🦊', label: 'No fox to feed it' },
+          { icon: '🍖', label: 'No meat' },
+        ],
+      },
+      {
+        ask: 'The fox has grass but no food. Why?',
+        bg: 'day',
+        base: [ground('green'), at('🌾', 28, 72, 18), at('🌾', 72, 72, 18), at('🦊', 50, 64, 26)],
+        cards: [
+          { icon: '🐇', label: 'Foxes eat rabbits' },
+          { icon: '🌿', label: 'Foxes eat grass' },
+          { icon: '🦊', label: 'Rabbits eat foxes' },
+        ],
+      },
+    ]),
   ],
 };

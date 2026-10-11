@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, bar, ground, whatHappensNext } from '../scienceScene';
+import { at, bar, whatHappensNext } from '../scienceScene';
 
 export const careForEarth: ContentModule = {
   id: 's2-u10-m1',
@@ -122,93 +122,87 @@ export const careForEarth: ContentModule = {
   ],
 
   rules: [
-    whatHappensNext(
-      'sci-earth',
-      [
-        {
-          ask: 'You are holding an empty cup.',
-          bg: 'day',
-          base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 40, 50, 14), at('🧒', 70, 40, 26)],
-          cards: [
-            { icon: '🗑️', label: 'Put it in the bin' },
-            { icon: '🌊', label: 'Throw it in the river' },
-            { icon: '🔥', label: 'Burn it' },
-          ],
-        },
-        {
-          ask: 'The tap is running.',
-          bg: 'room',
-          base: [at('🚰', 40, 36, 26), at('💧', 40, 58, 10), at('💧', 40, 72, 10), at('🪥', 74, 50, 20)],
-          cards: [
-            { icon: '🛑', label: 'Turn the tap off' },
-            { icon: '🌊', label: 'Let it run' },
-            { icon: '🛁', label: 'Fill a big bath' },
-          ],
-        },
-        {
-          ask: 'A lamp is on in the daytime.',
-          bg: 'day',
-          base: [at('☀️', 84, 16, 16), at('💡', 40, 30, 18), at('🛋️', 50, 76, 30)],
-          cards: [
-            { icon: '🌑', label: 'Turn the light off' },
-            { icon: '💡', label: 'Add more lamps' },
-            { icon: '📺', label: 'Turn on the TV' },
-          ],
-        },
-        {
-          ask: 'Used cans and paper are left over.',
-          bg: 'day',
-          base: [ground('gray'), at('🥫', 36, 74, 18), at('🍾', 56, 72, 20), at('📰', 74, 78, 16)],
-          cards: [
-            { icon: '♻️', label: 'Make new things from them' },
-            { icon: '🌊', label: 'Throw them in the river' },
-            { icon: '🔥', label: 'Burn them' },
-          ],
-        },
-        {
-          ask: 'Trees have been cut down.',
-          bg: 'day',
-          base: [ground('green'), at('🪵', 34, 82, 18), at('🪵', 60, 84, 18), at('🌳', 82, 58, 30)],
-          cards: [
-            { icon: '🌱', label: 'Plant a new tree' },
-            { icon: '🪓', label: 'Cut more trees' },
-            { icon: '🗑️', label: 'Fill it with rubbish' },
-          ],
-        },
-      
+    whatHappensNext('sci-earth', [
       {
-        ask: 'Rubbish sits beside the water.',
+        ask: 'The fish looks sick. What caused that?',
         bg: 'day',
-        base: [at('🗑️', 30, 58, 20), at('🏞️', 68, 55, 26), at('💧', 68, 74, 12)],
+        base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 40, 80, 12, { rotate: 40 }), at('🐟', 68, 84, 14, { dim: true })],
         cards: [
-          { icon: '🤢', label: 'The water gets dirty' },
-          { icon: '🌸', label: 'It turns into flowers' },
-          { icon: '✨', label: 'It gets clean' },
+          { icon: '🥤', label: 'Rubbish in the river' },
+          { icon: '🐟', label: 'The fish needs rubbish' },
+          { icon: '✨', label: 'Clean water hurt it' },
         ],
       },
       {
-        ask: 'The tap runs with nobody using it.',
+        ask: 'Water runs and no one uses it. Why does that matter?',
         bg: 'room',
-        base: [at('🚰', 50, 48, 28), at('💧', 50, 74, 14)],
+        base: [at('🚰', 46, 36, 28), at('💧', 46, 62, 12), at('💧', 46, 78, 12)],
         cards: [
-          { icon: '💧', label: 'Water is wasted' },
-          { icon: '🌳', label: 'A tree grows' },
-          { icon: '🚫', label: 'The choice does nothing' },
+          { icon: '💧', label: 'Less water is left' },
+          { icon: '🌊', label: 'More water appears' },
+          { icon: '🪄', label: 'The tap makes new water' },
         ],
       },
       {
-        ask: 'An empty jar is left over.',
-        bg: 'room',
-        base: [at('🫙', 50, 56, 28)],
+        ask: 'The fish is well. What keeps the river safe?',
+        bg: 'day',
+        base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🐟', 56, 84, 14)],
         cards: [
-          { icon: '🫙', label: 'Use the jar again' },
-          { icon: '🔥', label: 'Burn it' },
-          { icon: '🌊', label: 'Throw it in the river' },
+          { icon: '🗑️', label: 'Rubbish stayed in the bin' },
+          { icon: '🌊', label: 'Rubbish in the water' },
+          { icon: '🥤', label: 'More waste helps' },
         ],
       },
-    ],
-      // Merawat bumi soal PILIHAN tindakan, jadi kartunya tindakan yang menolong.
-      'Which one helps?',
-    ),
+      {
+        ask: 'The tap is off after a drink. What helps?',
+        bg: 'room',
+        base: [at('🚰', 36, 42, 26), at('🥛', 70, 64, 22)],
+        cards: [
+          { icon: '🛑', label: 'Saving water' },
+          { icon: '🚰', label: 'Leaving the tap on' },
+          { icon: '🛁', label: 'Filling a big bath' },
+        ],
+      },
+      {
+        ask: 'A cup is in the stream. What did it do?',
+        bg: 'day',
+        base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 42, 80, 14, { rotate: 50 }), at('🐟', 70, 86, 14, { dim: true })],
+        cards: [
+          { icon: '🤢', label: 'Harmed the fish' },
+          { icon: '🍽️', label: 'Fed the fish' },
+          { icon: '✨', label: 'Cleaned the water' },
+        ],
+      },
+      {
+        ask: 'The hose runs on the path. Why is water lost?',
+        bg: 'day',
+        base: [bar(50, 88, 100, 18, 'gray'), at('💦', 40, 48, 18), at('🌱', 82, 70, 16)],
+        cards: [
+          { icon: '🛑', label: 'No one is using it' },
+          { icon: '🌊', label: 'Paths need a flood' },
+          { icon: '🪄', label: 'Hoses make more water' },
+        ],
+      },
+      {
+        ask: 'Bank rubbish can reach the fish. What caused the risk?',
+        bg: 'cloudy',
+        base: [at('🌧️', 24, 16, 20), bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 30, 52, 12), at('🐟', 68, 84, 12)],
+        cards: [
+          { icon: '🌧️', label: 'Rain can wash it in' },
+          { icon: '☀️', label: 'Rain makes it safe' },
+          { icon: '🍽️', label: 'Fish eat the rubbish' },
+        ],
+      },
+      {
+        ask: 'The river is full of rubbish. What is missing?',
+        bg: 'day',
+        base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 36, 78, 12), at('🗑️', 62, 80, 16)],
+        cards: [
+          { icon: '💧', label: 'Clean water' },
+          { icon: '🥤', label: 'More cups' },
+          { icon: '🗑️', label: 'More rubbish' },
+        ],
+      },
+    ]),
   ],
 };

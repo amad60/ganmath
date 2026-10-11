@@ -107,93 +107,87 @@ export const lightAndShadow: ContentModule = {
   ],
 
   rules: [
-    whatHappensNext(
-      'sci-shadow',
-      [
-        {
-          ask: 'The sun is on the left.',
-          bg: 'day',
-          base: [ground('green'), at('☀️', 12, 20, 16), at('🌳', 52, 58, 40)],
-          cards: [
-            { icon: '➡️', label: 'On the right' },
-            { icon: '⬅️', label: 'On the left' },
-            { icon: '⬆️', label: 'Up in the sky' },
-          ],
-        },
-        {
-          ask: 'The sun is on the right.',
-          bg: 'day',
-          base: [ground('green'), at('☀️', 88, 20, 16), at('🧍', 50, 62, 32)],
-          cards: [
-            { icon: '⬅️', label: 'On the left' },
-            { icon: '➡️', label: 'On the right' },
-            { icon: '⬆️', label: 'Up in the sky' },
-          ],
-        },
-        {
-          ask: 'The sun is high above.',
-          bg: 'day',
-          base: [ground('green'), at('☀️', 50, 12, 16), at('🌴', 50, 60, 40)],
-          cards: [
-            { icon: '⬇️', label: 'Under it' },
-            { icon: '⬅️', label: 'On the left' },
-            { icon: '➡️', label: 'On the right' },
-          ],
-        },
-        {
-          ask: 'The lamp is on the right.',
-          bg: 'room',
-          base: [ground('white'), at('💡', 88, 32, 14), at('🐈', 48, 70, 24)],
-          cards: [
-            { icon: '⬅️', label: 'On the left' },
-            { icon: '➡️', label: 'On the right' },
-            { icon: '⬇️', label: 'Under it' },
-          ],
-        },
-        {
-          ask: 'The lamp is on the left.',
-          bg: 'room',
-          base: [ground('white'), at('💡', 12, 32, 14), at('🪑', 52, 66, 26)],
-          cards: [
-            { icon: '➡️', label: 'On the right' },
-            { icon: '⬅️', label: 'On the left' },
-            { icon: '⬆️', label: 'Up on the lamp' },
-          ],
-        },
-      
+    whatHappensNext('sci-shadow', [
       {
-        ask: 'The lamp is close.',
-        bg: 'room',
-        base: [at('💡', 50, 24, 16), at('🧍', 50, 58, 28)],
+        ask: 'A dark patch is by the tree. What caused it?',
+        bg: 'day',
+        base: [ground('green'), at('☀️', 16, 18, 16), at('🌳', 48, 58, 36), bar(74, 91, 28, 6, 'gray')],
         cards: [
-          { icon: '⬛', label: 'A big dark shadow' },
-          { icon: '🚫', label: 'Light does nothing' },
-          { icon: '❔', label: 'The shadow picks a side' },
+          { icon: '🌳', label: 'The tree blocks the light' },
+          { icon: '🌍', label: 'The ground makes light' },
+          { icon: '⬛', label: 'The shadow blocks the sun' },
         ],
       },
       {
-        ask: 'The lamp is far.',
+        ask: 'The toy has a dark patch. What made it?',
         bg: 'room',
-        base: [at('💡', 50, 18, 12), at('🧍', 50, 62, 22)],
+        base: [ground('white'), at('💡', 16, 28, 14), at('🧸', 48, 68, 22), bar(72, 91, 26, 6, 'gray')],
         cards: [
-          { icon: '▪️', label: 'A small shadow' },
-          { icon: '🚫', label: 'Light does nothing' },
-          { icon: '❔', label: 'The shadow picks a side' },
+          { icon: '🧸', label: 'The toy blocks the lamp' },
+          { icon: '🌑', label: 'The lamp is a shadow' },
+          { icon: '✨', label: 'The floor glows' },
         ],
       },
       {
-        ask: 'There is no lamp.',
+        ask: 'There is no dark patch. What is missing?',
         bg: 'night',
-        base: [at('🧍', 50, 58, 28)],
+        base: [ground('gray'), at('🧸', 50, 68, 24)],
         cards: [
-          { icon: '🌑', label: 'No shadow' },
-          { icon: '💡', label: 'A bright lamp' },
-          { icon: '🚫', label: 'Light does nothing' },
+          { icon: '💡', label: 'Light' },
+          { icon: '🧸', label: 'A bigger toy' },
+          { icon: '🌑', label: 'A darker room' },
         ],
       },
-    ],
-      // Pertanyaannya letak, bukan kejadian: arah cahaya → sisi bayangan.
-      'Where is the shadow?',
-    ),
+      {
+        ask: 'A chair has a dark patch. What did the chair do?',
+        bg: 'room',
+        base: [ground('white'), at('💡', 16, 28, 14), at('🪑', 48, 66, 24), bar(74, 91, 28, 6, 'gray')],
+        cards: [
+          { icon: '🪑', label: 'It blocked the light' },
+          { icon: '💡', label: 'It turned into light' },
+          { icon: '🚫', label: 'It removed the lamp' },
+        ],
+      },
+      {
+        ask: 'A cup has a dark patch. What caused it?',
+        bg: 'room',
+        base: [ground('white'), at('💡', 16, 28, 14), at('🥛', 48, 68, 22), bar(72, 91, 22, 6, 'gray')],
+        cards: [
+          { icon: '🥛', label: 'The cup blocks the light' },
+          { icon: '💡', label: 'The cup is a lamp' },
+          { icon: '🌑', label: 'Shadows need no light' },
+        ],
+      },
+      {
+        ask: 'A nail has a thin dark patch. What made it?',
+        bg: 'room',
+        base: [ground('white'), at('💡', 16, 28, 14), at('🔩', 50, 68, 16), bar(64, 91, 12, 5, 'gray')],
+        cards: [
+          { icon: '🔩', label: 'The nail blocks light' },
+          { icon: '✨', label: 'The nail glows' },
+          { icon: '🧲', label: 'Metal erases shadows' },
+        ],
+      },
+      {
+        ask: 'A hand shadow is on the wall. What helps make it?',
+        bg: 'room',
+        base: [at('💡', 18, 36, 14), at('✋', 46, 58, 22), bar(78, 58, 8, 36, 'gray')],
+        cards: [
+          { icon: '✋', label: 'The hand blocks light' },
+          { icon: '🧱', label: 'The wall makes the shape' },
+          { icon: '🌑', label: 'Darkness needs no lamp' },
+        ],
+      },
+      {
+        ask: 'The ball has a dark patch. Which part made it?',
+        bg: 'day',
+        base: [ground('green'), at('☀️', 16, 18, 16), at('⚽', 48, 68, 22), bar(72, 91, 24, 6, 'gray')],
+        cards: [
+          { icon: '⚽', label: 'The ball blocking light' },
+          { icon: '💨', label: 'The empty air' },
+          { icon: '⬛', label: 'The patch itself' },
+        ],
+      },
+    ]),
   ],
 };
