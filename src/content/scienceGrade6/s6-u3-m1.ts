@@ -59,7 +59,7 @@ export const earthTurns: ContentModule = {
             result: [at('☀️', 14, 28, 14), at('🌍', 55, 55, 28), at('🌙', 82, 36, 14, { fx: 'pop' })],
           },
           { icon: '🌞', label: 'It is day', caption: 'It is day.' },
-          { icon: '🌍', label: 'The earth makes night', caption: 'The earth makes night.' },
+          { icon: '☀️', label: 'The sun is away', caption: 'The sun is away.' },
         ],
         correct: 0,
       },
@@ -84,83 +84,83 @@ export const earthTurns: ContentModule = {
   rules: [
     whatHappensNext('sci-spin', [
       {
-        ask: 'Your side faces the sun.',
-        bg: 'plain',
-        base: [at('☀️', 14, 30, 16), at('🌍', 55, 55, 28), at('🏠', 40, 48, 12)],
-        cards: [
-          { icon: '🌞', label: 'It is day' },
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌍', label: 'The earth stays still' },
-        ],
-      },
-      {
-        ask: 'Your side faces away from the sun.',
-        bg: 'plain',
-        base: [at('☀️', 14, 30, 16), at('🌍', 50, 55, 28), at('🏠', 74, 50, 12)],
-        cards: [
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌞', label: 'It is day' },
-          { icon: '🔥', label: 'The sun goes out' },
-        ],
-      },
-      {
-        ask: 'Your side faces the sun.',
+        ask: 'Why is it day?',
         bg: 'day',
-        base: [at('☀️', 18, 24, 16), at('🌍', 58, 55, 26), at('🧒', 42, 46, 12)],
+        base: [at('☀️', 14, 28, 16), at('🌍', 55, 55, 28), at('🏠', 40, 48, 12), at('🌞', 78, 30, 14)],
         cards: [
-          { icon: '🌞', label: 'It is day' },
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🐟', label: 'It swims' },
+          { icon: '☀️', label: 'Your side faces the sun' },
+          { icon: '🌙', label: 'Your side is away' },
+          { icon: '🔄', label: 'The sun goes around' },
         ],
       },
       {
-        ask: 'Your side faces away from the sun.',
-        bg: 'plain',
-        base: [at('☀️', 16, 26, 14), at('🌍', 52, 55, 28), at('🧒', 76, 48, 12)],
-        cards: [
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌞', label: 'It is day' },
-          { icon: '🧊', label: 'It freezes' },
-        ],
-      },
-      {
-        ask: 'A cloud is up. Your side still faces the sun.',
-        bg: 'cloudy',
-        base: [at('☁️', 40, 18, 14), at('☀️', 16, 30, 14), at('🌍', 62, 58, 24), at('🏠', 48, 50, 10)],
-        cards: [
-          { icon: '🌞', label: 'It is still day' },
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌍', label: 'The earth stays still' },
-        ],
-      },
-      {
-        ask: 'Your side faces away from the sun.',
-        bg: 'plain',
-        base: [at('☀️', 80, 24, 16), at('🌍', 42, 55, 28), at('🏠', 28, 48, 12)],
-        cards: [
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌞', label: 'It is day' },
-          { icon: '🌍', label: 'The earth stays still' },
-        ],
-      },
-      {
-        ask: 'Your side faces the sun.',
-        bg: 'plain',
-        base: [at('☀️', 78, 26, 14), at('🌍', 40, 55, 26), at('🏠', 56, 46, 10)],
-        cards: [
-          { icon: '🌞', label: 'It is day' },
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌍', label: 'The earth stays still' },
-        ],
-      },
-      {
-        ask: 'A lamp is on, but your side faces away from the sun.',
+        ask: 'What made it night?',
         bg: 'night',
-        base: [at('💡', 70, 30, 14), at('🌍', 40, 55, 28), at('🏠', 58, 48, 12), at('☀️', 12, 24, 12)],
+        base: [at('☀️', 14, 28, 14), at('🌍', 52, 55, 28), at('🏠', 74, 50, 12), at('🌙', 82, 32, 14)],
         cards: [
-          { icon: '🌙', label: 'It is night' },
-          { icon: '🌞', label: 'The lamp makes day' },
-          { icon: '🌍', label: 'The earth stays still' },
+          { icon: '🌙', label: 'Your side is away' },
+          { icon: '☀️', label: 'Your side faces the sun' },
+          { icon: '🌑', label: 'The sun is gone' },
+        ],
+      },
+      {
+        ask: 'What is missing on the dark side?',
+        bg: 'night',
+        base: [at('☀️', 16, 26, 14), at('🌍', 55, 55, 28), at('🏠', 76, 48, 12)],
+        cards: [
+          { icon: '☀️', label: 'A side facing the sun' },
+          { icon: '🌑', label: 'The sun is gone' },
+          { icon: '🔄', label: 'The sun goes around' },
+        ],
+      },
+      {
+        ask: 'What helps this tree have day?',
+        bg: 'day',
+        base: [at('☀️', 16, 26, 16), at('🌍', 58, 58, 24), at('🌳', 42, 46, 14), at('🌞', 80, 30, 12)],
+        cards: [
+          { icon: '🌳', label: 'Its side faces the sun' },
+          { icon: '🌙', label: 'Its side is away' },
+          { icon: '☁️', label: 'A cloud makes night' },
+        ],
+      },
+      {
+        ask: 'What caused night for the flower?',
+        bg: 'night',
+        base: [at('☀️', 16, 26, 14), at('🌍', 50, 55, 26), at('🌸', 74, 48, 12), at('🌙', 84, 30, 12)],
+        cards: [
+          { icon: '🌙', label: 'Its side is away' },
+          { icon: '☀️', label: 'Its side faces the sun' },
+          { icon: '💡', label: 'A lamp makes day' },
+        ],
+      },
+      {
+        ask: 'What keeps the sun at night?',
+        bg: 'night',
+        base: [at('☀️', 16, 26, 16), at('🌍', 55, 55, 26), at('🏠', 76, 48, 12), at('🌙', 84, 32, 14)],
+        cards: [
+          { icon: '☀️', label: 'The sun is still there' },
+          { icon: '🌑', label: 'The sun went away' },
+          { icon: '🌙', label: 'Night puts the sun out' },
+        ],
+      },
+      {
+        ask: 'Which part has day?',
+        bg: 'cloudy',
+        base: [at('☁️', 40, 16, 14), at('☀️', 16, 30, 14), at('🌍', 58, 56, 26), at('🏠', 42, 48, 10), at('🌞', 80, 34, 12)],
+        cards: [
+          { icon: '🏠', label: 'The side facing the sun' },
+          { icon: '🌙', label: 'The side facing away' },
+          { icon: '☁️', label: 'The cloud' },
+        ],
+      },
+      {
+        ask: 'What does this night need?',
+        bg: 'night',
+        base: [at('☀️', 78, 24, 14), at('🌍', 42, 55, 26), at('🐈', 28, 48, 12), at('🌙', 18, 28, 12)],
+        cards: [
+          { icon: '🌙', label: 'That side away from the sun' },
+          { icon: '☀️', label: 'That side facing the sun' },
+          { icon: '🔄', label: 'The sun must move around' },
         ],
       },
     ]),
