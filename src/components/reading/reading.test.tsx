@@ -2,22 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { EvidenceText } from './EvidenceText';
 import { SequenceCards } from './SequenceCards';
-import { whoIsInTheStory } from '../../content/readGrade1/r1-u1-m1';
-import { whereDoesItHappen } from '../../content/readGrade1/r1-u1-m2';
-import { orderOfEvents } from '../../content/readGrade1/r1-u2-m1';
-import { whyDidItHappen } from '../../content/readGrade1/r1-u3-m1';
-import { mainIdeaSummary } from '../../content/readGrade2/r2-u1-m1';
-import { factVsOpinion } from '../../content/readGrade2/r2-u2-m1';
-import { characterFeelings } from '../../content/readGrade2/r2-u3-m1';
-import { howToFollowSteps } from '../../content/readGrade3/r3-u1-m1';
-import { scienceAnimalClues } from '../../content/readGrade3/r3-u2-m1';
-import { supportingDetails } from '../../content/readGrade2/r2-u4-m1';
-import { problemAndSolution } from '../../content/readGrade3/r3-u3-m1';
-import { informationOrder } from '../../content/readGrade3/r3-u4-m1';
-import { compareTwoTexts } from '../../content/readGrade4/r4-u1-m1';
-import { authorsPurpose } from '../../content/readGrade4/r4-u2-m1';
-import { contextClues } from '../../content/readGrade4/r4-u3-m1';
-import { storyTheme } from '../../content/readGrade4/r4-u4-m1';
+import { readModulesList } from '../../content/readIndex';
 
 describe('Literasi Pemahaman Teks (Reading Mechanics)', () => {
   it('EvidenceText: anak bisa mengetuk kalimat sebagai bukti (clue-tap)', () => {
@@ -71,26 +56,9 @@ describe('Literasi Pemahaman Teks (Reading Mechanics)', () => {
     expect(updatedOrder).toEqual([1, 0, 2]);
   });
 
-  it('Modul-modul Read Grade 1, 2, dan 3 terdefinisi lengkap dengan rules dan stages CPA', () => {
-    const modules = [
-      whoIsInTheStory,
-      whereDoesItHappen,
-      orderOfEvents,
-      whyDidItHappen,
-      mainIdeaSummary,
-      factVsOpinion,
-      characterFeelings,
-      howToFollowSteps,
-      scienceAnimalClues,
-      supportingDetails,
-      problemAndSolution,
-      informationOrder,
-      compareTwoTexts,
-      authorsPurpose,
-      contextClues,
-      storyTheme,
-    ];
-    for (const m of modules) {
+  it('setiap modul Read terdefinisi lengkap dengan rules dan langkah belajar', () => {
+    expect(readModulesList.length).toBeGreaterThanOrEqual(25);
+    for (const m of readModulesList) {
       expect(m.id).toMatch(/^[r](\d+)-/);
       expect(m.rules.length).toBeGreaterThanOrEqual(2);
       expect(m.learn.length).toBeGreaterThanOrEqual(3);

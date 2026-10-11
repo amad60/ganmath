@@ -213,6 +213,7 @@ export const RENDERABLE_TYPES: QType[] = [
   'clue-tap',
   'sequence-order',
   'pick-picture',
+  'type-word',
 ];
 
 /**
@@ -872,6 +873,23 @@ export function lintContent(modules: ContentModule[], registry: Registry): LintP
             `rule "${r.skill}" menyisakan ${kept.length} pilihan setelah membuang tulisan kembar ` +
               `(${dup.join(', ')}) — butuh ≥3 supaya tidak bisa ditebak`,
           );
+          break;
+        }
+      }
+    }
+
+    // 10c. Ketik kata: daftar terima tidak boleh kosong, dan jawaban numerik
+    //      tetap 0 supaya indeks tidak ikut jadi kunci.
+    for (const r of m.rules) {
+      if (r.type !== 'type-word') continue;
+      for (const c of enumerate(r)) {
+        const words = r.options?.(c) ?? [];
+        if (words.length < 1 || words.some((w) => w.trim().length < 2)) {
+          add(m.id, 'type-word', `rule "${r.skill}" butuh minimal satu kata yang diterima`);
+          break;
+        }
+        if (r.answer(c) !== 0) {
+          add(m.id, 'type-word', `rule "${r.skill}" jawaban ketik-kata harus 0`);
           break;
         }
       }

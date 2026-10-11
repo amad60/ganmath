@@ -25,6 +25,18 @@ import { authorsPurpose } from './readGrade4/r4-u2-m1';
 import { contextClues } from './readGrade4/r4-u3-m1';
 import { storyTheme } from './readGrade4/r4-u4-m1';
 
+// Read Grade 5
+import { readBetween } from './readGrade5/r5-u1-m1';
+import { sumItUp } from './readGrade5/r5-u2-m1';
+import { whoseView } from './readGrade5/r5-u3-m1';
+import { whyItFollowed } from './readGrade5/r5-u4-m1';
+
+// Read Grade 6
+import { theProof } from './readGrade6/r6-u1-m1';
+import { howItIsBuilt } from './readGrade6/r6-u2-m1';
+import { pictureWords } from './readGrade6/r6-u3-m1';
+import { theConclusion } from './readGrade6/r6-u4-m1';
+
 export const readModulesList: ContentModule[] = [
   whoIsInTheStory,
   whereDoesItHappen,
@@ -43,10 +55,18 @@ export const readModulesList: ContentModule[] = [
   authorsPurpose,
   contextClues,
   storyTheme,
+  readBetween,
+  sumItUp,
+  whoseView,
+  whyItFollowed,
+  theProof,
+  howItIsBuilt,
+  pictureWords,
+  theConclusion,
 ];
 
 /** Level membaca yang sudah punya jalur. Dipakai peta, orang tua, dan badge. */
-export const READ_LEVELS = [1, 2, 3, 4] as const;
+export const READ_LEVELS = [1, 2, 3, 4, 5, 6] as const;
 
 export const readModules: Record<string, ContentModule> = Object.fromEntries(
   readModulesList.map((m) => [m.id, m]),
@@ -84,6 +104,16 @@ export const readUnitTitles: Record<string, { title: string; color: string }> = 
   'r4-u2': { title: 'Unit 2 · Why It Was Written', color: '#059669' },
   'r4-u3': { title: 'Unit 3 · Words from Context', color: '#0d9488' },
   'r4-u4': { title: 'Unit 4 · The Lesson', color: '#0284c7' },
+  // Read Grade 5
+  'r5-u1': { title: 'Unit 1 · Read Between the Lines', color: '#10b981' },
+  'r5-u2': { title: 'Unit 2 · Sum It Up', color: '#059669' },
+  'r5-u3': { title: 'Unit 3 · Whose View?', color: '#0d9488' },
+  'r5-u4': { title: 'Unit 4 · Why It Followed', color: '#0284c7' },
+  // Read Grade 6
+  'r6-u1': { title: 'Unit 1 · The Proof', color: '#10b981' },
+  'r6-u2': { title: 'Unit 2 · How It Is Built', color: '#059669' },
+  'r6-u3': { title: 'Unit 3 · Picture Words', color: '#0d9488' },
+  'r6-u4': { title: 'Unit 4 · The Conclusion', color: '#0284c7' },
 };
 
 export function readRegistryFor(grade = 1): Registry {

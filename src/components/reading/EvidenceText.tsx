@@ -18,7 +18,7 @@ export type EvidenceTextProps = {
 /**
  * Mekanik 1 Literasi: Detektif Bukti (Tap the Clue / Sentence Selection).
  *
- * Menampilkan micro-story (2–4 kalimat).
+ * Menampilkan paragraf pendek (beberapa kalimat).
  * Jika `interactive` aktif (di QuestionScreen tipe clue-tap), setiap kalimat
  * adalah kartu tap yang lega (min height 44px, rounded-md, outline kontras)
  * sehingga anak melatih "evidence-based reading" dengan memilih kalimat bukti secara fisik.

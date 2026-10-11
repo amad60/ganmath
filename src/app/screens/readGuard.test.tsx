@@ -3,11 +3,13 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { QuestionScreen } from './QuestionScreen';
 import { createSession, currentQuestion } from '../../engine/session';
 import { mysteryClues } from '../../content/readGrade1/r1-u4-m1';
+import { pictureWords } from '../../content/readGrade6/r6-u3-m1';
+import type { ContentModule } from '../../content/types';
 import type { Question } from '../../engine/types';
 
-function sessionWith(type: Question['type'], kind: 'practice' | 'quiz') {
+function sessionWith(type: Question['type'], kind: 'practice' | 'quiz', module: ContentModule = mysteryClues) {
   for (let seed = 1; seed <= 60; seed++) {
-    const session = createSession(mysteryClues, kind, seed, 0);
+    const session = createSession(module, kind, seed, 0);
     if (currentQuestion(session)?.type === type) return session;
   }
   throw new Error(`tidak ketemu soal ${type}`);
@@ -70,6 +72,46 @@ describe('Layar baca tidak membuka kunci jawaban', () => {
     expect(screen.getByRole('button', { name: rightLabel })).not.toHaveAttribute('data-feedback', 'reveal');
     expect(screen.getByText('Not quite')).toBeInTheDocument();
     expect(screen.queryByText(new RegExp(`Try again · ${rightLabel}`))).not.toBeInTheDocument();
+    vi.useRealTimers();
+  });
+
+  it('ketik kata menampilkan paragraf, menyembunyikan ejaan yang diterima, dan mencocokkan ketikan', () => {
+    vi.useFakeTimers();
+    const made = createSession(pictureWords, 'quiz', 1, 0);
+    const at = made.pending.findIndex((p) => p.question.type === 'type-word');
+    if (at < 0) throw new Error('tidak ketemu soal type-word');
+    const session = {
+      ...made,
+      pending: [made.pending[at]!, ...made.pending.filter((_, i) => i !== at)],
+    };
+    const q = currentQuestion(session)!;
+    if (q.visual?.kind !== 'evidence-text') throw new Error('paragraf tidak ikut soal');
+    const accepted = q.options ?? [];
+    expect(accepted.length).toBeGreaterThan(0);
+
+    const view = render(
+      <QuestionScreen session={session} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />,
+    );
+    expect(screen.getByText(q.visual.sentences[0]!)).toBeInTheDocument();
+    for (const word of accepted) {
+      expect(screen.queryByRole('button', { name: new RegExp(`^${word}$`, 'i') })).not.toBeInTheDocument();
+    }
+
+    const input = screen.getByRole('textbox', { name: 'Type the word' });
+    fireEvent.change(input, { target: { value: 'zzzz' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Check' }));
+    expect(screen.getByText('Not quite')).toBeInTheDocument();
+    for (const word of accepted) {
+      expect(screen.queryByText(new RegExp(`\\b${word}\\b`, 'i'))).not.toBeInTheDocument();
+    }
+
+    view.unmount();
+    render(<QuestionScreen session={session} onSession={() => {}} onFinish={() => {}} onExit={() => {}} />);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Type the word' }), {
+      target: { value: `${accepted[0]!.toUpperCase()}!` },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Check' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Yes!');
     vi.useRealTimers();
   });
 });

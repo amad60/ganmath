@@ -210,6 +210,8 @@ export type BadgeId =
   | 'read-graduate-2'
   | 'read-graduate-3'
   | 'read-graduate-4'
+  | 'read-graduate-5'
+  | 'read-graduate-6'
   | 'science-graduate-1'
   | 'science-graduate-2'
   | 'science-graduate-3'
@@ -261,6 +263,8 @@ export const BADGES: Record<BadgeId, { icon: string; title: string; hint: string
   'read-graduate-2': { icon: '📚', title: 'Read Level 2 Graduate', hint: 'Finish all Level 2 reading units' },
   'read-graduate-3': { icon: '🎓', title: 'Read Level 3 Graduate', hint: 'Finish all Level 3 reading units' },
   'read-graduate-4': { icon: '🏅', title: 'Read Level 4 Graduate', hint: 'Finish all Level 4 reading units' },
+  'read-graduate-5': { icon: '📖', title: 'Read Level 5 Graduate', hint: 'Finish all Level 5 reading units' },
+  'read-graduate-6': { icon: '📕', title: 'Read Level 6 Graduate', hint: 'Finish all Level 6 reading units' },
   'science-graduate-1': { icon: '🔬', title: 'Science Level 1 Graduate', hint: 'Finish all Level 1 science units' },
   'science-graduate-2': { icon: '🔭', title: 'Science Level 2 Graduate', hint: 'Finish all Level 2 science units' },
   'science-graduate-3': { icon: '🧪', title: 'Science Level 3 Graduate', hint: 'Finish all Level 3 science units' },
@@ -409,6 +413,8 @@ export function depthBadges(owned: string[], depth: DepthSummary): BadgeId[] {
   if (depth.gradesCleared.includes(102)) add('read-graduate-2');
   if (depth.gradesCleared.includes(103)) add('read-graduate-3');
   if (depth.gradesCleared.includes(104)) add('read-graduate-4');
+  if (depth.gradesCleared.includes(105)) add('read-graduate-5');
+  if (depth.gradesCleared.includes(106)) add('read-graduate-6');
   if (depth.gradesCleared.includes(201)) add('science-graduate-1');
   if (depth.gradesCleared.includes(202)) add('science-graduate-2');
   if (depth.gradesCleared.includes(203)) add('science-graduate-3');

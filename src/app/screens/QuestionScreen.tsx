@@ -443,6 +443,7 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
   const isClueTap = question?.type === 'clue-tap';
   const isSequence = question?.type === 'sequence-order';
   const isPicture = question?.type === 'pick-picture';
+  const isWord = question?.type === 'type-word';
 
   const [sequenceOrder, setSequenceOrder] = useState<number[]>([]);
 
@@ -740,7 +741,43 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       </div>
 
       <div className="safe-bottom shrink-0 px-6 pt-2">
-        {isClueTap ? (
+        {isWord ? (
+          <form
+            className="flex w-full flex-col gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (feedback) return;
+              const norm = (s: string) => s.trim().toLowerCase().replace(/[^a-z]/g, '');
+              const got = norm(typed);
+              const ok = got.length > 0 && (question.options ?? []).some((w) => norm(w) === got);
+              answer(ok ? question.answer : question.answer + 1);
+            }}
+          >
+            <input
+              value={typed}
+              onChange={(e) => {
+                touch();
+                setTyped(e.target.value);
+              }}
+              disabled={feedback != null}
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint="done"
+              aria-label="Type the word"
+              placeholder="Type the word"
+              className="h-14 w-full rounded-[var(--r-md)] px-4 text-center text-[28px] font-black"
+              style={{
+                background: 'var(--c-surface)',
+                border: '3px solid var(--c-line)',
+                color: 'var(--c-ink)',
+              }}
+            />
+            <Button full type="submit" disabled={typed.trim().length === 0 || feedback != null}>
+              {en.question.check}
+            </Button>
+          </form>
+        ) : isClueTap ? (
           <p className="text-ink-soft text-center text-sm font-bold">
             Tap the sentence that shows the clue! ☝️
           </p>

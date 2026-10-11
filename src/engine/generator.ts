@@ -258,6 +258,10 @@ export function generateSet(
         // "Now you try." di Learn) tetap menampilkan gambar, bukan kalimat.
         q.choices = q.visual.options.map((_, i) => i);
         q.options = q.visual.options.map((o) => o.icon);
+      } else if (pool.rule.type === 'type-word') {
+        // Kata yang diterima tidak diacak dan tidak dijadikan tombol. Layar
+        // membandingkan ketikan anak dengan daftar ini. `answer` tetap 0.
+        q.options = pool.rule.options?.(params) ?? [];
       } else if (pool.rule.type === 'choose-text') {
         const labels = pool.rule.options?.(params) ?? [];
         q.options = labels;

@@ -187,6 +187,22 @@ function renderUnitVisual(unitId: string, reduced: boolean) {
       return <AnimationR4U3 reduced={reduced} />;
     case 'r4-u4':
       return <AnimationR4U4 reduced={reduced} />;
+    case 'r5-u1':
+      return <AnimationLines reduced={reduced} top="He watched his shoes" bottom="He felt left out" />;
+    case 'r5-u2':
+      return <AnimationLines reduced={reduced} top="Many details" bottom="One summary" />;
+    case 'r5-u3':
+      return <AnimationLines reduced={reduced} top="The word I" bottom="A character tells it" />;
+    case 'r5-u4':
+      return <AnimationLines reduced={reduced} top="A nail in the tire" bottom="The bike stopped" />;
+    case 'r6-u1':
+      return <AnimationLines reduced={reduced} top="The park should close" bottom="No lights on the path" />;
+    case 'r6-u2':
+      return <AnimationLines reduced={reduced} top="First, then, because" bottom="How the text is built" />;
+    case 'r6-u3':
+      return <AnimationLines reduced={reduced} top="The gym was a beehive" bottom="It was busy" />;
+    case 'r6-u4':
+      return <AnimationLines reduced={reduced} top="Drops hit the bread" bottom="Move inside" />;
     default:
       return <AnimationDefault unitId={unitId} />;
   }
@@ -2083,6 +2099,21 @@ function AnimationR4U4({ reduced }: { reduced: boolean }) {
         style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 200ms both' }}
       >
         Lesson: kindness matters
+      </span>
+    </div>
+  );
+}
+
+function AnimationLines({ reduced, top, bottom }: { reduced: boolean; top: string; bottom: string }) {
+  return (
+    <div className="flex flex-col items-center gap-2 font-black text-xs">
+      <span className="text-ink-soft">{top}</span>
+      <span className="text-lg">⬇</span>
+      <span
+        className="rounded-full bg-[#e0f2fe] px-3 py-1 text-[#0369a1]"
+        style={{ animation: reduced ? undefined : 'badge-pop 600ms ease-out 200ms both' }}
+      >
+        {bottom}
       </span>
     </div>
   );

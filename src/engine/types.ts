@@ -39,7 +39,9 @@ export type QType =
   | 'clue-tap'
   | 'sequence-order'
   // Science: "What happens next?" dijawab dengan MENGETUK GAMBAR, bukan kalimat.
-  | 'pick-picture';
+  | 'pick-picture'
+  // Read Level 6: anak mengetik satu kata dari paragraf, bukan mengetuk pilihan.
+  | 'type-word';
 
 export type VisualId =
   | 'ten-frame'
