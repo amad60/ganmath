@@ -174,8 +174,8 @@ export const bodyCoverings: ContentModule = {
         bg: 'cloudy',
         base: [at('❄️', 24, 16, 12), at('❄️', 78, 18, 12), at('🐕', 50, 64, 28), ground('white')],
         cards: [
-          { icon: '🧥', label: 'It kept the dog warm' },
-          { icon: '🥶', label: 'It made the dog cold' },
+          { icon: '🧥', label: 'Kept the dog warm' },
+          { icon: '🥶', label: 'Made the dog cold' },
           { icon: '❄️', label: 'The snow warmed it' },
         ],
       },

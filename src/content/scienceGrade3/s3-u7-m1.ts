@@ -156,7 +156,7 @@ export const soundTravels: ContentModule = {
         cards: [
           { icon: '📏', label: 'Your friend is far' },
           { icon: '👂', label: 'Your friend is near' },
-          { icon: '📢', label: 'A far shout is louder' },
+          { icon: '📢', label: 'Far shout is louder' },
         ],
       },
       {

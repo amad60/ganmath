@@ -120,8 +120,8 @@ export const rampsAndLevers: ContentModule = {
         bg: 'day',
         base: [bar(50, 70, 76, 3, 'red', { rotate: -12 }), at('🔺', 50, 80, 10), at('👧', 18, 52, 18), at('🧔', 82, 62, 24)],
         cards: [
-          { icon: '⬇️', label: 'The heavy end went down' },
-          { icon: '👧', label: 'The light end is heavier' },
+          { icon: '⬇️', label: 'Heavy end went down' },
+          { icon: '👧', label: 'Light end is heavier' },
           { icon: '📐', label: 'It is a ramp' },
         ],
       },
@@ -140,7 +140,7 @@ export const rampsAndLevers: ContentModule = {
         bg: 'day',
         base: [bar(56, 68, 60, 4, 'gray', { rotate: -20 }), at('🛒', 78, 48, 16), ground()],
         cards: [
-          { icon: '📐', label: 'A ramp helps the push' },
+          { icon: '📐', label: 'Ramp helps the push' },
           { icon: '🧱', label: 'A flat wall' },
           { icon: '🛒', label: 'No push at all' },
         ],

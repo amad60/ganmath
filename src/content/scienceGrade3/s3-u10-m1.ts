@@ -130,7 +130,7 @@ export const rotFeedsSoil: ContentModule = {
         base: [at('🌿', 50, 60, 32), bar(50, 94, 100, 14, 'brown')],
         cards: [
           { icon: '🍂', label: 'Soil from rot' },
-          { icon: '🧸', label: 'A toy in the soil' },
+          { icon: '🧸', label: 'Toy in the soil' },
           { icon: '🪨', label: 'Rocks feed it' },
         ],
       },
