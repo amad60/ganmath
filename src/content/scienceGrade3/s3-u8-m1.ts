@@ -8,7 +8,7 @@ import type { SceneItem } from '../../engine/types';
  * di kanan. `gap` memotong kabel atas — celahnya sengaja lebar (14%) supaya
  * terlihat jelas di layar ponsel, karena celah itulah seluruh pelajarannya.
  */
-function circuit(opts: { gap?: boolean; battery?: boolean; lit?: boolean }): SceneItem[] {
+function circuit(opts: { gap?: boolean; battery?: boolean; lit?: boolean; device?: string }): SceneItem[] {
   const top = opts.gap
     ? [bar(30, 24, 26, 3, 'red'), bar(73, 24, 20, 3, 'red')]
     : [bar(50, 24, 64, 3, 'red')];
@@ -18,7 +18,7 @@ function circuit(opts: { gap?: boolean; battery?: boolean; lit?: boolean }): Sce
     bar(18, 51, 1.6, 55, 'red'),
     bar(82, 51, 1.6, 55, 'red'),
     ...(opts.battery === false ? [] : [at('🔋', 18, 51, 14)]),
-    at('💡', 82, 51, 16, opts.lit ? { fx: 'pop' } : { dim: true }),
+    at(opts.device ?? '💡', 82, 51, 16, opts.lit ? { fx: 'pop' } : { dim: true }),
     ...(opts.lit ? [at('✨', 68, 38, 12, { fx: 'pop' })] : []),
   ];
 }
@@ -83,8 +83,8 @@ export const closedPath: ContentModule = {
             caption: 'The path is closed now. It lights!',
             result: circuit({ lit: true }),
           },
-          { icon: '🔥', label: 'It burns', caption: 'It burns.' },
-          { icon: '🧊', label: 'It freezes', caption: 'It freezes.' },
+          { icon: '🌑', label: 'It stays dark', caption: 'It stays dark.' },
+          { icon: '🔴', label: 'The wire lights', caption: 'The wire lights.' },
         ],
         correct: 0,
       },
@@ -106,84 +106,83 @@ export const closedPath: ContentModule = {
   rules: [
     whatHappensNext('sci-circuit', [
       {
-        ask: 'The path is closed.',
+        ask: 'Why did this bulb light?',
         bg: 'night',
-        base: circuit({}),
+        base: circuit({ lit: true }),
         cards: [
-          { icon: '💡', label: 'The bulb lights' },
-          { icon: '🌑', label: 'It stays dark' },
-          { icon: '🚫', label: 'The path does nothing' },
+          { icon: '🔗', label: 'The path is closed' },
+          { icon: '✂️', label: 'A gap still lights' },
+          { icon: '🚫', label: 'No path is needed' },
         ],
       },
       {
-        ask: 'There is a gap in the path.',
+        ask: 'What keeps this bulb dark?',
         bg: 'night',
-        base: [...circuit({ gap: true }), at('✂️', 52, 24, 12)],
+        base: circuit({ gap: true }),
         cards: [
-          { icon: '🌑', label: 'It stays dark' },
-          { icon: '💡', label: 'The bulb lights' },
-          { icon: '🚫', label: 'The path does nothing' },
+          { icon: '✂️', label: 'A gap in the path' },
+          { icon: '🔗', label: 'The path is closed' },
+          { icon: '💡', label: 'A gap still lights' },
         ],
       },
       {
-        ask: 'The path is cut.',
+        ask: 'What is missing in this path?',
         bg: 'night',
-        base: [...circuit({ lit: true }).filter((it) => it.icon !== '✨'), at('✂️', 50, 78, 12)],
+        base: circuit({ battery: false }),
         cards: [
-          { icon: '🌚', label: 'The light goes out' },
-          { icon: '☀️', label: 'It gets brighter' },
-          { icon: '🐟', label: 'It swims' },
+          { icon: '🔋', label: 'The battery' },
+          { icon: '💡', label: 'A bulb is enough' },
+          { icon: '✂️', label: 'A gap still works' },
         ],
       },
       {
-        ask: 'A finger closes the gap.',
+        ask: 'What made this bulb light?',
         bg: 'night',
-        base: [...circuit({ gap: true }), at('👆', 52, 34, 12)],
+        base: [...circuit({ lit: true }), at('📎', 50, 16, 12)],
         cards: [
-          { icon: '✨', label: 'The gap closes and it lights' },
-          { icon: '🚫', label: 'The path does nothing' },
-          { icon: '❔', label: 'A gap still lets it work' },
+          { icon: '🔗', label: 'The gap was closed' },
+          { icon: '✂️', label: 'The gap stayed open' },
+          { icon: '💡', label: 'An open path lights' },
         ],
       },
       {
-        ask: 'The path to the fan is closed.',
+        ask: 'What helps this fan spin?',
         bg: 'room',
-        base: [bar(50, 24, 64, 3, 'red'), bar(50, 78, 64, 3, 'red'), bar(18, 51, 1.6, 55, 'red'), bar(82, 51, 1.6, 55, 'red'), at('🔋', 18, 51, 14), at('🌀', 82, 51, 16)],
+        base: circuit({ lit: true, device: '🌀' }),
         cards: [
-          { icon: '🌀', label: 'The fan spins' },
-          { icon: '🛑', label: 'It stops' },
-          { icon: '🚫', label: 'The path does nothing' },
-        ],
-      },
-    
-      {
-        ask: 'There is still a gap.',
-        bg: 'room',
-        base: [at('🔋', 28, 56, 18), at('💡', 72, 40, 18), at('✂️', 50, 70, 14)],
-        cards: [
-          { icon: '🌑', label: 'It stays dark' },
-          { icon: '💡', label: 'The bulb lights' },
-          { icon: '🚫', label: 'The path does nothing' },
+          { icon: '🔗', label: 'A closed path' },
+          { icon: '✂️', label: 'A gap in the wire' },
+          { icon: '🚫', label: 'No path is needed' },
         ],
       },
       {
-        ask: 'The path is closed again.',
+        ask: 'Why does this motor run?',
         bg: 'room',
-        base: [at('🔋', 26, 58, 18), at('💡', 74, 40, 18)],
+        base: circuit({ lit: true, device: '⚙️' }),
         cards: [
-          { icon: '💡', label: 'The bulb lights' },
-          { icon: '🌑', label: 'It stays dark' },
-          { icon: '🚫', label: 'The path does nothing' },
+          { icon: '🔗', label: 'The path has no gap' },
+          { icon: '✂️', label: 'A gap makes it run' },
+          { icon: '🚫', label: 'Motors need no path' },
         ],
       },
       {
-        ask: 'There is a bulb, but no battery.',
-        bg: 'room',
-        base: [at('💡', 50, 46, 22)],
+        ask: 'What caused this lamp to stop?',
+        bg: 'night',
+        base: circuit({ gap: true, device: '🔦' }),
         cards: [
-          { icon: '🌑', label: 'It stays dark' },
-          { icon: '✨', label: 'It gets brighter' },
-          { icon: '🚫', label: 'The path does nothing' },
+          { icon: '✂️', label: 'A gap opened the path' },
+          { icon: '🔗', label: 'The path is closed' },
+          { icon: '💡', label: 'A gap does not matter' },
+        ],
+      },
+      {
+        ask: 'Which part stops this bulb?',
+        bg: 'night',
+        base: circuit({ gap: true }),
+        cards: [
+          { icon: '✂️', label: 'The gap' },
+          { icon: '🔋', label: 'The battery' },
+          { icon: '🔗', label: 'A closed path stops it' },
         ],
       },
     ]),

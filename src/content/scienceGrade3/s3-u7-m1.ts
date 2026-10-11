@@ -100,84 +100,83 @@ export const soundTravels: ContentModule = {
   rules: [
     whatHappensNext('sci-sound-travel', [
       {
-        ask: 'The bell is next to you.',
+        ask: 'Why is this bell quiet?',
+        bg: 'day',
+        base: [at('🧒', 16, 68, 22), at('🔔', 86, 34, 10), at('🎵', 68, 28, 8, { dim: true }), ground()],
+        cards: [
+          { icon: '📏', label: 'It is far' },
+          { icon: '🔔', label: 'It is near' },
+          { icon: '📢', label: 'Far is louder' },
+        ],
+      },
+      {
+        ask: 'What keeps this drum loud?',
+        bg: 'day',
+        base: [at('🥁', 28, 64, 28), at('🧒', 62, 66, 24), at('🎵', 46, 34, 20), ground()],
+        cards: [
+          { icon: '🧍', label: 'You are near' },
+          { icon: '🏃', label: 'You are far' },
+          { icon: '🚫', label: 'Air stops sound' },
+        ],
+      },
+      {
+        ask: 'What made this sound quiet?',
+        bg: 'day',
+        base: [at('✈️', 84, 14, 12), at('🧒', 22, 70, 22), at('🎵', 48, 36, 8, { dim: true }), ground()],
+        cards: [
+          { icon: '📏', label: 'The plane is far' },
+          { icon: '👂', label: 'The plane is near' },
+          { icon: '📢', label: 'Far is louder' },
+        ],
+      },
+      {
+        ask: 'Why is this trumpet loud?',
+        bg: 'day',
+        base: [at('🎺', 32, 54, 24), at('🧒', 58, 66, 22), at('🎵', 48, 32, 18), ground()],
+        cards: [
+          { icon: '👂', label: 'It is close' },
+          { icon: '✈️', label: 'It is far away' },
+          { icon: '🚫', label: 'Air blocks sound' },
+        ],
+      },
+      {
+        ask: 'What helps sound move here?',
+        bg: 'day',
+        base: [at('🔔', 16, 58, 16), at('🎵', 40, 40, 12), at('🎵', 62, 32, 8, { dim: true }), at('🧒', 84, 68, 20), ground()],
+        cards: [
+          { icon: '💨', label: 'Air carries it' },
+          { icon: '🚫', label: 'Air stops it' },
+          { icon: '📢', label: 'Distance makes it louder' },
+        ],
+      },
+      {
+        ask: 'What caused this shout to fade?',
+        bg: 'day',
+        base: [at('🧒', 14, 68, 20), at('👦', 86, 70, 14), at('🎵', 64, 40, 8, { dim: true }), ground()],
+        cards: [
+          { icon: '📏', label: 'Your friend is far' },
+          { icon: '👂', label: 'Your friend is near' },
+          { icon: '📢', label: 'A far shout is louder' },
+        ],
+      },
+      {
+        ask: 'What did the distance do?',
+        bg: 'day',
+        base: [at('📻', 16, 62, 16), at('🧒', 84, 68, 20), at('🎵', 52, 36, 8, { dim: true }), ground()],
+        cards: [
+          { icon: '📏', label: 'It made sound quiet' },
+          { icon: '📢', label: 'It made sound louder' },
+          { icon: '🚫', label: 'It did nothing' },
+        ],
+      },
+      {
+        ask: 'What does a loud sound need?',
         bg: 'room',
-        base: [at('🔔', 40, 44, 24), at('🧒', 62, 64, 24)],
+        base: [at('🔔', 36, 48, 26), at('👂', 64, 52, 18), at('🎵', 50, 28, 18)],
         cards: [
-          { icon: '🔊', label: 'A loud ring' },
-          { icon: '🔇', label: 'No sound' },
-          { icon: '🚫', label: 'Distance does nothing' },
-        ],
-      },
-      {
-        ask: 'The plane is far away.',
-        bg: 'day',
-        base: [at('✈️', 82, 12, 10), at('🧒', 30, 70, 24), ground()],
-        cards: [
-          { icon: '🔈', label: 'A quiet sound' },
-          { icon: '📢', label: 'A loud sound' },
-          { icon: '🧊', label: 'It freezes' },
-        ],
-      },
-      {
-        ask: 'The trumpet is next to you.',
-        bg: 'day',
-        base: [at('🎺', 30, 54, 22), at('🧒', 52, 66, 22), ground()],
-        cards: [
-          { icon: '📢', label: 'A loud sound' },
-          { icon: '🔈', label: 'A quiet sound' },
-          { icon: '🚫', label: 'Distance does nothing' },
-        ],
-      },
-      {
-        ask: 'The storm is far away.',
-        bg: 'cloudy',
-        base: [at('⛈️', 86, 14, 12), at('🧒', 20, 70, 24), ground()],
-        cards: [
-          { icon: '🔉', label: 'A quiet boom' },
-          { icon: '🚫', label: 'Distance does nothing' },
-          { icon: '❔', label: 'Every sound is the same' },
-        ],
-      },
-      {
-        ask: 'The bell is far down the road.',
-        bg: 'day',
-        base: [at('🧒', 12, 68, 22), at('⛪', 86, 56, 16), at('🔔', 86, 32, 8), ground()],
-        cards: [
-          { icon: '🔈', label: 'A quiet ring' },
-          { icon: '📢', label: 'A loud ring' },
-          { icon: '🚫', label: 'Distance does nothing' },
-        ],
-      },
-    
-      {
-        ask: 'The bell is next to your ear.',
-        bg: 'room',
-        base: [at('🔔', 36, 54, 24), at('👂', 74, 52, 18)],
-        cards: [
-          { icon: '🔊', label: 'A loud sound' },
-          { icon: '🤫', label: 'No sound' },
-          { icon: '🚫', label: 'Distance does nothing' },
-        ],
-      },
-      {
-        ask: 'The bell is far from your ear.',
-        bg: 'day',
-        base: [at('🔔', 22, 54, 18), at('👂', 80, 54, 16)],
-        cards: [
-          { icon: '🔉', label: 'A quiet sound' },
-          { icon: '📢', label: 'A loud bark' },
-          { icon: '🚫', label: 'Distance does nothing' },
-        ],
-      },
-      {
-        ask: 'Someone knocks on the other side of the door.',
-        bg: 'room',
-        base: [at('🚪', 30, 54, 26), at('👂', 72, 54, 18)],
-        cards: [
-          { icon: '🔉', label: 'A quieter knock' },
-          { icon: '🚫', label: 'Distance does nothing' },
-          { icon: '❔', label: 'Every sound is the same' },
+          { icon: '📏', label: 'A short distance' },
+          { icon: '🛣️', label: 'A long distance' },
+          { icon: '🚫', label: 'No air' },
         ],
       },
     ]),

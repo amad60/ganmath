@@ -91,7 +91,7 @@ export const waterGoesAround: ContentModule = {
             ],
           },
           { icon: '🧊', label: 'It turns to ice', caption: 'It turns to ice.' },
-          { icon: '🐟', label: 'Fish come', caption: 'Fish come.' },
+          { icon: '💧', label: 'The water stays', caption: 'The water stays.' },
         ],
         correct: 0,
       },
@@ -113,84 +113,83 @@ export const waterGoesAround: ContentModule = {
   rules: [
     whatHappensNext('sci-water-cycle', [
       {
-        ask: 'The sun shines on the water.',
+        ask: 'What made this water rise?',
         bg: 'day',
-        base: [at('☀️', 80, 16, 20), bar(50, 88, 100, 24, 'blue')],
+        base: [at('☀️', 82, 16, 18), bar(50, 90, 100, 20, 'blue'), at('💧', 44, 52, 10), at('💧', 62, 40, 10)],
         cards: [
-          { icon: '⬆️', label: 'Water goes up' },
-          { icon: '🧊', label: 'It freezes' },
-          { icon: '🚫', label: 'The water stays put' },
+          { icon: '🔆', label: 'The sun heated it' },
+          { icon: '❄️', label: 'The sun cooled it' },
+          { icon: '🧊', label: 'Cold air lifted it' },
         ],
       },
       {
-        ask: 'A cloud is full.',
+        ask: 'What caused this cloud?',
+        bg: 'day',
+        base: [at('☁️', 50, 24, 32), at('💧', 38, 46, 8), at('💧', 62, 42, 8), bar(50, 92, 100, 16, 'blue')],
+        cards: [
+          { icon: '🫧', label: 'Drops gathered' },
+          { icon: '🧊', label: 'Drops turned to ice' },
+          { icon: '🔆', label: 'Heat alone' },
+        ],
+      },
+      {
+        ask: 'Why did this rain fall?',
         bg: 'cloudy',
-        base: [at('☁️', 36, 20, 26), at('☁️', 62, 22, 26), bar(50, 92, 100, 16, 'green')],
+        base: [at('☁️', 48, 18, 30), at('🌧️', 48, 34, 22), at('💧', 36, 58, 8), at('💧', 58, 64, 8), bar(50, 92, 100, 16, 'green')],
         cards: [
-          { icon: '🌧️', label: 'Rain falls' },
-          { icon: '🚫', label: 'The water stays put' },
-          { icon: '❔', label: 'Sun cannot lift water' },
+          { icon: '☁️', label: 'The cloud was full' },
+          { icon: '🌧️', label: 'Heat pulled it up' },
+          { icon: '🧊', label: 'The cloud froze' },
         ],
       },
       {
-        ask: 'Rain falls on the hill.',
+        ask: 'What keeps this water rising?',
+        bg: 'day',
+        base: [at('☀️', 82, 16, 16), bar(50, 84, 40, 6, 'blue'), at('💧', 42, 52, 8), at('💧', 58, 44, 8), ground('gray')],
+        cards: [
+          { icon: '🔆', label: 'Heat from the sun' },
+          { icon: '❄️', label: 'Cold from the sun' },
+          { icon: '🧊', label: 'It turned to ice' },
+        ],
+      },
+      {
+        ask: 'What made this shirt dry?',
+        bg: 'day',
+        base: [at('☀️', 82, 16, 16), bar(46, 32, 70, 2, 'brown'), at('👕', 46, 50, 22), at('💧', 46, 28, 8)],
+        cards: [
+          { icon: '🔆', label: 'The sun lifted water' },
+          { icon: '💧', label: 'The sun added water' },
+          { icon: '🧊', label: 'The shirt froze' },
+        ],
+      },
+      {
+        ask: 'What helps this steam rise?',
+        bg: 'room',
+        base: [at('🫖', 50, 68, 26), at('💨', 50, 36, 16)],
+        cards: [
+          { icon: '🔆', label: 'Heat under the pot' },
+          { icon: '❄️', label: 'Cold under the pot' },
+          { icon: '🧊', label: 'Ice makes steam' },
+        ],
+      },
+      {
+        ask: 'What is missing in the sky?',
+        bg: 'day',
+        base: [at('☀️', 82, 16, 16), at('💧', 40, 40, 10), at('💧', 58, 32, 10), bar(50, 90, 100, 20, 'blue')],
+        cards: [
+          { icon: '☁️', label: 'A cloud of drops' },
+          { icon: '🌊', label: 'Water stayed down' },
+          { icon: '⬇️', label: 'Heat pushed it down' },
+        ],
+      },
+      {
+        ask: 'Which part brings water back?',
         bg: 'cloudy',
-        base: [at('🌧️', 36, 16, 22), at('⛰️', 36, 60, 40), bar(84, 90, 32, 20, 'blue')],
+        base: [at('☀️', 84, 14, 14), at('☁️', 34, 18, 22), at('🌧️', 36, 38, 16), at('⛰️', 30, 62, 26), bar(84, 90, 32, 18, 'blue')],
         cards: [
-          { icon: '🌊', label: 'It runs to the sea' },
-          { icon: '⬆️', label: 'It goes up the hill' },
-          { icon: '🚫', label: 'The water stays put' },
-        ],
-      },
-      {
-        ask: 'The sun shines on a wet shirt.',
-        bg: 'day',
-        base: [at('☀️', 82, 16, 18), bar(46, 34, 70, 2, 'brown'), at('👕', 46, 52, 24), at('💧', 46, 76, 8)],
-        cards: [
-          { icon: '👕', label: 'It gets dry' },
-          { icon: '🌊', label: 'It gets more wet' },
-          { icon: '🧊', label: 'It freezes' },
-        ],
-      },
-      {
-        ask: 'Water has gone up into the sky.',
-        bg: 'day',
-        base: [at('💧', 36, 40, 10), at('💧', 52, 30, 10), at('💧', 66, 44, 10), bar(50, 90, 100, 20, 'blue')],
-        cards: [
-          { icon: '☁️', label: 'A cloud comes' },
-          { icon: '🌳', label: 'A tree grows' },
-          { icon: '🚫', label: 'The water stays put' },
-        ],
-      },
-    
-      {
-        ask: 'The sun shines on a puddle.',
-        bg: 'day',
-        base: [at('💧', 50, 68, 16), at('☀️', 78, 20, 18)],
-        cards: [
-          { icon: '💨', label: 'Water goes up' },
-          { icon: '🧊', label: 'It turns to ice' },
-          { icon: '🌱', label: 'It grows roots' },
-        ],
-      },
-      {
-        ask: 'The cloud is heavy.',
-        bg: 'cloudy',
-        base: [at('☁️', 50, 36, 32)],
-        cards: [
-          { icon: '🌧️', label: 'Rain falls' },
-          { icon: '🚫', label: 'The water stays put' },
-          { icon: '🌵', label: 'It gets dry' },
-        ],
-      },
-      {
-        ask: 'The sun shines on wet clothes.',
-        bg: 'day',
-        base: [at('👕', 46, 58, 26), at('☀️', 80, 18, 16)],
-        cards: [
-          { icon: '💨', label: 'The water goes up' },
-          { icon: '🌊', label: 'A flood comes' },
-          { icon: '🚫', label: 'The water stays put' },
+          { icon: '🌧️', label: 'Rain from the cloud' },
+          { icon: '☀️', label: 'The sun pulls it up' },
+          { icon: '🧊', label: 'Ice in the cloud' },
         ],
       },
     ]),
