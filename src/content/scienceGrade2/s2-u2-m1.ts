@@ -85,89 +85,87 @@ export const animalHomes: ContentModule = {
   ],
 
   rules: [
-    whatHappensNext(
-      'sci-homes',
-      [
-        {
-          ask: 'This animal is a fish.',
-          base: [at('🐟', 50, 50, 34)],
-          cards: [
-            { icon: '🌊', label: 'In a pond' },
-            { icon: '🌳', label: 'In a tree' },
-            { icon: '🏜️', label: 'In dry sand' },
-          ],
-        },
-        {
-          ask: 'This animal is a frog.',
-          base: [at('🐸', 50, 50, 34)],
-          cards: [
-            { icon: '🌊', label: 'By a pond' },
-            { icon: '🏜️', label: 'In dry sand' },
-            { icon: '☁️', label: 'In the sky' },
-          ],
-        },
-        {
-          ask: 'This animal is a camel.',
-          base: [at('🐪', 50, 50, 34)],
-          cards: [
-            { icon: '🏜️', label: 'In dry sand' },
-            { icon: '🧊', label: 'On ice' },
-            { icon: '🌊', label: 'In a pond' },
-          ],
-        },
-        {
-          ask: 'This animal is a penguin.',
-          base: [at('🐧', 50, 50, 34)],
-          cards: [
-            { icon: '🧊', label: 'On ice' },
-            { icon: '🏜️', label: 'In dry sand' },
-            { icon: '🌳', label: 'In a tree' },
-          ],
-        },
-        {
-          ask: 'This animal is a monkey.',
-          base: [at('🐒', 50, 50, 34)],
-          cards: [
-            { icon: '🌳', label: 'In the trees' },
-            { icon: '🌊', label: 'In a pond' },
-            { icon: '🧊', label: 'On ice' },
-          ],
-        },
-      
+    whatHappensNext('sci-homes', [
       {
-        ask: 'This animal is a bee.',
+        ask: 'The fish is on the grass. What is missing?',
         bg: 'day',
-        base: [at('🐝', 50, 52, 26)],
+        base: [ground('green'), at('🐟', 40, 78, 18, { dim: true, rotate: -20 })],
         cards: [
-          { icon: '🍯', label: 'In a hive' },
-          { icon: '🌊', label: 'In the sea' },
-          { icon: '❄️', label: 'On ice' },
+          { icon: '🌊', label: 'Pond water' },
+          { icon: '🪺', label: 'A nest' },
+          { icon: '🌿', label: 'More grass' },
         ],
       },
       {
-        ask: 'This animal is an ant.',
+        ask: 'This bird has no nest. What does it need?',
         bg: 'day',
-        base: [at('🐜', 50, 64, 22)],
+        base: [ground('green'), at('🐦', 50, 70, 22)],
         cards: [
-          { icon: '🕳️', label: 'In the soil' },
-          { icon: '🌊', label: 'In the sea' },
-          { icon: '☁️', label: 'In a cloud' },
+          { icon: '🌳', label: 'A tree nest' },
+          { icon: '🌊', label: 'A deep pond' },
+          { icon: '🧊', label: 'Thick ice' },
         ],
       },
       {
-        ask: 'This animal is a squirrel.',
-        bg: 'day',
-        base: [at('🐿️', 48, 56, 26)],
+        ask: 'A camel stands on ice. What is missing?',
+        bg: 'cloudy',
+        base: [ground('white'), at('🐪', 50, 68, 28, { dim: true })],
         cards: [
-          { icon: '🌳', label: 'In a tree' },
-          { icon: '🌊', label: 'In the sea' },
-          { icon: '🧊', label: 'On ice' },
+          { icon: '🏜️', label: 'Dry land' },
+          { icon: '🧊', label: 'More ice' },
+          { icon: '🌊', label: 'A pond' },
         ],
       },
-    ],
-      // Soal rumah hewan: gambarnya hewan, kartunya tempat — "apa yang terjadi"
-      // tidak cocok untuk hewan yang hanya berdiri.
-      'Where does it live?',
-    ),
+      {
+        ask: 'A penguin is on hot sand. Why is this a bad home?',
+        bg: 'day',
+        base: [at('☀️', 84, 16, 16), bar(50, 88, 100, 24, 'yellow'), at('🐧', 48, 70, 26, { dim: true })],
+        cards: [
+          { icon: '🧊', label: 'It needs cold' },
+          { icon: '🏜️', label: 'Sand is better' },
+          { icon: '🌳', label: 'A tree nest' },
+        ],
+      },
+      {
+        ask: 'A goat is standing in a pond. What is missing?',
+        bg: 'day',
+        base: [ground('green'), bar(50, 86, 70, 22, 'blue'), at('🐐', 50, 74, 26, { dim: true })],
+        cards: [
+          { icon: '🌿', label: 'Grass land' },
+          { icon: '🌊', label: 'Deeper water' },
+          { icon: '🐟', label: 'Fish food' },
+        ],
+      },
+      {
+        ask: 'A horse is on the ice. What is missing?',
+        bg: 'cloudy',
+        base: [ground('white'), at('🐴', 50, 68, 28, { dim: true })],
+        cards: [
+          { icon: '🌾', label: 'A grass field' },
+          { icon: '❄️', label: 'A frozen lake' },
+          { icon: '🧊', label: 'Extra cold' },
+        ],
+      },
+      {
+        ask: 'This fish is well. What keeps it alive?',
+        bg: 'day',
+        base: [at('🐟', 50, 54, 32)],
+        cards: [
+          { icon: '🌊', label: 'Pond water' },
+          { icon: '🏜️', label: 'Hot sand' },
+          { icon: '🪵', label: 'A hollow log' },
+        ],
+      },
+      {
+        ask: 'This bird is well. What keeps it safe?',
+        bg: 'day',
+        base: [at('🐦', 50, 54, 32)],
+        cards: [
+          { icon: '🪺', label: 'A nest' },
+          { icon: '💧', label: 'Pond water' },
+          { icon: '🧊', label: 'A block of ice' },
+        ],
+      },
+    ]),
   ],
 };
