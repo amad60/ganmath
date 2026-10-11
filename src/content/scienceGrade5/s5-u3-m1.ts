@@ -45,7 +45,7 @@ export const leftBehind: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Dry the salt water.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const leftBehind: ContentModule = {
             result: [at('☀️', 80, 16, 14), at('🥣', 50, 60, 24), at('🧂', 50, 52, 14, { fx: 'pop' })],
           },
           { icon: '✨', label: 'It all goes', caption: 'It all goes.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '💧', label: 'Water stays', caption: 'Water stays.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const leftBehind: ContentModule = {
   rules: [
     whatHappensNext('sci-salt', [
       {
+        ask: 'Salt water dries in the sun.',
         bg: 'day',
         base: [at('☀️', 80, 16, 16), at('🥣', 50, 60, 26), at('💧', 50, 54, 10)],
         cards: [
           { icon: '🧂', label: 'Salt is left' },
           { icon: '✨', label: 'It all goes' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Drying makes new salt' },
         ],
       },
       {
+        ask: 'The bowl is covered, so it cannot dry.',
         bg: 'room',
         base: [at('🧢', 50, 38, 16), at('🥣', 50, 62, 24)],
         cards: [
           { icon: '💧', label: 'The salt water stays' },
           { icon: '🧂', label: 'Only salt is left' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Drying makes new salt' },
         ],
       },
       {
+        ask: 'Sugar water dries in the sun.',
         bg: 'day',
         base: [at('☀️', 78, 16, 14), at('🥛', 50, 58, 24)],
         cards: [
@@ -111,24 +114,27 @@ export const leftBehind: ContentModule = {
         ],
       },
       {
+        ask: 'Plain water dries in the sun.',
         bg: 'day',
         base: [at('☀️', 80, 16, 16), at('🥣', 50, 60, 26)],
         cards: [
           { icon: '🚫', label: 'Nothing is left' },
           { icon: '🧂', label: 'Salt is left' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '❔', label: 'Drying makes new salt' },
         ],
       },
       {
+        ask: 'Wind and sun dry the salt water.',
         bg: 'day',
         base: [at('🌬️', 20, 30, 16), at('☀️', 80, 16, 14), at('🥣', 50, 62, 22)],
         cards: [
           { icon: '🧂', label: 'Salt is left' },
           { icon: '💧', label: 'The water stays' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Drying makes new salt' },
         ],
       },
       {
+        ask: 'It is night, and the bowl is covered.',
         bg: 'night',
         base: [at('🌙', 80, 16, 14), at('🧢', 50, 42, 16), at('🥣', 50, 64, 24)],
         cards: [
@@ -138,21 +144,23 @@ export const leftBehind: ContentModule = {
         ],
       },
       {
+        ask: 'Two suns dry the salt water.',
         bg: 'day',
         base: [at('☀️', 18, 16, 12), at('☀️', 82, 18, 14), at('🥣', 50, 62, 28)],
         cards: [
           { icon: '🧂', label: 'Salt is left' },
           { icon: '✨', label: 'Salt goes too' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Drying makes new salt' },
         ],
       },
       {
+        ask: 'Salt water dries on a rock.',
         bg: 'day',
         base: [at('🪨', 50, 62, 28), at('☀️', 80, 16, 14), at('💧', 50, 48, 12)],
         cards: [
           { icon: '🧂', label: 'Salt is left on it' },
           { icon: '✨', label: 'Nothing is left' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Drying makes new salt' },
         ],
       },
     ]),

@@ -59,7 +59,7 @@ export const dayAndNight: ContentModule = {
         bg: 'day',
         base: [at('☀️', 82, 70, 16), at('🏠', 42, 70, 26), ground()],
         options: [
-          { icon: '🌈', label: 'A rainbow comes', caption: 'A rainbow comes.' },
+          { icon: '☀️', label: 'It is not night', caption: 'It is not night.' },
           {
             icon: '🌙',
             label: 'Night comes',
@@ -94,24 +94,27 @@ export const dayAndNight: ContentModule = {
   rules: [
     whatHappensNext('sci-day-night', [
       {
+        ask: 'The sun is going down.',
         bg: 'day',
         base: [at('☀️', 82, 70, 16), at('🏠', 42, 70, 26), ground()],
         cards: [
           { icon: '🌙', label: 'Night comes' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '⏸️', label: 'The day stays the same' },
           { icon: '🌞', label: 'It gets hot' },
         ],
       },
       {
+        ask: 'The sky is dark with stars.',
         bg: 'night',
         base: [at('🌙', 80, 70, 14), at('⭐', 30, 20, 8), at('🏠', 42, 70, 26), ground('gray')],
         cards: [
           { icon: '☀️', label: 'The sun comes up' },
-          { icon: '🍰', label: 'A cake comes' },
+          { icon: '⏸️', label: 'The day stays the same' },
           { icon: '🌊', label: 'Water comes' },
         ],
       },
       {
+        ask: 'It is night, and the bed is ready.',
         bg: 'night',
         base: [at('🌙', 80, 18, 16), at('🛏️', 46, 66, 30)],
         cards: [
@@ -121,6 +124,7 @@ export const dayAndNight: ContentModule = {
         ],
       },
       {
+        ask: 'The sun is up.',
         bg: 'day',
         base: [at('🐓', 30, 66, 22), at('☀️', 80, 72, 16), ground()],
         cards: [
@@ -130,6 +134,7 @@ export const dayAndNight: ContentModule = {
         ],
       },
       {
+        ask: 'The sun shines on the house.',
         bg: 'day',
         base: [at('☀️', 50, 18, 22), at('🏠', 50, 72, 24), ground()],
         cards: [
@@ -140,30 +145,33 @@ export const dayAndNight: ContentModule = {
       },
     
       {
+        ask: 'The sun is up, and a ball is out.',
         bg: 'day',
         base: [at('☀️', 50, 28, 28), at('⚽', 50, 70, 16)],
         cards: [
           { icon: '⚽', label: 'We play' },
           { icon: '😴', label: 'We sleep' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '⏸️', label: 'The day stays the same' },
         ],
       },
       {
+        ask: 'It is night.',
         bg: 'night',
         base: [at('🌙', 30, 28, 22), at('✨', 70, 24, 14)],
         cards: [
           { icon: '😴', label: 'We sleep' },
           { icon: '🏊', label: 'We swim' },
-          { icon: '🎂', label: 'A cake comes' },
+          { icon: '⏸️', label: 'The day stays the same' },
         ],
       },
       {
+        ask: 'The sun has just set.',
         bg: 'day',
         base: [at('🌇', 50, 48, 36)],
         cards: [
           { icon: '🌙', label: 'Night comes' },
-          { icon: '🌈', label: 'A rainbow comes' },
-          { icon: '🥁', label: 'A drum plays' },
+          { icon: '⏸️', label: 'The day stays the same' },
+          { icon: '❔', label: 'Time does not move' },
         ],
       },
     ]),

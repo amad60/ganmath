@@ -94,6 +94,7 @@ export const homeChanges: ContentModule = {
   rules: [
     whatHappensNext('sci-habitat', [
       {
+        ask: 'The pond dries up.',
         bg: 'day',
         base: [at('☀️', 82, 16, 18), bar(50, 84, 70, 10, 'brown'), at('🐸', 50, 68, 20), ground('yellow')],
         cards: [
@@ -103,61 +104,68 @@ export const homeChanges: ContentModule = {
         ],
       },
       {
+        ask: 'Rain fills the pond again.',
         bg: 'cloudy',
         base: [at('🌧️', 40, 16, 20), bar(50, 84, 70, 10, 'brown'), ground()],
         cards: [
           { icon: '🐸', label: 'Frogs come back' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The animal is fine anyway' },
           { icon: '🏜️', label: 'It gets dry' },
         ],
       },
       {
+        ask: 'The pond dries, and a fish is left.',
         bg: 'day',
         base: [at('☀️', 82, 16, 18), at('🐟', 50, 76, 16), bar(50, 86, 40, 6, 'blue'), ground('yellow')],
         cards: [
           { icon: '💧', label: 'It needs water' },
-          { icon: '🪽', label: 'It flies' },
+          { icon: '🚫', label: 'The animal is fine anyway' },
           { icon: '🌳', label: 'It grows tall' },
         ],
       },
       {
+        ask: 'Rain floods the ant hill.',
         bg: 'cloudy',
         base: [at('🌧️', 50, 14, 20), bar(50, 86, 100, 16, 'blue'), at('🐜', 40, 74, 12), at('🐜', 58, 74, 12)],
         cards: [
           { icon: '⬆️', label: 'The ants move up' },
           { icon: '😴', label: 'They sleep there' },
-          { icon: '🔥', label: 'They burn' },
+          { icon: '🚫', label: 'The animal is fine anyway' },
         ],
       },
       {
+        ask: 'The pond is full again.',
         bg: 'day',
         base: [bar(50, 82, 70, 12, 'blue'), at('🐸', 90, 64, 16), ground()],
         cards: [
           { icon: '💦', label: 'It jumps in' },
           { icon: '🏜️', label: 'It goes to the sand' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The animal is fine anyway' },
         ],
       },
     
       {
+        ask: 'A fish is left on dry sand.',
         bg: 'day',
         base: [at('🐟', 50, 62, 24), at('🏜️', 50, 40, 40)],
         cards: [
           { icon: '🚶', label: 'The fish leaves' },
           { icon: '🏊', label: 'It stays and swims' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The animal is fine anyway' },
         ],
       },
       {
+        ask: 'The tree is cut down.',
         bg: 'day',
         base: [at('🐦', 46, 48, 24), at('🪓', 74, 64, 16)],
         cards: [
           { icon: '🛫', label: 'The bird leaves' },
           { icon: '😴', label: 'It sleeps there' },
-          { icon: '🌋', label: 'It erupts' },
+          { icon: '🚫', label: 'The animal is fine anyway' },
         ],
       },
       {
+        ask: 'The ice melts under the bear.',
         bg: 'day',
         base: [at('🐻‍❄️', 46, 56, 28), at('💧', 74, 62, 16)],
         cards: [

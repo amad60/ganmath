@@ -45,7 +45,7 @@ export const lightBounces: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Light on a mirror, or cloth.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -85,33 +85,37 @@ export const lightBounces: ContentModule = {
     whatHappensNext('sci-mirror', [
       {
         bg: 'room',
+        ask: 'You look in a mirror.',
         base: [at('🧒', 22, 58, 22), at('🪞', 62, 50, 22)],
         cards: [
           { icon: '😀', label: 'You see a face' },
           { icon: '🌑', label: 'It stays dark' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
       {
         bg: 'room',
+        ask: 'Light hits black cloth.',
         base: [at('💡', 18, 40, 16), at('⬛', 55, 52, 24)],
         cards: [
           { icon: '🌑', label: 'The light stops' },
           { icon: '😀', label: 'You see a face' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
       {
         bg: 'room',
+        ask: 'Light hits a mirror, then a wall.',
         base: [at('🔦', 16, 48, 16), at('🪞', 50, 50, 18), at('🧱', 84, 50, 16)],
         cards: [
           { icon: '💡', label: 'Light hits the wall' },
           { icon: '🌑', label: 'The light stops' },
-          { icon: '🐟', label: 'It swims away' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
       {
         bg: 'room',
+        ask: 'Light hits wood, not a mirror.',
         base: [at('🔦', 18, 48, 16), at('🪵', 58, 52, 22)],
         cards: [
           { icon: '🌑', label: 'The light stops' },
@@ -121,38 +125,42 @@ export const lightBounces: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'A mirror sends light to the plant.',
         base: [at('🪞', 28, 48, 18), at('🌱', 74, 62, 20)],
         cards: [
           { icon: '🌿', label: 'The plant gets light' },
           { icon: '🌑', label: 'It stays dark' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
       {
         bg: 'room',
+        ask: 'A wall blocks the light. No mirror.',
         base: [at('🌱', 70, 60, 22), at('🧱', 30, 52, 20)],
         cards: [
           { icon: '🌑', label: 'The plant stays dark' },
           { icon: '🌿', label: 'The plant gets light' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
       {
         bg: 'room',
+        ask: 'You look in the mirror again.',
         base: [at('🧒', 24, 50, 20), at('🪞', 68, 50, 24)],
         cards: [
           { icon: '😀', label: 'You see a face' },
           { icon: '🧱', label: 'You see a wall' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
       {
         bg: 'room',
+        ask: 'You look at a wall, not a mirror.',
         base: [at('🧒', 24, 50, 20), at('🧱', 68, 50, 24)],
         cards: [
           { icon: '🌑', label: 'No face' },
           { icon: '😀', label: 'You see a face' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Light goes straight through' },
         ],
       },
     ]),

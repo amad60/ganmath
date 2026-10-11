@@ -50,7 +50,7 @@ export const wheelsHelp: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A heavy box. Wheels, or not.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -90,24 +90,27 @@ export const wheelsHelp: ContentModule = {
     whatHappensNext('sci-wheel', [
       {
         bg: 'room',
+        ask: 'The heavy box has wheels.',
         base: [at('🧒', 18, 58, 18), at('📦', 55, 52, 22), at('🛞', 56, 70, 12), ground('gray')],
         cards: [
           { icon: '➡️', label: 'The box rolls' },
           { icon: '🛑', label: 'The box stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Weight makes it roll' },
         ],
       },
       {
         bg: 'room',
+        ask: 'The heavy box has no wheels.',
         base: [at('🧒', 20, 58, 18), at('📦', 58, 54, 24), ground('gray')],
         cards: [
           { icon: '🛑', label: 'The box stays' },
           { icon: '➡️', label: 'The box rolls' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Weight makes it roll' },
         ],
       },
       {
         bg: 'day',
+        ask: 'The cart has wheels.',
         base: [at('🧒', 16, 58, 16), at('🛒', 58, 52, 26), ground('green')],
         cards: [
           { icon: '➡️', label: 'The cart rolls' },
@@ -117,6 +120,7 @@ export const wheelsHelp: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'The cart wheels are broken.',
         base: [at('🧒', 18, 58, 16), at('🛒', 60, 50, 24), at('❌', 74, 72, 12), ground('green')],
         cards: [
           { icon: '🛑', label: 'It stays' },
@@ -126,6 +130,7 @@ export const wheelsHelp: ContentModule = {
       },
       {
         bg: 'room',
+        ask: 'A round log is under the box.',
         base: [at('🧒', 18, 60, 16), at('📦', 55, 46, 20), at('🪵', 58, 70, 16), ground('gray')],
         cards: [
           { icon: '➡️', label: 'The box rolls' },
@@ -135,29 +140,32 @@ export const wheelsHelp: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'It is a sled. No wheels.',
         base: [at('🧒', 20, 58, 16), at('🛷', 60, 56, 24), ground('green')],
         cards: [
           { icon: '🛑', label: 'It stays' },
           { icon: '➡️', label: 'It rolls' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Weight makes it roll' },
         ],
       },
       {
         bg: 'day',
+        ask: 'The box is on a bike.',
         base: [at('🚲', 40, 55, 28), at('📦', 62, 42, 14), ground('green')],
         cards: [
           { icon: '➡️', label: 'It rolls' },
           { icon: '🛑', label: 'The box stays' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Weight makes it roll' },
         ],
       },
       {
         bg: 'day',
+        ask: 'A child pushes a rock. No wheels.',
         base: [at('🧒', 18, 58, 16), at('🪨', 60, 52, 22), ground('yellow')],
         cards: [
           { icon: '🛑', label: 'The rock stays' },
           { icon: '➡️', label: 'It rolls' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Weight makes it roll' },
         ],
       },
     ]),

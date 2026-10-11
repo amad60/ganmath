@@ -45,7 +45,7 @@ export const afterYouRun: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Run, or sit.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const afterYouRun: ContentModule = {
             result: [at('😓', 46, 55, 24), at('🌬️', 76, 32, 16, { fx: 'pulse' }), ground('green')],
           },
           { icon: '😴', label: 'Breaths are slow', caption: 'Breaths are slow.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🚶', label: 'You run slow', caption: 'You run slow.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const afterYouRun: ContentModule = {
   rules: [
     whatHappensNext('sci-breath', [
       {
+        ask: 'You have just been running.',
         bg: 'day',
         base: [at('🏃', 50, 55, 28), ground('green')],
         cards: [
           { icon: '🌬️', label: 'Breaths are fast' },
           { icon: '😴', label: 'Breaths are slow' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Breath stays the same' },
         ],
       },
       {
+        ask: 'You are sitting still.',
         bg: 'room',
         base: [at('🪑', 46, 64, 20), at('🧒', 50, 46, 20)],
         cards: [
           { icon: '😴', label: 'Breaths are slow' },
           { icon: '🌬️', label: 'Breaths are fast' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Breath stays the same' },
         ],
       },
       {
+        ask: 'The dog has just been running.',
         bg: 'day',
         base: [at('🐕', 46, 58, 24), at('💨', 72, 48, 14), ground('green')],
         cards: [
@@ -111,6 +114,7 @@ export const afterYouRun: ContentModule = {
         ],
       },
       {
+        ask: 'The dog is resting at night.',
         bg: 'night',
         base: [at('🐕', 50, 62, 24), at('🌙', 80, 18, 14), ground('green')],
         cards: [
@@ -120,39 +124,43 @@ export const afterYouRun: ContentModule = {
         ],
       },
       {
+        ask: 'You just finished a race.',
         bg: 'day',
         base: [at('😓', 42, 52, 22), at('🏅', 72, 40, 14), ground('green')],
         cards: [
           { icon: '🌬️', label: 'Breaths are fast' },
           { icon: '😴', label: 'Breaths are slow' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Breath stays the same' },
         ],
       },
       {
+        ask: 'You are sitting and reading.',
         bg: 'room',
         base: [at('📕', 30, 58, 16), at('🪑', 58, 64, 18), at('🧒', 58, 46, 18)],
         cards: [
           { icon: '😴', label: 'Breaths are slow' },
           { icon: '🌬️', label: 'Breaths are fast' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Breath stays the same' },
         ],
       },
       {
+        ask: 'You have just been playing.',
         bg: 'day',
         base: [at('🧒', 36, 55, 20), at('⚽', 68, 58, 14), ground('green')],
         cards: [
           { icon: '🌬️', label: 'Breaths are fast' },
           { icon: '😴', label: 'Breaths are slow' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Breath stays the same' },
         ],
       },
       {
+        ask: 'You are standing quietly.',
         bg: 'day',
         base: [at('🧒', 50, 58, 22), at('🌱', 28, 70, 12), ground('green')],
         cards: [
           { icon: '😴', label: 'Breaths are slow' },
           { icon: '🌬️', label: 'Breaths are fast' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Breath stays the same' },
         ],
       },
     ]),

@@ -89,6 +89,7 @@ export const animalHomes: ContentModule = {
       'sci-homes',
       [
         {
+          ask: 'This animal is a fish.',
           base: [at('🐟', 50, 50, 34)],
           cards: [
             { icon: '🌊', label: 'In a pond' },
@@ -97,6 +98,7 @@ export const animalHomes: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a frog.',
           base: [at('🐸', 50, 50, 34)],
           cards: [
             { icon: '🌊', label: 'By a pond' },
@@ -105,6 +107,7 @@ export const animalHomes: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a camel.',
           base: [at('🐪', 50, 50, 34)],
           cards: [
             { icon: '🏜️', label: 'In dry sand' },
@@ -113,6 +116,7 @@ export const animalHomes: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a penguin.',
           base: [at('🐧', 50, 50, 34)],
           cards: [
             { icon: '🧊', label: 'On ice' },
@@ -121,6 +125,7 @@ export const animalHomes: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a monkey.',
           base: [at('🐒', 50, 50, 34)],
           cards: [
             { icon: '🌳', label: 'In the trees' },
@@ -130,6 +135,7 @@ export const animalHomes: ContentModule = {
         },
       
       {
+        ask: 'This animal is a bee.',
         bg: 'day',
         base: [at('🐝', 50, 52, 26)],
         cards: [
@@ -139,6 +145,7 @@ export const animalHomes: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is an ant.',
         bg: 'day',
         base: [at('🐜', 50, 64, 22)],
         cards: [
@@ -148,6 +155,7 @@ export const animalHomes: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a squirrel.',
         bg: 'day',
         base: [at('🐿️', 48, 56, 26)],
         cards: [

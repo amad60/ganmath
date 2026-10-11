@@ -115,6 +115,7 @@ export const sunRainWind: ContentModule = {
   rules: [
     whatHappensNext('sci-weather', [
       {
+        ask: 'Rain falls on the shirt.',
         bg: 'cloudy',
         base: [bar(50, 30, 84, 2, 'gray'), at('🌧️', 30, 14, 20), at('👕', 50, 46, 22), ground()],
         cards: [
@@ -124,6 +125,7 @@ export const sunRainWind: ContentModule = {
         ],
       },
       {
+        ask: 'The sun shines on the water.',
         bg: 'day',
         base: [at('☀️', 82, 16, 18), bar(50, 80, 40, 8, 'blue'), ground()],
         cards: [
@@ -133,15 +135,17 @@ export const sunRainWind: ContentModule = {
         ],
       },
       {
+        ask: 'Wind blows on a leaf.',
         bg: 'day',
         base: [at('💨', 16, 44, 18), at('🍂', 56, 74, 16), ground()],
         cards: [
           { icon: '🍃', label: 'The leaf blows away' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '⏸️', label: 'The weather stays' },
           { icon: '🌱', label: 'It grows' },
         ],
       },
       {
+        ask: 'Wind blows on the kite.',
         bg: 'day',
         base: [at('💨', 14, 36, 16), at('🪁', 54, 72, 18), at('🧒', 78, 76, 22), ground()],
         cards: [
@@ -151,40 +155,44 @@ export const sunRainWind: ContentModule = {
         ],
       },
       {
+        ask: 'Rain falls on the plant.',
         bg: 'cloudy',
         base: [at('🌧️', 40, 16, 22), at('🌱', 50, 70, 22), ground('brown')],
         cards: [
           { icon: '🌿', label: 'The plant grows' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '⏸️', label: 'The weather stays' },
           { icon: '🧊', label: 'It freezes' },
         ],
       },
     
       {
+        ask: 'The cloud is cold.',
         bg: 'cloudy',
         base: [at('☁️', 50, 28, 28), at('❄️', 50, 58, 16)],
         cards: [
           { icon: '❄️', label: 'Snow falls' },
           { icon: '☀️', label: 'The sun comes' },
-          { icon: '🎂', label: 'A cake comes' },
+          { icon: '⏸️', label: 'The weather stays' },
         ],
       },
       {
+        ask: 'Wind blows on the hat.',
         bg: 'day',
         base: [at('💨', 24, 40, 18), at('🎩', 62, 58, 22)],
         cards: [
           { icon: '💨', label: 'The hat blows away' },
           { icon: '🌱', label: 'It grows' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '⏸️', label: 'The weather stays' },
         ],
       },
       {
+        ask: 'A cloud covers the sun.',
         bg: 'cloudy',
         base: [at('☁️', 50, 30, 36), at('🌞', 50, 30, 14)],
         cards: [
           { icon: '🌑', label: 'It gets dim' },
-          { icon: '🌈', label: 'A rainbow comes' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '⏸️', label: 'The weather stays' },
+          { icon: '❔', label: 'Nothing in the sky changes' },
         ],
       },
     ]),

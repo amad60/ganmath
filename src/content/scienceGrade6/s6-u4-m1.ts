@@ -45,7 +45,7 @@ export const beakFitsFood: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A long beak, or a short one.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const beakFitsFood: ContentModule = {
             result: [at('🦢', 58, 46, 28, { fx: 'pop' }), at('🌺', 36, 58, 20), ground('green')],
           },
           { icon: '🦜', label: 'The short beak eats', caption: 'The short beak eats.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🚫', label: 'No beak eats', caption: 'No beak eats.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const beakFitsFood: ContentModule = {
   rules: [
     whatHappensNext('sci-beak', [
       {
+        ask: 'A long beak meets a deep flower.',
         bg: 'day',
         base: [at('🌺', 50, 58, 28), ground('green')],
         cards: [
           { icon: '🦢', label: 'The long beak eats' },
           { icon: '🦜', label: 'The short beak eats' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Any beak can eat it' },
         ],
       },
       {
+        ask: 'A short beak meets a seed.',
         bg: 'day',
         base: [at('🌰', 50, 68, 18), ground('brown')],
         cards: [
           { icon: '🦜', label: 'The short beak eats' },
           { icon: '🦢', label: 'Only a long beak eats' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Any beak can eat it' },
         ],
       },
       {
+        ask: 'A long beak meets a deep flower.',
         bg: 'day',
         base: [at('🌷', 50, 55, 26), ground('green')],
         cards: [
@@ -111,6 +114,7 @@ export const beakFitsFood: ContentModule = {
         ],
       },
       {
+        ask: 'A short beak meets a nut.',
         bg: 'day',
         base: [at('🥜', 50, 66, 16), ground('brown')],
         cards: [
@@ -120,24 +124,27 @@ export const beakFitsFood: ContentModule = {
         ],
       },
       {
+        ask: 'A long beak meets deep flowers.',
         bg: 'day',
         base: [at('🌺', 36, 55, 22), at('🌺', 64, 58, 20), ground('green')],
         cards: [
           { icon: '🦢', label: 'The long beak eats' },
           { icon: '🦜', label: 'The short beak eats' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Any beak can eat it' },
         ],
       },
       {
+        ask: 'A short beak meets grain.',
         bg: 'day',
         base: [at('🌾', 50, 62, 26), ground('green')],
         cards: [
           { icon: '🐤', label: 'The short beak eats' },
           { icon: '🦢', label: 'The long beak only' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Any beak can eat it' },
         ],
       },
       {
+        ask: 'A short beak meets a deep flower.',
         bg: 'day',
         base: [at('🌺', 40, 55, 24), at('🦜', 72, 52, 20), ground('green')],
         cards: [
@@ -147,12 +154,13 @@ export const beakFitsFood: ContentModule = {
         ],
       },
       {
+        ask: 'A long beak meets a fish.',
         bg: 'water',
         base: [at('🐟', 50, 62, 18), at('🌊', 50, 78, 20)],
         cards: [
           { icon: '🦢', label: 'The long beak eats' },
           { icon: '🦜', label: 'The short beak eats' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Any beak can eat it' },
         ],
       },
     ]),

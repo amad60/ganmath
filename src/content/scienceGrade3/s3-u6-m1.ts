@@ -96,15 +96,17 @@ export const rampsAndLevers: ContentModule = {
   rules: [
     whatHappensNext('sci-ramp', [
       {
+        ask: 'You push down on the lever.',
         bg: 'day',
         base: [bar(50, 74, 70, 3, 'brown'), at('🔺', 50, 84, 10), at('🪨', 22, 64, 16), at('👇', 78, 60, 14), ground()],
         cards: [
           { icon: '⬆️', label: 'The rock goes up' },
           { icon: '⬇️', label: 'It sinks down' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The tool does nothing' },
         ],
       },
       {
+        ask: 'The heavier person sits on the other end.',
         bg: 'day',
         base: [bar(50, 74, 76, 3, 'red'), at('🔺', 50, 84, 10), at('👧', 18, 60, 18), at('🧔', 82, 56, 26)],
         cards: [
@@ -114,15 +116,17 @@ export const rampsAndLevers: ContentModule = {
         ],
       },
       {
+        ask: 'You push the cart toward the ramp.',
         bg: 'day',
         base: [bar(56, 72, 60, 4, 'gray', { rotate: -20 }), at('🛒', 22, 80, 14), ground()],
         cards: [
           { icon: '🛒', label: 'It rolls up' },
-          { icon: '🔥', label: 'It burns' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'The tool does nothing' },
+          { icon: '❔', label: 'Hands and tools are the same' },
         ],
       },
       {
+        ask: 'The ball is on a slope.',
         bg: 'day',
         base: [bar(44, 66, 56, 4, 'brown', { rotate: 26 }), at('⚽', 24, 46, 12), ground()],
         cards: [
@@ -132,6 +136,7 @@ export const rampsAndLevers: ContentModule = {
         ],
       },
       {
+        ask: 'You push the spoon under the lid.',
         bg: 'room',
         base: [at('🥫', 40, 64, 30), at('🥄', 66, 48, 20, { rotate: -30 })],
         cards: [
@@ -142,6 +147,7 @@ export const rampsAndLevers: ContentModule = {
       },
     
       {
+        ask: 'You push the box up the ramp.',
         bg: 'day',
         base: [at('📦', 62, 48, 20), at('📐', 40, 68, 28)],
         cards: [
@@ -151,15 +157,17 @@ export const rampsAndLevers: ContentModule = {
         ],
       },
       {
+        ask: 'You push down on the lever under the rock.',
         bg: 'day',
         base: [at('🪨', 68, 64, 20), at('🪵', 36, 52, 28)],
         cards: [
           { icon: '⬆️', label: 'The rock lifts' },
           { icon: '⬇️', label: 'It sinks down' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The tool does nothing' },
         ],
       },
       {
+        ask: 'A ramp is in front of the cart.',
         bg: 'day',
         base: [at('🛒', 58, 58, 26), at('📐', 32, 70, 22)],
         cards: [

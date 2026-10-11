@@ -88,15 +88,17 @@ export const airTakesSpace: ContentModule = {
   rules: [
     whatHappensNext('sci-air', [
       {
+        ask: 'Wind blows on the kite.',
         bg: 'day',
         base: [at('🌬️', 16, 30, 18), at('🪁', 56, 60, 22), ground()],
         cards: [
           { icon: '🪁', label: 'It flies up' },
-          { icon: '🪨', label: 'It turns to rock' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'Air does nothing' },
+          { icon: '❔', label: 'Wind cannot push' },
         ],
       },
       {
+        ask: 'A pin opens the balloon.',
         bg: 'day',
         base: [at('🎈', 50, 40, 34), at('📌', 76, 40, 14)],
         cards: [
@@ -106,6 +108,7 @@ export const airTakesSpace: ContentModule = {
         ],
       },
       {
+        ask: 'Wind blows on the leaves.',
         bg: 'day',
         base: [at('🌬️', 16, 28, 18), at('🍂', 50, 82, 12), at('🍂', 64, 84, 12), ground()],
         cards: [
@@ -115,49 +118,54 @@ export const airTakesSpace: ContentModule = {
         ],
       },
       {
+        ask: 'Wind blows on the chime.',
         bg: 'day',
         base: [at('🌬️', 16, 30, 18), at('🎐', 60, 40, 24)],
         cards: [
           { icon: '🔔', label: 'It rings' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Air does nothing' },
           { icon: '😴', label: 'It sleeps' },
         ],
       },
       {
+        ask: 'Wind blows on the shirt.',
         bg: 'day',
         base: [at('🌬️', 16, 28, 18), at('👕', 60, 48, 22), bar(60, 32, 70, 2, 'brown')],
         cards: [
           { icon: '👋', label: 'The shirt moves' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'Air does nothing' },
           { icon: '🌙', label: 'It is night' },
         ],
       },
     
       {
+        ask: 'Air is blown into the water.',
         bg: 'water',
         base: [at('🍾', 46, 48, 24), at('💧', 70, 70, 20)],
         cards: [
           { icon: '🫧', label: 'Bubbles rise' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'Air does nothing' },
           { icon: '🌱', label: 'It grows' },
         ],
       },
       {
+        ask: 'The fan blows on the paper.',
         bg: 'room',
         base: [at('🌀', 28, 50, 22), at('📄', 68, 56, 18)],
         cards: [
           { icon: '💨', label: 'The paper moves' },
           { icon: '🪨', label: 'The paper stays' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Air does nothing' },
         ],
       },
       {
+        ask: 'Air is blown into the ball.',
         bg: 'room',
         base: [at('⚽', 50, 58, 26), at('💨', 28, 40, 14)],
         cards: [
           { icon: '🎈', label: 'The ball gets bigger' },
           { icon: '🥀', label: 'It shrinks' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Air does nothing' },
         ],
       },
     ]),

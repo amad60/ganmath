@@ -94,6 +94,7 @@ export const magnetsPull: ContentModule = {
   rules: [
     whatHappensNext('sci-magnet', [
       {
+        ask: 'A magnet comes near a paper clip.',
         bg: 'room',
         base: [ground('brown'), at('🧲', 22, 62, 24), at('📎', 74, 68, 14)],
         cards: [
@@ -103,24 +104,27 @@ export const magnetsPull: ContentModule = {
         ],
       },
       {
+        ask: 'A magnet comes near wood.',
         bg: 'room',
         base: [ground('brown'), at('🧲', 22, 62, 24), at('🪵', 74, 70, 16)],
         cards: [
           { icon: '🛑', label: 'It stays' },
           { icon: '⬅️', label: 'It moves to the magnet' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The magnet does nothing' },
         ],
       },
       {
+        ask: 'A magnet comes near a metal bolt.',
         bg: 'room',
         base: [ground('brown'), at('🧲', 22, 62, 24), at('🔩', 74, 68, 14)],
         cards: [
           { icon: '⬅️', label: 'It moves to the magnet' },
           { icon: '🛑', label: 'It stays' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'The magnet does nothing' },
         ],
       },
       {
+        ask: 'A magnet comes near a toy.',
         bg: 'room',
         base: [ground('brown'), at('🧲', 22, 62, 24), at('🧸', 74, 66, 20)],
         cards: [
@@ -130,40 +134,44 @@ export const magnetsPull: ContentModule = {
         ],
       },
       {
+        ask: 'A magnet comes near a safety pin.',
         bg: 'room',
         base: [ground('brown'), at('🧲', 22, 62, 24), at('🧷', 74, 68, 14)],
         cards: [
           { icon: '⬅️', label: 'It moves to the magnet' },
           { icon: '🛑', label: 'It stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The magnet does nothing' },
         ],
       },
     
       {
+        ask: 'A magnet comes near a pin.',
         bg: 'room',
         base: [at('🧲', 28, 52, 24), at('📌', 68, 54, 16)],
         cards: [
           { icon: '📌', label: 'It moves to the magnet' },
           { icon: '🍃', label: 'The leaf jumps' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'The magnet does nothing' },
         ],
       },
       {
+        ask: 'A magnet comes near paper.',
         bg: 'room',
         base: [at('🧲', 28, 52, 24), at('📄', 70, 56, 18)],
         cards: [
           { icon: '📄', label: 'It stays' },
           { icon: '📎', label: 'It jumps over' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The magnet does nothing' },
         ],
       },
       {
+        ask: 'A magnet comes near a key.',
         bg: 'room',
         base: [at('🧲', 28, 52, 24), at('🔑', 70, 56, 18)],
         cards: [
           { icon: '🔑', label: 'It moves to the magnet' },
           { icon: '🪵', label: 'The wood jumps' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'The magnet does nothing' },
         ],
       },
     ]),

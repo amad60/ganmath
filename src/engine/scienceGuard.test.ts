@@ -128,6 +128,28 @@ describe('Science Level 1 — soal gambar tidak bisa diluluskan dengan menebak p
     }
   });
 
+  it('setiap soal sains menyebut sebabnya, dan pilihan lain bukan lelucon', () => {
+    const joke = /rainbow|\bcake\b|drum play|boat comes|turns to rock|makes fruit|swims away|can fly|^it flies$|^it burns$|^it rings$|^it snows$|flower comes|^a flower$|flower grows|apple falls|^a fire$|^snow$|erupt|they burn|^it rains$|^rain$|cloud burns|fire starts|rocks fall|swims in the sky|bell rings|^it blooms$|flowers grow/i;
+    for (const mod of level1) {
+      expect(mod.learn[1]?.prompt, mod.id).not.toBe('See this. See what changes.');
+      for (const rule of mod.rules) {
+        const hi = rule.params.p?.[1] ?? 0;
+        for (let p = 0; p <= hi; p++) {
+          const text = rule.text({ p });
+          expect(text, `${mod.id} p=${p}`).not.toBe('What happens next?');
+          const visual = rule.visual?.({ p });
+          if (visual?.kind !== 'science-scene') continue;
+          expect(text, `${mod.id} p=${p}`).not.toBe(visual.options[0]?.label);
+          const pattern = mod.id === 's1-u6-m1' ? /cake|in the sky/i : joke;
+          for (const [i, card] of visual.options.entries()) {
+            if (i === 0) continue;
+            expect(card.label, `${mod.id} p=${p}`).not.toMatch(pattern);
+          }
+        }
+      }
+    }
+  });
+
   it('Learn Level 1: tahap concrete dan pictorial adalah adegan yang dikerjakan', () => {
     for (const mod of level1) {
       const [concrete, pictorial, abstract] = mod.learn;

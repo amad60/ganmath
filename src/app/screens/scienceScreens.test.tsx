@@ -59,7 +59,7 @@ describe('Science Level 1 di layar', () => {
     expect(screen.getByRole('button', { name: /next/i })).not.toBeDisabled();
   });
 
-  it('soal pick-picture: tiga kartu GAMBAR tanpa tulisan, jawaban benar dinilai benar', () => {
+  it('soal pick-picture: kartu menunjukkan ikon dan akibatnya, jawaban benar dinilai benar', () => {
     vi.useFakeTimers();
     const s = pictureFirst('s1-u3-m1');
     const q = s.pending[0]!.question;
@@ -69,8 +69,10 @@ describe('Science Level 1 di layar', () => {
     if (q.visual?.kind !== 'science-scene') throw new Error('bukan adegan');
     const cards = q.visual.options.map((o) => screen.getByRole('button', { name: o.label }));
     expect(cards).toHaveLength(3);
-    // Kartunya gambar: isinya emoji, bukan kalimat yang bisa dicocokkan kata per kata.
-    for (const [i, c] of cards.entries()) expect(c.textContent).toBe(q.visual.options[i]!.icon);
+    for (const [i, c] of cards.entries()) {
+      expect(c.textContent).toContain(q.visual.options[i]!.icon);
+      expect(c.textContent).toContain(q.visual.options[i]!.label);
+    }
     fireEvent.click(cards[q.answer]!);
     expect(screen.getByRole('status').textContent).toBe('Yes!');
   });

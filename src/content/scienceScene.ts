@@ -26,29 +26,34 @@ export function bar(
 /** Tanah selebar adegan di bagian bawah. */
 export const ground = (color: SceneColor = 'green'): SceneItem => bar(50, 94, 100, 14, color);
 
-/** Satu kartu di soal `pick-picture`. Namanya hanya untuk pembaca layar. */
+/** Satu kartu di soal `pick-picture`. Ikon DAN label-nya sama-sama terlihat. */
 export type PictureCard = { icon: string; label: string };
 
 /**
- * Satu soal "What happens next?": gambar keadaannya, lalu tiga kartu akibat.
- * Kartu PERTAMA selalu yang benar — generator mengacak urutannya (lihat
- * `generateSet`), jadi penulis tidak perlu dan tidak boleh mengacak sendiri.
+ * Satu soal sebab-akibat: gambar keadaannya, pertanyaan yang menyebut sebabnya,
+ * lalu tiga kartu akibat. Kartu PERTAMA selalu yang benar — generator mengacak
+ * urutannya (lihat `generateSet`), jadi penulis tidak boleh mengacak sendiri.
  */
 export type NextScenario = {
   base: SceneItem[];
   bg?: SceneBg;
+  /**
+   * Pertanyaan soal ini. Harus menyebut keadaan yang diubah ("The front muscle
+   * pulls the arm."), bukan "What happens next?" — gambar emoji tidak membawa
+   * sebab itu sendiri.
+   */
+  ask?: string;
   cards: [PictureCard, PictureCard, PictureCard];
 };
 
 /**
- * Aturan `pick-picture` dari daftar skenario. Soalnya tidak pernah butuh
- * membaca lebih dari "What happens next?" — gambar keadaannya yang ditanyakan,
- * gambar akibatnya yang dijawab.
+ * Aturan `pick-picture` dari daftar skenario. `ask` tiap skenario menang atas
+ * pertanyaan bersama: delapan gambar sering delapan keadaan yang berbeda.
  */
 export function whatHappensNext(
   skill: string,
   scenarios: NextScenario[],
-  /** Kalimat soal. Indra memakai "Which part knows?" — akibatnya ada di bagian tubuh. */
+  /** Cadangan kalau skenario tidak punya `ask`. Jangan memakai kalimat kosong. */
   question = 'What happens next?',
 ): QuestionRule {
   return {
@@ -56,7 +61,7 @@ export function whatHappensNext(
     skill,
     params: { p: [0, scenarios.length - 1] },
     answer: () => 0,
-    text: () => question,
+    text: (p) => scenarios[p.p as number]?.ask ?? question,
     visual: (p) => {
       const s = scenarios[p.p as number] ?? scenarios[0]!;
       return {

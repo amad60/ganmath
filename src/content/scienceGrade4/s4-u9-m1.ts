@@ -47,7 +47,7 @@ export const longerDays: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A long day, or a short one.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -87,24 +87,27 @@ export const longerDays: ContentModule = {
     whatHappensNext('sci-season', [
       {
         bg: 'day',
+        ask: 'The day is long and sunny.',
         base: [at('☀️', 80, 16, 18), at('🌱', 50, 64, 20), at('💧', 26, 74, 10), ground('green')],
         cards: [
           { icon: '🌿', label: 'The plant grows' },
           { icon: '😴', label: 'The plant rests' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
       {
         bg: 'night',
+        ask: 'The day is short and dark.',
         base: [at('🌙', 80, 16, 16), at('🌱', 50, 64, 20), at('💧', 26, 74, 10), ground('green')],
         cards: [
           { icon: '😴', label: 'The plant rests' },
           { icon: '🌱', label: 'The plant grows' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
       {
         bg: 'day',
+        ask: 'The sun stays up a long time.',
         base: [at('☀️', 18, 16, 14), at('☀️', 80, 18, 16), at('🌱', 50, 66, 18), ground('green')],
         cards: [
           { icon: '🌸', label: 'The plant grows' },
@@ -114,6 +117,7 @@ export const longerDays: ContentModule = {
       },
       {
         bg: 'night',
+        ask: 'The nights are long.',
         base: [at('🌙', 78, 16, 16), at('🌑', 22, 20, 12), at('🌱', 50, 66, 18), ground('brown')],
         cards: [
           { icon: '🍂', label: 'The plant rests' },
@@ -123,6 +127,7 @@ export const longerDays: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'A long sunny day for the tree.',
         base: [at('☀️', 82, 14, 18), at('🌳', 50, 56, 32), ground()],
         cards: [
           { icon: '🍎', label: 'The tree grows' },
@@ -132,29 +137,32 @@ export const longerDays: ContentModule = {
       },
       {
         bg: 'night',
+        ask: 'A short dark day for the tree.',
         base: [at('🌙', 80, 16, 14), at('🌳', 50, 58, 28), ground()],
         cards: [
           { icon: '🪵', label: 'The tree rests' },
           { icon: '🌳', label: 'The tree grows' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
       {
         bg: 'day',
+        ask: 'Sun and water. The day is long.',
         base: [at('☀️', 80, 16, 16), at('💧', 24, 40, 12), at('🌱', 50, 66, 18), ground('green')],
         cards: [
           { icon: '🌿', label: 'The plant grows' },
           { icon: '😴', label: 'The plant rests' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
       {
         bg: 'night',
+        ask: 'The day is short, even with water.',
         base: [at('🌙', 78, 16, 14), at('💧', 24, 42, 12), at('🌱', 50, 66, 18), ground('green')],
         cards: [
           { icon: '😴', label: 'The plant rests' },
           { icon: '🌿', label: 'The plant grows' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
     ]),

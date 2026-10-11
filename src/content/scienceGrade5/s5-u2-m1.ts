@@ -45,7 +45,7 @@ export const itComesBack: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Warm the ice, or the paper.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const itComesBack: ContentModule = {
             result: [at('🖤', 50, 55, 24, { fx: 'fade' })],
           },
           { icon: '📄', label: 'The paper comes back', caption: 'The paper comes back.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '💧', label: 'The paper melts', caption: 'The paper melts.' },
         ],
         correct: 0,
       },
@@ -84,42 +84,47 @@ export const itComesBack: ContentModule = {
   rules: [
     whatHappensNext('sci-melt', [
       {
+        ask: 'Ice sits in the warm sun.',
         bg: 'day',
         base: [at('🧊', 50, 52, 26), at('☀️', 80, 18, 16)],
         cards: [
           { icon: '💧', label: 'The ice melts' },
           { icon: '🧊', label: 'It stays ice' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Every change comes back' },
         ],
       },
       {
+        ask: 'Melted water sits in the cold.',
         bg: 'room',
         base: [at('💧', 50, 55, 20), at('❄️', 80, 18, 16)],
         cards: [
           { icon: '🧊', label: 'It is ice again' },
           { icon: '💧', label: 'It stays water' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Every change comes back' },
         ],
       },
       {
+        ask: 'Chocolate sits in the sun.',
         bg: 'day',
         base: [at('🍫', 50, 52, 24), at('☀️', 80, 18, 14)],
         cards: [
           { icon: '🟤', label: 'It melts' },
           { icon: '🍫', label: 'It stays' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Every change comes back' },
         ],
       },
       {
+        ask: 'Melted chocolate sits in the cold.',
         bg: 'room',
         base: [at('🟤', 50, 58, 22), at('❄️', 80, 18, 14)],
         cards: [
           { icon: '🍫', label: 'It comes back' },
           { icon: '🟤', label: 'It stays melted' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Every change comes back' },
         ],
       },
       {
+        ask: 'Paper sits in the fire.',
         bg: 'room',
         base: [at('📄', 40, 55, 22), at('🔥', 70, 48, 18)],
         cards: [
@@ -129,30 +134,33 @@ export const itComesBack: ContentModule = {
         ],
       },
       {
+        ask: 'Burned paper sits in the cold.',
         bg: 'room',
         base: [at('🖤', 50, 55, 24), at('❄️', 80, 18, 14)],
         cards: [
           { icon: '🚫', label: 'It does not come back' },
           { icon: '📄', label: 'The paper comes back' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '❔', label: 'Every change comes back' },
         ],
       },
       {
+        ask: 'Milk sits in the sun.',
         bg: 'day',
         base: [at('🥛', 50, 55, 26), at('☀️', 80, 18, 14)],
         cards: [
           { icon: '💧', label: 'It stays water' },
           { icon: '🧊', label: 'It turns to ice' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Every change comes back' },
         ],
       },
       {
+        ask: 'Milk sits in the cold.',
         bg: 'room',
         base: [at('🚪', 62, 48, 24), at('❄️', 28, 20, 14), at('🥛', 40, 58, 18)],
         cards: [
           { icon: '🧊', label: 'The water turns to ice' },
-          { icon: '🔥', label: 'It burns' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Every change comes back' },
+          { icon: '❔', label: 'Nothing can melt' },
         ],
       },
     ]),

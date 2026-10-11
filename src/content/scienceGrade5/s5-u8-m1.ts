@@ -45,7 +45,7 @@ export const highOrLow: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A tight string, or a loose one.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const highOrLow: ContentModule = {
             result: [at('〰️', 50, 55, 26), at('⬇️', 78, 68, 14, { fx: 'fall' })],
           },
           { icon: '⬆️', label: 'The sound is high', caption: 'The sound is high.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🔇', label: 'No sound', caption: 'No sound.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const highOrLow: ContentModule = {
   rules: [
     whatHappensNext('sci-pitch', [
       {
+        ask: 'The string is pulled tight.',
         bg: 'room',
         base: [at('🎸', 46, 55, 26), at('💪', 78, 40, 14)],
         cards: [
           { icon: '⬆️', label: 'The sound is high' },
           { icon: '⬇️', label: 'The sound is low' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Tight and loose sound the same' },
         ],
       },
       {
+        ask: 'The string is loose.',
         bg: 'room',
         base: [at('🎸', 50, 58, 26), at('〰️', 50, 36, 16)],
         cards: [
           { icon: '⬇️', label: 'The sound is low' },
           { icon: '⬆️', label: 'The sound is high' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Tight and loose sound the same' },
         ],
       },
       {
+        ask: 'The drum skin is tight.',
         bg: 'room',
         base: [at('🥁', 50, 55, 28), at('💪', 78, 36, 14)],
         cards: [
@@ -111,6 +114,7 @@ export const highOrLow: ContentModule = {
         ],
       },
       {
+        ask: 'The drum skin is loose.',
         bg: 'room',
         base: [at('🥁', 50, 58, 26), at('〰️', 72, 30, 14)],
         cards: [
@@ -120,39 +124,43 @@ export const highOrLow: ContentModule = {
         ],
       },
       {
+        ask: 'A tight string is plucked.',
         bg: 'plain',
         base: [at('➖', 50, 50, 20), at('💪', 80, 40, 14)],
         cards: [
           { icon: '⬆️', label: 'The sound is high' },
           { icon: '⬇️', label: 'The sound is low' },
-          { icon: '🔔', label: 'A bell rings' },
+          { icon: '🚫', label: 'Tight and loose sound the same' },
         ],
       },
       {
+        ask: 'A loose string is plucked.',
         bg: 'plain',
         base: [at('〰️', 50, 52, 24)],
         cards: [
           { icon: '⬇️', label: 'The sound is low' },
           { icon: '⬆️', label: 'The sound is high' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Tight and loose sound the same' },
         ],
       },
       {
+        ask: 'The guitar string is tight.',
         bg: 'room',
         base: [at('🎸', 40, 55, 24), at('☝️', 70, 42, 16)],
         cards: [
           { icon: '⬆️', label: 'The sound is high' },
           { icon: '⬇️', label: 'The sound is low' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Tight and loose sound the same' },
         ],
       },
       {
+        ask: 'The rubber band is loose.',
         bg: 'room',
         base: [at('🫙', 36, 58, 20), at('〰️', 62, 48, 16)],
         cards: [
           { icon: '⬇️', label: 'The sound is low' },
           { icon: '⬆️', label: 'The sound is high' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Tight and loose sound the same' },
         ],
       },
     ]),

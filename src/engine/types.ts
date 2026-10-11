@@ -193,7 +193,7 @@ export type ScienceSceneVisual = {
 export type SceneBg = 'day' | 'night' | 'cloudy' | 'water' | 'room' | 'plain';
 
 export type SceneOption = {
-  /** Emoji tombol/kartu. Di soal `pick-picture` inilah SATU-SATUNYA yang dilihat anak. */
+  /** Emoji tombol/kartu. Di soal `pick-picture` label-nya ikut tertulis di bawahnya. */
   icon: string;
   /** ≤8 kata. Ditulis di tombol `change`, jadi nama bagian di `tap-part`. */
   label: string;

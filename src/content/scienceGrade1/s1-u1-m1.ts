@@ -90,6 +90,7 @@ export const whatLivingThingsNeed: ContentModule = {
   rules: [
     whatHappensNext('sci-needs', [
       {
+        ask: 'Water is blocked from the plant.',
         bg: 'day',
         base: [at('☀️', 84, 16, 14), at('🌱', 50, 66, 24), at('💧', 20, 34, 12), at('🚫', 20, 34, 20), ground('brown')],
         cards: [
@@ -99,67 +100,74 @@ export const whatLivingThingsNeed: ContentModule = {
         ],
       },
       {
+        ask: 'Water falls on the plant.',
         bg: 'day',
         base: [at('☀️', 84, 16, 14), at('💧', 40, 24, 10), at('💧', 58, 20, 10), at('🌱', 50, 66, 24), ground('brown')],
         cards: [
           { icon: '🌿', label: 'It grows' },
           { icon: '🥀', label: 'It dries up' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'It needs nothing' },
         ],
       },
       {
+        ask: 'The dog has a bone.',
         bg: 'room',
         base: [at('🐶', 36, 60, 26), at('🦴', 70, 74, 16)],
         cards: [
           { icon: '😋', label: 'It eats' },
           { icon: '😢', label: 'It cries' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'It needs nothing' },
         ],
       },
       {
+        ask: 'A fish is on dry sand.',
         bg: 'day',
         base: [bar(50, 88, 100, 24, 'yellow'), at('🐟', 50, 66, 22, { rotate: -15 })],
         cards: [
           { icon: '😣', label: 'It feels bad' },
           { icon: '😄', label: 'It feels great' },
-          { icon: '🐦', label: 'It can fly' },
+          { icon: '🚫', label: 'It needs nothing' },
         ],
       },
       {
+        ask: 'The cat has milk.',
         bg: 'room',
         base: [at('🐱', 36, 60, 26), at('🥛', 70, 70, 16)],
         cards: [
           { icon: '😌', label: 'It feels good' },
           { icon: '😠', label: 'It gets angry' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'It needs nothing' },
         ],
       },
     
       {
+        ask: 'The bird has grain.',
         bg: 'day',
         base: [at('🐦', 38, 58, 26), at('🌾', 72, 70, 18)],
         cards: [
           { icon: '😋', label: 'It eats' },
-          { icon: '🌧️', label: 'It rains' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'It needs nothing' },
+          { icon: '❔', label: 'Living things stay the same' },
         ],
       },
       {
+        ask: 'The fish is in water.',
         bg: 'water',
         base: [at('🐠', 50, 55, 28), at('💧', 22, 28, 14)],
         cards: [
           { icon: '😌', label: 'It is fine' },
           { icon: '🥀', label: 'It dries up' },
-          { icon: '🐦', label: 'It flies' },
+          { icon: '🚫', label: 'It needs nothing' },
         ],
       },
       {
+        ask: 'The child has an apple.',
         bg: 'room',
         base: [at('🧒', 38, 58, 28), at('🍎', 72, 66, 16)],
         cards: [
           { icon: '😋', label: 'The child eats' },
-          { icon: '❄️', label: 'It snows' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'It needs nothing' },
+          { icon: '❔', label: 'Living things stay the same' },
         ],
       },
     ]),

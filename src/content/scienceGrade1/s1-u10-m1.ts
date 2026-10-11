@@ -84,6 +84,7 @@ export const lookAfterThem: ContentModule = {
   rules: [
     whatHappensNext('sci-care', [
       {
+        ask: 'The cat bowl is empty.',
         bg: 'room',
         base: [at('🐱', 40, 58, 26), at('🥣', 72, 76, 14)],
         cards: [
@@ -93,43 +94,48 @@ export const lookAfterThem: ContentModule = {
         ],
       },
       {
+        ask: 'The dog is given a bone.',
         bg: 'room',
         base: [at('🐶', 36, 60, 26), at('🦴', 70, 74, 16), at('✋', 70, 50, 12)],
         cards: [
           { icon: '😊', label: 'It is happy' },
           { icon: '😢', label: 'It is sad' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'Nothing changes' },
         ],
       },
       {
+        ask: 'A child gives the plant water.',
         bg: 'day',
         base: [at('🧒', 24, 62, 24), at('💧', 46, 40, 10), at('🌱', 64, 72, 20), ground('brown')],
         cards: [
           { icon: '🌻', label: 'It grows' },
           { icon: '🥀', label: 'It dries up' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'Nothing changes' },
         ],
       },
       {
+        ask: 'A gentle hand holds the rabbit.',
         bg: 'day',
         base: [at('🐰', 46, 66, 24), at('✋', 66, 46, 14), ground()],
         cards: [
           { icon: '😊', label: 'It feels safe' },
           { icon: '😱', label: 'It is scared' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Nothing changes' },
         ],
       },
       {
+        ask: 'The bird is given water.',
         bg: 'day',
         base: [at('🐦', 40, 50, 20), at('💧', 66, 70, 14), ground()],
         cards: [
           { icon: '😋', label: 'The bird drinks' },
           { icon: '😢', label: 'The bird cries' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'Nothing changes' },
         ],
       },
     
       {
+        ask: 'The plant is given water.',
         bg: 'day',
         base: [at('🌱', 50, 60, 26), at('💧', 30, 36, 14)],
         cards: [
@@ -139,15 +145,17 @@ export const lookAfterThem: ContentModule = {
         ],
       },
       {
+        ask: 'The dog is given meat.',
         bg: 'room',
         base: [at('🐶', 42, 58, 28), at('🍖', 74, 66, 16)],
         cards: [
           { icon: '😊', label: 'It is glad' },
           { icon: '😢', label: 'It is sad' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'Nothing changes' },
         ],
       },
       {
+        ask: 'The cat is given water.',
         bg: 'day',
         base: [at('🐈', 42, 58, 28), at('💧', 74, 40, 14)],
         cards: [

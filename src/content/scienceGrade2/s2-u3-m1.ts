@@ -82,6 +82,7 @@ export const lifeCycles: ContentModule = {
   rules: [
     whatHappensNext('sci-cycle', [
       {
+        ask: 'A caterpillar is eating a leaf.',
         bg: 'day',
         base: [at('🍃', 50, 60, 40), at('🐛', 50, 52, 20)],
         cards: [
@@ -91,15 +92,17 @@ export const lifeCycles: ContentModule = {
         ],
       },
       {
+        ask: 'An egg sits in the nest.',
         bg: 'day',
         base: [at('🪺', 50, 56, 36)],
         cards: [
           { icon: '🐣', label: 'A chick comes out' },
           { icon: '🐛', label: 'A caterpillar comes out' },
-          { icon: '🌸', label: 'A flower comes out' },
+          { icon: '🚫', label: 'It stays this way' },
         ],
       },
       {
+        ask: 'A butterfly is on a flower.',
         bg: 'day',
         base: [at('🌸', 50, 64, 30), at('🦋', 50, 30, 20)],
         cards: [
@@ -109,6 +112,7 @@ export const lifeCycles: ContentModule = {
         ],
       },
       {
+        ask: 'A chick has just come out.',
         bg: 'day',
         base: [ground('green'), at('🐣', 50, 66, 30)],
         cards: [
@@ -118,6 +122,7 @@ export const lifeCycles: ContentModule = {
         ],
       },
       {
+        ask: 'A seed gets rain.',
         bg: 'day',
         base: [bar(50, 88, 100, 24, 'brown'), at('🌰', 50, 80, 9), at('🌧️', 50, 20, 20)],
         cards: [
@@ -128,15 +133,17 @@ export const lifeCycles: ContentModule = {
       },
     
       {
+        ask: 'A tadpole has grown legs.',
         bg: 'water',
         base: [at('🐤', 28, 58, 16), at('🐸', 62, 58, 24)],
         cards: [
           { icon: '🐸', label: 'A frog' },
           { icon: '🥚', label: 'It goes back in the egg' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'It stays this way' },
         ],
       },
       {
+        ask: 'A caterpillar is ready to change.',
         bg: 'day',
         base: [at('🐛', 50, 60, 26)],
         cards: [
@@ -146,6 +153,7 @@ export const lifeCycles: ContentModule = {
         ],
       },
       {
+        ask: 'A chick has hatched.',
         bg: 'day',
         base: [at('🐣', 50, 58, 28)],
         cards: [

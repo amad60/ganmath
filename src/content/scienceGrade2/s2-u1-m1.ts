@@ -107,15 +107,17 @@ export const seedsGrow: ContentModule = {
   rules: [
     whatHappensNext('sci-seeds', [
       {
+        ask: 'A seed gets sun and rain.',
         bg: 'day',
         base: [at('☀️', 84, 16, 16), at('🌧️', 36, 18, 18), bar(50, 88, 100, 24, 'brown'), at('🌰', 50, 80, 9)],
         cards: [
           { icon: '🌱', label: 'A sprout comes up' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'The seed does nothing' },
           { icon: '🧊', label: 'It turns to ice' },
         ],
       },
       {
+        ask: 'Seeds sit with no water.',
         bg: 'room',
         base: [bar(50, 80, 56, 4, 'white'), at('🌰', 44, 74, 9), at('🌰', 56, 74, 9)],
         cards: [
@@ -125,15 +127,17 @@ export const seedsGrow: ContentModule = {
         ],
       },
       {
+        ask: 'A sprout gets sun and rain.',
         bg: 'day',
         base: [at('☀️', 84, 16, 16), at('🌧️', 30, 18, 18), bar(50, 88, 100, 24, 'brown'), at('🌱', 50, 64, 20)],
         cards: [
           { icon: '🌿', label: 'It grows' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The seed does nothing' },
           { icon: '🐟', label: 'It swims' },
         ],
       },
       {
+        ask: 'The flower is finished.',
         bg: 'day',
         base: [at('🌻', 50, 50, 40), bar(50, 92, 100, 16, 'brown')],
         cards: [
@@ -143,6 +147,7 @@ export const seedsGrow: ContentModule = {
         ],
       },
       {
+        ask: 'A seed comes from the apple.',
         bg: 'day',
         base: [at('🍎', 28, 34, 18), at('👉', 46, 60, 10), bar(50, 88, 100, 24, 'brown'), at('🌰', 62, 80, 9)],
         cards: [
@@ -153,6 +158,7 @@ export const seedsGrow: ContentModule = {
       },
     
       {
+        ask: 'A seed is stuck under a rock.',
         bg: 'day',
         base: [at('🌰', 50, 70, 16), at('🪨', 50, 48, 28)],
         cards: [
@@ -162,21 +168,23 @@ export const seedsGrow: ContentModule = {
         ],
       },
       {
+        ask: 'A seed gets a little water in the dark.',
         bg: 'day',
         base: [at('🌰', 50, 72, 14), at('💧', 36, 40, 12), at('🌑', 78, 22, 16)],
         cards: [
           { icon: '🌱', label: 'A small sprout' },
           { icon: '🌳', label: 'It grows huge' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'The seed does nothing' },
         ],
       },
       {
+        ask: 'A sprout gets water and sun.',
         bg: 'day',
         base: [at('🌱', 50, 62, 24), at('💧', 28, 36, 12), at('☀️', 80, 18, 16)],
         cards: [
           { icon: '🌿', label: 'It grows' },
           { icon: '🥀', label: 'It dries up' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'The seed does nothing' },
         ],
       },
     ]),

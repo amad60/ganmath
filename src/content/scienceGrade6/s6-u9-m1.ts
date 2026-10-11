@@ -45,7 +45,7 @@ export const pickTheIronOut: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A magnet, or not.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const pickTheIronOut: ContentModule = {
             result: [at('🧲', 50, 26, 16), at('⚙️', 50, 42, 14, { fx: 'rise' }), at('🏖️', 50, 74, 22)],
           },
           { icon: '👀', label: 'The iron stays', caption: 'The iron stays.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🏖️', label: 'The sand comes out', caption: 'The sand comes out.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const pickTheIronOut: ContentModule = {
   rules: [
     whatHappensNext('sci-iron', [
       {
+        ask: 'A magnet is held over iron in sand.',
         bg: 'room',
         base: [at('🧲', 50, 22, 16), at('🏖️', 50, 70, 24), at('🔩', 48, 62, 12)],
         cards: [
           { icon: '⚙️', label: 'The iron comes out' },
           { icon: '👀', label: 'It all stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The magnet takes the sand' },
         ],
       },
       {
+        ask: 'Iron sits in sand, with no magnet.',
         bg: 'room',
         base: [at('🏖️', 50, 68, 26), at('🔩', 50, 60, 12)],
         cards: [
           { icon: '👀', label: 'The iron stays' },
           { icon: '⚙️', label: 'The iron comes out' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The magnet takes the sand' },
         ],
       },
       {
+        ask: 'A magnet is held over paper.',
         bg: 'room',
         base: [at('🧲', 50, 22, 16), at('📄', 50, 64, 18)],
         cards: [
@@ -111,6 +114,7 @@ export const pickTheIronOut: ContentModule = {
         ],
       },
       {
+        ask: 'A magnet is held over iron alone.',
         bg: 'plain',
         base: [at('🧲', 50, 24, 18), at('🔩', 50, 64, 16)],
         cards: [
@@ -120,39 +124,43 @@ export const pickTheIronOut: ContentModule = {
         ],
       },
       {
+        ask: 'A magnet is held over sand alone.',
         bg: 'room',
         base: [at('🧲', 50, 22, 16), at('🏖️', 50, 70, 26)],
         cards: [
           { icon: '🚫', label: 'The sand stays' },
           { icon: '⚙️', label: 'The sand comes out' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '❔', label: 'The magnet takes the sand' },
         ],
       },
       {
+        ask: 'A magnet is held over iron in rice.',
         bg: 'room',
         base: [at('🧲', 50, 22, 16), at('🍚', 50, 68, 20), at('🔩', 50, 60, 10)],
         cards: [
           { icon: '⚙️', label: 'The iron comes out' },
           { icon: '👀', label: 'It all stays' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'The magnet takes the sand' },
         ],
       },
       {
+        ask: 'A magnet is held over a toy.',
         bg: 'plain',
         base: [at('🧲', 50, 24, 16), at('🧸', 50, 64, 20)],
         cards: [
           { icon: '🚫', label: 'Nothing comes out' },
           { icon: '⚙️', label: 'It comes out' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '❔', label: 'The magnet takes the sand' },
         ],
       },
       {
+        ask: 'A magnet is held over iron, sand, and paper.',
         bg: 'room',
         base: [at('🧲', 36, 28, 16), at('🏖️', 62, 70, 22), at('🔩', 58, 60, 10), at('📄', 40, 66, 12)],
         cards: [
           { icon: '⚙️', label: 'Only the iron comes out' },
           { icon: '👀', label: 'Sand and paper come out' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'The magnet takes the sand' },
         ],
       },
     ]),

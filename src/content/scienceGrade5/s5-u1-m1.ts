@@ -47,7 +47,7 @@ export const onlyOneChange: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Light on one plant, or dark.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -61,7 +61,7 @@ export const onlyOneChange: ContentModule = {
             result: [at('☀️', 82, 16, 14), at('🌿', 28, 56, 22), at('🥀', 68, 58, 20, { fx: 'droop' }), ground('brown')],
           },
           { icon: '🌿', label: 'They stay', caption: 'They stay.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '💧', label: 'Water makes it pale', caption: 'Water makes it pale.' },
         ],
         correct: 0,
       },
@@ -86,24 +86,27 @@ export const onlyOneChange: ContentModule = {
   rules: [
     whatHappensNext('sci-fair', [
       {
+        ask: 'Same water. One plant is covered.',
         bg: 'day',
         base: [at('💧', 26, 74, 10), at('💧', 72, 74, 10), at('🌱', 28, 56, 18), at('📦', 70, 50, 16), ground('brown')],
         cards: [
           { icon: '🥀', label: 'The covered plant is pale' },
           { icon: '🌿', label: 'Both stay green' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Two changes are still fair' },
         ],
       },
       {
+        ask: 'Same light. One plant is dry.',
         bg: 'day',
         base: [at('☀️', 80, 16, 14), at('💧', 28, 74, 10), at('🌱', 30, 56, 18), at('🏜️', 72, 70, 14), at('🌱', 72, 52, 16), ground('brown')],
         cards: [
           { icon: '🥀', label: 'The dry one droops' },
           { icon: '🌿', label: 'Both stay' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Two changes are still fair' },
         ],
       },
       {
+        ask: 'Light and water are the same for both.',
         bg: 'day',
         base: [at('☀️', 80, 16, 14), at('💧', 30, 74, 10), at('💧', 68, 74, 10), at('🌱', 32, 56, 16), at('🌱', 68, 56, 16), ground('brown')],
         cards: [
@@ -113,6 +116,7 @@ export const onlyOneChange: ContentModule = {
         ],
       },
       {
+        ask: 'Light and water both changed.',
         bg: 'night',
         base: [at('📦', 30, 50, 16), at('🏜️', 72, 70, 14), at('🌱', 32, 56, 16), at('🌱', 70, 56, 16), ground('brown')],
         cards: [
@@ -122,24 +126,27 @@ export const onlyOneChange: ContentModule = {
         ],
       },
       {
+        ask: 'The cover comes off, and light returns.',
         bg: 'day',
         base: [at('☀️', 80, 16, 14), at('💧', 30, 74, 12), at('🥀', 50, 58, 22), ground('brown')],
         cards: [
           { icon: '🌿', label: 'It turns green again' },
           { icon: '🥀', label: 'It stays pale' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Two changes are still fair' },
         ],
       },
       {
+        ask: 'Music plays. Light and water stay the same.',
         bg: 'day',
         base: [at('🎵', 78, 20, 14), at('☀️', 20, 16, 12), at('💧', 40, 74, 10), at('🌱', 50, 56, 22), ground('brown')],
         cards: [
           { icon: '🌿', label: 'The plant stays' },
           { icon: '🥀', label: 'It turns pale' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Two changes are still fair' },
         ],
       },
       {
+        ask: 'A door covers the plant.',
         bg: 'room',
         base: [at('🚪', 70, 48, 22), at('💧', 30, 74, 10), at('🌱', 36, 58, 20), ground('brown')],
         cards: [
@@ -149,6 +156,7 @@ export const onlyOneChange: ContentModule = {
         ],
       },
       {
+        ask: 'The pots differ. Light and water are the same.',
         bg: 'day',
         base: [at('🔴', 28, 62, 16), at('🔵', 72, 62, 16), at('☀️', 50, 14, 12), at('💧', 28, 78, 8), at('💧', 72, 78, 8), at('🌱', 28, 48, 14), at('🌱', 72, 48, 14)],
         cards: [

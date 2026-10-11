@@ -75,7 +75,7 @@ export const lightAndShadow: ContentModule = {
         base: [ground('white'), at('💡', 12, 32, 14), at('🧸', 50, 72, 24), bar(72, 91, 40, 6, 'gray')],
         options: [
           { icon: '⬛', label: 'A big dark shadow', caption: 'A big dark shadow.' },
-          { icon: '🌈', label: 'A rainbow comes', caption: 'A rainbow comes.' },
+          { icon: '▪️', label: 'A short shadow', caption: 'A short shadow.' },
           {
             icon: '🚫',
             label: 'The shadow goes away',
@@ -111,6 +111,7 @@ export const lightAndShadow: ContentModule = {
       'sci-shadow',
       [
         {
+          ask: 'The sun is on the left.',
           bg: 'day',
           base: [ground('green'), at('☀️', 12, 20, 16), at('🌳', 52, 58, 40)],
           cards: [
@@ -120,6 +121,7 @@ export const lightAndShadow: ContentModule = {
           ],
         },
         {
+          ask: 'The sun is on the right.',
           bg: 'day',
           base: [ground('green'), at('☀️', 88, 20, 16), at('🧍', 50, 62, 32)],
           cards: [
@@ -129,6 +131,7 @@ export const lightAndShadow: ContentModule = {
           ],
         },
         {
+          ask: 'The sun is high above.',
           bg: 'day',
           base: [ground('green'), at('☀️', 50, 12, 16), at('🌴', 50, 60, 40)],
           cards: [
@@ -138,6 +141,7 @@ export const lightAndShadow: ContentModule = {
           ],
         },
         {
+          ask: 'The lamp is on the right.',
           bg: 'room',
           base: [ground('white'), at('💡', 88, 32, 14), at('🐈', 48, 70, 24)],
           cards: [
@@ -147,6 +151,7 @@ export const lightAndShadow: ContentModule = {
           ],
         },
         {
+          ask: 'The lamp is on the left.',
           bg: 'room',
           base: [ground('white'), at('💡', 12, 32, 14), at('🪑', 52, 66, 26)],
           cards: [
@@ -157,30 +162,33 @@ export const lightAndShadow: ContentModule = {
         },
       
       {
+        ask: 'The lamp is close.',
         bg: 'room',
         base: [at('💡', 50, 24, 16), at('🧍', 50, 58, 28)],
         cards: [
           { icon: '⬛', label: 'A big dark shadow' },
-          { icon: '🌈', label: 'A rainbow' },
-          { icon: '🎂', label: 'A cake' },
+          { icon: '🚫', label: 'Light does nothing' },
+          { icon: '❔', label: 'The shadow picks a side' },
         ],
       },
       {
+        ask: 'The lamp is far.',
         bg: 'room',
         base: [at('💡', 50, 18, 12), at('🧍', 50, 62, 22)],
         cards: [
           { icon: '▪️', label: 'A small shadow' },
-          { icon: '🔥', label: 'A fire' },
-          { icon: '🌧️', label: 'Rain' },
+          { icon: '🚫', label: 'Light does nothing' },
+          { icon: '❔', label: 'The shadow picks a side' },
         ],
       },
       {
+        ask: 'There is no lamp.',
         bg: 'night',
         base: [at('🧍', 50, 58, 28)],
         cards: [
           { icon: '🌑', label: 'No shadow' },
           { icon: '💡', label: 'A bright lamp' },
-          { icon: '🌸', label: 'A flower' },
+          { icon: '🚫', label: 'Light does nothing' },
         ],
       },
     ],

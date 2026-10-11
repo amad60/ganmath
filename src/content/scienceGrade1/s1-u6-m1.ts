@@ -92,6 +92,7 @@ export const howAnimalsMove: ContentModule = {
   rules: [
     whatHappensNext('sci-move', [
       {
+        ask: 'This animal is a bird.',
         bg: 'day',
         base: [bar(18, 70, 40, 6, 'brown'), at('🐦', 22, 58, 18)],
         cards: [
@@ -101,6 +102,7 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a fish.',
         bg: 'water',
         base: [at('🐟', 50, 54, 24, { flip: true }), at('🫧', 72, 30, 10)],
         cards: [
@@ -110,15 +112,17 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a frog.',
         bg: 'day',
         base: [at('🐸', 40, 72, 22), ground()],
         cards: [
           { icon: '🦘', label: 'It hops' },
           { icon: '🪽', label: 'It flies' },
-          { icon: '🏊', label: 'It swims in the sky' },
+          { icon: '🚫', label: 'It cannot move that way' },
         ],
       },
       {
+        ask: 'This animal is a caterpillar.',
         bg: 'day',
         base: [at('🐛', 50, 78, 20), ground()],
         cards: [
@@ -128,6 +132,7 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a rabbit.',
         bg: 'day',
         base: [at('🐇', 46, 72, 24), ground()],
         cards: [
@@ -138,6 +143,7 @@ export const howAnimalsMove: ContentModule = {
       },
     
       {
+        ask: 'This animal is a snake.',
         bg: 'day',
         base: [at('🐍', 50, 62, 30)],
         cards: [
@@ -147,6 +153,7 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a horse.',
         bg: 'day',
         base: [at('🐴', 48, 58, 30)],
         cards: [
@@ -156,12 +163,13 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a duck.',
         bg: 'water',
         base: [at('🦆', 50, 58, 28)],
         cards: [
           { icon: '🏊', label: 'It swims' },
           { icon: '🐰', label: 'It hops' },
-          { icon: '🎂', label: 'A cake comes' },
+          { icon: '🚫', label: 'It cannot move that way' },
         ],
       },
     ]),

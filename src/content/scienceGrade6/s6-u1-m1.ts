@@ -45,7 +45,7 @@ export const foodIsFuel: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Eat food, or not.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const foodIsFuel: ContentModule = {
             result: [at('🍽️', 28, 62, 16), at('🐢', 64, 58, 22, { fx: 'fade' })],
           },
           { icon: '⚡', label: 'You can run', caption: 'You can run.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🍎', label: 'Food is slow', caption: 'Food is slow.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const foodIsFuel: ContentModule = {
   rules: [
     whatHappensNext('sci-fuel', [
       {
+        ask: 'You eat a meal.',
         bg: 'room',
         base: [at('🍽️', 28, 60, 16), at('🍎', 40, 48, 12), at('🧒', 66, 55, 22)],
         cards: [
           { icon: '⚡', label: 'You can run' },
           { icon: '🐢', label: 'You are slow' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Food does nothing' },
         ],
       },
       {
+        ask: 'The plate is empty. You do not eat.',
         bg: 'room',
         base: [at('🍽️', 30, 60, 18), at('🧒', 66, 55, 22)],
         cards: [
           { icon: '🐢', label: 'You are slow' },
           { icon: '⚡', label: 'You can run' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Food does nothing' },
         ],
       },
       {
+        ask: 'You eat an apple.',
         bg: 'day',
         base: [at('🍎', 26, 62, 14), at('🧒', 60, 52, 22)],
         cards: [
@@ -111,6 +114,7 @@ export const foodIsFuel: ContentModule = {
         ],
       },
       {
+        ask: 'You have no food, and a ball is there.',
         bg: 'day',
         base: [at('🧒', 40, 55, 22), at('⚽', 72, 62, 14)],
         cards: [
@@ -120,39 +124,43 @@ export const foodIsFuel: ContentModule = {
         ],
       },
       {
+        ask: 'You eat rice.',
         bg: 'room',
         base: [at('🍚', 30, 60, 16), at('🧒', 66, 54, 22)],
         cards: [
           { icon: '⚡', label: 'You can run' },
           { icon: '🐢', label: 'You are slow' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Food does nothing' },
         ],
       },
       {
+        ask: 'The rabbit eats plants.',
         bg: 'day',
         base: [at('🐇', 40, 60, 20), at('🌱', 70, 68, 14)],
         cards: [
           { icon: '⚡', label: 'It can run' },
           { icon: '🐢', label: 'It is slow' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Food does nothing' },
         ],
       },
       {
+        ask: 'The rabbit has no plants.',
         bg: 'day',
         base: [at('🐇', 50, 58, 24), at('🏜️', 24, 70, 16)],
         cards: [
           { icon: '🐢', label: 'It is slow' },
           { icon: '⚡', label: 'It can run' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Food does nothing' },
         ],
       },
       {
+        ask: 'You drink milk and eat bread.',
         bg: 'room',
         base: [at('🥛', 28, 60, 16), at('🍞', 42, 62, 14), at('🧒', 70, 52, 20)],
         cards: [
           { icon: '⚡', label: 'You can run' },
           { icon: '🐢', label: 'You are slow' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Food does nothing' },
         ],
       },
     ]),

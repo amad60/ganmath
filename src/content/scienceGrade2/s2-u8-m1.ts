@@ -94,6 +94,7 @@ export const whoEatsWhat: ContentModule = {
       'sci-food',
       [
         {
+          ask: 'This animal is a rabbit.',
           base: [at('🐇', 50, 50, 34)],
           cards: [
             { icon: '🥕', label: 'A carrot' },
@@ -102,6 +103,7 @@ export const whoEatsWhat: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a cow.',
           base: [at('🐄', 50, 50, 34)],
           cards: [
             { icon: '🌾', label: 'Grass' },
@@ -110,6 +112,7 @@ export const whoEatsWhat: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a small bird.',
           base: [at('🐦', 50, 50, 34)],
           cards: [
             { icon: '🐛', label: 'A worm' },
@@ -118,6 +121,7 @@ export const whoEatsWhat: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a cat.',
           base: [at('🐈', 50, 50, 34)],
           cards: [
             { icon: '🐟', label: 'A fish' },
@@ -126,6 +130,7 @@ export const whoEatsWhat: ContentModule = {
           ],
         },
         {
+          ask: 'This animal is a panda.',
           base: [at('🐼', 50, 50, 34)],
           cards: [
             { icon: '🎋', label: 'Bamboo' },
@@ -135,6 +140,7 @@ export const whoEatsWhat: ContentModule = {
         },
       
       {
+        ask: 'This animal is a lion.',
         bg: 'day',
         base: [at('🦁', 40, 58, 28)],
         cards: [
@@ -144,6 +150,7 @@ export const whoEatsWhat: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a goat.',
         bg: 'day',
         base: [at('🐐', 42, 58, 28)],
         cards: [
@@ -153,6 +160,7 @@ export const whoEatsWhat: ContentModule = {
         ],
       },
       {
+        ask: 'This animal is a shark.',
         bg: 'water',
         base: [at('🦈', 46, 56, 30)],
         cards: [

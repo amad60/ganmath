@@ -88,6 +88,7 @@ export const pushAndPull: ContentModule = {
   rules: [
     whatHappensNext('sci-push-pull', [
       {
+        ask: 'You push the ball.',
         bg: 'day',
         base: [at('👉', 20, 66, 16), at('⚽', 42, 70, 18), ground()],
         cards: [
@@ -97,15 +98,17 @@ export const pushAndPull: ContentModule = {
         ],
       },
       {
+        ask: 'You pull the sled.',
         bg: 'room',
         base: [at('🧒', 20, 70, 22), bar(46, 72, 30, 2, 'brown'), at('🛷', 70, 74, 20), ground('gray')],
         cards: [
           { icon: '🤲', label: 'It comes to you' },
           { icon: '💨', label: 'It goes away' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'It does not move' },
         ],
       },
       {
+        ask: 'You push the door.',
         bg: 'room',
         base: [at('👉', 30, 54, 14), at('🚪', 58, 54, 34)],
         cards: [
@@ -115,15 +118,17 @@ export const pushAndPull: ContentModule = {
         ],
       },
       {
+        ask: 'You push the leaves.',
         bg: 'day',
         base: [at('🧹', 30, 66, 22), at('🍂', 56, 80, 12), ground()],
         cards: [
           { icon: '➡️', label: 'The leaves move away' },
           { icon: '🌱', label: 'They grow' },
-          { icon: '🔥', label: 'They burn' },
+          { icon: '🚫', label: 'It does not move' },
         ],
       },
       {
+        ask: 'The dog pulls the child.',
         bg: 'day',
         base: [at('🐕', 70, 72, 22, { flip: true }), bar(46, 64, 30, 2, 'red'), at('🧒', 24, 70, 22), ground()],
         cards: [
@@ -134,6 +139,7 @@ export const pushAndPull: ContentModule = {
       },
     
       {
+        ask: 'You push the door open.',
         bg: 'room',
         base: [at('🚪', 50, 52, 32), at('👉', 24, 58, 16)],
         cards: [
@@ -143,21 +149,23 @@ export const pushAndPull: ContentModule = {
         ],
       },
       {
+        ask: 'You pull the wagon.',
         bg: 'day',
         base: [at('🚃', 58, 62, 26), at('✋', 28, 58, 16)],
         cards: [
           { icon: '🤗', label: 'It comes close' },
-          { icon: '🌋', label: 'It erupts' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'It does not move' },
+          { icon: '❔', label: 'The push does nothing' },
         ],
       },
       {
+        ask: 'You kick the ball.',
         bg: 'day',
         base: [at('⚽', 58, 62, 22), at('👟', 30, 64, 16)],
         cards: [
           { icon: '💨', label: 'It rolls away' },
           { icon: '🌱', label: 'It grows' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'It does not move' },
         ],
       },
     ]),

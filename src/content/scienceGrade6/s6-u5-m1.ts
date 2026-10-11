@@ -45,7 +45,7 @@ export const tooManyEaters: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Many rabbits, or a few.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const tooManyEaters: ContentModule = {
             result: [at('🐇', 30, 56, 12), at('🐇', 50, 60, 12), at('🐇', 70, 56, 12), at('🏜️', 50, 76, 18, { fx: 'fade' })],
           },
           { icon: '🌿', label: 'Grass stays', caption: 'Grass stays.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🌾', label: 'Grass grows more', caption: 'Grass grows more.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const tooManyEaters: ContentModule = {
   rules: [
     whatHappensNext('sci-crowd', [
       {
+        ask: 'Many rabbits eat the grass.',
         bg: 'day',
         base: [at('🐇', 26, 58, 12), at('🐇', 46, 62, 12), at('🐇', 66, 56, 12), at('🌱', 50, 76, 10), ground('green')],
         cards: [
           { icon: '🏜️', label: 'The grass goes' },
           { icon: '🌿', label: 'The grass stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Eaters make more grass' },
         ],
       },
       {
+        ask: 'One rabbit eats the grass.',
         bg: 'day',
         base: [at('🐇', 62, 60, 16), at('🌱', 34, 68, 14), ground('green')],
         cards: [
           { icon: '🌿', label: 'The grass stays' },
           { icon: '🏜️', label: 'The grass goes' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Eaters make more grass' },
         ],
       },
       {
+        ask: 'Many goats eat the grass.',
         bg: 'day',
         base: [at('🐐', 24, 58, 14), at('🐐', 48, 60, 14), at('🐐', 72, 56, 14), at('🌱', 50, 76, 10), ground('green')],
         cards: [
@@ -111,6 +114,7 @@ export const tooManyEaters: ContentModule = {
         ],
       },
       {
+        ask: 'One goat eats the grass.',
         bg: 'day',
         base: [at('🐐', 64, 58, 18), at('🌱', 32, 68, 14), ground('green')],
         cards: [
@@ -120,39 +124,43 @@ export const tooManyEaters: ContentModule = {
         ],
       },
       {
+        ask: 'Many fish eat the water plants.',
         bg: 'water',
         base: [at('🐟', 28, 48, 12), at('🐟', 48, 58, 12), at('🐟', 70, 46, 12), at('🌿', 50, 74, 12)],
         cards: [
           { icon: '🏜️', label: 'The plants go' },
           { icon: '🌱', label: 'The plants stay' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Eaters make more grass' },
         ],
       },
       {
+        ask: 'One fish eats the water plants.',
         bg: 'water',
         base: [at('🐟', 62, 50, 16), at('🌿', 32, 68, 14)],
         cards: [
           { icon: '🌱', label: 'The plants stay' },
           { icon: '🏜️', label: 'The plants go' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Eaters make more grass' },
         ],
       },
       {
+        ask: 'Many sheep eat the grass.',
         bg: 'day',
         base: [at('🐑', 22, 58, 14), at('🐑', 46, 62, 14), at('🐑', 70, 56, 14), at('🌱', 50, 78, 10), ground('green')],
         cards: [
           { icon: '🏜️', label: 'The grass goes' },
           { icon: '🌿', label: 'The grass stays' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Eaters make more grass' },
         ],
       },
       {
+        ask: 'No animals eat the grass.',
         bg: 'day',
         base: [at('🌱', 40, 66, 16), at('🌱', 64, 64, 14), ground('green')],
         cards: [
           { icon: '🌿', label: 'The grass stays' },
           { icon: '🏜️', label: 'The grass goes' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Eaters make more grass' },
         ],
       },
     ]),

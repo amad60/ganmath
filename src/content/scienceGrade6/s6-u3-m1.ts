@@ -45,7 +45,7 @@ export const earthTurns: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Which side faces the sun?',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const earthTurns: ContentModule = {
             result: [at('☀️', 14, 28, 14), at('🌍', 55, 55, 28), at('🌙', 82, 36, 14, { fx: 'pop' })],
           },
           { icon: '🌞', label: 'It is day', caption: 'It is day.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🌍', label: 'The earth makes night', caption: 'The earth makes night.' },
         ],
         correct: 0,
       },
@@ -84,15 +84,17 @@ export const earthTurns: ContentModule = {
   rules: [
     whatHappensNext('sci-spin', [
       {
+        ask: 'Your side faces the sun.',
         bg: 'plain',
         base: [at('☀️', 14, 30, 16), at('🌍', 55, 55, 28), at('🏠', 40, 48, 12)],
         cards: [
           { icon: '🌞', label: 'It is day' },
           { icon: '🌙', label: 'It is night' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🌍', label: 'The earth stays still' },
         ],
       },
       {
+        ask: 'Your side faces away from the sun.',
         bg: 'plain',
         base: [at('☀️', 14, 30, 16), at('🌍', 50, 55, 28), at('🏠', 74, 50, 12)],
         cards: [
@@ -102,6 +104,7 @@ export const earthTurns: ContentModule = {
         ],
       },
       {
+        ask: 'Your side faces the sun.',
         bg: 'day',
         base: [at('☀️', 18, 24, 16), at('🌍', 58, 55, 26), at('🧒', 42, 46, 12)],
         cards: [
@@ -111,6 +114,7 @@ export const earthTurns: ContentModule = {
         ],
       },
       {
+        ask: 'Your side faces away from the sun.',
         bg: 'plain',
         base: [at('☀️', 16, 26, 14), at('🌍', 52, 55, 28), at('🧒', 76, 48, 12)],
         cards: [
@@ -120,39 +124,43 @@ export const earthTurns: ContentModule = {
         ],
       },
       {
+        ask: 'A cloud is up. Your side still faces the sun.',
         bg: 'cloudy',
         base: [at('☁️', 40, 18, 14), at('☀️', 16, 30, 14), at('🌍', 62, 58, 24), at('🏠', 48, 50, 10)],
         cards: [
           { icon: '🌞', label: 'It is still day' },
           { icon: '🌙', label: 'It is night' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🌍', label: 'The earth stays still' },
         ],
       },
       {
+        ask: 'Your side faces away from the sun.',
         bg: 'plain',
         base: [at('☀️', 80, 24, 16), at('🌍', 42, 55, 28), at('🏠', 28, 48, 12)],
         cards: [
           { icon: '🌙', label: 'It is night' },
           { icon: '🌞', label: 'It is day' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🌍', label: 'The earth stays still' },
         ],
       },
       {
+        ask: 'Your side faces the sun.',
         bg: 'plain',
         base: [at('☀️', 78, 26, 14), at('🌍', 40, 55, 26), at('🏠', 56, 46, 10)],
         cards: [
           { icon: '🌞', label: 'It is day' },
           { icon: '🌙', label: 'It is night' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🌍', label: 'The earth stays still' },
         ],
       },
       {
+        ask: 'A lamp is on, but your side faces away from the sun.',
         bg: 'night',
         base: [at('💡', 70, 30, 14), at('🌍', 40, 55, 28), at('🏠', 58, 48, 12), at('☀️', 12, 24, 12)],
         cards: [
           { icon: '🌙', label: 'It is night' },
           { icon: '🌞', label: 'The lamp makes day' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🌍', label: 'The earth stays still' },
         ],
       },
     ]),

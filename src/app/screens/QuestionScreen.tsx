@@ -780,10 +780,10 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             </Button>
           </div>
         ) : isPicture && activeVisual?.kind === 'science-scene' ? (
-          // Kartu GAMBAR, tanpa tulisan: soal ini sengaja tidak bisa dijawab dengan
-          // mencocokkan kata. Namanya hanya untuk pembaca layar. Salah = kartu itu
-          // saja yang berwarna; kartu yang benar tidak dibuka (sama seperti choose-text).
-          <div className="grid grid-cols-3 gap-3">
+          // Ikon plus kalimat akibatnya. Ikon saja (✊ vs 🖐️) tidak memberitahu
+          // anak akibat mana yang dimaksud, jadi soalnya jadi tebakan emoji.
+          // Salah = kartu itu saja yang berwarna; kartu yang benar tidak dibuka.
+          <div className="grid grid-cols-3 gap-2">
             {activeVisual.options.map((o, c) => (
               <Button
                 key={c}
@@ -792,11 +792,13 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
                 onPointerDown={touch}
                 onClick={() => (feedback ? undefined : answer(c))}
                 aria-disabled={feedback != null}
-                textSize={48}
-                className={`min-h-[96px] ${feedback != null ? 'pointer-events-none' : ''}`}
+                className={`min-h-[96px] px-1 ${feedback != null ? 'pointer-events-none' : ''}`}
                 feedback={choiceFeedback(c)}
               >
-                {o.icon}
+                <span className="flex flex-col items-center justify-center gap-1">
+                  <span className="text-[30px] leading-none">{o.icon}</span>
+                  <span className="text-center text-[13px] leading-tight font-bold">{o.label}</span>
+                </span>
               </Button>
             ))}
           </div>

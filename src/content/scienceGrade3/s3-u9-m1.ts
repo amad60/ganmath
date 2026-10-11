@@ -113,33 +113,37 @@ export const waterGoesAround: ContentModule = {
   rules: [
     whatHappensNext('sci-water-cycle', [
       {
+        ask: 'The sun shines on the water.',
         bg: 'day',
         base: [at('☀️', 80, 16, 20), bar(50, 88, 100, 24, 'blue')],
         cards: [
           { icon: '⬆️', label: 'Water goes up' },
           { icon: '🧊', label: 'It freezes' },
-          { icon: '🌸', label: 'A flower grows' },
+          { icon: '🚫', label: 'The water stays put' },
         ],
       },
       {
+        ask: 'A cloud is full.',
         bg: 'cloudy',
         base: [at('☁️', 36, 20, 26), at('☁️', 62, 22, 26), bar(50, 92, 100, 16, 'green')],
         cards: [
           { icon: '🌧️', label: 'Rain falls' },
-          { icon: '🔥', label: 'It burns' },
-          { icon: '🪨', label: 'Rocks fall' },
+          { icon: '🚫', label: 'The water stays put' },
+          { icon: '❔', label: 'Sun cannot lift water' },
         ],
       },
       {
+        ask: 'Rain falls on the hill.',
         bg: 'cloudy',
         base: [at('🌧️', 36, 16, 22), at('⛰️', 36, 60, 40), bar(84, 90, 32, 20, 'blue')],
         cards: [
           { icon: '🌊', label: 'It runs to the sea' },
           { icon: '⬆️', label: 'It goes up the hill' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'The water stays put' },
         ],
       },
       {
+        ask: 'The sun shines on a wet shirt.',
         bg: 'day',
         base: [at('☀️', 82, 16, 18), bar(46, 34, 70, 2, 'brown'), at('👕', 46, 52, 24), at('💧', 46, 76, 8)],
         cards: [
@@ -149,16 +153,18 @@ export const waterGoesAround: ContentModule = {
         ],
       },
       {
+        ask: 'Water has gone up into the sky.',
         bg: 'day',
         base: [at('💧', 36, 40, 10), at('💧', 52, 30, 10), at('💧', 66, 44, 10), bar(50, 90, 100, 20, 'blue')],
         cards: [
           { icon: '☁️', label: 'A cloud comes' },
           { icon: '🌳', label: 'A tree grows' },
-          { icon: '🔥', label: 'A fire starts' },
+          { icon: '🚫', label: 'The water stays put' },
         ],
       },
     
       {
+        ask: 'The sun shines on a puddle.',
         bg: 'day',
         base: [at('💧', 50, 68, 16), at('☀️', 78, 20, 18)],
         cards: [
@@ -168,21 +174,23 @@ export const waterGoesAround: ContentModule = {
         ],
       },
       {
+        ask: 'The cloud is heavy.',
         bg: 'cloudy',
         base: [at('☁️', 50, 36, 32)],
         cards: [
           { icon: '🌧️', label: 'Rain falls' },
-          { icon: '🔥', label: 'The cloud burns' },
+          { icon: '🚫', label: 'The water stays put' },
           { icon: '🌵', label: 'It gets dry' },
         ],
       },
       {
+        ask: 'The sun shines on wet clothes.',
         bg: 'day',
         base: [at('👕', 46, 58, 26), at('☀️', 80, 18, 16)],
         cards: [
           { icon: '💨', label: 'The water goes up' },
           { icon: '🌊', label: 'A flood comes' },
-          { icon: '🎂', label: 'A cake comes' },
+          { icon: '🚫', label: 'The water stays put' },
         ],
       },
     ]),

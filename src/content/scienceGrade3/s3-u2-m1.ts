@@ -100,15 +100,17 @@ export const bodyCoverings: ContentModule = {
   rules: [
     whatHappensNext('sci-cover', [
       {
+        ask: 'Snow falls on an animal with fur.',
         bg: 'cloudy',
         base: [at('❄️', 24, 16, 10), at('❄️', 76, 20, 10), at('🐻', 50, 62, 30), ground('white')],
         cards: [
           { icon: '🙂', label: 'It stays warm' },
           { icon: '🥶', label: 'It freezes' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The covering does nothing' },
         ],
       },
       {
+        ask: 'Snow falls on a penguin.',
         bg: 'cloudy',
         base: [at('❄️', 22, 18, 10), at('🐧', 50, 60, 30), ground('white')],
         cards: [
@@ -118,24 +120,27 @@ export const bodyCoverings: ContentModule = {
         ],
       },
       {
+        ask: 'A fish is in the water.',
         bg: 'water',
         base: [at('🐟', 50, 52, 26)],
         cards: [
           { icon: '🌊', label: 'It swims well' },
           { icon: '🏜️', label: 'It gets dry' },
-          { icon: '🪽', label: 'It flies' },
+          { icon: '🚫', label: 'The covering does nothing' },
         ],
       },
       {
+        ask: 'The sheep wool has been cut, and it snows.',
         bg: 'cloudy',
         base: [at('❄️', 76, 16, 10), at('🐑', 46, 62, 30), at('✂️', 20, 50, 14), ground('white')],
         cards: [
           { icon: '🥶', label: 'It gets cold' },
           { icon: '🥵', label: 'It gets hot' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The covering does nothing' },
         ],
       },
       {
+        ask: 'Snow falls on a bird.',
         bg: 'cloudy',
         base: [at('❄️', 24, 16, 10), at('❄️', 76, 20, 10), at('🐦', 50, 62, 26), ground('white')],
         cards: [
@@ -146,6 +151,7 @@ export const bodyCoverings: ContentModule = {
       },
     
       {
+        ask: 'Snow falls on an animal with thick fur.',
         bg: 'day',
         base: [at('🐻‍❄️', 48, 56, 30), at('❄️', 78, 24, 16)],
         cards: [
@@ -155,6 +161,7 @@ export const bodyCoverings: ContentModule = {
         ],
       },
       {
+        ask: 'Wind blows on a bird.',
         bg: 'day',
         base: [at('🐦', 46, 54, 26), at('💨', 76, 36, 16)],
         cards: [
@@ -164,6 +171,7 @@ export const bodyCoverings: ContentModule = {
         ],
       },
       {
+        ask: 'A fish has scales.',
         bg: 'water',
         base: [at('🐟', 50, 56, 28)],
         cards: [

@@ -106,24 +106,27 @@ export const closedPath: ContentModule = {
   rules: [
     whatHappensNext('sci-circuit', [
       {
+        ask: 'The path is closed.',
         bg: 'night',
         base: circuit({}),
         cards: [
           { icon: '💡', label: 'The bulb lights' },
           { icon: '🌑', label: 'It stays dark' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'The path does nothing' },
         ],
       },
       {
+        ask: 'There is a gap in the path.',
         bg: 'night',
         base: [...circuit({ gap: true }), at('✂️', 52, 24, 12)],
         cards: [
           { icon: '🌑', label: 'It stays dark' },
           { icon: '💡', label: 'The bulb lights' },
-          { icon: '🌸', label: 'A flower grows' },
+          { icon: '🚫', label: 'The path does nothing' },
         ],
       },
       {
+        ask: 'The path is cut.',
         bg: 'night',
         base: [...circuit({ lit: true }).filter((it) => it.icon !== '✨'), at('✂️', 50, 78, 12)],
         cards: [
@@ -133,49 +136,54 @@ export const closedPath: ContentModule = {
         ],
       },
       {
+        ask: 'A finger closes the gap.',
         bg: 'night',
         base: [...circuit({ gap: true }), at('👆', 52, 34, 12)],
         cards: [
           { icon: '✨', label: 'The gap closes and it lights' },
-          { icon: '❄️', label: 'It snows' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'The path does nothing' },
+          { icon: '❔', label: 'A gap still lets it work' },
         ],
       },
       {
+        ask: 'The path to the fan is closed.',
         bg: 'room',
         base: [bar(50, 24, 64, 3, 'red'), bar(50, 78, 64, 3, 'red'), bar(18, 51, 1.6, 55, 'red'), bar(82, 51, 1.6, 55, 'red'), at('🔋', 18, 51, 14), at('🌀', 82, 51, 16)],
         cards: [
           { icon: '🌀', label: 'The fan spins' },
           { icon: '🛑', label: 'It stops' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'The path does nothing' },
         ],
       },
     
       {
+        ask: 'There is still a gap.',
         bg: 'room',
         base: [at('🔋', 28, 56, 18), at('💡', 72, 40, 18), at('✂️', 50, 70, 14)],
         cards: [
           { icon: '🌑', label: 'It stays dark' },
           { icon: '💡', label: 'The bulb lights' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The path does nothing' },
         ],
       },
       {
+        ask: 'The path is closed again.',
         bg: 'room',
         base: [at('🔋', 26, 58, 18), at('💡', 74, 40, 18)],
         cards: [
           { icon: '💡', label: 'The bulb lights' },
           { icon: '🌑', label: 'It stays dark' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'The path does nothing' },
         ],
       },
       {
+        ask: 'There is a bulb, but no battery.',
         bg: 'room',
         base: [at('💡', 50, 46, 22)],
         cards: [
           { icon: '🌑', label: 'It stays dark' },
           { icon: '✨', label: 'It gets brighter' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'The path does nothing' },
         ],
       },
     ]),

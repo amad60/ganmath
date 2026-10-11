@@ -96,24 +96,27 @@ export const materialsChange: ContentModule = {
   rules: [
     whatHappensNext('sci-materials', [
       {
+        ask: 'Ice sits in the sun.',
         bg: 'day',
         base: [at('☀️', 82, 18, 16), at('🧊', 50, 64, 24), ground('gray')],
         cards: [
           { icon: '💧', label: 'It melts into water' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🧱', label: 'It stays the same' },
           { icon: '🌱', label: 'It grows' },
         ],
       },
       {
+        ask: 'Chocolate sits in the sun.',
         bg: 'day',
         base: [at('☀️', 82, 18, 16), at('🍫', 50, 64, 24), ground('gray')],
         cards: [
           { icon: '🫠', label: 'It melts' },
           { icon: '🧊', label: 'It gets cold' },
-          { icon: '🎈', label: 'It flies' },
+          { icon: '🧱', label: 'It stays the same' },
         ],
       },
       {
+        ask: 'Water sits in the cold.',
         bg: 'room',
         base: [at('❄️', 24, 22, 14), at('❄️', 78, 26, 12), at('💧', 50, 64, 24)],
         cards: [
@@ -123,6 +126,7 @@ export const materialsChange: ContentModule = {
         ],
       },
       {
+        ask: 'Ice cream sits in the sun.',
         bg: 'day',
         base: [at('☀️', 82, 18, 16), at('🍦', 50, 62, 26), ground('gray')],
         cards: [
@@ -132,6 +136,7 @@ export const materialsChange: ContentModule = {
         ],
       },
       {
+        ask: 'A candle sits by the fire.',
         bg: 'room',
         base: [at('🔥', 30, 62, 20), at('🕯️', 62, 60, 26)],
         cards: [
@@ -142,30 +147,33 @@ export const materialsChange: ContentModule = {
       },
     
       {
+        ask: 'Ice cream sits in the sun again.',
         bg: 'day',
         base: [at('🍦', 46, 58, 28), at('☀️', 80, 18, 16)],
         cards: [
           { icon: '💧', label: 'It melts' },
           { icon: '❄️', label: 'It freezes' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🧱', label: 'It stays the same' },
         ],
       },
       {
+        ask: 'Milk sits in the cold.',
         bg: 'room',
         base: [at('🥛', 46, 58, 26), at('❄️', 76, 28, 18)],
         cards: [
           { icon: '🧊', label: 'It turns to ice' },
           { icon: '🌱', label: 'It grows' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🧱', label: 'It stays the same' },
         ],
       },
       {
+        ask: 'Butter sits in the sun.',
         bg: 'day',
         base: [at('🧈', 48, 60, 26), at('☀️', 80, 18, 16)],
         cards: [
           { icon: '🫠', label: 'It gets soft' },
           { icon: '🪨', label: 'It gets hard' },
-          { icon: '🐦', label: 'It flies' },
+          { icon: '🧱', label: 'It stays the same' },
         ],
       },
     ]),

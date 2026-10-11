@@ -45,7 +45,7 @@ export const heatMoves: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Heat on metal, or wood.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const heatMoves: ContentModule = {
             result: [at('🕯️', 22, 58, 18), at('🥄', 55, 42, 22), at('🥵', 82, 32, 16, { fx: 'pop' })],
           },
           { icon: '❄️', label: 'It is not hot', caption: 'It is not hot.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🚫', label: 'No heat', caption: 'No heat.' },
         ],
         correct: 0,
       },
@@ -84,15 +84,17 @@ export const heatMoves: ContentModule = {
   rules: [
     whatHappensNext('sci-heat', [
       {
+        ask: 'A metal spoon sits in a hot drink.',
         bg: 'room',
         base: [at('☕', 42, 62, 24), at('🥄', 60, 40, 18), at('🔥', 80, 22, 12)],
         cards: [
           { icon: '🥵', label: 'The handle is hot' },
           { icon: '❄️', label: 'The handle stays cool' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Heat stays at the flame' },
         ],
       },
       {
+        ask: 'A wooden spoon sits in a hot drink.',
         bg: 'room',
         base: [at('☕', 42, 62, 24), at('🪵', 62, 40, 18), at('🔥', 80, 22, 12)],
         cards: [
@@ -102,6 +104,7 @@ export const heatMoves: ContentModule = {
         ],
       },
       {
+        ask: 'A metal spoon touches a flame.',
         bg: 'room',
         base: [at('🕯️', 20, 60, 18), at('🥄', 58, 44, 20)],
         cards: [
@@ -111,42 +114,47 @@ export const heatMoves: ContentModule = {
         ],
       },
       {
+        ask: 'A wooden spoon touches a flame.',
         bg: 'room',
         base: [at('🕯️', 20, 60, 18), at('🪵', 58, 46, 20)],
         cards: [
           { icon: '❄️', label: 'The far end stays cool' },
           { icon: '🥵', label: 'The far end is hot' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Heat stays at the flame' },
         ],
       },
       {
+        ask: 'A metal pan sits on the fire.',
         bg: 'room',
         base: [at('🔥', 24, 62, 18), at('🍳', 55, 50, 22)],
         cards: [
           { icon: '🥵', label: 'The metal handle is hot' },
           { icon: '❄️', label: 'It stays cool' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Heat stays at the flame' },
         ],
       },
       {
+        ask: 'A wooden handle sits on the fire.',
         bg: 'room',
         base: [at('🔥', 24, 62, 18), at('🪵', 62, 46, 18)],
         cards: [
           { icon: '❄️', label: 'The wood stays cool' },
           { icon: '🥵', label: 'It is hot' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Heat stays at the flame' },
         ],
       },
       {
+        ask: 'Metal sits in the sun.',
         bg: 'day',
         base: [at('☀️', 80, 16, 16), at('🪙', 50, 58, 16)],
         cards: [
           { icon: '🥵', label: 'The metal is hot' },
           { icon: '❄️', label: 'It stays cool' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Heat stays at the flame' },
         ],
       },
       {
+        ask: 'Wood sits in the sun.',
         bg: 'day',
         base: [at('☀️', 80, 16, 16), at('🪵', 50, 58, 24)],
         cards: [

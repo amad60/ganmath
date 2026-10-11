@@ -93,6 +93,7 @@ export const fallAndSlow: ContentModule = {
   rules: [
     whatHappensNext('sci-fall', [
       {
+        ask: 'You let the ball go.',
         bg: 'day',
         base: [at('✋', 50, 14, 14), at('🏀', 50, 32, 14), ground()],
         cards: [
@@ -102,24 +103,27 @@ export const fallAndSlow: ContentModule = {
         ],
       },
       {
+        ask: 'The ball is on smooth ice.',
         bg: 'day',
         base: [bar(50, 86, 100, 10, 'blue'), at('⚽', 20, 74, 12), at('🧊', 80, 76, 10)],
         cards: [
           { icon: '💨', label: 'It slides far' },
           { icon: '🛑', label: 'It stops now' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The surface does nothing' },
         ],
       },
       {
+        ask: 'The ball is on rough grass.',
         bg: 'day',
         base: [bar(50, 86, 100, 12, 'green'), at('⚽', 20, 74, 12), at('🌾', 50, 76, 14)],
         cards: [
           { icon: '🐌', label: 'It slows down' },
           { icon: '🚀', label: 'It goes faster' },
-          { icon: '🪽', label: 'It flies' },
+          { icon: '🚫', label: 'The surface does nothing' },
         ],
       },
       {
+        ask: 'A feather is let go.',
         bg: 'day',
         base: [at('🪶', 50, 18, 16), ground()],
         cards: [
@@ -129,25 +133,28 @@ export const fallAndSlow: ContentModule = {
         ],
       },
       {
+        ask: 'A sled is on a slope.',
         bg: 'cloudy',
         base: [bar(34, 58, 60, 4, 'white', { rotate: 28 }), at('🛷', 14, 36, 14), ground('white')],
         cards: [
           { icon: '🛷', label: 'It slides down' },
           { icon: '⬆️', label: 'It goes up' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'The surface does nothing' },
         ],
       },
     
       {
+        ask: 'You let the book go.',
         bg: 'day',
         base: [at('📗', 50, 36, 22)],
         cards: [
           { icon: '⬇️', label: 'It falls down' },
           { icon: '⬆️', label: 'It goes up' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'The surface does nothing' },
         ],
       },
       {
+        ask: 'The ball is on ice again.',
         bg: 'day',
         base: [at('⚽', 50, 40, 18), at('🧊', 50, 74, 28)],
         cards: [
@@ -157,6 +164,7 @@ export const fallAndSlow: ContentModule = {
         ],
       },
       {
+        ask: 'The ball is on a rough path.',
         bg: 'day',
         base: [at('⚽', 50, 40, 18), at('🟫', 50, 76, 30)],
         cards: [

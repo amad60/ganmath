@@ -100,15 +100,17 @@ export const soundTravels: ContentModule = {
   rules: [
     whatHappensNext('sci-sound-travel', [
       {
+        ask: 'The bell is next to you.',
         bg: 'room',
         base: [at('🔔', 40, 44, 24), at('🧒', 62, 64, 24)],
         cards: [
           { icon: '🔊', label: 'A loud ring' },
           { icon: '🔇', label: 'No sound' },
-          { icon: '🌈', label: 'A rainbow' },
+          { icon: '🚫', label: 'Distance does nothing' },
         ],
       },
       {
+        ask: 'The plane is far away.',
         bg: 'day',
         base: [at('✈️', 82, 12, 10), at('🧒', 30, 70, 24), ground()],
         cards: [
@@ -118,58 +120,64 @@ export const soundTravels: ContentModule = {
         ],
       },
       {
+        ask: 'The trumpet is next to you.',
         bg: 'day',
         base: [at('🎺', 30, 54, 22), at('🧒', 52, 66, 22), ground()],
         cards: [
           { icon: '📢', label: 'A loud sound' },
           { icon: '🔈', label: 'A quiet sound' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'Distance does nothing' },
         ],
       },
       {
+        ask: 'The storm is far away.',
         bg: 'cloudy',
         base: [at('⛈️', 86, 14, 12), at('🧒', 20, 70, 24), ground()],
         cards: [
           { icon: '🔉', label: 'A quiet boom' },
-          { icon: '🔥', label: 'A fire' },
-          { icon: '🌸', label: 'A flower grows' },
+          { icon: '🚫', label: 'Distance does nothing' },
+          { icon: '❔', label: 'Every sound is the same' },
         ],
       },
       {
+        ask: 'The bell is far down the road.',
         bg: 'day',
         base: [at('🧒', 12, 68, 22), at('⛪', 86, 56, 16), at('🔔', 86, 32, 8), ground()],
         cards: [
           { icon: '🔈', label: 'A quiet ring' },
           { icon: '📢', label: 'A loud ring' },
-          { icon: '🍎', label: 'An apple falls' },
+          { icon: '🚫', label: 'Distance does nothing' },
         ],
       },
     
       {
+        ask: 'The bell is next to your ear.',
         bg: 'room',
         base: [at('🔔', 36, 54, 24), at('👂', 74, 52, 18)],
         cards: [
           { icon: '🔊', label: 'A loud sound' },
           { icon: '🤫', label: 'No sound' },
-          { icon: '🌈', label: 'A rainbow' },
+          { icon: '🚫', label: 'Distance does nothing' },
         ],
       },
       {
+        ask: 'The bell is far from your ear.',
         bg: 'day',
         base: [at('🔔', 22, 54, 18), at('👂', 80, 54, 16)],
         cards: [
           { icon: '🔉', label: 'A quiet sound' },
           { icon: '📢', label: 'A loud bark' },
-          { icon: '🔥', label: 'A fire' },
+          { icon: '🚫', label: 'Distance does nothing' },
         ],
       },
       {
+        ask: 'Someone knocks on the other side of the door.',
         bg: 'room',
         base: [at('🚪', 30, 54, 26), at('👂', 72, 54, 18)],
         cards: [
           { icon: '🔉', label: 'A quieter knock' },
-          { icon: '🌋', label: 'An eruption' },
-          { icon: '❄️', label: 'Snow' },
+          { icon: '🚫', label: 'Distance does nothing' },
+          { icon: '❔', label: 'Every sound is the same' },
         ],
       },
     ]),

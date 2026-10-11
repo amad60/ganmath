@@ -87,6 +87,7 @@ export const bodyAndSenses: ContentModule = {
       'sci-senses',
       [
         {
+          ask: 'A bell rings.',
           bg: 'room',
           base: [at('🔔', 50, 50, 30), at('🎵', 78, 26, 12)],
           cards: [
@@ -96,6 +97,7 @@ export const bodyAndSenses: ContentModule = {
           ],
         },
         {
+          ask: 'You look at colors.',
           bg: 'day',
           base: [at('🌈', 50, 46, 40)],
           cards: [
@@ -105,6 +107,7 @@ export const bodyAndSenses: ContentModule = {
           ],
         },
         {
+          ask: 'A flower gives off a smell.',
           bg: 'day',
           base: [at('🌸', 46, 56, 30), at('💨', 74, 40, 14)],
           cards: [
@@ -114,6 +117,7 @@ export const bodyAndSenses: ContentModule = {
           ],
         },
         {
+          ask: 'You touch something cold.',
           bg: 'room',
           base: [at('🧊', 50, 54, 30)],
           cards: [
@@ -123,6 +127,7 @@ export const bodyAndSenses: ContentModule = {
           ],
         },
         {
+          ask: 'You taste a sweet candy.',
           bg: 'room',
           base: [at('🍭', 50, 54, 30)],
           cards: [
@@ -133,6 +138,7 @@ export const bodyAndSenses: ContentModule = {
         },
       
       {
+        ask: 'A drum makes a sound.',
         bg: 'room',
         base: [at('🥁', 50, 52, 32)],
         cards: [
@@ -142,6 +148,7 @@ export const bodyAndSenses: ContentModule = {
         ],
       },
       {
+        ask: 'You feel something hot.',
         bg: 'day',
         base: [at('🔥', 50, 54, 30)],
         cards: [
@@ -151,6 +158,7 @@ export const bodyAndSenses: ContentModule = {
         ],
       },
       {
+        ask: 'Bread gives off a smell.',
         bg: 'room',
         base: [at('🍞', 50, 54, 30)],
         cards: [

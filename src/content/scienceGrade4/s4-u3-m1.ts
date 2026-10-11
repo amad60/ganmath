@@ -45,7 +45,7 @@ export const sugarDissolves: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Sugar in the water, or sand.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -85,6 +85,7 @@ export const sugarDissolves: ContentModule = {
     whatHappensNext('sci-dissolve', [
       {
         bg: 'room',
+        ask: 'Sugar is put in the water.',
         base: [at('🥛', 50, 58, 30), at('🍬', 50, 24, 14)],
         cards: [
           { icon: '✨', label: 'The sugar goes in' },
@@ -94,51 +95,57 @@ export const sugarDissolves: ContentModule = {
       },
       {
         bg: 'room',
+        ask: 'Sand is put in the water.',
         base: [at('🥛', 50, 58, 30), at('🏖️', 50, 22, 16)],
         cards: [
           { icon: '⬇️', label: 'The sand stays' },
           { icon: '✨', label: 'The sand goes in' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'It becomes new water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'There is sugar, but no water.',
         base: [at('🍬', 50, 55, 28)],
         cards: [
           { icon: '⬇️', label: 'The sugar stays' },
           { icon: '✨', label: 'It goes into water' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'It becomes new water' },
         ],
       },
       {
         bg: 'plain',
+        ask: 'There is sand, but no water.',
         base: [at('🏖️', 50, 58, 28)],
         cards: [
           { icon: '⏳', label: 'The sand stays' },
           { icon: '✨', label: 'It goes away' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'It becomes new water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'Sugar is stirred into the water.',
         base: [at('🥛', 46, 60, 28), at('🥄', 68, 36, 16), at('🍬', 40, 30, 12)],
         cards: [
           { icon: '✨', label: 'The sugar goes in' },
           { icon: '🍬', label: 'A pile stays' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'It becomes new water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'Sand is stirred into the water.',
         base: [at('🥛', 46, 60, 28), at('🥄', 70, 34, 16), at('🏖️', 38, 28, 14)],
         cards: [
           { icon: '⬇️', label: 'The sand stays' },
           { icon: '✨', label: 'The sand goes in' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'It becomes new water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'A lump of sugar is put in the water.',
         base: [at('🥛', 48, 64, 24), at('🍬', 50, 20, 22)],
         cards: [
           { icon: '✨', label: 'The lump goes in' },
@@ -148,11 +155,12 @@ export const sugarDissolves: ContentModule = {
       },
       {
         bg: 'water',
+        ask: 'A rock is put in the water.',
         base: [at('🪨', 50, 36, 20), at('🌊', 50, 70, 28)],
         cards: [
           { icon: '⬇️', label: 'The rock stays' },
           { icon: '✨', label: 'It goes into water' },
-          { icon: '🌺', label: 'A flower comes' },
+          { icon: '🚫', label: 'It becomes new water' },
         ],
       },
     ]),

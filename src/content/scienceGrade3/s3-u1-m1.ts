@@ -92,24 +92,27 @@ export const leavesMakeFood: ContentModule = {
   rules: [
     whatHappensNext('sci-leaves', [
       {
+        ask: 'The plant gets no light.',
         bg: 'night',
         base: [at('🌙', 82, 16, 14), at('🌿', 50, 60, 32), ground('brown')],
         cards: [
           { icon: '🍂', label: 'It turns pale' },
           { icon: '🌳', label: 'It grows big' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Light does nothing' },
         ],
       },
       {
+        ask: 'The plant gets light and water.',
         bg: 'day',
         base: [at('☀️', 82, 16, 16), at('💧', 30, 30, 10), at('🌱', 50, 66, 24), ground('brown')],
         cards: [
           { icon: '🌿', label: 'It grows green' },
           { icon: '🧊', label: 'It freezes' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'Light does nothing' },
         ],
       },
       {
+        ask: 'The tree gets plenty of light.',
         bg: 'day',
         base: [at('☀️', 82, 16, 16), at('🌳', 46, 56, 44), ground()],
         cards: [
@@ -119,49 +122,54 @@ export const leavesMakeFood: ContentModule = {
         ],
       },
       {
+        ask: 'Rocks block the light.',
         bg: 'night',
         base: [at('🪨', 16, 60, 30), at('🪨', 84, 60, 30), at('🌱', 50, 70, 20), ground('gray')],
         cards: [
           { icon: '🥀', label: 'It turns pale' },
           { icon: '🌻', label: 'It gets a flower' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Light does nothing' },
         ],
       },
       {
+        ask: 'Light comes back to the pale plant.',
         bg: 'day',
         base: [at('☀️', 82, 16, 16, { fx: 'pop' }), at('🌿', 50, 62, 30, { dim: true }), ground('brown')],
         cards: [
           { icon: '🌿', label: 'It gets green again' },
           { icon: '🧊', label: 'It freezes' },
-          { icon: '🐟', label: 'It swims away' },
+          { icon: '🚫', label: 'Light does nothing' },
         ],
       },
     
       {
+        ask: 'A box covers the leaf.',
         bg: 'day',
         base: [at('🍃', 50, 56, 30), at('📦', 50, 50, 36)],
         cards: [
           { icon: '🫥', label: 'The leaf gets pale' },
-          { icon: '🍎', label: 'It makes fruit now' },
+          { icon: '🚫', label: 'Light does nothing' },
           { icon: '❄️', label: 'It freezes' },
         ],
       },
       {
+        ask: 'The leaf gets light.',
         bg: 'day',
         base: [at('🍃', 50, 56, 28), at('☀️', 80, 18, 16), at('💧', 28, 40, 12)],
         cards: [
           { icon: '🌿', label: 'The leaf stays green' },
-          { icon: '🪨', label: 'It turns to rock' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Light does nothing' },
+          { icon: '❔', label: 'A leaf needs no light' },
         ],
       },
       {
+        ask: 'That leaf is left in the dark.',
         bg: 'day',
         base: [at('🍃', 36, 56, 22), at('🌑', 70, 40, 20)],
         cards: [
           { icon: '😕', label: 'That leaf gets pale' },
           { icon: '🌺', label: 'It gets a flower' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Light does nothing' },
         ],
       },
     ]),

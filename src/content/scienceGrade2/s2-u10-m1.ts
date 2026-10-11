@@ -126,6 +126,7 @@ export const careForEarth: ContentModule = {
       'sci-earth',
       [
         {
+          ask: 'You are holding an empty cup.',
           bg: 'day',
           base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 40, 50, 14), at('🧒', 70, 40, 26)],
           cards: [
@@ -135,6 +136,7 @@ export const careForEarth: ContentModule = {
           ],
         },
         {
+          ask: 'The tap is running.',
           bg: 'room',
           base: [at('🚰', 40, 36, 26), at('💧', 40, 58, 10), at('💧', 40, 72, 10), at('🪥', 74, 50, 20)],
           cards: [
@@ -144,6 +146,7 @@ export const careForEarth: ContentModule = {
           ],
         },
         {
+          ask: 'A lamp is on in the daytime.',
           bg: 'day',
           base: [at('☀️', 84, 16, 16), at('💡', 40, 30, 18), at('🛋️', 50, 76, 30)],
           cards: [
@@ -153,6 +156,7 @@ export const careForEarth: ContentModule = {
           ],
         },
         {
+          ask: 'Used cans and paper are left over.',
           bg: 'day',
           base: [ground('gray'), at('🥫', 36, 74, 18), at('🍾', 56, 72, 20), at('📰', 74, 78, 16)],
           cards: [
@@ -162,6 +166,7 @@ export const careForEarth: ContentModule = {
           ],
         },
         {
+          ask: 'Trees have been cut down.',
           bg: 'day',
           base: [ground('green'), at('🪵', 34, 82, 18), at('🪵', 60, 84, 18), at('🌳', 82, 58, 30)],
           cards: [
@@ -172,6 +177,7 @@ export const careForEarth: ContentModule = {
         },
       
       {
+        ask: 'Rubbish sits beside the water.',
         bg: 'day',
         base: [at('🗑️', 30, 58, 20), at('🏞️', 68, 55, 26), at('💧', 68, 74, 12)],
         cards: [
@@ -181,15 +187,17 @@ export const careForEarth: ContentModule = {
         ],
       },
       {
+        ask: 'The tap runs with nobody using it.',
         bg: 'room',
         base: [at('🚰', 50, 48, 28), at('💧', 50, 74, 14)],
         cards: [
           { icon: '💧', label: 'Water is wasted' },
           { icon: '🌳', label: 'A tree grows' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'The choice does nothing' },
         ],
       },
       {
+        ask: 'An empty jar is left over.',
         bg: 'room',
         base: [at('🫙', 50, 56, 28)],
         cards: [

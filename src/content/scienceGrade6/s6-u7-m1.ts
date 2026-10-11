@@ -45,7 +45,7 @@ export const downToTheGround: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Let the ball go, or hold it.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const downToTheGround: ContentModule = {
             result: [at('🪶', 34, 70, 12, { fx: 'fall' }), at('🪨', 66, 72, 14, { fx: 'fall' }), ground('green')],
           },
           { icon: '🛑', label: 'It stays up', caption: 'It stays up.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🌍', label: 'The ground comes up', caption: 'The ground comes up.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const downToTheGround: ContentModule = {
   rules: [
     whatHappensNext('sci-ground', [
       {
+        ask: 'You let the ball go.',
         bg: 'day',
         base: [at('⚽', 50, 28, 16), ground('green')],
         cards: [
           { icon: '⬇️', label: 'It falls to the ground' },
           { icon: '🛑', label: 'It stays up' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Letting go keeps it up' },
         ],
       },
       {
+        ask: 'You let the book go.',
         bg: 'room',
         base: [at('📕', 50, 26, 16), ground('gray')],
         cards: [
           { icon: '⬇️', label: 'It falls to the ground' },
           { icon: '🛑', label: 'It stays up' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Letting go keeps it up' },
         ],
       },
       {
+        ask: 'Your hand holds the ball.',
         bg: 'day',
         base: [at('✊', 50, 30, 16), at('⚽', 50, 44, 14), ground('green')],
         cards: [
@@ -111,6 +114,7 @@ export const downToTheGround: ContentModule = {
         ],
       },
       {
+        ask: 'You let the feather go.',
         bg: 'day',
         base: [at('🪶', 50, 24, 16), ground('green')],
         cards: [
@@ -120,33 +124,37 @@ export const downToTheGround: ContentModule = {
         ],
       },
       {
+        ask: 'You let the rock go.',
         bg: 'day',
         base: [at('🪨', 50, 24, 18), ground('brown')],
         cards: [
           { icon: '⬇️', label: 'It falls to the ground' },
           { icon: '🛑', label: 'It stays up' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Letting go keeps it up' },
         ],
       },
       {
+        ask: 'A hook holds the coat.',
         bg: 'day',
         base: [at('🪝', 50, 22, 14), at('🧥', 50, 42, 18)],
         cards: [
           { icon: '🛑', label: 'It stays up' },
           { icon: '⬇️', label: 'It falls' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Letting go keeps it up' },
         ],
       },
       {
+        ask: 'You let the apple go.',
         bg: 'day',
         base: [at('🍎', 50, 26, 16), at('🌳', 50, 48, 28), ground('green')],
         cards: [
           { icon: '⬇️', label: 'It falls to the ground' },
           { icon: '🛑', label: 'It stays up' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Letting go keeps it up' },
         ],
       },
       {
+        ask: 'A string holds the picture.',
         bg: 'room',
         base: [at('🧵', 50, 18, 10), at('🖼️', 50, 42, 20)],
         cards: [

@@ -45,7 +45,7 @@ export const springBack: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Press a spring, or clay.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const springBack: ContentModule = {
             result: [at('🧽', 50, 52, 26, { fx: 'pop' }), at('↩️', 78, 36, 14)],
           },
           { icon: '⏹️', label: 'It is flat', caption: 'It is flat.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🟤', label: 'The clay comes back', caption: 'The clay comes back.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const springBack: ContentModule = {
   rules: [
     whatHappensNext('sci-spring', [
       {
+        ask: 'You let go of a pressed spring.',
         bg: 'room',
         base: [at('✋', 50, 28, 16), at('🌀', 50, 62, 20)],
         cards: [
           { icon: '↩️', label: 'The spring comes back' },
           { icon: '⏹️', label: 'It stays flat' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Spring and clay are the same' },
         ],
       },
       {
+        ask: 'You let go of pressed clay.',
         bg: 'room',
         base: [at('✋', 50, 30, 16), at('🟤', 50, 66, 18)],
         cards: [
           { icon: '⏹️', label: 'The clay stays flat' },
           { icon: '↩️', label: 'It comes back' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Spring and clay are the same' },
         ],
       },
       {
+        ask: 'You let go of a pressed coil.',
         bg: 'plain',
         base: [at('✋', 24, 40, 14), at('➰', 60, 55, 20)],
         cards: [
@@ -111,6 +114,7 @@ export const springBack: ContentModule = {
         ],
       },
       {
+        ask: 'You let go of pressed dough.',
         bg: 'room',
         base: [at('✋', 50, 28, 16), at('🍞', 50, 64, 18)],
         cards: [
@@ -120,39 +124,43 @@ export const springBack: ContentModule = {
         ],
       },
       {
+        ask: 'You let go of a pressed sponge.',
         bg: 'room',
         base: [at('✋', 48, 30, 16), at('🧽', 50, 66, 16)],
         cards: [
           { icon: '↩️', label: 'It comes back' },
           { icon: '⏹️', label: 'It stays flat' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Spring and clay are the same' },
         ],
       },
       {
+        ask: 'You let go of pressed sand.',
         bg: 'day',
         base: [at('✋', 50, 30, 14), at('🏖️', 50, 68, 20)],
         cards: [
           { icon: '⏹️', label: 'It stays flat' },
           { icon: '↩️', label: 'It comes back' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Spring and clay are the same' },
         ],
       },
       {
+        ask: 'You let go of the spring again.',
         bg: 'room',
         base: [at('🌀', 40, 55, 22), at('✋', 70, 28, 14)],
         cards: [
           { icon: '↩️', label: 'It comes back' },
           { icon: '⏹️', label: 'It stays flat' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Spring and clay are the same' },
         ],
       },
       {
+        ask: 'You let go of a pressed crayon.',
         bg: 'room',
         base: [at('✋', 46, 32, 14), at('🖍️', 58, 64, 16)],
         cards: [
           { icon: '⏹️', label: 'It stays flat' },
           { icon: '↩️', label: 'It comes back' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Spring and clay are the same' },
         ],
       },
     ]),

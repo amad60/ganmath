@@ -45,7 +45,7 @@ export const warmAndWetRots: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Warm and wet, or cold.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const warmAndWetRots: ContentModule = {
             result: [at('☀️', 80, 16, 12), at('💧', 28, 36, 10), at('🍂', 50, 58, 24, { fx: 'fade' })],
           },
           { icon: '✅', label: 'The apple stays', caption: 'The apple stays.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '☀️', label: 'A dry apple rots', caption: 'A dry apple rots.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const warmAndWetRots: ContentModule = {
   rules: [
     whatHappensNext('sci-rotfast', [
       {
+        ask: 'The apple is warm and wet.',
         bg: 'room',
         base: [at('☀️', 80, 16, 14), at('💧', 26, 36, 12), at('🍎', 50, 58, 24)],
         cards: [
           { icon: '🍂', label: 'The apple rots' },
           { icon: '✅', label: 'The apple stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Warm alone is enough' },
         ],
       },
       {
+        ask: 'The apple is cold and dry.',
         bg: 'room',
         base: [at('❄️', 80, 16, 14), at('🍎', 50, 58, 24)],
         cards: [
           { icon: '✅', label: 'The apple stays' },
           { icon: '🍂', label: 'The apple rots' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Warm alone is enough' },
         ],
       },
       {
+        ask: 'The bread is warm and wet.',
         bg: 'room',
         base: [at('☀️', 78, 16, 12), at('💧', 24, 34, 12), at('🍞', 50, 58, 22)],
         cards: [
@@ -111,6 +114,7 @@ export const warmAndWetRots: ContentModule = {
         ],
       },
       {
+        ask: 'The bread is cold and dry.',
         bg: 'room',
         base: [at('❄️', 78, 16, 14), at('🍞', 50, 58, 22)],
         cards: [
@@ -120,39 +124,43 @@ export const warmAndWetRots: ContentModule = {
         ],
       },
       {
+        ask: 'The leaf is warm and wet.',
         bg: 'day',
         base: [at('☀️', 80, 16, 12), at('💧', 28, 40, 10), at('🍃', 50, 60, 20), ground('brown')],
         cards: [
           { icon: '🍂', label: 'The leaf rots' },
           { icon: '✅', label: 'The leaf stays' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Warm alone is enough' },
         ],
       },
       {
+        ask: 'The leaf is cold and dry.',
         bg: 'room',
         base: [at('❄️', 78, 18, 14), at('🍃', 50, 58, 22)],
         cards: [
           { icon: '✅', label: 'The leaf stays' },
           { icon: '🍂', label: 'The leaf rots' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Warm alone is enough' },
         ],
       },
       {
+        ask: 'The apple is warm, but dry.',
         bg: 'day',
         base: [at('☀️', 80, 16, 16), at('🍎', 50, 58, 24)],
         cards: [
           { icon: '✅', label: 'The apple stays' },
           { icon: '🍂', label: 'The apple rots' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Warm alone is enough' },
         ],
       },
       {
+        ask: 'The apple is cold and wet.',
         bg: 'room',
         base: [at('❄️', 78, 18, 14), at('💧', 26, 40, 12), at('🍎', 50, 58, 22)],
         cards: [
           { icon: '✅', label: 'The apple stays' },
           { icon: '🍂', label: 'The apple rots' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Warm alone is enough' },
         ],
       },
     ]),

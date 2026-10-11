@@ -45,7 +45,7 @@ export const coldMakesDrops: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A cold cup, or a warm one.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -85,33 +85,37 @@ export const coldMakesDrops: ContentModule = {
     whatHappensNext('sci-drops', [
       {
         bg: 'room',
+        ask: 'The cup is cold.',
         base: [at('🥛', 50, 58, 28), at('❄️', 78, 22, 14)],
         cards: [
           { icon: '💧', label: 'Drops on the cup' },
           { icon: '☀️', label: 'It stays dry' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The cup makes the water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'The cup is warm.',
         base: [at('🥛', 50, 58, 28), at('☀️', 78, 22, 16)],
         cards: [
           { icon: '🚫', label: 'The cup stays dry' },
           { icon: '💧', label: 'Drops on the cup' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '❔', label: 'The cup makes the water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'The glass is full of ice.',
         base: [at('🥃', 50, 56, 26), at('🧊', 50, 48, 14)],
         cards: [
           { icon: '💦', label: 'Drops on the glass' },
           { icon: '☕', label: 'It stays dry' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'The cup makes the water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'The cup is hot.',
         base: [at('☕', 50, 56, 26), at('🔥', 78, 24, 14)],
         cards: [
           { icon: '🚫', label: 'The cup stays dry' },
@@ -121,38 +125,42 @@ export const coldMakesDrops: ContentModule = {
       },
       {
         bg: 'room',
+        ask: 'The bottle is cold.',
         base: [at('🍼', 50, 56, 26), at('❄️', 76, 24, 14)],
         cards: [
           { icon: '💧', label: 'Drops on it' },
           { icon: '🌵', label: 'It stays dry' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'The cup makes the water' },
         ],
       },
       {
         bg: 'night',
+        ask: 'The window is cold.',
         base: [at('🪟', 50, 48, 30), at('❄️', 80, 20, 14)],
         cards: [
           { icon: '💧', label: 'Drops on the window' },
           { icon: '☀️', label: 'It stays dry' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'The cup makes the water' },
         ],
       },
       {
         bg: 'day',
+        ask: 'The window is warm.',
         base: [at('🪟', 50, 48, 30), at('☀️', 80, 18, 16)],
         cards: [
           { icon: '🌞', label: 'The window stays dry' },
           { icon: '💧', label: 'Drops on it' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'The cup makes the water' },
         ],
       },
       {
         bg: 'room',
+        ask: 'The can is cold.',
         base: [at('🥫', 50, 56, 24), at('❄️', 76, 22, 14)],
         cards: [
           { icon: '🥤', label: 'Drops on the can' },
           { icon: '☀️', label: 'It stays dry' },
-          { icon: '🌺', label: 'A flower comes' },
+          { icon: '🚫', label: 'The cup makes the water' },
         ],
       },
     ]),

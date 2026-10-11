@@ -45,7 +45,7 @@ export const caughtOrThrough: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Sand on cloth, or salt water.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const caughtOrThrough: ContentModule = {
             result: [at('🧺', 50, 34, 16, { fx: 'pop' }), at('👕', 50, 50, 22), at('🥛', 50, 74, 16)],
           },
           { icon: '💧', label: 'It all goes through', caption: 'It all goes through.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🧂', label: 'The salt stays', caption: 'The salt stays.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const caughtOrThrough: ContentModule = {
   rules: [
     whatHappensNext('sci-filter', [
       {
+        ask: 'Sand is poured on a cloth.',
         bg: 'room',
         base: [at('🏖️', 50, 18, 14), at('👕', 50, 46, 22), at('🥛', 50, 74, 16)],
         cards: [
           { icon: '🧺', label: 'Sand stays on the cloth' },
           { icon: '💧', label: 'Sand goes through' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The cloth changes the mix' },
         ],
       },
       {
+        ask: 'Salt water is poured on a cloth.',
         bg: 'room',
         base: [at('🧂', 50, 16, 14), at('👕', 50, 46, 22), at('🥛', 50, 74, 16)],
         cards: [
           { icon: '💧', label: 'Salt water goes through' },
           { icon: '🧺', label: 'Salt stays on the cloth' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The cloth changes the mix' },
         ],
       },
       {
+        ask: 'Sugar water is poured on a cloth.',
         bg: 'room',
         base: [at('🍬', 50, 16, 12), at('👕', 50, 46, 22), at('🥛', 50, 76, 14)],
         cards: [
@@ -111,24 +114,27 @@ export const caughtOrThrough: ContentModule = {
         ],
       },
       {
+        ask: 'A leaf is poured on a cloth.',
         bg: 'room',
         base: [at('🍃', 50, 16, 14), at('👕', 50, 48, 22), at('🥛', 50, 76, 14)],
         cards: [
           { icon: '🧺', label: 'The leaf stays on it' },
           { icon: '💧', label: 'The leaf goes through' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'The cloth changes the mix' },
         ],
       },
       {
+        ask: 'A rock is poured on a cloth.',
         bg: 'room',
         base: [at('🪨', 50, 16, 14), at('👕', 50, 48, 22), at('🥛', 50, 76, 14)],
         cards: [
           { icon: '🧺', label: 'The rock stays on it' },
           { icon: '💧', label: 'The rock goes through' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'The cloth changes the mix' },
         ],
       },
       {
+        ask: 'Salt water is poured with no cloth.',
         bg: 'room',
         base: [at('🧂', 50, 20, 16), at('🥛', 50, 64, 22)],
         cards: [
@@ -138,21 +144,23 @@ export const caughtOrThrough: ContentModule = {
         ],
       },
       {
+        ask: 'Sand is poured on a dry cloth.',
         bg: 'plain',
         base: [at('🏖️', 50, 28, 18), at('👕', 50, 52, 26)],
         cards: [
           { icon: '🧺', label: 'Sand stays on the cloth' },
           { icon: '💧', label: 'It goes through' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'The cloth changes the mix' },
         ],
       },
       {
+        ask: 'Mud is poured on a cloth.',
         bg: 'room',
         base: [at('🟤', 50, 16, 14), at('👕', 50, 46, 24), at('🥛', 50, 76, 14)],
         cards: [
           { icon: '🧺', label: 'Mud stays on the cloth' },
           { icon: '💧', label: 'Mud goes through' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'The cloth changes the mix' },
         ],
       },
     ]),

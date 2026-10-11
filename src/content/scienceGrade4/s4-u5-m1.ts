@@ -51,7 +51,7 @@ export const polesPushAndPull: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Same ends, or not the same.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -91,24 +91,27 @@ export const polesPushAndPull: ContentModule = {
     whatHappensNext('sci-poles', [
       {
         bg: 'plain',
+        ask: 'Both ends are the same.',
         base: [at('🔴', 40, 50, 16), at('🔴', 60, 50, 16)],
         cards: [
           { icon: '↔️', label: 'They push away' },
           { icon: '🤝', label: 'They pull' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The ends do nothing' },
         ],
       },
       {
         bg: 'plain',
+        ask: 'The two ends are different.',
         base: [at('🔴', 40, 50, 16), at('🔵', 60, 50, 16)],
         cards: [
           { icon: '🤝', label: 'They pull' },
           { icon: '↔️', label: 'They push away' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The ends do nothing' },
         ],
       },
       {
         bg: 'plain',
+        ask: 'Both ends are the same color.',
         base: [at('🔵', 36, 50, 16), at('🔵', 64, 50, 16)],
         cards: [
           { icon: '👐', label: 'They push away' },
@@ -118,6 +121,7 @@ export const polesPushAndPull: ContentModule = {
       },
       {
         bg: 'room',
+        ask: 'Both cars show the same end.',
         base: [at('🚗', 30, 58, 18), at('🔴', 42, 40, 10), at('🚗', 70, 58, 18), at('🔴', 58, 40, 10)],
         cards: [
           { icon: '↔️', label: 'The cars push away' },
@@ -127,6 +131,7 @@ export const polesPushAndPull: ContentModule = {
       },
       {
         bg: 'room',
+        ask: 'The cars show different ends.',
         base: [at('🚗', 32, 58, 18), at('🔴', 44, 40, 10), at('🚙', 70, 58, 18), at('🔵', 58, 40, 10)],
         cards: [
           { icon: '🚃', label: 'The cars pull in' },
@@ -136,15 +141,17 @@ export const polesPushAndPull: ContentModule = {
       },
       {
         bg: 'plain',
+        ask: 'Both hands show the same end.',
         base: [at('✋', 28, 55, 18), at('🔴', 40, 40, 10), at('✋', 72, 55, 18), at('🔴', 60, 40, 10)],
         cards: [
           { icon: '🙌', label: 'The hands push out' },
           { icon: '👏', label: 'The hands pull in' },
-          { icon: '🌻', label: 'A flower comes' },
+          { icon: '🚫', label: 'The ends do nothing' },
         ],
       },
       {
         bg: 'plain',
+        ask: 'The hands show different ends.',
         base: [at('✋', 30, 55, 18), at('🔴', 42, 38, 10), at('✋', 70, 55, 18), at('🔵', 58, 38, 10)],
         cards: [
           { icon: '👏', label: 'The hands pull in' },
@@ -154,11 +161,12 @@ export const polesPushAndPull: ContentModule = {
       },
       {
         bg: 'plain',
+        ask: 'Different ends. Paper is between them.',
         base: [at('🔴', 32, 50, 14), at('📄', 50, 50, 14), at('🔵', 68, 50, 14)],
         cards: [
           { icon: '🤝', label: 'They still pull' },
           { icon: '↔️', label: 'They push away' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'The ends do nothing' },
         ],
       },
     ]),

@@ -115,6 +115,7 @@ export const soilAndRain: ContentModule = {
   rules: [
     whatHappensNext('sci-soil', [
       {
+        ask: 'Heavy rain falls on bare soil.',
         bg: 'cloudy',
         base: [at('🌧️', 50, 16, 30), bar(50, 86, 100, 28, 'brown')],
         cards: [
@@ -124,15 +125,17 @@ export const soilAndRain: ContentModule = {
         ],
       },
       {
+        ask: 'Light rain falls on small plants.',
         bg: 'cloudy',
         base: [at('🌦️', 50, 16, 26), bar(50, 86, 100, 28, 'brown'), at('🌱', 30, 66, 16), at('🌱', 70, 66, 16)],
         cards: [
           { icon: '🌿', label: 'The plants drink it' },
-          { icon: '🔥', label: 'It burns' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'Rain does nothing' },
+          { icon: '❔', label: 'Soil never moves' },
         ],
       },
       {
+        ask: 'Rain falls on ground full of plants.',
         bg: 'cloudy',
         base: [
           at('🌧️', 50, 16, 30),
@@ -148,6 +151,7 @@ export const soilAndRain: ContentModule = {
         ],
       },
       {
+        ask: 'The sun shines on the soil.',
         bg: 'day',
         base: [at('☀️', 50, 18, 24), bar(50, 86, 100, 28, 'brown')],
         cards: [
@@ -157,6 +161,7 @@ export const soilAndRain: ContentModule = {
         ],
       },
       {
+        ask: 'Rain falls on bare rock.',
         bg: 'cloudy',
         base: [at('🌧️', 50, 16, 30), bar(50, 90, 100, 20, 'gray'), at('🪨', 50, 68, 26)],
         cards: [
@@ -167,30 +172,33 @@ export const soilAndRain: ContentModule = {
       },
     
       {
+        ask: 'Rain falls on a bare hill.',
         bg: 'day',
         base: [at('⛰️', 50, 48, 36), at('🌧️', 50, 18, 16)],
         cards: [
           { icon: '💧', label: 'The soil washes away' },
           { icon: '🧊', label: 'It turns to ice' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Rain does nothing' },
         ],
       },
       {
+        ask: 'Rain falls where roots are thick.',
         bg: 'day',
         base: [at('🌱', 36, 62, 18), at('🌱', 64, 62, 18), at('🌧️', 50, 20, 14)],
         cards: [
           { icon: '🌿', label: 'Roots hold the soil' },
           { icon: '💨', label: 'The soil blows away' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Rain does nothing' },
         ],
       },
       {
+        ask: 'The sun shines on dry soil.',
         bg: 'day',
         base: [at('🏜️', 50, 62, 36), at('☀️', 78, 18, 16)],
         cards: [
           { icon: '💨', label: 'The soil gets dry' },
           { icon: '🌊', label: 'A sea comes' },
-          { icon: '🎂', label: 'A cake comes' },
+          { icon: '🚫', label: 'Rain does nothing' },
         ],
       },
     ]),

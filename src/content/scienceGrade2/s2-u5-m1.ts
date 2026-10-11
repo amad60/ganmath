@@ -109,6 +109,7 @@ export const heatAndCold: ContentModule = {
   rules: [
     whatHappensNext('sci-heat', [
       {
+        ask: 'Ice cream sits in the sun.',
         bg: 'day',
         base: [at('☀️', 84, 16, 18), at('🍦', 46, 58, 30)],
         cards: [
@@ -118,43 +119,48 @@ export const heatAndCold: ContentModule = {
         ],
       },
       {
+        ask: 'A snowman sits in the sun.',
         bg: 'day',
         base: [at('☀️', 84, 16, 18), ground('white'), at('⛄', 46, 62, 34)],
         cards: [
           { icon: '💦', label: 'It melts' },
           { icon: '❄️', label: 'It gets big' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Heat does nothing' },
         ],
       },
       {
+        ask: 'Chocolate sits in the sun.',
         bg: 'day',
         base: [at('☀️', 84, 16, 18), bar(46, 80, 40, 4, 'gray'), at('🍫', 46, 66, 22)],
         cards: [
           { icon: '💧', label: 'It melts' },
           { icon: '🧊', label: 'It gets cold' },
-          { icon: '🐦', label: 'It flies' },
+          { icon: '🚫', label: 'Heat does nothing' },
         ],
       },
       {
+        ask: 'The pond sits in the cold night.',
         bg: 'night',
         base: [at('❄️', 20, 20, 12), at('❄️', 80, 18, 12), at('🌙', 50, 16, 12), bar(50, 86, 100, 28, 'blue')],
         cards: [
           { icon: '🧊', label: 'The pond freezes' },
           { icon: '🔥', label: 'The pond gets hot' },
-          { icon: '🌸', label: 'Flowers grow' },
+          { icon: '🚫', label: 'Heat does nothing' },
         ],
       },
       {
+        ask: 'Water sits in the cold.',
         bg: 'cloudy',
         base: [at('❄️', 18, 18, 12), at('❄️', 82, 20, 12), bar(50, 78, 40, 4, 'gray'), at('💧', 50, 62, 18)],
         cards: [
           { icon: '🧊', label: 'It turns to ice' },
           { icon: '☀️', label: 'It gets hot' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Heat does nothing' },
         ],
       },
     
       {
+        ask: 'Candy sits in the sun.',
         bg: 'day',
         base: [at('🍭', 46, 58, 24), at('☀️', 80, 18, 16)],
         cards: [
@@ -164,21 +170,23 @@ export const heatAndCold: ContentModule = {
         ],
       },
       {
+        ask: 'Water sits where it is cold.',
         bg: 'room',
         base: [at('💧', 46, 58, 18), at('❄️', 76, 30, 20)],
         cards: [
           { icon: '🧊', label: 'It turns to ice' },
           { icon: '🔥', label: 'It boils' },
-          { icon: '🌸', label: 'It blooms' },
+          { icon: '🚫', label: 'Heat does nothing' },
         ],
       },
       {
+        ask: 'Wax sits by the fire.',
         bg: 'room',
         base: [at('🕯️', 46, 58, 28), at('🔥', 70, 36, 16)],
         cards: [
           { icon: '💧', label: 'The wax melts' },
           { icon: '❄️', label: 'It freezes' },
-          { icon: '🐦', label: 'It flies' },
+          { icon: '🚫', label: 'Heat does nothing' },
         ],
       },
     ]),

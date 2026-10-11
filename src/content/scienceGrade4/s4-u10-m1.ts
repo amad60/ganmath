@@ -45,7 +45,7 @@ export const oneLinkBreaks: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'The rabbit has no food.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -85,24 +85,27 @@ export const oneLinkBreaks: ContentModule = {
     whatHappensNext('sci-link', [
       {
         bg: 'day',
+        ask: 'There is no grass for the rabbit.',
         base: [at('🐇', 60, 62, 22), ground('yellow')],
         cards: [
           { icon: '💨', label: 'The rabbit goes' },
           { icon: '🐇', label: 'The rabbit stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'The eater needs nothing' },
         ],
       },
       {
         bg: 'day',
+        ask: 'There is grass for the rabbit.',
         base: [at('🌱', 30, 68, 16), at('🐇', 64, 60, 20), ground('green')],
         cards: [
           { icon: '😋', label: 'The rabbit stays' },
           { icon: '💨', label: 'The rabbit goes' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'The eater needs nothing' },
         ],
       },
       {
         bg: 'day',
+        ask: 'There is grass, but no rabbit for the fox.',
         base: [at('🌱', 26, 68, 16), at('🦊', 66, 56, 22), ground('green')],
         cards: [
           { icon: '💨', label: 'The fox goes' },
@@ -112,6 +115,7 @@ export const oneLinkBreaks: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'The fox has a rabbit to eat.',
         base: [at('🌱', 22, 70, 14), at('🐇', 46, 64, 16), at('🦊', 74, 54, 20), ground('green')],
         cards: [
           { icon: '😋', label: 'The fox stays' },
@@ -121,6 +125,7 @@ export const oneLinkBreaks: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'There is no flower for the bee.',
         base: [at('🐝', 62, 48, 20), ground('green')],
         cards: [
           { icon: '💨', label: 'The bee goes' },
@@ -130,29 +135,32 @@ export const oneLinkBreaks: ContentModule = {
       },
       {
         bg: 'day',
+        ask: 'There is a flower for the bee.',
         base: [at('🌸', 30, 62, 18), at('🐝', 66, 46, 18), ground('green')],
         cards: [
           { icon: '😋', label: 'The bee stays' },
           { icon: '💨', label: 'The bee goes' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'The eater needs nothing' },
         ],
       },
       {
         bg: 'water',
+        ask: 'There is no food for the big fish.',
         base: [at('🐟', 62, 48, 20), at('🌊', 50, 78, 24)],
         cards: [
           { icon: '💨', label: 'The big fish goes' },
           { icon: '🐟', label: 'The big fish stays' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'The eater needs nothing' },
         ],
       },
       {
         bg: 'water',
+        ask: 'The big fish has a small animal to eat.',
         base: [at('🦐', 32, 62, 14), at('🐟', 66, 46, 20), at('🌊', 50, 80, 20)],
         cards: [
           { icon: '😋', label: 'The big fish stays' },
           { icon: '💨', label: 'The big fish goes' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'The eater needs nothing' },
         ],
       },
     ]),

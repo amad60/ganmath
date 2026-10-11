@@ -121,15 +121,17 @@ export const solidAndLiquid: ContentModule = {
   rules: [
     whatHappensNext('sci-states', [
       {
+        ask: 'The cup is full of water.',
         bg: 'room',
         base: [ground('brown'), at('🥛', 50, 70, 24, { rotate: 80 })],
         cards: [
           { icon: '💦', label: 'It spills out' },
           { icon: '🧱', label: 'It stays like a block' },
-          { icon: '🌸', label: 'A flower grows' },
+          { icon: '🚫', label: 'It disappears' },
         ],
       },
       {
+        ask: 'A hand holds a rock.',
         bg: 'water',
         base: [at('✋', 50, 14, 14), at('🪨', 50, 34, 14)],
         cards: [
@@ -139,15 +141,17 @@ export const solidAndLiquid: ContentModule = {
         ],
       },
       {
+        ask: 'A solid block sits in a box.',
         bg: 'room',
         base: [ground('brown'), at('🧱', 30, 40, 18), at('📦', 64, 72, 30)],
         cards: [
           { icon: '🧱', label: 'It keeps its shape' },
           { icon: '💦', label: 'It spills' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'It disappears' },
         ],
       },
       {
+        ask: 'Honey is poured.',
         bg: 'room',
         base: [ground('brown'), at('🍯', 50, 66, 26, { rotate: -100 })],
         cards: [
@@ -157,6 +161,7 @@ export const solidAndLiquid: ContentModule = {
         ],
       },
       {
+        ask: 'A strawberry is put in a cup.',
         bg: 'room',
         base: [ground('brown'), at('🍓', 50, 34, 18), bar(50, 84, 60, 3, 'gray')],
         cards: [
@@ -167,24 +172,27 @@ export const solidAndLiquid: ContentModule = {
       },
     
       {
+        ask: 'Juice fills the cup.',
         bg: 'room',
         base: [at('🧃', 40, 40, 22), at('🥤', 68, 64, 20)],
         cards: [
           { icon: '💧', label: 'It spills out' },
           { icon: '🧊', label: 'It stays a block' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'It disappears' },
         ],
       },
       {
+        ask: 'A hand squeezes a rock.',
         bg: 'room',
         base: [at('🪨', 50, 58, 28), at('✋', 24, 50, 16)],
         cards: [
           { icon: '🪨', label: 'It keeps its shape' },
           { icon: '💧', label: 'It pours out' },
-          { icon: '🐦', label: 'It flies' },
+          { icon: '🚫', label: 'It disappears' },
         ],
       },
       {
+        ask: 'Honey is poured on a plate.',
         bg: 'room',
         base: [at('🍯', 42, 36, 20), at('🍽️', 70, 66, 18)],
         cards: [

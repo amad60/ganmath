@@ -57,7 +57,7 @@ export const loudAndQuiet: ContentModule = {
         base: [at('🤫', 34, 56, 26), at('🧒', 74, 60, 26)],
         options: [
           { icon: '🔊', label: 'A loud bang', caption: 'A loud bang.' },
-          { icon: '🌈', label: 'A rainbow', caption: 'A rainbow.' },
+          { icon: '🔇', label: 'No sound', caption: 'No sound.' },
           {
             icon: '🔈',
             label: 'A quiet sound',
@@ -85,6 +85,7 @@ export const loudAndQuiet: ContentModule = {
   rules: [
     whatHappensNext('sci-sound', [
       {
+        ask: 'You hit the drum hard.',
         bg: 'room',
         base: [at('💥', 30, 30, 16), at('🥁', 50, 62, 28)],
         cards: [
@@ -94,24 +95,27 @@ export const loudAndQuiet: ContentModule = {
         ],
       },
       {
+        ask: 'Someone whispers.',
         bg: 'room',
         base: [at('🤫', 34, 56, 26), at('🧒', 74, 60, 26)],
         cards: [
           { icon: '🔈', label: 'A quiet sound' },
           { icon: '🔊', label: 'A loud sound' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'There is no sound' },
         ],
       },
       {
+        ask: 'A trumpet plays.',
         bg: 'room',
         base: [at('🎺', 46, 54, 30)],
         cards: [
           { icon: '🔊', label: 'A loud sound' },
           { icon: '🔈', label: 'A quiet sound' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'There is no sound' },
         ],
       },
       {
+        ask: 'A mouse nibbles cheese.',
         bg: 'room',
         base: [at('🐭', 46, 70, 22), at('🧀', 76, 76, 14)],
         cards: [
@@ -121,6 +125,7 @@ export const loudAndQuiet: ContentModule = {
         ],
       },
       {
+        ask: 'Thunder cracks.',
         bg: 'cloudy',
         base: [at('🌩️', 50, 30, 30), ground()],
         cards: [
@@ -131,30 +136,33 @@ export const loudAndQuiet: ContentModule = {
       },
     
       {
+        ask: 'Someone whispers again.',
         bg: 'room',
         base: [at('🤫', 50, 52, 32)],
         cards: [
           { icon: '🔇', label: 'A quiet sound' },
           { icon: '📢', label: 'A loud sound' },
-          { icon: '🌈', label: 'A rainbow' },
+          { icon: '🚫', label: 'There is no sound' },
         ],
       },
       {
+        ask: 'A hand hits the drum.',
         bg: 'room',
         base: [at('🥁', 42, 58, 28), at('✋', 72, 48, 16)],
         cards: [
           { icon: '🔊', label: 'A loud sound' },
           { icon: '🤫', label: 'A quiet sound' },
-          { icon: '❄️', label: 'It snows' },
+          { icon: '🚫', label: 'There is no sound' },
         ],
       },
       {
+        ask: 'A closed book makes no hit.',
         bg: 'room',
         base: [at('📚', 50, 54, 30)],
         cards: [
           { icon: '🤫', label: 'A quiet sound' },
           { icon: '⛈️', label: 'A storm' },
-          { icon: '🔥', label: 'A fire' },
+          { icon: '🚫', label: 'There is no sound' },
         ],
       },
     ]),

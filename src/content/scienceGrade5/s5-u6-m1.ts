@@ -45,7 +45,7 @@ export const shadowGrowsShort: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A low sun, or a high sun.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const shadowGrowsShort: ContentModule = {
             result: [at('☀️', 50, 12, 14), at('🌳', 50, 52, 28), at('▪️', 50, 80, 10), ground()],
           },
           { icon: '📏', label: 'The shadow is long', caption: 'The shadow is long.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🚫', label: 'No shadow', caption: 'No shadow.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const shadowGrowsShort: ContentModule = {
   rules: [
     whatHappensNext('sci-shadowday', [
       {
+        ask: 'The sun is low.',
         bg: 'day',
         base: [at('🌅', 12, 58, 16), at('🧍', 55, 52, 26), ground()],
         cards: [
           { icon: '📏', label: 'The shadow is long' },
           { icon: '▪️', label: 'The shadow is short' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Sun height does nothing' },
         ],
       },
       {
+        ask: 'The sun is high.',
         bg: 'day',
         base: [at('☀️', 50, 10, 16), at('🧍', 50, 54, 26), ground()],
         cards: [
           { icon: '▪️', label: 'The shadow is short' },
           { icon: '📏', label: 'The shadow is long' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Sun height does nothing' },
         ],
       },
       {
+        ask: 'The sun is low behind the tree.',
         bg: 'day',
         base: [at('🌄', 88, 58, 16), at('🌳', 40, 52, 28), ground()],
         cards: [
@@ -111,33 +114,37 @@ export const shadowGrowsShort: ContentModule = {
         ],
       },
       {
+        ask: 'It is night. There is no sun.',
         bg: 'night',
         base: [at('🌙', 80, 16, 16), at('🧍', 50, 55, 26), ground()],
         cards: [
           { icon: '🚫', label: 'No shadow' },
           { icon: '📏', label: 'A long shadow' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '❔', label: 'Sun height does nothing' },
         ],
       },
       {
+        ask: 'The sun is low behind the house.',
         bg: 'day',
         base: [at('🌅', 10, 70, 14), at('🏠', 60, 52, 26), ground()],
         cards: [
           { icon: '📏', label: 'The shadow is long' },
           { icon: '▪️', label: 'The shadow is short' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'Sun height does nothing' },
         ],
       },
       {
+        ask: 'The sun is high over the house.',
         bg: 'day',
         base: [at('☀️', 50, 8, 18), at('🏠', 50, 54, 28), ground()],
         cards: [
           { icon: '▪️', label: 'The shadow is short' },
           { icon: '📏', label: 'The shadow is long' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Sun height does nothing' },
         ],
       },
       {
+        ask: 'The sun is low behind the child.',
         bg: 'day',
         base: [at('🌅', 8, 48, 18), at('🧒', 48, 58, 22), ground()],
         cards: [
@@ -147,12 +154,13 @@ export const shadowGrowsShort: ContentModule = {
         ],
       },
       {
+        ask: 'The sun is high, behind a thin cloud.',
         bg: 'cloudy',
         base: [at('☁️', 30, 18, 16), at('☀️', 62, 12, 14), at('🧍', 50, 56, 24), ground()],
         cards: [
           { icon: '▪️', label: 'The shadow is short' },
           { icon: '🚫', label: 'No shadow' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '❔', label: 'Sun height does nothing' },
         ],
       },
     ]),

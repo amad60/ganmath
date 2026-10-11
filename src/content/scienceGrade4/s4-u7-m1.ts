@@ -45,7 +45,7 @@ export const floatOrSink: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'A boat shape, or a lump.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -85,24 +85,27 @@ export const floatOrSink: ContentModule = {
     whatHappensNext('sci-float', [
       {
         bg: 'water',
+        ask: 'This is a boat shape.',
         base: [at('⛵', 50, 36, 24), at('🌊', 50, 68, 30)],
         cards: [
           { icon: '⬆️', label: 'It floats' },
           { icon: '⚫', label: 'It sinks' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'Water picks what floats' },
         ],
       },
       {
         bg: 'water',
+        ask: 'This is a solid lump.',
         base: [at('⚫', 50, 30, 16), at('🌊', 50, 64, 32)],
         cards: [
           { icon: '⬇️', label: 'The lump sinks' },
           { icon: '⛵', label: 'It floats' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Water picks what floats' },
         ],
       },
       {
         bg: 'water',
+        ask: 'This is a ship shape.',
         base: [at('🚢', 50, 38, 28), at('🌊', 50, 70, 28)],
         cards: [
           { icon: '⬆️', label: 'The ship floats' },
@@ -112,6 +115,7 @@ export const floatOrSink: ContentModule = {
       },
       {
         bg: 'water',
+        ask: 'This spoon is a solid lump.',
         base: [at('🥄', 50, 26, 16), at('🌊', 50, 66, 30)],
         cards: [
           { icon: '⬇️', label: 'The spoon sinks' },
@@ -121,6 +125,7 @@ export const floatOrSink: ContentModule = {
       },
       {
         bg: 'water',
+        ask: 'This is a canoe shape.',
         base: [at('🛶', 50, 36, 24), at('🌊', 50, 68, 28)],
         cards: [
           { icon: '⬆️', label: 'The boat floats' },
@@ -130,29 +135,32 @@ export const floatOrSink: ContentModule = {
       },
       {
         bg: 'water',
+        ask: 'This coin is a solid lump.',
         base: [at('🪙', 50, 28, 14), at('🌊', 50, 66, 30)],
         cards: [
           { icon: '⬇️', label: 'The lump sinks' },
           { icon: '🛶', label: 'It floats' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'Water picks what floats' },
         ],
       },
       {
         bg: 'water',
+        ask: 'The boat shape is full of water.',
         base: [at('⛵', 50, 48, 22), at('💧', 50, 44, 12), at('🌊', 50, 72, 26)],
         cards: [
           { icon: '⬇️', label: 'The boat sinks' },
           { icon: '🛟', label: 'It floats' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'Water picks what floats' },
         ],
       },
       {
         bg: 'water',
+        ask: 'This float is hollow.',
         base: [at('🛟', 50, 38, 22), at('🌊', 50, 70, 26)],
         cards: [
           { icon: '⬆️', label: 'It floats' },
           { icon: '⚓', label: 'It sinks' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'Water picks what floats' },
         ],
       },
     ]),

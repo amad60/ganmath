@@ -95,6 +95,7 @@ export const rotFeedsSoil: ContentModule = {
   rules: [
     whatHappensNext('sci-rot', [
       {
+        ask: 'Old leaves sit for many days.',
         bg: 'day',
         base: [at('🍂', 36, 80, 16), at('🍂', 62, 82, 16), ground()],
         cards: [
@@ -104,15 +105,17 @@ export const rotFeedsSoil: ContentModule = {
         ],
       },
       {
+        ask: 'A dead log sits for many days.',
         bg: 'day',
         base: [at('🌲', 20, 46, 40), at('🪵', 60, 82, 22), ground()],
         cards: [
           { icon: '🍄', label: 'It rots and gets soft' },
-          { icon: '🔥', label: 'It burns' },
-          { icon: '🪽', label: 'It flies' },
+          { icon: '🚫', label: 'Rot does nothing' },
+          { icon: '❔', label: 'Only seeds feed soil' },
         ],
       },
       {
+        ask: 'A banana sits for many days.',
         bg: 'day',
         base: [at('🍌', 50, 80, 16, { rotate: 30 }), bar(50, 94, 100, 14, 'brown')],
         cards: [
@@ -122,15 +125,17 @@ export const rotFeedsSoil: ContentModule = {
         ],
       },
       {
+        ask: 'A seed is planted in soil with worms.',
         bg: 'day',
         base: [at('🌱', 50, 74, 20), bar(50, 94, 100, 14, 'brown'), at('🪱', 70, 92, 10)],
         cards: [
           { icon: '🌿', label: 'The plant grows' },
           { icon: '🥀', label: 'It dries up' },
-          { icon: '🌧️', label: 'It rains' },
+          { icon: '🚫', label: 'Rot does nothing' },
         ],
       },
       {
+        ask: 'A toy sits in the soil.',
         bg: 'day',
         base: [at('🧸', 50, 80, 18), bar(50, 94, 100, 14, 'brown')],
         cards: [
@@ -141,15 +146,17 @@ export const rotFeedsSoil: ContentModule = {
       },
     
       {
+        ask: 'An apple sits on the soil.',
         bg: 'day',
         base: [at('🍎', 50, 64, 22), at('🟫', 50, 82, 16)],
         cards: [
           { icon: '🍂', label: 'It rots' },
           { icon: '🌳', label: 'It grows into a tree' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'Rot does nothing' },
         ],
       },
       {
+        ask: 'A wet log sits for many days.',
         bg: 'day',
         base: [at('🪵', 50, 60, 28), at('💧', 28, 40, 12)],
         cards: [
@@ -159,12 +166,13 @@ export const rotFeedsSoil: ContentModule = {
         ],
       },
       {
+        ask: 'A plastic bottle sits in the soil.',
         bg: 'day',
         base: [at('🧴', 50, 60, 24), at('🟫', 50, 82, 16)],
         cards: [
           { icon: '🧴', label: 'It stays' },
           { icon: '🍂', label: 'It rots away' },
-          { icon: '🌸', label: 'It blooms' },
+          { icon: '🚫', label: 'Rot does nothing' },
         ],
       },
     ]),

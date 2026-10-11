@@ -45,7 +45,7 @@ export const manyDrips: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'See this. See what changes.',
+      prompt: 'Many drips, or one drip.',
       visual: {
         kind: 'science-scene',
         mode: 'predict',
@@ -59,7 +59,7 @@ export const manyDrips: ContentModule = {
             result: [at('💦', 50, 18, 14), at('🪨', 50, 68, 24), at('🕳️', 50, 58, 14, { fx: 'pop' }), ground('gray')],
           },
           { icon: '🛑', label: 'The rock stays', caption: 'The rock stays.' },
-          { icon: '🌈', label: 'It grows big', caption: 'It grows big.' },
+          { icon: '🚫', label: 'No hole', caption: 'No hole.' },
         ],
         correct: 0,
       },
@@ -84,24 +84,27 @@ export const manyDrips: ContentModule = {
   rules: [
     whatHappensNext('sci-drip', [
       {
+        ask: 'Many drips hit the rock.',
         bg: 'day',
         base: [at('💧', 34, 18, 8), at('💧', 50, 14, 8), at('💧', 66, 18, 8), at('🪨', 50, 66, 26), ground('gray')],
         cards: [
           { icon: '🕳️', label: 'A hole grows' },
           { icon: '🛑', label: 'The rock stays' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'One drip digs a hole' },
         ],
       },
       {
+        ask: 'One drip hits the rock.',
         bg: 'day',
         base: [at('💧', 50, 22, 12), at('🪨', 50, 66, 28), ground('gray')],
         cards: [
           { icon: '🛑', label: 'The rock stays' },
           { icon: '🕳️', label: 'A hole grows' },
-          { icon: '🔥', label: 'It burns' },
+          { icon: '🚫', label: 'One drip digs a hole' },
         ],
       },
       {
+        ask: 'A stream of water hits the soil.',
         bg: 'day',
         base: [at('💦', 50, 18, 16), at('🟤', 50, 68, 22), ground('brown')],
         cards: [
@@ -111,6 +114,7 @@ export const manyDrips: ContentModule = {
         ],
       },
       {
+        ask: 'One drip hits the soil.',
         bg: 'day',
         base: [at('💧', 50, 24, 10), at('🟤', 50, 68, 22), ground('brown')],
         cards: [
@@ -120,39 +124,43 @@ export const manyDrips: ContentModule = {
         ],
       },
       {
+        ask: 'Waves hit the rock again and again.',
         bg: 'water',
         base: [at('🌊', 20, 40, 16), at('🌊', 40, 28, 14), at('🏔️', 68, 55, 30)],
         cards: [
           { icon: '🕳️', label: 'A hole grows' },
           { icon: '🛑', label: 'The rock stays' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'One drip digs a hole' },
         ],
       },
       {
+        ask: 'No water hits the rock.',
         bg: 'day',
         base: [at('🪨', 50, 60, 30), ground('gray')],
         cards: [
           { icon: '🛑', label: 'The rock stays' },
           { icon: '🕳️', label: 'A hole grows' },
-          { icon: '🚢', label: 'A boat comes' },
+          { icon: '🚫', label: 'One drip digs a hole' },
         ],
       },
       {
+        ask: 'Many drips hit the sand.',
         bg: 'day',
         base: [at('💦', 50, 20, 16), at('🏖️', 50, 68, 26)],
         cards: [
           { icon: '🕳️', label: 'A hole grows' },
           { icon: '🛑', label: 'The sand stays' },
-          { icon: '🌸', label: 'A flower comes' },
+          { icon: '🚫', label: 'One drip digs a hole' },
         ],
       },
       {
+        ask: 'Many drips hit the brick.',
         bg: 'cloudy',
         base: [at('💧', 30, 16, 8), at('💧', 50, 12, 8), at('💧', 70, 16, 8), at('🧱', 50, 62, 28)],
         cards: [
           { icon: '🕳️', label: 'A hole grows' },
           { icon: '🛑', label: 'It stays' },
-          { icon: '🍎', label: 'It makes fruit' },
+          { icon: '🚫', label: 'One drip digs a hole' },
         ],
       },
     ]),

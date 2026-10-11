@@ -81,6 +81,7 @@ export const plantParts: ContentModule = {
   rules: [
     whatHappensNext('sci-plant-parts', [
       {
+        ask: 'The roots are cut.',
         bg: 'day',
         base: [bar(50, 90, 100, 20, 'brown'), at('🌿', 50, 50, 30), at('✂️', 30, 80, 12)],
         cards: [
@@ -90,6 +91,7 @@ export const plantParts: ContentModule = {
         ],
       },
       {
+        ask: 'The plant has a flower.',
         bg: 'day',
         base: [at('🌸', 50, 40, 34), bar(50, 90, 100, 20, 'brown')],
         cards: [
@@ -99,6 +101,7 @@ export const plantParts: ContentModule = {
         ],
       },
       {
+        ask: 'The leaf gets sunlight.',
         bg: 'day',
         base: [at('☀️', 82, 16, 16), at('🍃', 50, 54, 30), bar(50, 90, 100, 20, 'brown')],
         cards: [
@@ -108,25 +111,28 @@ export const plantParts: ContentModule = {
         ],
       },
       {
+        ask: 'Water reaches the young plant.',
         bg: 'day',
         base: [at('💧', 50, 30, 16), at('🌱', 50, 66, 22), bar(50, 90, 100, 20, 'brown')],
         cards: [
           { icon: '🌿', label: 'The roots drink it' },
-          { icon: '🔥', label: 'It burns' },
-          { icon: '🪨', label: 'It turns to rock' },
+          { icon: '🚫', label: 'That part does nothing' },
+          { icon: '❔', label: 'The plant ignores it' },
         ],
       },
       {
+        ask: 'The flower is cut off.',
         bg: 'day',
         base: [at('🌷', 50, 50, 30), at('✂️', 64, 62, 12), bar(50, 90, 100, 20, 'brown')],
         cards: [
           { icon: '🥀', label: 'It falls down' },
           { icon: '🌳', label: 'It grows tall' },
-          { icon: '🌈', label: 'A rainbow comes' },
+          { icon: '🚫', label: 'That part does nothing' },
         ],
       },
     
       {
+        ask: 'A bee visits the flower.',
         bg: 'day',
         base: [at('🐝', 68, 42, 18), at('🌸', 42, 58, 28)],
         cards: [
@@ -136,15 +142,17 @@ export const plantParts: ContentModule = {
         ],
       },
       {
+        ask: 'The young plant gets water.',
         bg: 'day',
         base: [at('💧', 50, 78, 14), at('🌱', 50, 48, 28)],
         cards: [
           { icon: '🌿', label: 'The plant grows' },
           { icon: '🧊', label: 'It freezes' },
-          { icon: '🔔', label: 'It rings' },
+          { icon: '🚫', label: 'That part does nothing' },
         ],
       },
       {
+        ask: 'The leaf is cut off.',
         bg: 'day',
         base: [at('🍃', 50, 40, 22), at('✂️', 28, 62, 14)],
         cards: [
