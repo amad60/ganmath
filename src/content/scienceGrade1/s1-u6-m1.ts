@@ -70,7 +70,7 @@ export const howAnimalsMove: ContentModule = {
             caption: 'A fish needs water to swim.',
             result: [at('🐟', 50, 76, 20, { rotate: 10, fx: 'shake' }), at('💧', 80, 30, 12, { fx: 'pop' }), ground()],
           },
-          { icon: '🐦', label: 'It flies', caption: 'It flies.' },
+          { icon: '🐛', label: 'It crawls', caption: 'It crawls.' },
         ],
         correct: 1,
       },
@@ -92,9 +92,9 @@ export const howAnimalsMove: ContentModule = {
   rules: [
     whatHappensNext('sci-move', [
       {
-        ask: 'This animal is a bird.',
+        ask: 'What helps this bird reach its nest?',
         bg: 'day',
-        base: [bar(18, 70, 40, 6, 'brown'), at('🐦', 22, 58, 18)],
+        base: [at('🪺', 70, 28, 16), bar(24, 72, 36, 6, 'brown'), at('🐦', 28, 58, 18)],
         cards: [
           { icon: '🪽', label: 'It flies' },
           { icon: '🏊', label: 'It swims' },
@@ -102,74 +102,73 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
-        ask: 'This animal is a fish.',
-        bg: 'water',
-        base: [at('🐟', 50, 54, 24, { flip: true }), at('🫧', 72, 30, 10)],
+        ask: 'This fish is on land. What does it need?',
+        bg: 'day',
+        base: [at('🐟', 50, 74, 20, { rotate: 12 }), ground()],
         cards: [
-          { icon: '🏊', label: 'It swims' },
-          { icon: '🪽', label: 'It flies' },
-          { icon: '🦘', label: 'It hops' },
+          { icon: '💧', label: 'Water' },
+          { icon: '🪽', label: 'Wings' },
+          { icon: '🦵', label: 'Legs' },
         ],
       },
       {
-        ask: 'This animal is a frog.',
+        ask: 'What helps a frog move on land?',
         bg: 'day',
-        base: [at('🐸', 40, 72, 22), ground()],
-        cards: [
-          { icon: '🦘', label: 'It hops' },
-          { icon: '🪽', label: 'It flies' },
-          { icon: '🚫', label: 'It cannot move that way' },
-        ],
-      },
-      {
-        ask: 'This animal is a caterpillar.',
-        bg: 'day',
-        base: [at('🐛', 50, 78, 20), ground()],
-        cards: [
-          { icon: '🐌', label: 'It crawls' },
-          { icon: '🪽', label: 'It flies' },
-          { icon: '🦘', label: 'It hops high' },
-        ],
-      },
-      {
-        ask: 'This animal is a rabbit.',
-        bg: 'day',
-        base: [at('🐇', 46, 72, 24), ground()],
+        base: [at('🐸', 46, 70, 24), ground()],
         cards: [
           { icon: '🦘', label: 'It hops' },
-          { icon: '🏊', label: 'It swims' },
-          { icon: '🪽', label: 'It flies' },
-        ],
-      },
-    
-      {
-        ask: 'This animal is a snake.',
-        bg: 'day',
-        base: [at('🐍', 50, 62, 30)],
-        cards: [
-          { icon: '🐛', label: 'It slides' },
           { icon: '🐦', label: 'It flies' },
           { icon: '🐠', label: 'It swims' },
         ],
       },
       {
-        ask: 'This animal is a horse.',
+        ask: 'What helps this worm move on soil?',
         bg: 'day',
-        base: [at('🐴', 48, 58, 30)],
+        base: [at('🐛', 50, 76, 18), ground('brown')],
         cards: [
-          { icon: '🏃', label: 'It runs' },
-          { icon: '✈️', label: 'It flies' },
-          { icon: '🐠', label: 'It swims' },
+          { icon: '🐌', label: 'It crawls' },
+          { icon: '🪽', label: 'It flies' },
+          { icon: '🦘', label: 'It hops' },
         ],
       },
       {
-        ask: 'This animal is a duck.',
+        ask: 'What helps the goat move on rocks?',
+        bg: 'day',
+        base: [at('🐐', 42, 62, 26), at('🪨', 72, 74, 16), ground('gray')],
+        cards: [
+          { icon: '🧗', label: 'It climbs' },
+          { icon: '🐌', label: 'It crawls' },
+          { icon: '🐸', label: 'It hops' },
+        ],
+      },
+      {
+        ask: 'The duck is in water. What helps it move?',
         bg: 'water',
         base: [at('🦆', 50, 58, 28)],
         cards: [
           { icon: '🏊', label: 'It swims' },
-          { icon: '🐰', label: 'It hops' },
-          { icon: '🚫', label: 'It cannot move that way' },
+          { icon: '🪽', label: 'Wings' },
+          { icon: '🏃', label: 'It runs' },
+        ],
+      },
+      {
+        ask: 'What helps the fish move in the jar?',
+        bg: 'room',
+        base: [at('🫙', 50, 56, 32), at('🐟', 50, 58, 14)],
+        cards: [
+          { icon: '🏊', label: 'It swims' },
+          { icon: '🧗', label: 'It climbs' },
+          { icon: '🏃', label: 'It runs' },
+        ],
+      },
+      {
+        ask: 'What helps the bee move in the air?',
+        bg: 'day',
+        base: [at('🐝', 48, 42, 22), at('🌸', 74, 68, 16)],
+        cards: [
+          { icon: '🪽', label: 'It flies' },
+          { icon: '🧗', label: 'It climbs' },
+          { icon: '🦵', label: 'Legs' },
         ],
       },
     ]),

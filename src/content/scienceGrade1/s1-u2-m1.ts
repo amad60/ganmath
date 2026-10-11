@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, whatHappensNext } from '../scienceScene';
+import { at, ground, whatHappensNext } from '../scienceScene';
 
 export const bodyAndSenses: ContentModule = {
   id: 's1-u2-m1',
@@ -83,92 +83,87 @@ export const bodyAndSenses: ContentModule = {
   ],
 
   rules: [
-    whatHappensNext(
-      'sci-senses',
-      [
-        {
-          ask: 'A bell rings.',
-          bg: 'room',
-          base: [at('🔔', 50, 50, 30), at('🎵', 78, 26, 12)],
-          cards: [
-            { icon: '👂', label: 'Ears' },
-            { icon: '👅', label: 'Tongue' },
-            { icon: '✋', label: 'Skin' },
-          ],
-        },
-        {
-          ask: 'You look at colors.',
-          bg: 'day',
-          base: [at('🌈', 50, 46, 40)],
-          cards: [
-            { icon: '👀', label: 'Eyes' },
-            { icon: '👂', label: 'Ears' },
-            { icon: '👅', label: 'Tongue' },
-          ],
-        },
-        {
-          ask: 'A flower gives off a smell.',
-          bg: 'day',
-          base: [at('🌸', 46, 56, 30), at('💨', 74, 40, 14)],
-          cards: [
-            { icon: '👃', label: 'Nose' },
-            { icon: '👂', label: 'Ears' },
-            { icon: '👅', label: 'Tongue' },
-          ],
-        },
-        {
-          ask: 'You touch something cold.',
-          bg: 'room',
-          base: [at('🧊', 50, 54, 30)],
-          cards: [
-            { icon: '✋', label: 'Skin' },
-            { icon: '👂', label: 'Ears' },
-            { icon: '👃', label: 'Nose' },
-          ],
-        },
-        {
-          ask: 'You taste a sweet candy.',
-          bg: 'room',
-          base: [at('🍭', 50, 54, 30)],
-          cards: [
-            { icon: '👅', label: 'Tongue' },
-            { icon: '👂', label: 'Ears' },
-            { icon: '🦶', label: 'Foot' },
-          ],
-        },
-      
+    whatHappensNext('sci-senses', [
       {
-        ask: 'A drum makes a sound.',
+        ask: 'A bell is ringing. Which part hears it?',
         bg: 'room',
-        base: [at('🥁', 50, 52, 32)],
+        base: [at('🔔', 50, 50, 30), at('🎵', 76, 28, 12)],
         cards: [
           { icon: '👂', label: 'Ears' },
+          { icon: '🦷', label: 'Teeth' },
           { icon: '👃', label: 'Nose' },
+        ],
+      },
+      {
+        ask: 'The lamp is bright. Which part sees it?',
+        bg: 'room',
+        base: [at('💡', 50, 48, 32)],
+        cards: [
+          { icon: '👀', label: 'Eyes' },
+          { icon: '👂', label: 'Ears' },
+          { icon: '👄', label: 'Mouth' },
+        ],
+      },
+      {
+        ask: 'This flower smells sweet. Which part knows?',
+        bg: 'day',
+        base: [at('🌸', 46, 56, 30), at('💨', 74, 40, 14)],
+        cards: [
+          { icon: '👃', label: 'Nose' },
+          { icon: '👅', label: 'Tongue' },
           { icon: '👀', label: 'Eyes' },
         ],
       },
       {
-        ask: 'You feel something hot.',
-        bg: 'day',
-        base: [at('🔥', 50, 54, 30)],
+        ask: 'The ice is cold. Which part feels it?',
+        bg: 'room',
+        base: [at('🧊', 50, 54, 30)],
         cards: [
           { icon: '✋', label: 'Skin' },
+          { icon: '💇', label: 'Hair' },
           { icon: '👂', label: 'Ears' },
-          { icon: '👅', label: 'Tongue' },
         ],
       },
       {
-        ask: 'Bread gives off a smell.',
+        ask: 'The lemon is sour. Which part tastes it?',
         bg: 'room',
-        base: [at('🍞', 50, 54, 30)],
+        base: [at('🍋', 50, 54, 30)],
         cards: [
+          { icon: '👅', label: 'Tongue' },
           { icon: '👃', label: 'Nose' },
-          { icon: '👂', label: 'Ears' },
-          { icon: '👀', label: 'Eyes' },
+          { icon: '🦷', label: 'Teeth' },
         ],
       },
-    ],
-      'Which part knows?',
-    ),
+      {
+        ask: 'What helps you hear the drum?',
+        bg: 'room',
+        base: [at('🥁', 50, 54, 32), at('🎵', 78, 30, 12)],
+        cards: [
+          { icon: '👂', label: 'Ears' },
+          { icon: '👀', label: 'Eyes' },
+          { icon: '🦶', label: 'Foot' },
+        ],
+      },
+      {
+        ask: 'The cup is hot. Which part feels that?',
+        bg: 'room',
+        base: [at('☕', 50, 56, 28), at('♨️', 74, 32, 14)],
+        cards: [
+          { icon: '✋', label: 'Skin' },
+          { icon: '👅', label: 'Tongue' },
+          { icon: '👄', label: 'Mouth' },
+        ],
+      },
+      {
+        ask: 'Which part sees the goat?',
+        bg: 'day',
+        base: [at('🐐', 50, 58, 32), ground()],
+        cards: [
+          { icon: '👀', label: 'Eyes' },
+          { icon: '🦶', label: 'Foot' },
+          { icon: '💋', label: 'Lips' },
+        ],
+      },
+    ]),
   ],
 };
