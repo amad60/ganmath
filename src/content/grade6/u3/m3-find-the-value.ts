@@ -62,7 +62,7 @@ export const findTheValue: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'n is 4. So 3 × n is 12.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
     {

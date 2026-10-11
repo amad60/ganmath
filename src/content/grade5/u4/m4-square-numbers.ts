@@ -41,7 +41,7 @@ export const squareNumbers: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap sixteen dots.',
-      visual: { kind: 'counter-objects', count: 16, icon: '🟦' },
+      visual: { kind: 'counter-objects', count: 16, icon: '🟦', columns: 4 },
       action: 'tap-count',
       target: 16,
       hint: 'Four rows of four.',
@@ -49,26 +49,26 @@ export const squareNumbers: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Four rows of four make sixteen.',
-      visual: { kind: 'array', rows: 4, cols: 4 },
+      visual: { kind: 'array', rows: 4, cols: 4 , still: true },
       action: 'watch',
     },
     {
       // Penandanya bulat; yang persegi adalah susunannya. Teksnya menyebut itu.
       stage: 'pictorial',
       prompt: 'Equal rows and columns make a square.',
-      visual: { kind: 'array', rows: 6, cols: 6 },
+      visual: { kind: 'array', rows: 6, cols: 6 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write 4 × 4 as 4².',
-      visual: { kind: 'array', rows: 4, cols: 4 },
+      visual: { kind: 'array', rows: 4, cols: 4 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'A number times itself is squared.',
-      visual: { kind: 'array', rows: 9, cols: 9 },
+      visual: { kind: 'array', rows: 9, cols: 9 , still: true },
       action: 'watch',
     },
   ],

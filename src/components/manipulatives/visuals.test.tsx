@@ -1428,6 +1428,15 @@ describe('ArrayGrid — penanda bulat untuk benda, petak persegi untuk luas', ()
     expect(container.querySelectorAll('span')).toHaveLength(12);
   });
 
+  it('baris yang diambil dicoret, dan jarak ganda memisahkan pasangan baris', () => {
+    const { container } = render(<ArrayGrid rows={10} cols={3} ghostRow={9} />);
+    expect(container.querySelector('[aria-label="9 rows of 3, one row taken away"]')).not.toBeNull();
+    expect(cells(container)).toHaveLength(30);
+    const doubled = render(<ArrayGrid rows={4} cols={3} gapAfter={1} />).container;
+    const bands = [...doubled.querySelectorAll(':scope > div > div')];
+    expect(bands[1]?.getAttribute('style') ?? '').toContain('margin-bottom');
+  });
+
   it('bantuan perkalian menumbuhkan baris dan menyembunyikan baris terakhir', () => {
     vi.useFakeTimers();
     const { container } = render(<ArrayGrid rows={3} cols={4} play omitLast />);

@@ -30,7 +30,9 @@ export function watchWork(visual: LearnVisual): WatchWork | null {
     const ones = visual.left.ones + visual.right.ones;
     if ((visual.op ?? '+') === '+' && ones >= 10) return { kind: 'bundle', label: 'make' };
   }
-  if (visual.kind === 'array' && !visual.square && visual.rows > 1) {
+  // `still`: kalimatnya sudah menggambarkan array yang selesai, jadi gambarnya
+  // tidak boleh mulai dari satu baris.
+  if (visual.kind === 'array' && !visual.square && !visual.still && visual.rows > 1) {
     return { kind: 'rows', rows: visual.rows };
   }
   return null;

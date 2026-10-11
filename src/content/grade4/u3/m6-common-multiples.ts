@@ -42,19 +42,19 @@ export const commonMultiples: ContentModule = {
     {
       stage: 'pictorial',
       prompt: '12 is 6 rows of 2.',
-      visual: { kind: 'array', rows: 6, cols: 2 },
+      visual: { kind: 'array', rows: 6, cols: 2, still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: '12 is 4 rows of 3.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: '12 is the first common multiple.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
   ],

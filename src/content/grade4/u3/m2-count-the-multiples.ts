@@ -23,7 +23,7 @@ export const countTheMultiples: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap fifteen dots.',
-      visual: { kind: 'counter-objects', count: 15, icon: '🔵' },
+      visual: { kind: 'counter-objects', count: 15, icon: '🔵', columns: 3 },
       action: 'tap-count',
       target: 15,
       hint: 'Five rows of three.',
@@ -31,13 +31,13 @@ export const countTheMultiples: ContentModule = {
     {
       stage: 'pictorial',
       prompt: '5 rows of 3 make 15.',
-      visual: { kind: 'array', rows: 5, cols: 3 },
+      visual: { kind: 'array', rows: 5, cols: 3 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: '3, 6, 9, 12 are multiples of 3.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3 , still: true },
       action: 'watch',
     },
   ],

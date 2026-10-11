@@ -21,22 +21,21 @@ export const timesTableCheck: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap twenty dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '⭐' },
-      action: 'tap-count',
-      target: 20,
-      hint: 'Four groups of five.',
+      prompt: 'Make four rows of five.',
+      visual: { kind: 'array', rows: 4, cols: 5 },
+      action: 'watch',
+      hint: 'Five in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Every fact is an array.',
-      visual: { kind: 'array', rows: 4, cols: 5 },
+      visual: { kind: 'array', rows: 4, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Now mix all the tables.',
-      visual: { kind: 'array', rows: 5, cols: 4 },
+      visual: { kind: 'array', rows: 5, cols: 4, still: true },
       action: 'watch',
     },
   ],

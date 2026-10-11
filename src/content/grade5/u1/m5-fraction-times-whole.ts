@@ -26,7 +26,7 @@ export const fractionTimesWhole: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve apples.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🍎' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🍎', columns: 4 },
       action: 'tap-count',
       target: 12,
       hint: 'Split them into three groups.',
@@ -34,19 +34,19 @@ export const fractionTimesWhole: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Three groups of four.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4 , still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: 'One group is 1/3 of 12.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0 },
+      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'So 2/3 of 12 is 8.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 1 },
+      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 1 , still: true },
       action: 'watch',
     },
     {

@@ -26,13 +26,13 @@ export const timesFive: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Three rows of five is fifteen.',
-      visual: { kind: 'array', rows: 3, cols: 5 },
+      visual: { kind: 'array', rows: 3, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Fives end in five or zero.',
-      visual: { kind: 'array', rows: 4, cols: 5 },
+      visual: { kind: 'array', rows: 4, cols: 5, still: true },
       action: 'watch',
     },
   ],

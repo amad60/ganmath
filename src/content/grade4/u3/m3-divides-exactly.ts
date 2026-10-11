@@ -22,17 +22,16 @@ export const dividesExactly: ContentModule = {
   kind: 'concept',
   fluencyTracked: false,
   questionTypes: ['choose-text', 'keypad'],
-  visuals: ['base10-blocks', 'counter-objects'],
+  visuals: ['base10-blocks', 'array-grid'],
   vocab: [],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap twenty dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '🟢' },
-      action: 'tap-count',
-      target: 20,
-      hint: 'Two rows of ten.',
+      prompt: 'Make two rows of ten.',
+      visual: { kind: 'array', rows: 2, cols: 10 },
+      action: 'watch',
+      hint: 'Ten in each row.',
     },
     {
       stage: 'pictorial',

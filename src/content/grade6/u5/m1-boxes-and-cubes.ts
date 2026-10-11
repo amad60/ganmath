@@ -39,7 +39,7 @@ export const boxesAndCubes: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve cubes.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🧊' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🧊', columns: 4 },
       action: 'tap-count',
       target: 12,
       hint: 'Three rows of four cubes.',

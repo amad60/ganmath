@@ -18,7 +18,7 @@ export const divideBy34: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve dots.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🍓' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🍓', columns: 4 },
       action: 'tap-count',
       target: 12,
       hint: 'Three rows of four.',
@@ -26,13 +26,13 @@ export const divideBy34: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Twelve in three rows is four.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Use the times table you know.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
   ],

@@ -54,19 +54,19 @@ export const whichStepFirst: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Four rows of three, and two more.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Multiply first, then add.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Brackets first: (2 + 4) × 3 = 18.',
-      visual: { kind: 'array', rows: 6, cols: 3 },
+      visual: { kind: 'array', rows: 6, cols: 3, still: true },
       action: 'watch',
     },
   ],

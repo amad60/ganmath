@@ -82,6 +82,7 @@ export function LearnVisualView({
           count={visual.count}
           icon={visual.icon}
           icons={visual.icons}
+          columns={visual.columns}
           counted={value}
           onTap={interactive ? (i) => onValue(i + 1) : undefined}
         />
@@ -238,10 +239,12 @@ export function LearnVisualView({
           rows={visual.rows}
           cols={visual.cols}
           highlightRow={visual.highlightRow}
+          ghostRow={visual.ghostRow}
+          gapAfter={visual.gapAfter}
           square={visual.square}
           visibleRows={reveal}
-          play={play && !visual.square && visual.rows > 1 && reveal == null}
-          omitLast={play && !visual.square && visual.rows > 1 && reveal == null}
+          play={play && !visual.square && !visual.still && visual.rows > 1 && reveal == null}
+          omitLast={play && !visual.square && !visual.still && visual.rows > 1 && reveal == null}
         />
       );
     case 'pictogram':

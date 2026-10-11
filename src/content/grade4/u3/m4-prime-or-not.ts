@@ -42,7 +42,7 @@ export const primeOrNot: ContentModule = {
       visual: { kind: 'counter-objects', count: 7, icon: '🔴' },
       action: 'tap-count',
       target: 7,
-      hint: 'Only one row of seven.',
+      hint: 'Count all seven.',
     },
     {
       stage: 'pictorial',
@@ -53,7 +53,7 @@ export const primeOrNot: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Twelve makes many rows. Not prime.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
     {

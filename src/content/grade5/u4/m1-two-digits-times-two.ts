@@ -56,7 +56,7 @@ export const twoDigitsTimesTwo: ContentModule = {
       // satu kali, bukan hanya sebagai angka di ujung sebuah cara.
       stage: 'pictorial',
       prompt: 'Twelve rows of twelve make 144.',
-      visual: { kind: 'array', rows: 12, cols: 12 },
+      visual: { kind: 'array', rows: 12, cols: 12, still: true },
       action: 'watch',
     },
     {
@@ -68,7 +68,7 @@ export const twoDigitsTimesTwo: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Split 23 × 14 into four parts.',
-      visual: { kind: 'array', rows: 10, cols: 10 },
+      visual: { kind: 'array', rows: 10, cols: 10, still: true },
       action: 'watch',
     },
     {

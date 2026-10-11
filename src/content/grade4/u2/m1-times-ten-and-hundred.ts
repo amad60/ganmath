@@ -23,22 +23,21 @@ export const timesTenAndHundred: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap twenty dots.',
-      visual: { kind: 'counter-objects', count: 30, icon: '🟣' },
-      action: 'tap-count',
-      target: 20,
-      hint: 'Two rows of ten.',
+      prompt: 'Make three rows of ten.',
+      visual: { kind: 'array', rows: 3, cols: 10 },
+      action: 'watch',
+      hint: 'Ten in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Three rows of ten is thirty.',
-      visual: { kind: 'array', rows: 3, cols: 10 },
+      visual: { kind: 'array', rows: 3, cols: 10, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Times ten adds one zero.',
-      visual: { kind: 'array', rows: 3, cols: 10 },
+      visual: { kind: 'array', rows: 3, cols: 10, still: true },
       action: 'watch',
     },
   ],

@@ -17,22 +17,22 @@ export const timesSix: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap twelve dots.',
-      visual: { kind: 'counter-objects', count: 18, icon: '🔴' },
-      action: 'tap-count',
-      target: 12,
-      hint: 'Six groups of two.',
+      prompt: 'Make six rows of three.',
+      visual: { kind: 'array', rows: 6, cols: 3 },
+      action: 'watch',
+      hint: 'Three in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Six rows of three is eighteen.',
-      visual: { kind: 'array', rows: 6, cols: 3 },
+      visual: { kind: 'array', rows: 6, cols: 3, still: true, highlightRow: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
+      // Lima baris, lalu satu baris lagi yang disorot.
       prompt: 'Times six is times five, add one more.',
-      visual: { kind: 'array', rows: 6, cols: 3 },
+      visual: { kind: 'array', rows: 6, cols: 3, still: true, highlightRow: 5 },
       action: 'watch',
     },
   ],

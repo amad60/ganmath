@@ -27,13 +27,13 @@ export const timesCheck: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Twos, fives and tens together.',
-      visual: { kind: 'array', rows: 5, cols: 5 },
+      visual: { kind: 'array', rows: 5, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Know them without counting.',
-      visual: { kind: 'array', rows: 2, cols: 10 },
+      visual: { kind: 'array', rows: 2, cols: 10, still: true },
       action: 'watch',
     },
   ],

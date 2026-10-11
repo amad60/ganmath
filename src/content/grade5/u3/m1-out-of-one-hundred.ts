@@ -50,13 +50,13 @@ export const outOfOneHundred: ContentModule = {
       // yang ditambahkan hanya namanya.
       stage: 'pictorial',
       prompt: 'One hundred parts make one whole.',
-      visual: { kind: 'array', rows: 10, cols: 10 },
+      visual: { kind: 'array', rows: 10, cols: 10, still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: 'One row is ten percent.',
-      visual: { kind: 'array', rows: 10, cols: 10, highlightRow: 0 },
+      visual: { kind: 'array', rows: 10, cols: 10, highlightRow: 0, still: true },
       action: 'watch',
     },
     {

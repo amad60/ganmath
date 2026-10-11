@@ -41,7 +41,7 @@ export const divideDecimals: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap eight small parts.',
-      visual: { kind: 'counter-objects', count: 8, icon: '🟠' },
+      visual: { kind: 'counter-objects', count: 8, icon: '🟠', columns: 2 },
       action: 'tap-count',
       target: 8,
       hint: 'Share them into four groups.',
@@ -49,7 +49,7 @@ export const divideDecimals: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Eight tenths in four equal groups.',
-      visual: { kind: 'array', rows: 4, cols: 2 },
+      visual: { kind: 'array', rows: 4, cols: 2, still: true },
       action: 'watch',
     },
     {
@@ -61,7 +61,7 @@ export const divideDecimals: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Divide, then keep the point in place.',
-      visual: { kind: 'array', rows: 4, cols: 2 },
+      visual: { kind: 'array', rows: 4, cols: 2, still: true },
       action: 'watch',
     },
     {

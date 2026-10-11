@@ -26,13 +26,13 @@ export const timesAndDivide: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'One array makes four facts.',
-      visual: { kind: 'array', rows: 4, cols: 5 },
+      visual: { kind: 'array', rows: 4, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: '4 × 5 = 20 so 20 ÷ 5 = 4.',
-      visual: { kind: 'array', rows: 4, cols: 5 },
+      visual: { kind: 'array', rows: 4, cols: 5, still: true },
       action: 'watch',
     },
   ],

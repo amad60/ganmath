@@ -30,13 +30,13 @@ export const fractionOfANumber: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Twelve in three equal rows.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'One third of 12 is 12 ÷ 3.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0 },
+      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0, still: true },
       action: 'watch',
     },
   ],

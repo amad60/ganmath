@@ -17,22 +17,21 @@ export const timesNine: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap eighteen dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '🟤' },
-      action: 'tap-count',
-      target: 18,
-      hint: 'Nine groups of two.',
+      prompt: 'Make nine rows of three.',
+      visual: { kind: 'array', rows: 9, cols: 3 },
+      action: 'watch',
+      hint: 'Three in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Nine rows of three is twenty seven.',
-      visual: { kind: 'array', rows: 9, cols: 3 },
+      visual: { kind: 'array', rows: 9, cols: 3, still: true, highlightRow: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Times ten, then take one group away.',
-      visual: { kind: 'array', rows: 9, cols: 3 },
+      visual: { kind: 'array', rows: 10, cols: 3, still: true, ghostRow: 9 },
       action: 'watch',
     },
   ],

@@ -24,7 +24,7 @@ export const longDivisionStart: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twenty dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '🔵' },
+      visual: { kind: 'counter-objects', count: 20, icon: '🔵', columns: 4 },
       action: 'tap-count',
       target: 20,
       hint: 'Five rows of four.',

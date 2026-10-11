@@ -17,22 +17,21 @@ export const timesThree: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap six dots.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🟠' },
-      action: 'tap-count',
-      target: 6,
-      hint: 'Three groups of two.',
+      prompt: 'Make three rows of four.',
+      visual: { kind: 'array', rows: 3, cols: 4 },
+      action: 'watch',
+      hint: 'Four in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Three rows of four is twelve.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true, highlightRow: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 3 × 4 = 12.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
   ],

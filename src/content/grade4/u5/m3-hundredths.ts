@@ -38,13 +38,13 @@ export const hundredths: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Ten rows of ten make one hundred.',
-      visual: { kind: 'array', rows: 10, cols: 10 },
+      visual: { kind: 'array', rows: 10, cols: 10, still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: 'One row is one tenth: 0.1.',
-      visual: { kind: 'array', rows: 10, cols: 10, highlightRow: 0 },
+      visual: { kind: 'array', rows: 10, cols: 10, highlightRow: 0, still: true },
       action: 'watch',
     },
     {

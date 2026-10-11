@@ -17,22 +17,22 @@ export const timesTwo: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap four dots.',
-      visual: { kind: 'counter-objects', count: 8, icon: '🔵' },
+      prompt: 'Tap eight dots.',
+      visual: { kind: 'counter-objects', count: 8, icon: '🔵', columns: 4 },
       action: 'tap-count',
-      target: 4,
+      target: 8,
       hint: 'Two groups of four.',
     },
     {
       stage: 'pictorial',
       prompt: 'Two rows of four is eight.',
-      visual: { kind: 'array', rows: 2, cols: 4 },
+      visual: { kind: 'array', rows: 2, cols: 4, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 2 × 4 = 8.',
-      visual: { kind: 'array', rows: 2, cols: 4 },
+      visual: { kind: 'array', rows: 2, cols: 4, still: true },
       action: 'watch',
     },
   ],

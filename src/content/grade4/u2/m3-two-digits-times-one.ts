@@ -27,7 +27,7 @@ export const twoDigitsTimesOne: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap eighteen dots.',
-      visual: { kind: 'counter-objects', count: 18, icon: '🟠' },
+      visual: { kind: 'counter-objects', count: 18, icon: '🟠', columns: 3 },
       action: 'tap-count',
       target: 18,
       hint: 'Six rows of three.',

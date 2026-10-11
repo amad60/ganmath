@@ -23,7 +23,7 @@ export const divideTensFirst: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve dots.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🥕' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🥕', columns: 3 },
       action: 'tap-count',
       target: 12,
       hint: 'Four rows of three.',

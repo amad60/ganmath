@@ -38,7 +38,7 @@ export const undoTimesAndDivide: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap three dots in one group.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🟣' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🟣', columns: 3 },
       action: 'tap-count',
       target: 3,
       hint: 'Four groups of three make twelve.',
@@ -46,7 +46,7 @@ export const undoTimesAndDivide: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Four rows. Each row is n.',
-      visual: { kind: 'array', rows: 4, cols: 3, highlightRow: 0 },
+      visual: { kind: 'array', rows: 4, cols: 3, highlightRow: 0 , still: true },
       action: 'watch',
     },
     {
@@ -64,13 +64,13 @@ export const undoTimesAndDivide: ContentModule = {
     {
       stage: 'abstract',
       prompt: '4 × n = 12. Share 12 by 4.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Divide undoes times. n is 3.',
-      visual: { kind: 'array', rows: 4, cols: 3, highlightRow: 0 },
+      visual: { kind: 'array', rows: 4, cols: 3, highlightRow: 0 , still: true },
       action: 'watch',
     },
   ],

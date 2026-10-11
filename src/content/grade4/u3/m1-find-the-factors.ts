@@ -26,7 +26,7 @@ export const findTheFactors: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve dots.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🟠' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🟠', columns: 4 },
       action: 'tap-count',
       target: 12,
       hint: 'Three rows of four.',
@@ -34,7 +34,7 @@ export const findTheFactors: ContentModule = {
     {
       stage: 'pictorial',
       prompt: '3 rows of 4 make 12.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
     {

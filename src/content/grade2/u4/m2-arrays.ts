@@ -22,7 +22,7 @@ export const arrays: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap four in a row.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🔵' },
+      visual: { kind: 'counter-objects', count: 6, icon: '🔵', columns: 4 },
       action: 'tap-count',
       target: 4,
       hint: 'One row of four.',
@@ -30,13 +30,13 @@ export const arrays: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Three rows of four.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0 },
+      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Turned around, it is the same.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
   ],

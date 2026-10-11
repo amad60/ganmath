@@ -18,7 +18,7 @@ export const equalGroups: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap three apples.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🍎' },
+      visual: { kind: 'counter-objects', count: 6, icon: '🍎', columns: 3 },
       action: 'tap-count',
       target: 3,
       hint: 'One group of three.',
@@ -33,7 +33,7 @@ export const equalGroups: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Three and three make six.',
-      visual: { kind: 'array', rows: 2, cols: 3 },
+      visual: { kind: 'array', rows: 2, cols: 3, still: true },
       action: 'watch',
     },
   ],

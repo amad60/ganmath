@@ -26,13 +26,13 @@ export const makeGroups: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Put 15 into groups of 5.',
-      visual: { kind: 'array', rows: 3, cols: 5 },
+      visual: { kind: 'array', rows: 3, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Three groups. 15 ÷ 5 = 3.',
-      visual: { kind: 'array', rows: 3, cols: 5 },
+      visual: { kind: 'array', rows: 3, cols: 5, still: true },
       action: 'watch',
     },
   ],

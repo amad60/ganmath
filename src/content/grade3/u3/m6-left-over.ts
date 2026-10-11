@@ -26,7 +26,7 @@ export const leftOver: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Share 13 between 4. One is left over.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
     {

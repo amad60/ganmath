@@ -1910,6 +1910,27 @@ describe('LearnScreen — setiap langkah yang meminta aksi harus bisa diselesaik
     vi.useRealTimers();
   });
 
+  it('Times Three: kalimat hasilnya baru muncul saat arraynya sudah utuh', () => {
+    vi.useFakeTimers();
+    const mod = moduleById('g3-u2-m1');
+    render(<LearnScreen module={mod!} onDone={() => {}} onExit={() => {}} />);
+    expect(screen.getByText('Make three rows of four.')).toBeInTheDocument();
+    expect(screen.getByLabelText('1 of 3 rows, 4 in each')).toBeTruthy();
+    const next = screen.getByRole('button', { name: /^Next$/i });
+    expect(next).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Add a row' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add a row' }));
+    expect(screen.getByLabelText('3 rows of 4')).toBeTruthy();
+    expect(next).not.toBeDisabled();
+    fireEvent.click(next);
+
+    // Gambar dan kalimatnya sama-sama tiga baris empat — bukan satu baris lagi.
+    expect(screen.getByText('Three rows of four is twelve.')).toBeInTheDocument();
+    expect(screen.getByLabelText('3 rows of 4')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Add a row' })).toBeNull();
+    vi.useRealTimers();
+  });
+
   it('perkalian bertambah satu baris sebelum Next', () => {
     vi.useFakeTimers();
     const mod = moduleById('g2-u4-m1');

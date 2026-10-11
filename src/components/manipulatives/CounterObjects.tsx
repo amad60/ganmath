@@ -25,9 +25,13 @@ export function CounterObjects({
   columns = 5,
 }: CounterObjectsProps) {
   const reduced = useReducedMotion();
+  const rowCount = Math.ceil(count / columns);
+  // 56px × 6 kolom atau 6 baris sudah melewati lebar/tinggi iPhone. 44px tetap sasaran tap.
+  const tight = columns > 5 || rowCount > 4;
+  const box = tight ? 44 : 56;
   return (
     <div
-      className="grid justify-center gap-2"
+      className="grid justify-items-center gap-2"
       style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
       aria-label={`${count} objects, ${counted} counted`}
     >
@@ -40,14 +44,18 @@ export function CounterObjects({
             disabled={!onTap}
             onClick={() => onTap?.(i)}
             aria-label={done ? `Object ${i + 1}, counted` : `Object ${i + 1}`}
-            className="relative flex h-14 w-14 items-center justify-center rounded-[var(--r-sm)]"
+            className="relative flex items-center justify-center rounded-[var(--r-sm)]"
             style={{
+              width: box,
+              height: box,
               background: done ? 'var(--c-correct-soft)' : 'transparent',
               transform: done ? 'scale(0.92)' : 'scale(1)',
               transition: `transform ${teachingDuration(200, reduced)}ms var(--ease-std), background ${teachingDuration(200, reduced)}ms linear`,
             }}
           >
-            <span className="text-[34px] leading-none">{icons?.[i] ?? icon}</span>
+            <span className={tight ? 'text-[26px] leading-none' : 'text-[34px] leading-none'}>
+              {icons?.[i] ?? icon}
+            </span>
             {done ? (
               <span
                 className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-[13px] font-black text-white"

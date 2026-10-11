@@ -27,13 +27,13 @@ export const evenAndOdd: ContentModule = {
       stage: 'pictorial',
       // Dua baris rata = genap. Baris yang tidak rata = ganjil. Terlihat, bukan dihafal.
       prompt: 'Six makes two equal rows.',
-      visual: { kind: 'array', rows: 2, cols: 3 },
+      visual: { kind: 'array', rows: 2, cols: 3, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Odd numbers have one left over.',
-      visual: { kind: 'array', rows: 2, cols: 3, highlightRow: 1 },
+      visual: { kind: 'array', rows: 2, cols: 3, highlightRow: 1, still: true },
       action: 'watch',
     },
   ],

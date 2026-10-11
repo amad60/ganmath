@@ -6,6 +6,10 @@ export type ArrayGridProps = {
   cols: number;
   /** Tandai satu baris untuk menunjukkan "satu kelompok". */
   highlightRow?: number;
+  /** Baris ini dicoret — kelompok yang diambil dari array. */
+  ghostRow?: number;
+  /** Jarak lebih lebar sesudah baris ini, supaya dua hasil ganda terpisah. */
+  gapAfter?: number;
   /**
    * Gambar petak persegi yang berdempetan, bukan penanda bulat berjarak.
    *
@@ -36,6 +40,8 @@ export function ArrayGrid({
   rows,
   cols,
   highlightRow,
+  ghostRow,
+  gapAfter,
   square,
   size = 22,
   visibleRows,
@@ -65,12 +71,15 @@ export function ArrayGrid({
   }, [play, rows, cap, reduced, visibleRows]);
 
   const shown = Math.max(1, Math.min(visibleRows ?? (play ? played : rows), rows));
+  const taken = ghostRow != null && ghostRow >= 0 && ghostRow < rows;
   const label =
     shown < rows
       ? `${shown} of ${rows} rows, ${cols} in each`
-      : square
-        ? `${rows} rows of ${cols} squares`
-        : `${rows} rows of ${cols}`;
+      : taken
+        ? `${rows - 1} rows of ${cols}, one row taken away`
+        : square
+          ? `${rows} rows of ${cols} squares`
+          : `${rows} rows of ${cols}`;
 
   return (
     <div
@@ -79,7 +88,14 @@ export function ArrayGrid({
       style={{ alignItems: 'center' }}
     >
       {Array.from({ length: shown }, (_, r) => (
-        <div key={r} className={square ? 'flex' : 'flex gap-1.5'}>
+        <div
+          key={r}
+          className={square ? 'flex' : 'flex gap-1.5'}
+          style={{
+            position: 'relative',
+            marginBottom: gapAfter === r ? 16 : undefined,
+          }}
+        >
           {Array.from({ length: cols }, (_, c) => (
             <span
               key={c}
@@ -88,7 +104,11 @@ export function ArrayGrid({
                 height: dot,
                 borderRadius: square ? 3 : 999,
                 background:
-                  highlightRow === r ? 'var(--c-unit-3)' : 'var(--c-primary)',
+                  ghostRow === r
+                    ? 'var(--c-line)'
+                    : highlightRow === r
+                      ? 'var(--c-unit-3)'
+                      : 'var(--c-primary)',
                 // Petak yang berdempetan butuh garis pemisah, kalau tidak seluruh
                 // bidang jadi satu blok pekat dan tidak ada lagi yang bisa dihitung.
                 boxShadow: square ? 'inset 0 0 0 1.5px var(--c-surface)' : undefined,
@@ -97,6 +117,21 @@ export function ArrayGrid({
               }}
             />
           ))}
+          {ghostRow === r ? (
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: '50%',
+                height: 3,
+                marginTop: -1.5,
+                borderRadius: 2,
+                background: 'var(--c-ink)',
+              }}
+            />
+          ) : null}
         </div>
       ))}
     </div>

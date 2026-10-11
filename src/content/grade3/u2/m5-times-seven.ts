@@ -17,22 +17,21 @@ export const timesSeven: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap fourteen dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '🟡' },
-      action: 'tap-count',
-      target: 14,
-      hint: 'Seven groups of two.',
+      prompt: 'Make seven rows of three.',
+      visual: { kind: 'array', rows: 7, cols: 3 },
+      action: 'watch',
+      hint: 'Three in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Seven rows of three is twenty one.',
-      visual: { kind: 'array', rows: 7, cols: 3 },
+      visual: { kind: 'array', rows: 7, cols: 3, still: true, highlightRow: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Times seven is times six, add one more.',
-      visual: { kind: 'array', rows: 7, cols: 3 },
+      visual: { kind: 'array', rows: 7, cols: 3, still: true, highlightRow: 6 },
       action: 'watch',
     },
   ],

@@ -37,7 +37,7 @@ export const timesAWholeNumber: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve dots.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🔵' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🔵', columns: 3 },
       action: 'tap-count',
       target: 12,
       hint: 'Four rows of three.',
@@ -45,7 +45,7 @@ export const timesAWholeNumber: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Four rows of three tenths.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3 , still: true },
       action: 'watch',
     },
     {
@@ -57,7 +57,7 @@ export const timesAWholeNumber: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Multiply, then put the point back.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3 , still: true },
       action: 'watch',
     },
   ],

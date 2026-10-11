@@ -17,22 +17,22 @@ export const timesFour: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap eight dots.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🟣' },
-      action: 'tap-count',
-      target: 8,
-      hint: 'Four groups of two.',
+      prompt: 'Make four rows of three.',
+      visual: { kind: 'array', rows: 4, cols: 3 },
+      action: 'watch',
+      hint: 'Three in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Four rows of three is twelve.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true, highlightRow: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
+      // Dua pasang baris: 3 digandakan jadi 6, lalu 6 digandakan jadi 12.
       prompt: 'Times four is double, double.',
-      visual: { kind: 'array', rows: 4, cols: 3 },
+      visual: { kind: 'array', rows: 4, cols: 3, still: true, gapAfter: 1 },
       action: 'watch',
     },
   ],

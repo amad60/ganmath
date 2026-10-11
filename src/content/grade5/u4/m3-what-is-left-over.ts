@@ -48,19 +48,19 @@ export const whatIsLeftOver: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Three rows of five. Two left over.',
-      visual: { kind: 'array', rows: 3, cols: 5 },
+      visual: { kind: 'array', rows: 3, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write 17 ÷ 5 = 3 remainder 2.',
-      visual: { kind: 'array', rows: 3, cols: 5 },
+      visual: { kind: 'array', rows: 3, cols: 5, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'The remainder is always less than the divisor.',
-      visual: { kind: 'array', rows: 3, cols: 5, highlightRow: 2 },
+      visual: { kind: 'array', rows: 3, cols: 5, highlightRow: 2, still: true },
       action: 'watch',
     },
   ],

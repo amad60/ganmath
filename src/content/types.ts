@@ -66,6 +66,16 @@ export type LearnVisual =
       highlightRow?: number;
       /** Gambar petak persegi berdempetan, bukan penanda bulat. Untuk luas. */
       square?: boolean;
+      /**
+       * Gambar sudah utuh. Tanpa ini, baris ditumbuhkan satu per satu — itu benar
+       * saat anak yang MEMBUAT array, tapi kalimat yang sudah menyebut hasilnya
+       * ("tiga baris empat adalah dua belas") tidak boleh tampil di atas satu baris.
+       */
+      still?: boolean;
+      /** Baris ini dicoret: kelompok yang diambil (sembilan = sepuluh kurang satu). */
+      ghostRow?: number;
+      /** Jarak ekstra sesudah baris ini, supaya dua hasil ganda terpisah. */
+      gapAfter?: number;
     }
   | { kind: 'pictogram'; rows: { label: string; icon: string; count: number }[] }
   | {
@@ -74,6 +84,11 @@ export type LearnVisual =
       icon?: string;
       /** Ikon berbeda per benda, dari kiri ke kanan. Menimpa `icon`. */
       icons?: string[];
+      /**
+       * Lebar baris. Kosong = 5. Isi kalau hint-nya menyebut baris atau kelompok,
+       * supaya "empat baris tiga" tidak tergambar 5 + 5 + 2.
+       */
+      columns?: number;
     }
   | {
       kind: 'ten-frame';

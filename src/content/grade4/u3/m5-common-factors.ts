@@ -40,13 +40,13 @@ export const commonFactors: ContentModule = {
     {
       stage: 'pictorial',
       prompt: '12 is 2 rows of 6.',
-      visual: { kind: 'array', rows: 2, cols: 6 },
+      visual: { kind: 'array', rows: 2, cols: 6, still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: '18 is 3 rows of 6.',
-      visual: { kind: 'array', rows: 3, cols: 6 },
+      visual: { kind: 'array', rows: 3, cols: 6, still: true },
       action: 'watch',
     },
     {

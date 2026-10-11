@@ -38,7 +38,7 @@ export const lengthTimesWidth: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve cubes.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🧊' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🧊', columns: 4 },
       action: 'tap-count',
       target: 12,
       hint: 'Three rows of four cubes.',
@@ -49,7 +49,7 @@ export const lengthTimesWidth: ContentModule = {
       // "parts", bukan "squares": kata dan gambar tidak boleh bertengkar.
       stage: 'pictorial',
       prompt: `One layer has ${layerOf(4, 3)} parts.`,
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4 , still: true },
       action: 'watch',
     },
     {

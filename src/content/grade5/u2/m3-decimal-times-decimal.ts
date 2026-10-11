@@ -37,7 +37,7 @@ export const decimalTimesDecimal: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap twelve small parts.',
-      visual: { kind: 'counter-objects', count: 12, icon: '🟪' },
+      visual: { kind: 'counter-objects', count: 12, icon: '🟪', columns: 4 },
       action: 'tap-count',
       target: 12,
       hint: 'Three rows of four.',
@@ -45,25 +45,25 @@ export const decimalTimesDecimal: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Ten rows of ten make one.',
-      visual: { kind: 'array', rows: 10, cols: 10 },
+      visual: { kind: 'array', rows: 10, cols: 10 , still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: '0.3 × 0.4 makes twelve hundredths.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Tenths times tenths make hundredths.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4 , still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Count the digits after the point.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4 , still: true },
       action: 'watch',
     },
   ],

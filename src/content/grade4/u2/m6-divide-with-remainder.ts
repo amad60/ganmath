@@ -32,13 +32,13 @@ export const divideWithRemainder: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Share 19 between 5. Four left over.',
-      visual: { kind: 'array', rows: 5, cols: 3 },
+      visual: { kind: 'array', rows: 5, cols: 3, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write 19 ÷ 5 = 3 remainder 4.',
-      visual: { kind: 'array', rows: 5, cols: 3 },
+      visual: { kind: 'array', rows: 5, cols: 3, still: true },
       action: 'watch',
     },
   ],

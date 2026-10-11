@@ -17,22 +17,21 @@ export const divideBy2510: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap ten dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '🔵' },
-      action: 'tap-count',
-      target: 10,
-      hint: 'Two rows of five.',
+      prompt: 'Make two rows of ten.',
+      visual: { kind: 'array', rows: 2, cols: 10 },
+      action: 'watch',
+      hint: 'Ten in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Twenty in two rows is ten.',
-      visual: { kind: 'array', rows: 2, cols: 10 },
+      visual: { kind: 'array', rows: 2, cols: 10, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Halving is dividing by two.',
-      visual: { kind: 'array', rows: 2, cols: 10 },
+      visual: { kind: 'array', rows: 2, cols: 10, still: true },
       action: 'watch',
     },
   ],

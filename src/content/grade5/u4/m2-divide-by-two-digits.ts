@@ -47,13 +47,13 @@ export const divideByTwoDigits: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Twelve rows of eight make 96.',
-      visual: { kind: 'array', rows: 12, cols: 8 },
+      visual: { kind: 'array', rows: 12, cols: 8, still: true },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: 'So 96 ÷ 12 = 8.',
-      visual: { kind: 'array', rows: 12, cols: 8, highlightRow: 0 },
+      visual: { kind: 'array', rows: 12, cols: 8, highlightRow: 0, still: true },
       action: 'watch',
     },
     {

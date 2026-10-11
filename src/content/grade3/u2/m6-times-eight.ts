@@ -17,22 +17,21 @@ export const timesEight: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap sixteen dots.',
-      visual: { kind: 'counter-objects', count: 20, icon: '🔵' },
-      action: 'tap-count',
-      target: 16,
-      hint: 'Eight groups of two.',
+      prompt: 'Make eight rows of three.',
+      visual: { kind: 'array', rows: 8, cols: 3 },
+      action: 'watch',
+      hint: 'Three in each row.',
     },
     {
       stage: 'pictorial',
       prompt: 'Eight rows of three is twenty four.',
-      visual: { kind: 'array', rows: 8, cols: 3 },
+      visual: { kind: 'array', rows: 8, cols: 3, still: true, highlightRow: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Double, double, double.',
-      visual: { kind: 'array', rows: 8, cols: 3 },
+      visual: { kind: 'array', rows: 8, cols: 3, still: true },
       action: 'watch',
     },
   ],

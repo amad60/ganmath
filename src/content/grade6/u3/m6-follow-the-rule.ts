@@ -69,7 +69,7 @@ export const followTheRule: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'The rule is times 4.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 2 },
+      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 2, still: true },
       action: 'watch',
     },
     {
@@ -77,7 +77,7 @@ export const followTheRule: ContentModule = {
       // inilah satu-satunya alasan rumus lebih baik daripada melanjutkan deret.
       stage: 'abstract',
       prompt: 'Number 5 is 5 × 4 = 20.',
-      visual: { kind: 'array', rows: 5, cols: 4 },
+      visual: { kind: 'array', rows: 5, cols: 4, still: true },
       action: 'watch',
     },
     {

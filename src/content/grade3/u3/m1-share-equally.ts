@@ -26,13 +26,13 @@ export const shareEqually: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Share 12 between 3. Each has 4.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 12 ÷ 3 = 4.',
-      visual: { kind: 'array', rows: 3, cols: 4 },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
     },
   ],
