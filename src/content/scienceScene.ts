@@ -30,9 +30,14 @@ export const ground = (color: SceneColor = 'green'): SceneItem => bar(50, 94, 10
 export type PictureCard = { icon: string; label: string };
 
 /**
- * Satu soal sebab-akibat: gambar keadaannya, pertanyaan yang menyebut sebabnya,
- * lalu tiga kartu akibat. Kartu PERTAMA selalu yang benar — generator mengacak
- * urutannya (lihat `generateSet`), jadi penulis tidak boleh mengacak sendiri.
+ * Satu soal bukti: gambar menunjukkan HASIL atau keadaannya, pertanyaan
+ * menanyakan sebab, kebutuhan, atau bagian yang bekerja. Kartu PERTAMA selalu
+ * yang benar — generator mengacak urutannya (lihat `generateSet`), jadi penulis
+ * tidak boleh mengacak sendiri.
+ *
+ * Bukan "apa yang terjadi selanjutnya" kalau akibatnya sudah tergambar.
+ * Sekolah menilai anak yang bisa menjelaskan bukti pada benda baru, bukan
+ * anak yang mencocokkan emoji.
  */
 export type NextScenario = {
   base: SceneItem[];

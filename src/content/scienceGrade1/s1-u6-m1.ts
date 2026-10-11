@@ -132,13 +132,13 @@ export const howAnimalsMove: ContentModule = {
         ],
       },
       {
-        ask: 'A leaf is on the pond. What move fits here?',
+        ask: 'What move fits a frog?',
         bg: 'day',
-        base: [bar(50, 82, 100, 28, 'blue'), at('🍀', 48, 64, 22)],
+        base: [bar(50, 82, 100, 28, 'blue'), ground('green')],
         cards: [
           { icon: '🦘', label: 'Hopping' },
           { icon: '🪽', label: 'Flying' },
-          { icon: '🐌', label: 'Crawling' },
+          { icon: '🏊', label: 'Swimming' },
         ],
       },
       {

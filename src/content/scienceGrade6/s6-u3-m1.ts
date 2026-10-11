@@ -108,9 +108,9 @@ export const earthTurns: ContentModule = {
         bg: 'night',
         base: [at('☀️', 16, 26, 14), at('🌍', 52, 55, 28), at('🏠', 78, 50, 12)],
         cards: [
-          { icon: '🌞', label: 'Toward sun' },
-          { icon: '🌑', label: 'Sun is gone' },
-          { icon: '🌙', label: 'Faces away' },
+          { icon: '🌞', label: 'Sunlight' },
+          { icon: '🌙', label: 'Faces the sun' },
+          { icon: '☁️', label: 'A cloud' },
         ],
       },
       {
@@ -138,7 +138,7 @@ export const earthTurns: ContentModule = {
         bg: 'night',
         base: [at('☀️', 16, 26, 16), at('🌍', 52, 55, 26), at('🏠', 78, 50, 12)],
         cards: [
-          { icon: '⬅️', label: 'Sun left' },
+          { icon: '⬅️', label: 'Still there' },
           { icon: '🌑', label: 'Sun is gone' },
           { icon: '💡', label: 'Lamp is the sun' },
         ],

@@ -114,7 +114,7 @@ export const lightAndShadow: ContentModule = {
         base: [ground('green'), at('💡', 16, 18, 16), at('🌳', 48, 58, 36), bar(74, 91, 28, 6, 'gray')],
         cards: [
           { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
+          { icon: '🎨', label: 'Paint patch' },
           { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
@@ -124,7 +124,7 @@ export const lightAndShadow: ContentModule = {
         base: [ground('white'), at('💡', 16, 28, 14), at('🧸', 48, 68, 22), bar(72, 91, 26, 6, 'gray')],
         cards: [
           { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
+          { icon: '🎨', label: 'Paint patch' },
           { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
@@ -144,7 +144,7 @@ export const lightAndShadow: ContentModule = {
         base: [ground('white'), at('💡', 16, 28, 14), at('🪑', 48, 66, 24), bar(74, 91, 28, 6, 'gray')],
         cards: [
           { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
+          { icon: '🎨', label: 'Paint patch' },
           { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
@@ -154,18 +154,18 @@ export const lightAndShadow: ContentModule = {
         base: [ground('white'), at('💡', 16, 28, 14), at('🥛', 48, 68, 22), bar(72, 91, 22, 6, 'gray')],
         cards: [
           { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
+          { icon: '🎨', label: 'Paint patch' },
           { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
-        ask: 'A nail has a thin dark patch. What made it?',
+        ask: 'A box sits in the lamp light. What should appear?',
         bg: 'room',
-        base: [ground('white'), at('💡', 16, 28, 14), at('🔩', 50, 68, 16), bar(64, 91, 12, 5, 'gray')],
+        base: [ground('white'), at('💡', 16, 28, 14), at('📦', 48, 66, 22)],
         cards: [
-          { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
-          { icon: '🌑', label: 'Lamp is shadow' },
+          { icon: '🌑', label: 'A shadow' },
+          { icon: '❌', label: 'Lamp goes out' },
+          { icon: '📦', label: 'Box vanishes' },
         ],
       },
       {
@@ -174,7 +174,7 @@ export const lightAndShadow: ContentModule = {
         base: [at('💡', 18, 36, 14), at('✋', 46, 58, 22), bar(78, 58, 8, 36, 'gray')],
         cards: [
           { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
+          { icon: '🎨', label: 'Paint patch' },
           { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
@@ -184,7 +184,7 @@ export const lightAndShadow: ContentModule = {
         base: [ground('green'), at('💡', 16, 18, 16), at('⚽', 48, 68, 22), bar(72, 91, 24, 6, 'gray')],
         cards: [
           { icon: '🚫', label: 'Blocks light' },
-          { icon: '❌', label: 'No lamp' },
+          { icon: '🎨', label: 'Paint patch' },
           { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },

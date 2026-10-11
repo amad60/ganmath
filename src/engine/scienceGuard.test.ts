@@ -150,6 +150,28 @@ describe('Science Level 1 — soal gambar tidak bisa diluluskan dengan menebak p
     }
   });
 
+  it('kartu kuis muat di HP dan ikon jawaban belum ada di gambar', () => {
+    // Tiga kolom di 375px menyisakan ~90px. Empat kata / 28 karakter masih dua baris.
+    // Ikon jawaban yang sudah tergambar membuat soal jadi cocok-emoji.
+    for (const mod of level1) {
+      for (const rule of mod.rules) {
+        const hi = rule.params.p?.[1] ?? 0;
+        for (let p = 0; p <= hi; p++) {
+          const visual = rule.visual?.({ p });
+          if (visual?.kind !== 'science-scene') continue;
+          for (const card of visual.options) {
+            const n = card.label.trim().split(/\s+/).length;
+            expect(n, `${mod.id} p=${p} "${card.label}"`).toBeLessThanOrEqual(4);
+            expect(card.label.length, `${mod.id} p=${p} "${card.label}"`).toBeLessThanOrEqual(28);
+          }
+          const answerIcon = visual.options[0]?.icon;
+          const shown = visual.base.some((item) => item.icon && item.icon === answerIcon);
+          expect(shown, `${mod.id} p=${p} ikon ${answerIcon} sudah di gambar`).toBe(false);
+        }
+      }
+    }
+  });
+
   it('Learn Level 1: tahap concrete dan pictorial adalah adegan yang dikerjakan', () => {
     for (const mod of level1) {
       const [concrete, pictorial, abstract] = mod.learn;
