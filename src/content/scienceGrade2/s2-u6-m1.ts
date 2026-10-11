@@ -98,7 +98,7 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 36, 62, 24), at('📎', 52, 64, 12)],
         cards: [
-          { icon: '📎', label: 'It is metal' },
+          { icon: '⚙️', label: 'It is metal' },
           { icon: '🪵', label: 'It is wood' },
           { icon: '💨', label: 'Air pushed it' },
         ],
@@ -108,9 +108,9 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 28, 62, 24), at('🪵', 74, 70, 18)],
         cards: [
-          { icon: '🪵', label: 'Wood is not metal' },
+          { icon: '🚫', label: 'Not metal' },
           { icon: '🔩', label: 'Wood is metal too' },
-          { icon: '🧲', label: 'Magnets pull all things' },
+          { icon: '🧲', label: 'Pulls all things' },
         ],
       },
       {
@@ -118,8 +118,8 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 36, 62, 24), at('🔩', 52, 64, 14)],
         cards: [
-          { icon: '🔩', label: 'The bolt is metal' },
-          { icon: '🪵', label: 'The bolt is wood' },
+          { icon: '⚙️', label: 'It is metal' },
+          { icon: '🪵', label: 'It is wood' },
           { icon: '⚖️', label: 'It was too heavy' },
         ],
       },
@@ -128,7 +128,7 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 26, 62, 24), at('🧸', 74, 66, 22)],
         cards: [
-          { icon: '🧸', label: 'It is not metal' },
+          { icon: '🚫', label: 'Not metal' },
           { icon: '🧲', label: 'It is a magnet' },
           { icon: '🔩', label: 'The toy is metal' },
         ],
@@ -138,8 +138,8 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 36, 62, 24), at('🔩', 54, 64, 14)],
         cards: [
-          { icon: '🔩', label: 'The nail is metal' },
-          { icon: '🪵', label: 'The nail is wood' },
+          { icon: '⚙️', label: 'It is metal' },
+          { icon: '🪵', label: 'It is wood' },
           { icon: '🌍', label: 'All objects jump' },
         ],
       },
@@ -158,7 +158,7 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 30, 40, 22), at('📎', 40, 56, 10), at('📎', 52, 54, 10), at('🍃', 76, 78, 14)],
         cards: [
-          { icon: '📎', label: 'Only metal is pulled' },
+          { icon: '⚙️', label: 'Only metal is pulled' },
           { icon: '🍃', label: 'The leaf is metal' },
           { icon: '🧲', label: 'Both should move' },
         ],
@@ -168,8 +168,8 @@ export const magnetsPull: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🧲', 36, 62, 24), at('🧷', 54, 64, 14)],
         cards: [
-          { icon: '🧷', label: 'The pin is metal' },
-          { icon: '🪵', label: 'The pin is wood' },
+          { icon: '⚙️', label: 'It is metal' },
+          { icon: '🪵', label: 'It is wood' },
           { icon: '📄', label: 'Paper would stick too' },
         ],
       },

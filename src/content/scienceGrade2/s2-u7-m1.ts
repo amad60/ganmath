@@ -111,11 +111,11 @@ export const lightAndShadow: ContentModule = {
       {
         ask: 'A dark patch is by the tree. What caused it?',
         bg: 'day',
-        base: [ground('green'), at('☀️', 16, 18, 16), at('🌳', 48, 58, 36), bar(74, 91, 28, 6, 'gray')],
+        base: [ground('green'), at('💡', 16, 18, 16), at('🌳', 48, 58, 36), bar(74, 91, 28, 6, 'gray')],
         cards: [
-          { icon: '🌳', label: 'The tree blocks the light' },
-          { icon: '🌍', label: 'The ground makes light' },
-          { icon: '⬛', label: 'The shadow blocks the sun' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
@@ -123,9 +123,9 @@ export const lightAndShadow: ContentModule = {
         bg: 'room',
         base: [ground('white'), at('💡', 16, 28, 14), at('🧸', 48, 68, 22), bar(72, 91, 26, 6, 'gray')],
         cards: [
-          { icon: '🧸', label: 'The toy blocks the lamp' },
-          { icon: '🌑', label: 'The lamp is a shadow' },
-          { icon: '✨', label: 'The floor glows' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
@@ -143,9 +143,9 @@ export const lightAndShadow: ContentModule = {
         bg: 'room',
         base: [ground('white'), at('💡', 16, 28, 14), at('🪑', 48, 66, 24), bar(74, 91, 28, 6, 'gray')],
         cards: [
-          { icon: '🪑', label: 'It blocked the light' },
-          { icon: '💡', label: 'It turned into light' },
-          { icon: '🚫', label: 'It removed the lamp' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
@@ -153,9 +153,9 @@ export const lightAndShadow: ContentModule = {
         bg: 'room',
         base: [ground('white'), at('💡', 16, 28, 14), at('🥛', 48, 68, 22), bar(72, 91, 22, 6, 'gray')],
         cards: [
-          { icon: '🥛', label: 'The cup blocks the light' },
-          { icon: '💡', label: 'The cup is a lamp' },
-          { icon: '🌑', label: 'Shadows need no light' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
@@ -163,9 +163,9 @@ export const lightAndShadow: ContentModule = {
         bg: 'room',
         base: [ground('white'), at('💡', 16, 28, 14), at('🔩', 50, 68, 16), bar(64, 91, 12, 5, 'gray')],
         cards: [
-          { icon: '🔩', label: 'The nail blocks light' },
-          { icon: '✨', label: 'The nail glows' },
-          { icon: '🧲', label: 'Metal erases shadows' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
@@ -173,19 +173,19 @@ export const lightAndShadow: ContentModule = {
         bg: 'room',
         base: [at('💡', 18, 36, 14), at('✋', 46, 58, 22), bar(78, 58, 8, 36, 'gray')],
         cards: [
-          { icon: '✋', label: 'The hand blocks light' },
-          { icon: '🧱', label: 'The wall makes the shape' },
-          { icon: '🌑', label: 'Darkness needs no lamp' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
       {
         ask: 'The ball has a dark patch. Which part made it?',
         bg: 'day',
-        base: [ground('green'), at('☀️', 16, 18, 16), at('⚽', 48, 68, 22), bar(72, 91, 24, 6, 'gray')],
+        base: [ground('green'), at('💡', 16, 18, 16), at('⚽', 48, 68, 22), bar(72, 91, 24, 6, 'gray')],
         cards: [
-          { icon: '⚽', label: 'The ball blocking light' },
-          { icon: '💨', label: 'The empty air' },
-          { icon: '⬛', label: 'The patch itself' },
+          { icon: '🚫', label: 'Blocks light' },
+          { icon: '❌', label: 'No lamp' },
+          { icon: '🌑', label: 'Lamp is shadow' },
         ],
       },
     ]),

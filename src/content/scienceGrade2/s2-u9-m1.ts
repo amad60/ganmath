@@ -119,9 +119,9 @@ export const soilAndRain: ContentModule = {
         bg: 'cloudy',
         base: [at('🌦️', 50, 16, 24), at('💧', 40, 42, 8), bar(50, 86, 100, 28, 'brown')],
         cards: [
-          { icon: '💧', label: 'Soft rain soaks in' },
-          { icon: '🌊', label: 'Soft rain washes it all off' },
-          { icon: '🧊', label: 'The rain froze the soil' },
+          { icon: '⬇️', label: 'Soft rain soaks in' },
+          { icon: '🌊', label: 'Washes soil off' },
+          { icon: '🧊', label: 'Froze the soil' },
         ],
       },
       {
@@ -129,7 +129,7 @@ export const soilAndRain: ContentModule = {
         bg: 'cloudy',
         base: [at('🌧️', 36, 16, 26), at('⛰️', 48, 52, 34), bar(78, 78, 30, 8, 'brown')],
         cards: [
-          { icon: '🌧️', label: 'Hard rain' },
+          { icon: '🌊', label: 'Hard rain' },
           { icon: '🌦️', label: 'Soft rain' },
           { icon: '☀️', label: 'The sun' },
         ],
@@ -139,7 +139,7 @@ export const soilAndRain: ContentModule = {
         bg: 'cloudy',
         base: [at('🌧️', 50, 16, 24), bar(50, 86, 100, 28, 'brown'), at('🌿', 30, 64, 18), at('🌿', 70, 64, 18)],
         cards: [
-          { icon: '🌿', label: 'Roots hold the soil' },
+          { icon: '🌱', label: 'Roots hold the soil' },
           { icon: '💨', label: 'Roots push soil away' },
           { icon: '🌊', label: 'Rain always removes soil' },
         ],
@@ -151,7 +151,7 @@ export const soilAndRain: ContentModule = {
         cards: [
           { icon: '🌊', label: 'Carried soil off' },
           { icon: '💧', label: 'Soaked in and stayed' },
-          { icon: '🧊', label: 'Turned the soil to ice' },
+          { icon: '🧊', label: 'Froze the soil' },
         ],
       },
       {
@@ -159,8 +159,8 @@ export const soilAndRain: ContentModule = {
         bg: 'room',
         base: [at('🥛', 50, 62, 30), bar(50, 58, 16, 6, 'brown'), at('💧', 50, 28, 10)],
         cards: [
-          { icon: '💧', label: 'It soaked in' },
-          { icon: '🌊', label: 'It carried all the soil out' },
+          { icon: '⬇️', label: 'It soaked in' },
+          { icon: '🌊', label: 'Carried soil out' },
           { icon: '🧊', label: 'It froze the cup' },
         ],
       },
@@ -169,9 +169,9 @@ export const soilAndRain: ContentModule = {
         bg: 'cloudy',
         base: [at('🌧️', 30, 16, 24), at('🫘', 46, 58, 16), bar(74, 80, 28, 7, 'brown')],
         cards: [
-          { icon: '🌧️', label: 'Hard rain' },
+          { icon: '🌊', label: 'Hard rain' },
           { icon: '🌦️', label: 'Soft drizzle' },
-          { icon: '☀️', label: 'The sun baked it away' },
+          { icon: '☀️', label: 'Sun baked it' },
         ],
       },
       {
@@ -189,9 +189,9 @@ export const soilAndRain: ContentModule = {
         bg: 'cloudy',
         base: [at('🪨', 42, 64, 28), bar(70, 86, 28, 5, 'blue'), at('💧', 62, 40, 10)],
         cards: [
-          { icon: '🪨', label: 'Rock is not soil' },
-          { icon: '🌊', label: 'Soft rain washes rock away' },
-          { icon: '🌱', label: 'The rock drank it all' },
+          { icon: '🚫', label: 'Rock is not soil' },
+          { icon: '🌊', label: 'Washes the rock' },
+          { icon: '🌱', label: 'Rock drank it' },
         ],
       },
     ]),

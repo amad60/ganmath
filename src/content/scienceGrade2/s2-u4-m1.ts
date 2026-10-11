@@ -131,7 +131,7 @@ export const solidAndLiquid: ContentModule = {
           bar(50, 66, 15, 26, 'blue'),
         ],
         cards: [
-          { icon: '🥛', label: 'It took the cup shape' },
+          { icon: '🥛', label: 'Took the cup shape' },
           { icon: '🧱', label: 'Water keeps one shape' },
           { icon: '📐', label: 'The cup grew taller' },
         ],
@@ -141,7 +141,7 @@ export const solidAndLiquid: ContentModule = {
         bg: 'room',
         base: [ground('brown'), bar(50, 82, 64, 3, 'gray'), bar(50, 80, 56, 4, 'blue')],
         cards: [
-          { icon: '🍽️', label: 'It took the plate shape' },
+          { icon: '🍽️', label: 'Took the plate shape' },
           { icon: '🧊', label: 'The plate froze it' },
           { icon: '📏', label: 'Water is always flat' },
         ],
@@ -173,7 +173,7 @@ export const solidAndLiquid: ContentModule = {
           at('🍎', 50, 70, 14),
         ],
         cards: [
-          { icon: '🍎', label: 'A solid keeps its shape' },
+          { icon: '🧱', label: 'Keeps its shape' },
           { icon: '💦', label: 'It poured like water' },
           { icon: '💧', label: 'It became water' },
         ],
@@ -189,7 +189,7 @@ export const solidAndLiquid: ContentModule = {
           bar(50, 68, 15, 22, 'red'),
         ],
         cards: [
-          { icon: '🥛', label: 'It took the cup shape' },
+          { icon: '🥛', label: 'Took the cup shape' },
           { icon: '📦', label: 'It stayed a box' },
           { icon: '🧊', label: 'It turned solid' },
         ],
@@ -199,7 +199,7 @@ export const solidAndLiquid: ContentModule = {
         bg: 'room',
         base: [ground('brown'), at('🥛', 50, 64, 28), at('🔩', 50, 58, 14)],
         cards: [
-          { icon: '🔩', label: 'It is a solid' },
+          { icon: '🧱', label: 'It is a solid' },
           { icon: '🔥', label: 'The cup melts it' },
           { icon: '💦', label: 'It pours flat' },
         ],
@@ -210,7 +210,7 @@ export const solidAndLiquid: ContentModule = {
         base: [ground('brown'), at('🥛', 36, 48, 22, { rotate: 80 }), bar(62, 84, 36, 5, 'blue')],
         cards: [
           { icon: '💧', label: 'Water pours' },
-          { icon: '🧱', label: 'It is a solid block' },
+          { icon: '🧱', label: 'A solid block' },
           { icon: '🧊', label: 'The cup is ice' },
         ],
       },
@@ -226,7 +226,7 @@ export const solidAndLiquid: ContentModule = {
         ],
         cards: [
           { icon: '🥛', label: 'Water takes that shape' },
-          { icon: '🧱', label: 'Water has its own shape' },
+          { icon: '🧱', label: 'Keeps one shape' },
           { icon: '🧸', label: 'The cup is soft' },
         ],
       },

@@ -157,7 +157,7 @@ export const whoEatsWhat: ContentModule = {
         base: [bar(50, 90, 100, 16, 'brown'), at('🐇', 50, 70, 24, { dim: true })],
         cards: [
           { icon: '🌿', label: 'No grass to eat' },
-          { icon: '🦊', label: 'No fox to feed it' },
+          { icon: '🦊', label: 'Needs a fox' },
           { icon: '🍖', label: 'No meat' },
         ],
       },

@@ -117,7 +117,7 @@ export const lifeCycles: ContentModule = {
         base: [at('🦋', 50, 46, 32)],
         cards: [
           { icon: '🥚', label: 'It lays eggs' },
-          { icon: '🐛', label: 'It turns into a caterpillar' },
+          { icon: '🐛', label: 'A caterpillar again' },
           { icon: '🐔', label: 'It becomes a hen' },
         ],
       },

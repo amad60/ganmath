@@ -128,7 +128,7 @@ export const careForEarth: ContentModule = {
         bg: 'day',
         base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 40, 80, 12, { rotate: 40 }), at('🐟', 68, 84, 14, { dim: true })],
         cards: [
-          { icon: '🥤', label: 'Rubbish in the river' },
+          { icon: '🤢', label: 'Waste harms fish' },
           { icon: '🐟', label: 'The fish needs rubbish' },
           { icon: '✨', label: 'Clean water hurt it' },
         ],
@@ -138,9 +138,9 @@ export const careForEarth: ContentModule = {
         bg: 'room',
         base: [at('🚰', 46, 36, 28), at('💧', 46, 62, 12), at('💧', 46, 78, 12)],
         cards: [
-          { icon: '💧', label: 'Less water is left' },
+          { icon: '🏜️', label: 'Less water left' },
           { icon: '🌊', label: 'More water appears' },
-          { icon: '🪄', label: 'The tap makes new water' },
+          { icon: '🪄', label: 'Makes new water' },
         ],
       },
       {
@@ -148,7 +148,7 @@ export const careForEarth: ContentModule = {
         bg: 'day',
         base: [bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🐟', 56, 84, 14)],
         cards: [
-          { icon: '🗑️', label: 'Rubbish stayed in the bin' },
+          { icon: '🗑️', label: 'Rubbish in the bin' },
           { icon: '🌊', label: 'Rubbish in the water' },
           { icon: '🥤', label: 'More waste helps' },
         ],
@@ -178,7 +178,7 @@ export const careForEarth: ContentModule = {
         bg: 'day',
         base: [bar(50, 88, 100, 18, 'gray'), at('💦', 40, 48, 18), at('🌱', 82, 70, 16)],
         cards: [
-          { icon: '🛑', label: 'No one is using it' },
+          { icon: '🛑', label: 'No one uses it' },
           { icon: '🌊', label: 'Paths need a flood' },
           { icon: '🪄', label: 'Hoses make more water' },
         ],
@@ -188,7 +188,7 @@ export const careForEarth: ContentModule = {
         bg: 'cloudy',
         base: [at('🌧️', 24, 16, 20), bar(50, 64, 100, 12, 'green'), bar(50, 86, 100, 32, 'blue'), at('🥤', 30, 52, 12), at('🐟', 68, 84, 12)],
         cards: [
-          { icon: '🌧️', label: 'Rain can wash it in' },
+          { icon: '🌊', label: 'Rain washes it in' },
           { icon: '☀️', label: 'Rain makes it safe' },
           { icon: '🍽️', label: 'Fish eat the rubbish' },
         ],
