@@ -78,7 +78,7 @@ export const closedPath: ContentModule = {
         base: [...circuit({ battery: false }), at('🔋', 50, 52, 14)],
         options: [
           {
-            icon: '💡',
+            icon: '✨',
             label: 'The bulb lights',
             caption: 'The path is closed now. It lights!',
             result: circuit({ lit: true }),
@@ -136,13 +136,13 @@ export const closedPath: ContentModule = {
         ],
       },
       {
-        ask: 'What made this bulb light?',
+        ask: 'The wire is one loop. Why is the bulb lit?',
         bg: 'night',
-        base: [...circuit({ lit: true }), at('📎', 50, 16, 12)],
+        base: circuit({ lit: true }),
         cards: [
-          { icon: '🔗', label: 'The gap was closed' },
-          { icon: '✂️', label: 'The gap stayed open' },
-          { icon: '💡', label: 'An open path lights' },
+          { icon: '🔗', label: 'No gap in it' },
+          { icon: '✂️', label: 'A gap is there' },
+          { icon: '🚫', label: 'Wire is not needed' },
         ],
       },
       {

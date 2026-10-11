@@ -134,11 +134,11 @@ export const howAnimalsMove: ContentModule = {
       {
         ask: 'What move fits a frog?',
         bg: 'day',
-        base: [bar(50, 82, 100, 28, 'blue'), ground('green')],
+        base: [ground('green')],
         cards: [
           { icon: '🦘', label: 'Hopping' },
           { icon: '🪽', label: 'Flying' },
-          { icon: '🏊', label: 'Swimming' },
+          { icon: '🐌', label: 'Crawling' },
         ],
       },
       {
