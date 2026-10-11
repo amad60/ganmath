@@ -99,9 +99,9 @@ export const itComesBack: ContentModule = {
         bg: 'room',
         base: [at('🧊', 50, 52, 28)],
         cards: [
-          { icon: '❄️', label: 'The cold brought it back' },
-          { icon: '☀️', label: 'The warm brought it back' },
-          { icon: '🔥', label: 'Fire brought the ice back' },
+          { icon: '❄️', label: 'Cold brought it back' },
+          { icon: '☀️', label: 'Warm brought it back' },
+          { icon: '🔥', label: 'Fire brought ice back' },
         ],
       },
       {
@@ -109,8 +109,8 @@ export const itComesBack: ContentModule = {
         bg: 'room',
         base: [at('🖤', 50, 55, 28)],
         cards: [
-          { icon: '🚫', label: 'Burning does not come back' },
-          { icon: '❄️', label: 'Cold brings the paper back' },
+          { icon: '🚫', label: 'Burning will not return' },
+          { icon: '❄️', label: 'Cold brings paper back' },
           { icon: '💧', label: 'It only melted' },
         ],
       },
@@ -122,7 +122,7 @@ export const itComesBack: ContentModule = {
         cards: [
           { icon: '☀️', label: 'The warm caused it' },
           { icon: '❄️', label: 'The cold caused it' },
-          { icon: '🚫', label: 'Melting means it is gone' },
+          { icon: '🚫', label: 'Melted means gone' },
         ],
       },
       {
@@ -130,7 +130,7 @@ export const itComesBack: ContentModule = {
         bg: 'room',
         base: [at('🟤', 50, 58, 26)],
         cards: [
-          { icon: '♻️', label: 'It melted, so cold can help' },
+          { icon: '♻️', label: 'Cold brings it back' },
           { icon: '🔥', label: 'Burning would still return' },
           { icon: '🚫', label: 'Melted things are gone' },
         ],
@@ -141,8 +141,8 @@ export const itComesBack: ContentModule = {
         bg: 'day',
         base: [at('🪴', 50, 58, 26), at('🖤', 50, 42, 16)],
         cards: [
-          { icon: '🔥', label: 'A burned leaf stays gone' },
-          { icon: '❄️', label: 'Cold will bring it back' },
+          { icon: '🔥', label: 'Burned leaf stays gone' },
+          { icon: '❄️', label: 'Cold brings it back' },
           { icon: '💧', label: 'The leaf only melted' },
         ],
       },
@@ -152,7 +152,7 @@ export const itComesBack: ContentModule = {
         base: [at('🧈', 50, 58, 26)],
         cards: [
           { icon: '💧', label: 'It melted the butter' },
-          { icon: '🔥', label: 'It burned the butter for good' },
+          { icon: '🔥', label: 'Burned it for good' },
           { icon: '❄️', label: 'It froze the butter' },
         ],
       },
@@ -163,7 +163,7 @@ export const itComesBack: ContentModule = {
         cards: [
           { icon: '❄️', label: 'It needs the cold' },
           { icon: '☀️', label: 'It needs the warm' },
-          { icon: '🔥', label: 'Fire turns water to ice' },
+          { icon: '🔥', label: 'Fire makes the ice' },
         ],
       },
     ]),

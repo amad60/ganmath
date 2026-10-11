@@ -88,9 +88,9 @@ export const caughtOrThrough: ContentModule = {
         bg: 'room',
         base: [at('🏖️', 50, 28, 16), at('👕', 50, 48, 22), at('🥛', 50, 74, 16)],
         cards: [
-          { icon: '🛑', label: 'The cloth catches sand' },
-          { icon: '💧', label: 'Sand goes through the cloth' },
-          { icon: '🧂', label: 'Sand acts like salt water' },
+          { icon: '🛑', label: 'Cloth catches the sand' },
+          { icon: '💧', label: 'Sand goes through' },
+          { icon: '🧂', label: 'Acts like salt water' },
         ],
       },
       {
@@ -99,8 +99,8 @@ export const caughtOrThrough: ContentModule = {
         base: [at('👕', 50, 42, 22), at('🥛', 50, 72, 18), at('💧', 50, 66, 12)],
         cards: [
           { icon: '⬇️', label: 'Salt water passes through' },
-          { icon: '🏖️', label: 'Salt stays on the cloth' },
-          { icon: '🔄', label: 'The cloth turns it into sand' },
+          { icon: '🏖️', label: 'Salt stays on cloth' },
+          { icon: '🔄', label: 'Turns it into sand' },
         ],
       },
       {
@@ -120,7 +120,7 @@ export const caughtOrThrough: ContentModule = {
         cards: [
           { icon: '⬇️', label: 'Sugar water goes through' },
           { icon: '🍬', label: 'Sugar stays like sand' },
-          { icon: '🏖️', label: 'The cloth catches the water' },
+          { icon: '🏖️', label: 'Cloth catches the water' },
         ],
       },
       {
@@ -130,7 +130,7 @@ export const caughtOrThrough: ContentModule = {
         cards: [
           { icon: '🧺', label: 'The solid leaf' },
           { icon: '💧', label: 'The leaf went through' },
-          { icon: '🧂', label: 'The salt water stayed on top' },
+          { icon: '🧂', label: 'Salt water stayed' },
         ],
       },
       {
@@ -139,8 +139,8 @@ export const caughtOrThrough: ContentModule = {
         base: [at('💧', 50, 28, 14), at('🥛', 50, 64, 22)],
         cards: [
           { icon: '👕', label: 'The cloth is missing' },
-          { icon: '🧺', label: 'Salt is caught with no cloth' },
-          { icon: '🏖️', label: 'Sand appears in the cup' },
+          { icon: '🧺', label: 'Caught with no cloth' },
+          { icon: '🏖️', label: 'Sand appears in cup' },
         ],
       },
       {
@@ -148,8 +148,8 @@ export const caughtOrThrough: ContentModule = {
         bg: 'room',
         base: [at('🟤', 50, 30, 14), at('👕', 50, 50, 22), at('🥛', 50, 76, 16), at('💧', 50, 70, 10)],
         cards: [
-          { icon: '🛑', label: 'It caught the mud bits' },
-          { icon: '💧', label: 'All the mud went through' },
+          { icon: '🛑', label: 'Caught the mud bits' },
+          { icon: '💧', label: 'All mud went through' },
           { icon: '🧂', label: 'It only caught salt' },
         ],
       },
@@ -158,9 +158,9 @@ export const caughtOrThrough: ContentModule = {
         bg: 'room',
         base: [at('🍂', 50, 28, 14), at('👕', 50, 48, 22), at('🥛', 50, 74, 16)],
         cards: [
-          { icon: '🍃', label: 'Leaves are bits, like sand' },
-          { icon: '🍵', label: 'The tea water is caught' },
-          { icon: '💧', label: 'Leaves pass like salt water' },
+          { icon: '🍃', label: 'Leaves act like sand' },
+          { icon: '🍵', label: 'Tea water is caught' },
+          { icon: '💧', label: 'Pass like salt water' },
         ],
       },
     ]),

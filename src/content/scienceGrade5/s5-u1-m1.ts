@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, ground, whatHappensNext } from '../scienceScene';
+import { at, bar, ground, whatHappensNext } from '../scienceScene';
 
 export const onlyOneChange: ContentModule = {
   id: 's5-u1-m1',
@@ -86,121 +86,126 @@ export const onlyOneChange: ContentModule = {
   rules: [
     whatHappensNext('sci-fair', [
       {
-        // Air sama, satu tanaman tertutup. Hanya cahaya yang berubah.
+        // Air sama di kedua pot. Satu tertutup, satu kena cahaya. Hanya cahaya yang berubah.
         ask: 'Why is this plant test fair?',
         bg: 'day',
         base: [at('💧', 26, 74, 10), at('💧', 72, 74, 10), at('🌱', 28, 56, 18), at('📦', 70, 50, 16), at('🌱', 72, 64, 14), ground('brown')],
         cards: [
-          { icon: '🔬', label: 'Only the light changed' },
-          { icon: '💧', label: 'The water changed too' },
-          { icon: '❓', label: 'You still know the cause' },
+          { icon: '🔬', label: 'Only light' },
+          { icon: '💦', label: 'Water too' },
+          { icon: '⚖️', label: 'Both differ' },
         ],
       },
       {
-        // Cahaya sama. Yang berubah hanya airnya.
+        // Satu matahari. Dua pot: satu basah, satu tanah cokelat kering. Hanya air yang berubah.
         ask: 'What did this fair test change?',
         bg: 'day',
-        base: [at('☀️', 50, 14, 14), at('💧', 28, 74, 10), at('🌱', 30, 56, 18), at('🏜️', 72, 72, 14), at('🌱', 72, 52, 16), ground('brown')],
+        base: [
+          at('☀️', 50, 14, 16),
+          at('🪴', 28, 46, 22),
+          at('💧', 28, 68, 14),
+          bar(28, 82, 30, 12, 'brown'),
+          at('🪴', 74, 46, 22),
+          bar(74, 82, 30, 14, 'brown'),
+        ],
         cards: [
-          { icon: '🧪', label: 'Only the water' },
-          { icon: '☀️', label: 'The light changed too' },
-          { icon: '⚖️', label: 'Both changes still show it' },
+          { icon: '🧪', label: 'Only water' },
+          { icon: '💡', label: 'Light too' },
+          { icon: '⚖️', label: 'Both differ' },
         ],
       },
       {
-        // Tertutup dan basah lawan terbuka dan kering. Dua hal berubah.
+        // Basah dan tertutup lawan kering di matahari. Dua hal berubah, sebabnya tidak bisa disebut.
         ask: 'Why is this test not fair?',
         bg: 'day',
         base: [
-          at('📦', 28, 46, 16),
-          at('💧', 30, 76, 10),
-          at('🌱', 30, 62, 14),
-          at('☀️', 78, 16, 14),
-          at('🏜️', 74, 74, 12),
-          at('🌱', 72, 54, 16),
-          ground('brown'),
+          at('📦', 28, 32, 16),
+          at('💧', 28, 68, 12),
+          at('🪴', 28, 50, 18),
+          bar(28, 82, 28, 12, 'brown'),
+          at('☀️', 78, 14, 14),
+          at('🪴', 74, 48, 18),
+          bar(74, 82, 30, 14, 'brown'),
         ],
         cards: [
-          { icon: '❓', label: 'You cannot tell the cause' },
-          { icon: '🔬', label: 'You still know the cause' },
-          { icon: '💧', label: 'Only the light changed' },
+          { icon: '❓', label: 'Both differ' },
+          { icon: '🔬', label: 'Only light' },
+          { icon: '🧪', label: 'Only water' },
         ],
       },
       {
-        // Benda baru: dua cangkir, minuman sama, hanya tutupnya beda.
+        // Dua cangkir, minuman sama. Hanya tutupnya yang beda.
         ask: 'What keeps this cup test fair?',
         bg: 'room',
-        base: [at('☕', 32, 60, 20), at('📦', 70, 42, 16), at('☕', 70, 62, 18)],
+        base: [at('☕', 30, 62, 22), at('☕', 72, 62, 22), at('📦', 72, 40, 16)],
         cards: [
-          { icon: '🔒', label: 'Only the cover changed' },
-          { icon: '🍬', label: 'Heat and sugar changed' },
-          { icon: '⚖️', label: 'Both changes still show it' },
+          { icon: '🔒', label: 'Only the cover' },
+          { icon: '🍬', label: 'Heat and sugar' },
+          { icon: '⚖️', label: 'Both differ' },
         ],
       },
       {
-        // Benda baru: dua es, piring sama, hanya matahari yang beda.
+        // Dua es, piring sama. Satu di matahari, satu tertutup. Hanya matahari yang beda.
         ask: 'Why is this ice test fair?',
         bg: 'day',
         base: [
           at('☀️', 16, 16, 14),
-          at('🧊', 30, 56, 16),
+          at('🧊', 30, 52, 16),
           at('🍽️', 30, 74, 14),
-          at('📦', 74, 42, 16),
-          at('🧊', 72, 58, 16),
+          at('📦', 74, 36, 16),
+          at('🧊', 72, 54, 16),
           at('🍽️', 72, 74, 14),
         ],
         cards: [
-          { icon: '🔬', label: 'Only the sun changed' },
-          { icon: '🍽️', label: 'The dish changed too' },
-          { icon: '🧪', label: 'Two changes still name it' },
+          { icon: '🔬', label: 'Only the sun' },
+          { icon: '🥣', label: 'Dish too' },
+          { icon: '⚖️', label: 'Both differ' },
         ],
       },
       {
-        // Es: matahari dan piring sama-sama berubah, sebabnya tidak bisa disebut.
+        // Matahari dan piring sama-sama berubah. Sebabnya tidak bisa disebut.
         ask: 'What made this ice test not fair?',
         bg: 'day',
         base: [
           at('☀️', 16, 16, 14),
-          at('🧊', 28, 52, 14),
+          at('🧊', 28, 50, 14),
           at('🔴', 28, 72, 14),
-          at('📦', 78, 40, 14),
-          at('🧊', 72, 52, 14),
+          at('📦', 78, 36, 14),
+          at('🧊', 72, 50, 14),
           at('🔵', 72, 72, 14),
         ],
         cards: [
-          { icon: '⚖️', label: 'Sun and dish both changed' },
-          { icon: '🔬', label: 'Only one thing changed' },
-          { icon: '🧪', label: 'Two changes still name it' },
+          { icon: '⚖️', label: 'Sun and dish' },
+          { icon: '🔬', label: 'Only the sun' },
+          { icon: '🧪', label: 'You can name it' },
         ],
       },
       {
-        // Benda baru: satu minuman, dua sendok. Yang beda hanya sendoknya.
+        // Dua minuman sama. Satu sendok logam, satu sendok kayu. Hanya sendok yang beda.
         ask: 'Why is this spoon test fair?',
         bg: 'room',
-        base: [at('☕', 50, 64, 24), at('🥄', 36, 40, 16), at('🪵', 66, 42, 16)],
+        base: [at('☕', 30, 64, 22), at('🥄', 30, 40, 16), at('☕', 72, 64, 22), at('🪵', 72, 40, 16)],
         cards: [
-          { icon: '🔬', label: 'Only the spoon changed' },
-          { icon: '☕', label: 'The drink changed too' },
-          { icon: '❔', label: 'You can still name it' },
+          { icon: '🔬', label: 'Only the spoon' },
+          { icon: '🍵', label: 'Drink too' },
+          { icon: '⚖️', label: 'Both differ' },
         ],
       },
       {
-        // Kertas basah di matahari lawan kertas kering yang tertutup.
+        // Kertas basah di matahari lawan kertas kering yang tertutup. Air dan cahaya berubah.
         ask: 'Why can you not tell the cause?',
         bg: 'day',
         base: [
           at('☀️', 18, 16, 14),
-          at('💧', 30, 72, 10),
-          at('📄', 32, 54, 18),
-          at('📦', 74, 44, 16),
-          at('🏜️', 76, 72, 12),
-          at('📄', 70, 56, 16),
-          ground('brown'),
+          at('💧', 30, 72, 12),
+          at('📄', 32, 50, 18),
+          at('📦', 74, 38, 16),
+          at('📄', 72, 56, 16),
         ],
         cards: [
-          { icon: '⚖️', label: 'Water and light both changed' },
-          { icon: '☀️', label: 'Only the light changed' },
-          { icon: '❔', label: 'You can still name it' },
+          { icon: '⚖️', label: 'Water and light' },
+          { icon: '💡', label: 'Only light' },
+          { icon: '❔', label: 'You can name it' },
         ],
       },
     ]),

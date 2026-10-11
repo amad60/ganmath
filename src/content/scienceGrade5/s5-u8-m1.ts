@@ -91,7 +91,7 @@ export const highOrLow: ContentModule = {
         cards: [
           { icon: '💪', label: 'A tight string' },
           { icon: '〰️', label: 'A loose string' },
-          { icon: '🟰', label: 'Tight and loose sound the same' },
+          { icon: '🟰', label: 'Tight and loose match' },
         ],
       },
       {
@@ -101,7 +101,7 @@ export const highOrLow: ContentModule = {
         cards: [
           { icon: '〰️', label: 'A loose string' },
           { icon: '💪', label: 'A tight string' },
-          { icon: '⬆️', label: 'A loose string sounds high' },
+          { icon: '⬆️', label: 'Loose string sounds high' },
         ],
       },
       {
@@ -111,7 +111,7 @@ export const highOrLow: ContentModule = {
         cards: [
           { icon: '💪', label: 'The skin is tight' },
           { icon: '〰️', label: 'The skin is loose' },
-          { icon: '🔇', label: 'A tight skin is silent' },
+          { icon: '🔇', label: 'Tight skin is silent' },
         ],
       },
       {
@@ -121,7 +121,7 @@ export const highOrLow: ContentModule = {
         cards: [
           { icon: '〰️', label: 'The band is loose' },
           { icon: '💪', label: 'The band is tight' },
-          { icon: '⬆️', label: 'A loose band sounds high' },
+          { icon: '⬆️', label: 'Loose band sounds high' },
         ],
       },
       {
@@ -129,8 +129,8 @@ export const highOrLow: ContentModule = {
         bg: 'room',
         base: [at('🎸', 46, 55, 24), at('⬆️', 76, 32, 16)],
         cards: [
-          { icon: '🎵', label: 'It made a high sound' },
-          { icon: '⬇️', label: 'It made a low sound' },
+          { icon: '🎵', label: 'Made a high sound' },
+          { icon: '⬇️', label: 'Made a low sound' },
           { icon: '🔇', label: 'It made no sound' },
         ],
       },
@@ -139,9 +139,9 @@ export const highOrLow: ContentModule = {
         bg: 'room',
         base: [at('〰️', 50, 52, 26)],
         cards: [
-          { icon: '🎵', label: 'Loose makes a low sound' },
-          { icon: '⬆️', label: 'Loose makes a high sound' },
-          { icon: '💪', label: 'The string is really tight' },
+          { icon: '🎵', label: 'Loose makes it low' },
+          { icon: '⬆️', label: 'Loose makes it high' },
+          { icon: '💪', label: 'String is really tight' },
         ],
       },
       {
@@ -151,7 +151,7 @@ export const highOrLow: ContentModule = {
         cards: [
           { icon: '💪', label: 'Pulling it tight' },
           { icon: '〰️', label: 'Letting it hang loose' },
-          { icon: '🟰', label: 'Tight and loose sound the same' },
+          { icon: '🟰', label: 'Tight and loose match' },
         ],
       },
       {
@@ -159,9 +159,9 @@ export const highOrLow: ContentModule = {
         bg: 'room',
         base: [at('🎸', 36, 55, 22), at('〰️', 68, 50, 18), at('⬆️', 28, 28, 12), at('⬇️', 78, 72, 12)],
         cards: [
-          { icon: '🎵', label: 'One string is tight, one is loose' },
+          { icon: '🎵', label: 'One tight, one loose' },
           { icon: '🟰', label: 'Both strings are tight' },
-          { icon: '🔇', label: 'Tight and loose sound alike' },
+          { icon: '🔇', label: 'They sound the same' },
         ],
       },
     ]),
