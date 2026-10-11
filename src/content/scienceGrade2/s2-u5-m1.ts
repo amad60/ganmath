@@ -183,7 +183,7 @@ export const heatAndCold: ContentModule = {
         bg: 'room',
         base: [bar(50, 80, 44, 4, 'gray'), at('💧', 50, 64, 20)],
         cards: [
-          { icon: '🌡️', label: 'It is not cold' },
+          { icon: '🌡️', label: 'Not cold enough' },
           { icon: '🔥', label: 'Heat freezes water' },
           { icon: '☀️', label: 'The sun makes ice' },
         ],
