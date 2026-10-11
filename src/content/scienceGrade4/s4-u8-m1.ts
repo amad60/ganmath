@@ -88,9 +88,9 @@ export const coldMakesDrops: ContentModule = {
         ask: 'Why are there drops here?',
         base: [at('🥛', 50, 58, 28), at('💧', 36, 48, 11), at('💧', 64, 54, 10)],
         cards: [
-          { icon: '❄️', label: 'Cold made drops from the air' },
-          { icon: '💦', label: 'The cup made the water' },
-          { icon: '☀️', label: 'A warm cup makes drops' },
+          { icon: '❄️', label: 'Cold air made drops' },
+          { icon: '💦', label: 'Cup made water' },
+          { icon: '☀️', label: 'Warm cup makes drops' },
         ],
       },
       {
@@ -99,7 +99,7 @@ export const coldMakesDrops: ContentModule = {
         base: [at('🥛', 50, 58, 28), at('☀️', 78, 22, 16)],
         cards: [
           { icon: '☕', label: 'The cup is warm' },
-          { icon: '💦', label: 'Warm cups also get drops' },
+          { icon: '💦', label: 'Warm cups get drops' },
           { icon: '🥛', label: 'The drink leaked out' },
         ],
       },
@@ -108,9 +108,9 @@ export const coldMakesDrops: ContentModule = {
         ask: 'What caused these drops?',
         base: [at('🥃', 50, 56, 26), at('🧊', 50, 44, 14), at('💧', 34, 58, 10)],
         cards: [
-          { icon: '❄️', label: 'The cold made the drops' },
+          { icon: '❄️', label: 'Cold made the drops' },
           { icon: '💦', label: 'The drink leaked out' },
-          { icon: '☀️', label: 'The warm glass did it' },
+          { icon: '☀️', label: 'Warm glass did it' },
         ],
       },
       {
@@ -118,8 +118,8 @@ export const coldMakesDrops: ContentModule = {
         ask: 'What keeps this mug dry?',
         base: [at('☕', 50, 56, 26), at('🔥', 78, 22, 14)],
         cards: [
-          { icon: '☀️', label: 'It is warm, not cold' },
-          { icon: '💧', label: 'Heat pulls drops onto it' },
+          { icon: '☀️', label: 'Warm, not cold' },
+          { icon: '💧', label: 'Heat pulls drops' },
           { icon: '💦', label: 'The mug makes water' },
         ],
       },
@@ -130,7 +130,7 @@ export const coldMakesDrops: ContentModule = {
         cards: [
           { icon: '❄️', label: 'The bottle is cold' },
           { icon: '💦', label: 'It leaked from inside' },
-          { icon: '☀️', label: 'Warm bottles get drops too' },
+          { icon: '☀️', label: 'Warm bottles drip' },
         ],
       },
       {
@@ -138,9 +138,9 @@ export const coldMakesDrops: ContentModule = {
         ask: 'What made drops on this can?',
         base: [at('🥫', 50, 56, 24), at('💧', 36, 48, 10), at('💧', 64, 58, 10)],
         cards: [
-          { icon: '❄️', label: 'Cold pulled water from the air' },
-          { icon: '💦', label: 'The can leaked the drink' },
-          { icon: '🔥', label: 'A hot can gets drops' },
+          { icon: '❄️', label: 'Cold air made drops' },
+          { icon: '💦', label: 'Can leaked drink' },
+          { icon: '🔥', label: 'Hot can gets drops' },
         ],
       },
       {
@@ -148,7 +148,7 @@ export const coldMakesDrops: ContentModule = {
         ask: 'What was missing on this window?',
         base: [at('🪟', 50, 48, 30), at('☀️', 80, 18, 16)],
         cards: [
-          { icon: '❄️', label: 'Cold to make the drops' },
+          { icon: '❄️', label: 'Cold to make drops' },
           { icon: '💧', label: 'Warmth makes window drops' },
           { icon: '💦', label: 'The glass made water' },
         ],
@@ -158,9 +158,9 @@ export const coldMakesDrops: ContentModule = {
         ask: 'What did the cold do here?',
         base: [at('🪟', 50, 48, 30), at('💧', 40, 44, 11), at('💧', 62, 58, 10)],
         cards: [
-          { icon: '💨', label: 'It made drops from the air' },
-          { icon: '💦', label: 'The window made the water' },
-          { icon: '☀️', label: 'Warm glass made the drops' },
+          { icon: '💨', label: 'Drops from the air' },
+          { icon: '💦', label: 'Window made water' },
+          { icon: '☀️', label: 'Warm glass made drops' },
         ],
       },
     ]),

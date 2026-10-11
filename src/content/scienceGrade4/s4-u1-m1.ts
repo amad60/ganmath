@@ -90,8 +90,8 @@ export const rootsDrink: ContentModule = {
         base: [at('🌿', 50, 48, 32), ground('brown')],
         cards: [
           { icon: '💧', label: 'Water reached the roots' },
-          { icon: '🌸', label: 'Roots drink through the flower' },
-          { icon: '🍃', label: 'The leaf drinks the water' },
+          { icon: '🌸', label: 'Flower drinks' },
+          { icon: '🍃', label: 'Leaf drinks' },
         ],
       },
       {
@@ -100,7 +100,7 @@ export const rootsDrink: ContentModule = {
         base: [at('🥀', 50, 55, 28), ground('yellow')],
         cards: [
           { icon: '💧', label: 'Water at the roots' },
-          { icon: '🌸', label: 'A drink through the flower' },
+          { icon: '🌸', label: 'Flower drinks' },
           { icon: '☀️', label: 'Sun on the flower' },
         ],
       },
@@ -119,7 +119,7 @@ export const rootsDrink: ContentModule = {
         ask: 'Which part got the rain?',
         base: [at('🌧️', 50, 16, 18), at('🌿', 50, 52, 26), ground('brown')],
         cards: [
-          { icon: '🌱', label: 'The roots under the plant' },
+          { icon: '🌱', label: 'Roots under it' },
           { icon: '🌸', label: 'The flower on top' },
           { icon: '🍃', label: 'Only the leaf' },
         ],
@@ -130,8 +130,8 @@ export const rootsDrink: ContentModule = {
         base: [at('💧', 72, 26, 12), at('🍃', 58, 36, 16), at('🥀', 46, 58, 24), ground('yellow')],
         cards: [
           { icon: '🏜️', label: 'Water missed the roots' },
-          { icon: '🍃', label: 'The leaf drank the water' },
-          { icon: '🌸', label: 'Roots drink through the flower' },
+          { icon: '🍃', label: 'Leaf drank it' },
+          { icon: '🌸', label: 'Flower drinks' },
         ],
       },
       {
@@ -139,9 +139,9 @@ export const rootsDrink: ContentModule = {
         ask: 'What keeps this tree standing?',
         base: [at('🌳', 50, 48, 36), ground('green')],
         cards: [
-          { icon: '💧', label: 'Water at the tree roots' },
-          { icon: '🍃', label: 'Leaves drink for the tree' },
-          { icon: '🌸', label: 'The tree drinks by flower' },
+          { icon: '💧', label: 'Water at roots' },
+          { icon: '🍃', label: 'Leaves drink' },
+          { icon: '🌸', label: 'Flower drinks' },
         ],
       },
       {
@@ -161,7 +161,7 @@ export const rootsDrink: ContentModule = {
         cards: [
           { icon: '🌱', label: 'The roots' },
           { icon: '🌸', label: 'The flower on top' },
-          { icon: '🥤', label: 'The cup took it up' },
+          { icon: '🥤', label: 'The cup did it' },
         ],
       },
     ]),

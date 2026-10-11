@@ -88,8 +88,8 @@ export const floatOrSink: ContentModule = {
         ask: 'Why does this boat float?',
         base: [at('⛵', 50, 34, 26), at('🌊', 50, 70, 28)],
         cards: [
-          { icon: '🛟', label: 'It has a boat shape' },
-          { icon: '⚫', label: 'The material makes it float' },
+          { icon: '🛟', label: 'Boat shape' },
+          { icon: '⚫', label: 'Material floats it' },
           { icon: '🎲', label: 'The water chose it' },
         ],
       },
@@ -98,7 +98,7 @@ export const floatOrSink: ContentModule = {
         ask: 'Why did this lump sink?',
         base: [at('🌊', 50, 40, 30), at('⚫', 50, 78, 16)],
         cards: [
-          { icon: '⬇️', label: 'It is a solid lump' },
+          { icon: '⬇️', label: 'A solid lump' },
           { icon: '🛟', label: 'A lump should float' },
           { icon: '🎲', label: 'The water chose it' },
         ],
@@ -109,8 +109,8 @@ export const floatOrSink: ContentModule = {
         base: [at('🌊', 50, 38, 28), at('⛵', 50, 74, 20), at('🕳️', 62, 68, 12)],
         cards: [
           { icon: '💧', label: 'Water filled the boat' },
-          { icon: '🛟', label: 'A boat shape always floats' },
-          { icon: '⚫', label: 'The material pulled it down' },
+          { icon: '🛟', label: 'Shape always floats' },
+          { icon: '⚫', label: 'Material sank it' },
         ],
       },
       {
@@ -118,7 +118,7 @@ export const floatOrSink: ContentModule = {
         ask: 'Why does this bowl float?',
         base: [at('🥣', 50, 34, 26), at('🌊', 50, 70, 28)],
         cards: [
-          { icon: '🛟', label: 'It has a boat shape' },
+          { icon: '🛟', label: 'Boat shape' },
           { icon: '⚫', label: 'The stuff always sinks' },
           { icon: '🎲', label: 'Water chose this bowl' },
         ],
@@ -128,7 +128,7 @@ export const floatOrSink: ContentModule = {
         ask: 'Why did this marble sink?',
         base: [at('🌊', 50, 40, 28), at('🔮', 50, 78, 14)],
         cards: [
-          { icon: '⚫', label: 'It is a solid lump' },
+          { icon: '⚫', label: 'A solid lump' },
           { icon: '🛟', label: 'A round thing floats' },
           { icon: '🎲', label: 'Water picked the marble' },
         ],
@@ -140,7 +140,7 @@ export const floatOrSink: ContentModule = {
         cards: [
           { icon: '🛟', label: 'Its wide boat shape' },
           { icon: '⚓', label: 'Heavy ships always sink' },
-          { icon: '⚙️', label: 'The metal makes it sink' },
+          { icon: '⚙️', label: 'Metal makes it sink' },
         ],
       },
       {
@@ -148,9 +148,9 @@ export const floatOrSink: ContentModule = {
         ask: 'What made this coin sink?',
         base: [at('🌊', 50, 40, 28), at('🪙', 50, 78, 14)],
         cards: [
-          { icon: '⬇️', label: 'It is a solid lump' },
+          { icon: '⬇️', label: 'A solid lump' },
           { icon: '🛟', label: 'Flat coins always float' },
-          { icon: '🎲', label: 'The water picked the coin' },
+          { icon: '🎲', label: 'Water picked it' },
         ],
       },
       {
@@ -159,8 +159,8 @@ export const floatOrSink: ContentModule = {
         base: [at('🛶', 50, 34, 26), at('🌊', 50, 70, 26)],
         cards: [
           { icon: '🛟', label: 'The open boat shape' },
-          { icon: '⚫', label: 'The material keeps it up' },
-          { icon: '🕳️', label: 'A hole keeps it up' },
+          { icon: '⚫', label: 'Material holds it' },
+          { icon: '🕳️', label: 'A hole holds it' },
         ],
       },
     ]),

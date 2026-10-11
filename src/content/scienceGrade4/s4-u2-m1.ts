@@ -89,7 +89,7 @@ export const bonesAndMuscles: ContentModule = {
         base: [at('✊', 50, 52, 32)],
         cards: [
           { icon: '💪', label: 'The front muscle pulled' },
-          { icon: '🦴', label: 'The bone pushed the arm' },
+          { icon: '🦴', label: 'Bone pushed it' },
           { icon: '🖐️', label: 'The back muscle pushed' },
         ],
       },
@@ -109,8 +109,8 @@ export const bonesAndMuscles: ContentModule = {
         base: [at('🧒', 50, 55, 30)],
         cards: [
           { icon: '💪', label: 'The back muscle pulled' },
-          { icon: '✊', label: 'A muscle pushed it straight' },
-          { icon: '🦴', label: 'The bone pushed it straight' },
+          { icon: '✊', label: 'Muscle pushed it' },
+          { icon: '🦴', label: 'Bone pushed it' },
         ],
       },
       {
@@ -119,7 +119,7 @@ export const bonesAndMuscles: ContentModule = {
         base: [at('🦵', 50, 55, 32)],
         cards: [
           { icon: '💪', label: 'The front muscle pulled' },
-          { icon: '🦴', label: 'The bone pushed the leg' },
+          { icon: '🦴', label: 'Bone pushed it' },
           { icon: '🦶', label: 'The foot pushed up' },
         ],
       },
@@ -129,8 +129,8 @@ export const bonesAndMuscles: ContentModule = {
         base: [at('🧍', 50, 52, 32)],
         cards: [
           { icon: '💪', label: 'The back muscle pulled' },
-          { icon: '🦵', label: 'A muscle pushed the leg' },
-          { icon: '🦴', label: 'The leg bone did the push' },
+          { icon: '🦵', label: 'Muscle pushed it' },
+          { icon: '🦴', label: 'Bone did the push' },
         ],
       },
       {

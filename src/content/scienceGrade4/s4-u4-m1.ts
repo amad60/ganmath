@@ -88,8 +88,8 @@ export const lightBounces: ContentModule = {
         ask: 'Why do you see a face?',
         base: [at('🧒', 26, 58, 22), at('😀', 72, 46, 22)],
         cards: [
-          { icon: '🪞', label: 'A mirror bounced the light' },
-          { icon: '⬛', label: 'A cloth made this face' },
+          { icon: '🪞', label: 'Mirror bounced it' },
+          { icon: '⬛', label: 'Cloth made a face' },
           { icon: '🚫', label: 'Light went straight through' },
         ],
       },
@@ -98,9 +98,9 @@ export const lightBounces: ContentModule = {
         ask: 'Why is there no face?',
         base: [at('🧒', 22, 58, 20), at('⬛', 55, 52, 24), at('🌑', 82, 46, 16)],
         cards: [
-          { icon: '🛑', label: 'The cloth stopped the light' },
-          { icon: '🪞', label: 'The cloth bounced a face' },
-          { icon: '😀', label: 'You should see a face' },
+          { icon: '🛑', label: 'Cloth stopped it' },
+          { icon: '🪞', label: 'Cloth bounced it' },
+          { icon: '😀', label: 'A face should show' },
         ],
       },
       {
@@ -109,7 +109,7 @@ export const lightBounces: ContentModule = {
         base: [at('🧱', 62, 54, 24), at('💡', 78, 28, 16)],
         cards: [
           { icon: '🪞', label: 'A mirror bounced it' },
-          { icon: '⬛', label: 'The cloth sent the light' },
+          { icon: '⬛', label: 'Cloth sent it' },
           { icon: '🚫', label: 'Light cannot bounce' },
         ],
       },
@@ -118,9 +118,9 @@ export const lightBounces: ContentModule = {
         ask: 'What caused the dark spot?',
         base: [at('🔦', 16, 50, 16), at('🪵', 52, 52, 22), at('🌑', 84, 46, 14)],
         cards: [
-          { icon: '🛑', label: 'The wood stopped the light' },
-          { icon: '🪞', label: 'The wood bounced a face' },
-          { icon: '😀', label: 'You should see a face' },
+          { icon: '🛑', label: 'Wood stopped it' },
+          { icon: '🪞', label: 'Wood bounced it' },
+          { icon: '😀', label: 'A face should show' },
         ],
       },
       {
@@ -138,9 +138,9 @@ export const lightBounces: ContentModule = {
         ask: 'What keeps the far side dark?',
         base: [at('📖', 40, 52, 26), at('🌑', 78, 48, 16)],
         cards: [
-          { icon: '🛑', label: 'The book stops the light' },
-          { icon: '🪞', label: 'The book bounces a face' },
-          { icon: '💡', label: 'Light goes through the book' },
+          { icon: '🛑', label: 'Book stops it' },
+          { icon: '🪞', label: 'Book bounces it' },
+          { icon: '💡', label: 'Light goes through' },
         ],
       },
       {
@@ -149,8 +149,8 @@ export const lightBounces: ContentModule = {
         base: [at('🌊', 50, 72, 28), at('😀', 50, 38, 22)],
         cards: [
           { icon: '💡', label: 'The puddle bounced light' },
-          { icon: '⬛', label: 'The water stopped the light' },
-          { icon: '🚫', label: 'Light went through the water' },
+          { icon: '⬛', label: 'Water stopped it' },
+          { icon: '🚫', label: 'Light went through' },
         ],
       },
       {
@@ -158,9 +158,9 @@ export const lightBounces: ContentModule = {
         ask: 'What was missing for a face?',
         base: [at('🧒', 26, 56, 22), at('🧱', 70, 50, 24)],
         cards: [
-          { icon: '🪞', label: 'A mirror to bounce light' },
-          { icon: '⬛', label: 'Cloth is enough for a face' },
-          { icon: '😀', label: 'A face needs no mirror' },
+          { icon: '🪞', label: 'Mirror to bounce' },
+          { icon: '⬛', label: 'Cloth is enough' },
+          { icon: '😀', label: 'Needs no mirror' },
         ],
       },
     ]),

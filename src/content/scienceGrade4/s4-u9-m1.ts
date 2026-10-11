@@ -91,7 +91,7 @@ export const longerDays: ContentModule = {
         base: [at('🌿', 50, 50, 34), ground('green')],
         cards: [
           { icon: '☀️', label: 'The day was long' },
-          { icon: '🌙', label: 'A short day did it' },
+          { icon: '🌙', label: 'Short day did it' },
           { icon: '💧', label: 'Water alone grew it' },
         ],
       },
@@ -101,7 +101,7 @@ export const longerDays: ContentModule = {
         base: [at('🌱', 50, 64, 20), ground('green')],
         cards: [
           { icon: '🌙', label: 'The day was short' },
-          { icon: '☀️', label: 'A long day makes it rest' },
+          { icon: '☀️', label: 'Long day makes rest' },
           { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
@@ -111,8 +111,8 @@ export const longerDays: ContentModule = {
         base: [at('🌿', 50, 48, 32), at('💧', 24, 72, 12), ground('green')],
         cards: [
           { icon: '☀️', label: 'A long sunny day' },
-          { icon: '🌊', label: 'Only the water did it' },
-          { icon: '🌙', label: 'The short night did it' },
+          { icon: '🌊', label: 'Only water did it' },
+          { icon: '🌙', label: 'Short night did it' },
         ],
       },
       {
@@ -121,8 +121,8 @@ export const longerDays: ContentModule = {
         base: [at('🌱', 50, 64, 20), at('💧', 26, 74, 12), ground('green')],
         cards: [
           { icon: '🌙', label: 'The day is short' },
-          { icon: '💧', label: 'Water is why it rests' },
-          { icon: '☀️', label: 'Longer days make it rest' },
+          { icon: '💧', label: 'Water makes it rest' },
+          { icon: '☀️', label: 'Long days make rest' },
         ],
       },
       {
@@ -130,8 +130,8 @@ export const longerDays: ContentModule = {
         ask: 'Why did this tree grow?',
         base: [at('🌳', 50, 50, 36), ground()],
         cards: [
-          { icon: '☀️', label: 'More sun, a long day' },
-          { icon: '🌙', label: 'A short day grew it' },
+          { icon: '☀️', label: 'Long sunny day' },
+          { icon: '🌙', label: 'Short day grew it' },
           { icon: '🚫', label: 'Day length does nothing' },
         ],
       },
@@ -142,7 +142,7 @@ export const longerDays: ContentModule = {
         cards: [
           { icon: '🌙', label: 'The day is short' },
           { icon: '🚫', label: 'The sun does nothing' },
-          { icon: '💧', label: 'Water makes it grow now' },
+          { icon: '💧', label: 'Water grows it now' },
         ],
       },
       {
@@ -150,9 +150,9 @@ export const longerDays: ContentModule = {
         ask: 'What helps this flower grow?',
         base: [at('🌷', 50, 54, 30), ground('green')],
         cards: [
-          { icon: '☀️', label: 'A long day of sun' },
-          { icon: '🌙', label: 'A short day of sun' },
-          { icon: '🚫', label: 'The flower needs no sun' },
+          { icon: '☀️', label: 'Long day of sun' },
+          { icon: '🌙', label: 'Short day of sun' },
+          { icon: '🚫', label: 'Flower needs no sun' },
         ],
       },
       {
@@ -161,7 +161,7 @@ export const longerDays: ContentModule = {
         base: [at('🌷', 50, 62, 22), ground('brown')],
         cards: [
           { icon: '☀️', label: 'A longer sunny day' },
-          { icon: '💧', label: 'More water would open it' },
+          { icon: '💧', label: 'More water opens it' },
           { icon: '🌙', label: 'Darkness makes it grow' },
         ],
       },
