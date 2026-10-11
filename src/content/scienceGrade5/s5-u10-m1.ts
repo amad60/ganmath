@@ -90,8 +90,8 @@ export const manyDrips: ContentModule = {
         base: [at('🪨', 50, 62, 28), at('🕳️', 50, 56, 14), ground('gray')],
         cards: [
           { icon: '💦', label: 'Many drips made it' },
-          { icon: '💧', label: 'One drip dug the hole' },
-          { icon: '🪨', label: 'The rock opened by itself' },
+          { icon: '💧', label: 'One drip dug it' },
+          { icon: '🪨', label: 'Rock opened by itself' },
         ],
       },
       {
@@ -99,8 +99,8 @@ export const manyDrips: ContentModule = {
         bg: 'day',
         base: [at('💧', 50, 24, 12), at('🪨', 50, 64, 28), ground('gray')],
         cards: [
-          { icon: '🛑', label: 'One drip is not enough' },
-          { icon: '🕳️', label: 'One drip digs a hole' },
+          { icon: '🛑', label: 'One is not enough' },
+          { icon: '🕳️', label: 'One drip digs it' },
           { icon: '💦', label: 'Many drips do nothing' },
         ],
       },
@@ -111,7 +111,7 @@ export const manyDrips: ContentModule = {
         base: [at('💧', 34, 18, 8), at('💧', 50, 14, 8), at('💧', 66, 18, 8), at('🪣', 50, 64, 26)],
         cards: [
           { icon: '💦', label: 'Many drips filled it' },
-          { icon: '🚫', label: 'One drip cannot fill a bucket' },
+          { icon: '🚫', label: 'One drip cannot fill' },
           { icon: '💧', label: 'One drip filled it' },
         ],
       },
@@ -121,7 +121,7 @@ export const manyDrips: ContentModule = {
         base: [at('🟤', 50, 66, 24), at('🕳️', 50, 58, 12), ground('brown')],
         cards: [
           { icon: '💦', label: 'Many drips keep falling' },
-          { icon: '💧', label: 'One drip made the hole' },
+          { icon: '💧', label: 'One drip made it' },
           { icon: '🟤', label: 'The soil opened alone' },
         ],
       },
@@ -132,7 +132,7 @@ export const manyDrips: ContentModule = {
         cards: [
           { icon: '💦', label: 'Many drips are missing' },
           { icon: '💧', label: 'One drip is missing' },
-          { icon: '🕳️', label: 'A hole needs no water' },
+          { icon: '🕳️', label: 'Hole needs no water' },
         ],
       },
       {
@@ -140,7 +140,7 @@ export const manyDrips: ContentModule = {
         bg: 'cloudy',
         base: [at('🧱', 50, 62, 28), at('🕳️', 50, 56, 12)],
         cards: [
-          { icon: '💦', label: 'Many drips grew the hole' },
+          { icon: '💦', label: 'Many drips grew it' },
           { icon: '💧', label: 'One drip was enough' },
           { icon: '🚫', label: 'Drips cannot change brick' },
         ],
@@ -152,7 +152,7 @@ export const manyDrips: ContentModule = {
         cards: [
           { icon: '🌊', label: 'Water hit many times' },
           { icon: '💧', label: 'One splash was enough' },
-          { icon: '🏔️', label: 'The hole was always there' },
+          { icon: '🏔️', label: 'Hole was always there' },
         ],
       },
       {

@@ -89,9 +89,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('☕', 42, 64, 22), at('🥄', 62, 42, 18), at('🥵', 82, 28, 16)],
         cards: [
-          { icon: '➡️', label: 'Heat moved along the metal' },
-          { icon: '🔒', label: 'Heat stayed and never moved' },
-          { icon: '🪵', label: 'The wood heated the hand' },
+          { icon: '➡️', label: 'Heat moved in metal' },
+          { icon: '🔒', label: 'Heat never moved' },
+          { icon: '🪵', label: 'Wood heated the hand' },
         ],
       },
       {
@@ -99,9 +99,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('☕', 42, 64, 22), at('🪵', 62, 42, 18), at('❄️', 82, 28, 14)],
         cards: [
-          { icon: '🛑', label: 'Wood does not carry heat' },
-          { icon: '🥵', label: 'Wood carries heat to the hand' },
-          { icon: '🥄', label: 'Metal and wood heat the same' },
+          { icon: '🛑', label: 'Wood blocks the heat' },
+          { icon: '🥵', label: 'Wood heats the hand' },
+          { icon: '🥄', label: 'Metal and wood match' },
         ],
       },
       {
@@ -109,9 +109,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('🔥', 22, 62, 16), at('🍳', 55, 52, 22), at('🥵', 82, 36, 14)],
         cards: [
-          { icon: '➡️', label: 'Heat moved along the pan' },
-          { icon: '🕯️', label: 'Heat never left the flame' },
-          { icon: '🪵', label: 'Wood would heat the same' },
+          { icon: '➡️', label: 'Heat moved along it' },
+          { icon: '🕯️', label: 'Heat stayed in flame' },
+          { icon: '🪵', label: 'Wood heats the same' },
         ],
       },
       {
@@ -119,9 +119,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('🕯️', 18, 62, 16), at('🍴', 55, 48, 22)],
         cards: [
-          { icon: '🖐️', label: 'The end far from the flame' },
-          { icon: '🕯️', label: 'Only the end in the flame' },
-          { icon: '🚫', label: 'No part of the metal heats' },
+          { icon: '🖐️', label: 'Far end got hot' },
+          { icon: '🕯️', label: 'Only the flame end' },
+          { icon: '🚫', label: 'No metal part heats' },
         ],
       },
       {
@@ -129,9 +129,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('☕', 40, 64, 22), at('🪵', 62, 40, 18)],
         cards: [
-          { icon: '❄️', label: 'Heat does not move in wood' },
-          { icon: '🔥', label: 'Wood sends heat to the hand' },
-          { icon: '🥄', label: 'It heats like a metal spoon' },
+          { icon: '❄️', label: 'Wood blocks the heat' },
+          { icon: '🔥', label: 'Wood heats the hand' },
+          { icon: '🥄', label: 'It heats like metal' },
         ],
       },
       {
@@ -139,9 +139,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('☕', 40, 64, 22), at('🥄', 60, 40, 18), at('🥵', 80, 28, 14)],
         cards: [
-          { icon: '🖐️', label: 'It moved to the handle' },
-          { icon: '🔒', label: 'Heat stayed and never moved' },
-          { icon: '🪵', label: 'It moved into the wood' },
+          { icon: '🖐️', label: 'Moved to the handle' },
+          { icon: '🔒', label: 'Heat never moved' },
+          { icon: '🪵', label: 'Moved into the wood' },
         ],
       },
       {
@@ -149,9 +149,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('🔥', 24, 70, 16), at('📌', 50, 48, 28), at('🥵', 50, 22, 14)],
         cards: [
-          { icon: '⬆️', label: 'Heat moved up the nail' },
-          { icon: '🔥', label: 'Heat stayed at the flame' },
-          { icon: '🛑', label: 'The nail blocks all heat' },
+          { icon: '⬆️', label: 'Heat moved up it' },
+          { icon: '🔥', label: 'Heat stayed at flame' },
+          { icon: '🛑', label: 'Nail blocks all heat' },
         ],
       },
       {
@@ -159,9 +159,9 @@ export const heatMoves: ContentModule = {
         bg: 'room',
         base: [at('☕', 36, 64, 20), at('🥄', 55, 42, 16), at('🖐️', 78, 32, 16)],
         cards: [
-          { icon: '🔗', label: 'The metal spoon carries it' },
-          { icon: '🪵', label: 'A wood spoon would carry it' },
-          { icon: '🚫', label: 'Heat cannot reach a hand' },
+          { icon: '🔗', label: 'Metal spoon carries it' },
+          { icon: '🪵', label: 'Wood would carry it' },
+          { icon: '🚫', label: 'Heat misses the hand' },
         ],
       },
     ]),

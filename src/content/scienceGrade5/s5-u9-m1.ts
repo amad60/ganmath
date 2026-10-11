@@ -88,9 +88,9 @@ export const bornThatWay: ContentModule = {
         bg: 'day',
         base: [at('🐣', 34, 60, 18), at('🐔', 68, 52, 22), ground()],
         cards: [
-          { icon: '🥚', label: 'It is born that way' },
-          { icon: '🎓', label: 'It learned to look like a hen' },
-          { icon: '👉', label: 'Traits are chosen after birth' },
+          { icon: '🥚', label: 'Born that way' },
+          { icon: '🎓', label: 'Learned the hen look' },
+          { icon: '👉', label: 'Chosen after birth' },
         ],
       },
       {
@@ -98,9 +98,9 @@ export const bornThatWay: ContentModule = {
         bg: 'room',
         base: [at('🐱', 34, 60, 18), at('🐈', 68, 52, 22)],
         cards: [
-          { icon: '🥚', label: 'It was born like a cat' },
-          { icon: '👉', label: 'It chose to be a cat' },
-          { icon: '🎓', label: 'It learned a cat trick' },
+          { icon: '🥚', label: 'Born like a cat' },
+          { icon: '👉', label: 'Chose the cat look' },
+          { icon: '🎓', label: 'Learned a cat trick' },
         ],
       },
       {
@@ -108,9 +108,9 @@ export const bornThatWay: ContentModule = {
         bg: 'room',
         base: [at('🐶', 36, 58, 20), at('⭕', 68, 42, 16)],
         cards: [
-          { icon: '🎓', label: 'A trick, not a born look' },
-          { icon: '🥚', label: 'The hoop trick was born' },
-          { icon: '🐕', label: 'The dog was born doing it' },
+          { icon: '🎓', label: 'A trick, not born' },
+          { icon: '🥚', label: 'Hoop trick was born' },
+          { icon: '🐕', label: 'Born doing the trick' },
         ],
       },
       {
@@ -119,8 +119,8 @@ export const bornThatWay: ContentModule = {
         base: [at('🐥', 34, 60, 18), at('🦆', 68, 52, 22), ground()],
         cards: [
           { icon: '🥚', label: 'That look is born' },
-          { icon: '👉', label: 'It picked the look later' },
-          { icon: '🎓', label: 'It learned to be a duck' },
+          { icon: '👉', label: 'Picked the look later' },
+          { icon: '🎓', label: 'Learned the duck look' },
         ],
       },
       {
@@ -128,9 +128,9 @@ export const bornThatWay: ContentModule = {
         bg: 'day',
         base: [at('🐮', 34, 58, 20), at('🐄', 70, 52, 22), ground()],
         cards: [
-          { icon: '🥚', label: 'Being a cow is born' },
-          { icon: '👉', label: 'Traits are chosen after birth' },
-          { icon: '🎓', label: 'A calf learns its body' },
+          { icon: '🥚', label: 'Cow look is born' },
+          { icon: '👉', label: 'Chosen after birth' },
+          { icon: '🎓', label: 'Calf learns its body' },
         ],
       },
       {
@@ -139,8 +139,8 @@ export const bornThatWay: ContentModule = {
         base: [at('🧒', 36, 56, 22), at('📕', 68, 55, 16)],
         cards: [
           { icon: '🎓', label: 'The child learns reading' },
-          { icon: '🥚', label: 'The child is born reading' },
-          { icon: '📕', label: 'Books are born in a child' },
+          { icon: '🥚', label: 'Born already reading' },
+          { icon: '📕', label: 'Books are born too' },
         ],
       },
       {
@@ -148,9 +148,9 @@ export const bornThatWay: ContentModule = {
         bg: 'room',
         base: [at('🦜', 40, 52, 24), at('💬', 70, 32, 14)],
         cards: [
-          { icon: '🎓', label: 'The parrot learned the words' },
-          { icon: '🥚', label: 'The words were born in it' },
-          { icon: '👉', label: 'It chose the words at birth' },
+          { icon: '🎓', label: 'Learned the words' },
+          { icon: '🥚', label: 'Born with the words' },
+          { icon: '👉', label: 'Chose words at birth' },
         ],
       },
       {
@@ -160,7 +160,7 @@ export const bornThatWay: ContentModule = {
         cards: [
           { icon: '🐕', label: 'Looking like a dog' },
           { icon: '⭕', label: 'Knowing a hoop trick' },
-          { icon: '👉', label: 'A look it picks later' },
+          { icon: '👉', label: 'A look picked later' },
         ],
       },
     ]),

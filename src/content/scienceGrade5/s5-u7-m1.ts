@@ -88,7 +88,7 @@ export const evenPush: ContentModule = {
         bg: 'room',
         base: [at('🧒', 16, 55, 16), at('📦', 50, 55, 20), at('🧒', 84, 55, 16), ground('gray')],
         cards: [
-          { icon: '⚖️', label: 'The pushes are the same' },
+          { icon: '⚖️', label: 'Pushes are the same' },
           { icon: '💪', label: 'One push is more' },
           { icon: '🚫', label: 'Pushes do not matter' },
         ],
@@ -99,8 +99,8 @@ export const evenPush: ContentModule = {
         base: [at('💪', 16, 48, 18), at('📦', 68, 54, 20), at('🧒', 88, 58, 14), ground('gray')],
         cards: [
           { icon: '🏆', label: 'One side pushes harder' },
-          { icon: '⚖️', label: 'The pushes are the same' },
-          { icon: '🚫', label: 'It goes with no push' },
+          { icon: '⚖️', label: 'Pushes are the same' },
+          { icon: '🚫', label: 'Goes with no push' },
         ],
       },
       {
@@ -108,9 +108,9 @@ export const evenPush: ContentModule = {
         bg: 'plain',
         base: [at('🧒', 18, 55, 16), at('⚽', 50, 55, 18), at('🧒', 82, 55, 16)],
         cards: [
-          { icon: '🤝', label: 'Same push on both sides' },
+          { icon: '🤝', label: 'Same push both sides' },
           { icon: '💪', label: 'One side pushes more' },
-          { icon: '⚽', label: 'The ball moves by itself' },
+          { icon: '⚽', label: 'Ball moves by itself' },
         ],
       },
       {
@@ -120,7 +120,7 @@ export const evenPush: ContentModule = {
         cards: [
           { icon: '🏆', label: 'One side pushed harder' },
           { icon: '⚖️', label: 'Both pushes match' },
-          { icon: '🚪', label: 'Equal pushes swing a door' },
+          { icon: '🚪', label: 'Equal pushes swing it' },
         ],
       },
       {
@@ -128,9 +128,9 @@ export const evenPush: ContentModule = {
         bg: 'room',
         base: [at('📦', 50, 55, 24), ground('gray')],
         cards: [
-          { icon: '🛑', label: 'No push is moving it' },
-          { icon: '➡️', label: 'No push makes it slide' },
-          { icon: '💪', label: 'A hidden push moves it' },
+          { icon: '🛑', label: 'Nothing pushes it' },
+          { icon: '➡️', label: 'It slides anyway' },
+          { icon: '💪', label: 'Hidden push moves it' },
         ],
       },
       {
@@ -139,7 +139,7 @@ export const evenPush: ContentModule = {
         base: [at('🧒', 12, 48, 12), at('🧒', 24, 62, 12), at('📦', 62, 54, 18), at('🧒', 86, 56, 14), ground('gray')],
         cards: [
           { icon: '➡️', label: 'It moved the box' },
-          { icon: '🛑', label: 'It kept the box still' },
+          { icon: '🛑', label: 'Kept the box still' },
           { icon: '⚖️', label: 'Equal pushes moved it' },
         ],
       },
@@ -148,9 +148,9 @@ export const evenPush: ContentModule = {
         bg: 'room',
         base: [at('🧒', 18, 55, 16), at('📕', 50, 55, 16), at('🧒', 82, 55, 16)],
         cards: [
-          { icon: '🤝', label: 'Even pushes on both sides' },
+          { icon: '🤝', label: 'Even push both sides' },
           { icon: '💪', label: 'One side pushes harder' },
-          { icon: '📕', label: 'Matched pushes slide a book' },
+          { icon: '📕', label: 'Matched pushes slide it' },
         ],
       },
       {

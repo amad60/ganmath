@@ -89,9 +89,9 @@ export const leftBehind: ContentModule = {
         bg: 'day',
         base: [at('☀️', 80, 16, 14), at('🥣', 50, 62, 26), at('🧂', 50, 54, 14)],
         cards: [
-          { icon: '💧', label: 'The water left the salt' },
+          { icon: '💧', label: 'Water left the salt' },
           { icon: '✨', label: 'The salt vanished' },
-          { icon: '☀️', label: 'The sun destroyed the salt' },
+          { icon: '☀️', label: 'Sun destroyed the salt' },
         ],
       },
       {
@@ -101,7 +101,7 @@ export const leftBehind: ContentModule = {
         cards: [
           { icon: '☀️', label: 'Drying is missing' },
           { icon: '✨', label: 'The salt vanished' },
-          { icon: '🧢', label: 'The cover removes the salt' },
+          { icon: '🧢', label: 'Cover removes the salt' },
         ],
       },
       {
@@ -110,7 +110,7 @@ export const leftBehind: ContentModule = {
         bg: 'day',
         base: [at('☀️', 80, 16, 14), at('🥣', 50, 62, 26), at('⚪', 50, 52, 10)],
         cards: [
-          { icon: '🍬', label: 'The sugar is left behind' },
+          { icon: '🍬', label: 'Sugar is left behind' },
           { icon: '✨', label: 'The sugar vanished' },
           { icon: '🧂', label: 'Drying left salt instead' },
         ],
@@ -122,7 +122,7 @@ export const leftBehind: ContentModule = {
         cards: [
           { icon: '🚫', label: 'Plain water leaves nothing' },
           { icon: '🧂', label: 'Drying made new salt' },
-          { icon: '💧', label: 'The water is still hiding' },
+          { icon: '💧', label: 'Water is still hiding' },
         ],
       },
       {
@@ -130,8 +130,8 @@ export const leftBehind: ContentModule = {
         bg: 'day',
         base: [at('☀️', 80, 16, 14), at('🪨', 50, 64, 28), at('⚪', 50, 52, 10), ground('brown')],
         cards: [
-          { icon: '🌊', label: 'Salt water dried on it' },
-          { icon: '🪨', label: 'The rock turned into salt' },
+          { icon: '🌊', label: 'Salt water dried' },
+          { icon: '🪨', label: 'Rock turned into salt' },
           { icon: '✨', label: 'The salt vanished anyway' },
         ],
       },
@@ -141,7 +141,7 @@ export const leftBehind: ContentModule = {
         base: [at('🥣', 50, 62, 26), at('🧂', 50, 52, 14)],
         cards: [
           { icon: '💧', label: 'Only the water goes' },
-          { icon: '✨', label: 'Salt goes with the water' },
+          { icon: '✨', label: 'Salt goes with water' },
           { icon: '🔥', label: 'Heat destroys the salt' },
         ],
       },
@@ -150,8 +150,8 @@ export const leftBehind: ContentModule = {
         bg: 'day',
         base: [at('🌬️', 18, 28, 16), at('☀️', 80, 16, 14), at('🥣', 50, 62, 24), at('🧂', 50, 52, 12)],
         cards: [
-          { icon: '📤', label: 'Water went and salt stayed' },
-          { icon: '🌬️', label: 'The wind took the salt' },
+          { icon: '📤', label: 'Water left, salt stayed' },
+          { icon: '🌬️', label: 'Wind took the salt' },
           { icon: '✨', label: 'Nothing solid can stay' },
         ],
       },

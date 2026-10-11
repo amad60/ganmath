@@ -89,8 +89,8 @@ export const shadowGrowsShort: ContentModule = {
         bg: 'day',
         base: [at('🧍', 42, 52, 26), at('📏', 72, 74, 16), ground()],
         cards: [
-          { icon: '🌅', label: 'A low sun made it' },
-          { icon: '☀️', label: 'A high sun made it' },
+          { icon: '🌅', label: 'Low sun made it' },
+          { icon: '☀️', label: 'High sun made it' },
           { icon: '🚫', label: 'Sun height does nothing' },
         ],
       },
@@ -99,9 +99,9 @@ export const shadowGrowsShort: ContentModule = {
         bg: 'day',
         base: [at('🧍', 50, 52, 26), at('▪️', 50, 80, 10), ground()],
         cards: [
-          { icon: '☀️', label: 'A high sun made it' },
-          { icon: '🌅', label: 'A low sun made it' },
-          { icon: '📏', label: 'A high sun makes it long' },
+          { icon: '☀️', label: 'High sun made it' },
+          { icon: '🌅', label: 'Low sun made it' },
+          { icon: '📏', label: 'High sun, long shadow' },
         ],
       },
       {
@@ -109,8 +109,8 @@ export const shadowGrowsShort: ContentModule = {
         bg: 'day',
         base: [at('🌳', 40, 50, 28), at('📏', 72, 74, 16), ground()],
         cards: [
-          { icon: '🌅', label: 'A low sun caused it' },
-          { icon: '☀️', label: 'A high sun caused it' },
+          { icon: '🌅', label: 'Low sun caused it' },
+          { icon: '☀️', label: 'High sun caused it' },
           { icon: '🌳', label: 'The tree grew taller' },
         ],
       },
@@ -119,19 +119,28 @@ export const shadowGrowsShort: ContentModule = {
         bg: 'day',
         base: [at('🏠', 50, 52, 28), at('▪️', 50, 80, 10), ground()],
         cards: [
-          { icon: '☀️', label: 'A high sun keeps it short' },
-          { icon: '🌅', label: 'A low sun keeps it short' },
+          { icon: '☀️', label: 'High sun, short shadow' },
+          { icon: '🌅', label: 'Low sun, short shadow' },
           { icon: '🚫', label: 'Sun height does nothing' },
         ],
       },
       {
-        ask: 'There is no shadow. Why is it missing?',
-        bg: 'night',
-        base: [at('🌙', 78, 18, 16), at('🧍', 50, 55, 26), ground()],
+        // Matahari rendah membuat bayangan panjang. Matahari tinggi membuat bayangan pendek.
+        ask: 'What do these two shadows show?',
+        bg: 'day',
+        base: [
+          at('🌅', 14, 62, 14),
+          at('🧍', 30, 50, 20),
+          at('📏', 46, 74, 14),
+          at('☀️', 78, 12, 14),
+          at('🧍', 70, 50, 20),
+          at('▪️', 70, 78, 10),
+          ground(),
+        ],
         cards: [
-          { icon: '🚫', label: 'There is no sun' },
-          { icon: '📏', label: 'Night makes a long shadow' },
-          { icon: '🌅', label: 'A low sun is still up' },
+          { icon: '📐', label: 'Low long, high short' },
+          { icon: '🔄', label: 'Low short, high long' },
+          { icon: '🚫', label: 'Both shadows match' },
         ],
       },
       {
@@ -139,9 +148,9 @@ export const shadowGrowsShort: ContentModule = {
         bg: 'day',
         base: [at('🗼', 48, 48, 26), at('📏', 74, 74, 16), ground()],
         cards: [
-          { icon: '🌅', label: 'A low sun made it long' },
-          { icon: '☀️', label: 'A high sun made it long' },
-          { icon: '🚫', label: 'The sun removed the shadow' },
+          { icon: '🌅', label: 'Low sun, long shadow' },
+          { icon: '☀️', label: 'High sun, long shadow' },
+          { icon: '🚫', label: 'Sun removed the shadow' },
         ],
       },
       {
