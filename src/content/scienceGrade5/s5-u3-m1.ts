@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, whatHappensNext } from '../scienceScene';
+import { at, ground, whatHappensNext } from '../scienceScene';
 
 export const leftBehind: ContentModule = {
   id: 's5-u3-m1',
@@ -84,83 +84,85 @@ export const leftBehind: ContentModule = {
   rules: [
     whatHappensNext('sci-salt', [
       {
-        ask: 'Salt water dries in the sun.',
+        // Mangkuk kering masih ada garam. Airnya yang pergi.
+        ask: 'Why is the salt still there?',
         bg: 'day',
-        base: [at('☀️', 80, 16, 16), at('🥣', 50, 60, 26), at('💧', 50, 54, 10)],
+        base: [at('☀️', 80, 16, 14), at('🥣', 50, 62, 26), at('🧂', 50, 54, 14)],
         cards: [
-          { icon: '🧂', label: 'Salt is left' },
-          { icon: '✨', label: 'It all goes' },
-          { icon: '🚫', label: 'Drying makes new salt' },
+          { icon: '💧', label: 'The water left the salt' },
+          { icon: '✨', label: 'The salt vanished' },
+          { icon: '☀️', label: 'The sun destroyed the salt' },
         ],
       },
       {
-        ask: 'The bowl is covered, so it cannot dry.',
+        ask: 'The bowl is still wet. What is missing?',
         bg: 'room',
-        base: [at('🧢', 50, 38, 16), at('🥣', 50, 62, 24)],
+        base: [at('🧢', 50, 40, 16), at('🥣', 50, 62, 24), at('💧', 50, 56, 12)],
         cards: [
-          { icon: '💧', label: 'The salt water stays' },
-          { icon: '🧂', label: 'Only salt is left' },
-          { icon: '🚫', label: 'Drying makes new salt' },
+          { icon: '☀️', label: 'Drying is missing' },
+          { icon: '✨', label: 'The salt vanished' },
+          { icon: '🧢', label: 'The cover removes the salt' },
         ],
       },
       {
-        ask: 'Sugar water dries in the sun.',
+        // Gula, sama seperti garam: air pergi, gula tertinggal.
+        ask: 'What did drying do to the sugar water?',
         bg: 'day',
-        base: [at('☀️', 78, 16, 14), at('🥛', 50, 58, 24)],
+        base: [at('☀️', 80, 16, 14), at('🥣', 50, 62, 26), at('⚪', 50, 52, 10)],
         cards: [
-          { icon: '🍬', label: 'Sugar is left' },
-          { icon: '✨', label: 'It all goes' },
-          { icon: '🧊', label: 'It freezes' },
+          { icon: '🍬', label: 'The sugar is left behind' },
+          { icon: '✨', label: 'The sugar vanished' },
+          { icon: '🧂', label: 'Drying left salt instead' },
         ],
       },
       {
-        ask: 'Plain water dries in the sun.',
+        ask: 'Why is nothing left in the bowl?',
         bg: 'day',
-        base: [at('☀️', 80, 16, 16), at('🥣', 50, 60, 26)],
+        base: [at('☀️', 80, 16, 14), at('🥣', 50, 62, 26)],
         cards: [
-          { icon: '🚫', label: 'Nothing is left' },
-          { icon: '🧂', label: 'Salt is left' },
-          { icon: '❔', label: 'Drying makes new salt' },
+          { icon: '🚫', label: 'Plain water leaves nothing' },
+          { icon: '🧂', label: 'Drying made new salt' },
+          { icon: '💧', label: 'The water is still hiding' },
         ],
       },
       {
-        ask: 'Wind and sun dry the salt water.',
+        ask: 'What caused the salt on the rock?',
         bg: 'day',
-        base: [at('🌬️', 20, 30, 16), at('☀️', 80, 16, 14), at('🥣', 50, 62, 22)],
+        base: [at('☀️', 80, 16, 14), at('🪨', 50, 64, 28), at('⚪', 50, 52, 10), ground('brown')],
         cards: [
-          { icon: '🧂', label: 'Salt is left' },
-          { icon: '💧', label: 'The water stays' },
-          { icon: '🚫', label: 'Drying makes new salt' },
+          { icon: '🌊', label: 'Salt water dried on it' },
+          { icon: '🪨', label: 'The rock turned into salt' },
+          { icon: '✨', label: 'The salt vanished anyway' },
         ],
       },
       {
-        ask: 'It is night, and the bowl is covered.',
-        bg: 'night',
-        base: [at('🌙', 80, 16, 14), at('🧢', 50, 42, 16), at('🥣', 50, 64, 24)],
-        cards: [
-          { icon: '💧', label: 'The salt water stays' },
-          { icon: '🧂', label: 'Only salt is left' },
-          { icon: '🐟', label: 'It swims' },
-        ],
-      },
-      {
-        ask: 'Two suns dry the salt water.',
+        ask: 'What keeps the salt from vanishing?',
         bg: 'day',
-        base: [at('☀️', 18, 16, 12), at('☀️', 82, 18, 14), at('🥣', 50, 62, 28)],
+        base: [at('🥣', 50, 62, 26), at('🧂', 50, 52, 14)],
         cards: [
-          { icon: '🧂', label: 'Salt is left' },
-          { icon: '✨', label: 'Salt goes too' },
-          { icon: '🚫', label: 'Drying makes new salt' },
+          { icon: '💧', label: 'Only the water goes' },
+          { icon: '✨', label: 'Salt goes with the water' },
+          { icon: '🔥', label: 'Heat destroys the salt' },
         ],
       },
       {
-        ask: 'Salt water dries on a rock.',
+        ask: 'What made the salt stay?',
         bg: 'day',
-        base: [at('🪨', 50, 62, 28), at('☀️', 80, 16, 14), at('💧', 50, 48, 12)],
+        base: [at('🌬️', 18, 28, 16), at('☀️', 80, 16, 14), at('🥣', 50, 62, 24), at('🧂', 50, 52, 12)],
         cards: [
-          { icon: '🧂', label: 'Salt is left on it' },
-          { icon: '✨', label: 'Nothing is left' },
-          { icon: '🚫', label: 'Drying makes new salt' },
+          { icon: '📤', label: 'Water went and salt stayed' },
+          { icon: '🌬️', label: 'The wind took the salt' },
+          { icon: '✨', label: 'Nothing solid can stay' },
+        ],
+      },
+      {
+        ask: 'Which part of the salt water is left?',
+        bg: 'day',
+        base: [at('☀️', 80, 16, 14), at('🥣', 50, 62, 26), at('🧂', 50, 52, 14)],
+        cards: [
+          { icon: '⚪', label: 'The salt part' },
+          { icon: '💧', label: 'The water part' },
+          { icon: '✨', label: 'No part is left' },
         ],
       },
     ]),

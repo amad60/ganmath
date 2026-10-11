@@ -1,5 +1,5 @@
 import type { ContentModule } from '../types';
-import { at, whatHappensNext } from '../scienceScene';
+import { at, ground, whatHappensNext } from '../scienceScene';
 
 export const bornThatWay: ContentModule = {
   id: 's5-u9-m1',
@@ -84,83 +84,83 @@ export const bornThatWay: ContentModule = {
   rules: [
     whatHappensNext('sci-born', [
       {
-        ask: 'A chick hatches from an egg.',
+        ask: 'The chick looks like a hen. Why?',
         bg: 'day',
-        base: [at('🥚', 36, 60, 16), at('🐣', 64, 58, 20)],
+        base: [at('🐣', 34, 60, 18), at('🐔', 68, 52, 22), ground()],
         cards: [
-          { icon: '🐔', label: 'It is born like a hen' },
-          { icon: '🎓', label: 'It learns a trick' },
-          { icon: '🚫', label: 'Born and learned are the same' },
+          { icon: '🥚', label: 'It is born that way' },
+          { icon: '🎓', label: 'It learned to look like a hen' },
+          { icon: '👉', label: 'Traits are chosen after birth' },
         ],
       },
       {
-        ask: 'A puppy is born.',
+        ask: 'The kitten looks like a cat. What made that?',
+        bg: 'room',
+        base: [at('🐱', 34, 60, 18), at('🐈', 68, 52, 22)],
+        cards: [
+          { icon: '🥚', label: 'It was born like a cat' },
+          { icon: '👉', label: 'It chose to be a cat' },
+          { icon: '🎓', label: 'It learned a cat trick' },
+        ],
+      },
+      {
+        ask: 'The dog jumps a hoop. What did it learn?',
+        bg: 'room',
+        base: [at('🐶', 36, 58, 20), at('⭕', 68, 42, 16)],
+        cards: [
+          { icon: '🎓', label: 'A trick, not a born look' },
+          { icon: '🥚', label: 'The hoop trick was born' },
+          { icon: '🐕', label: 'The dog was born doing it' },
+        ],
+      },
+      {
+        ask: 'The duckling looks like a duck. Why?',
         bg: 'day',
-        base: [at('🐶', 50, 58, 26)],
+        base: [at('🐥', 34, 60, 18), at('🦆', 68, 52, 22), ground()],
         cards: [
-          { icon: '🐕', label: 'It is born like a dog' },
-          { icon: '🎓', label: 'It learns a trick' },
-          { icon: '🚫', label: 'Born and learned are the same' },
+          { icon: '🥚', label: 'That look is born' },
+          { icon: '👉', label: 'It picked the look later' },
+          { icon: '🎓', label: 'It learned to be a duck' },
         ],
       },
       {
-        ask: 'A dog is taught to jump a hoop.',
-        bg: 'room',
-        base: [at('🐶', 36, 60, 20), at('⭕', 68, 42, 16)],
-        cards: [
-          { icon: '🎓', label: 'It learns a trick' },
-          { icon: '🐕', label: 'The trick is born' },
-          { icon: '🐟', label: 'It swims' },
-        ],
-      },
-      {
-        ask: 'A kitten is born.',
-        bg: 'room',
-        base: [at('🐱', 50, 58, 26)],
-        cards: [
-          { icon: '🐈', label: 'It is born like a cat' },
-          { icon: '🎓', label: 'It learns a trick' },
-          { icon: '🧊', label: 'It freezes' },
-        ],
-      },
-      {
-        ask: 'A child reads a book to learn.',
-        bg: 'room',
-        base: [at('🧒', 36, 58, 22), at('📕', 68, 55, 16)],
-        cards: [
-          { icon: '🎓', label: 'The child learns it' },
-          { icon: '🐔', label: 'It is born that way' },
-          { icon: '🚫', label: 'Born and learned are the same' },
-        ],
-      },
-      {
-        ask: 'A duckling hatches.',
+        ask: 'The calf looks like a cow. What keeps that?',
         bg: 'day',
-        base: [at('🐥', 50, 60, 22)],
+        base: [at('🐮', 34, 58, 20), at('🐄', 70, 52, 22), ground()],
         cards: [
-          { icon: '🦆', label: 'It is born like a duck' },
-          { icon: '🎓', label: 'It learns a trick' },
-          { icon: '🚫', label: 'Born and learned are the same' },
+          { icon: '🥚', label: 'Being a cow is born' },
+          { icon: '👉', label: 'Traits are chosen after birth' },
+          { icon: '🎓', label: 'A calf learns its body' },
         ],
       },
       {
-        ask: 'A calf is born.',
-        bg: 'day',
-        base: [at('🐮', 50, 58, 26)],
-        cards: [
-          { icon: '🐄', label: 'It is born like a cow' },
-          { icon: '🎓', label: 'It learns a trick' },
-          { icon: '🚫', label: 'Born and learned are the same' },
-        ],
-      },
-      {
-        ask: 'A parrot is taught words.',
+        ask: 'Why can this child read?',
         bg: 'room',
-        base: [at('🦜', 42, 52, 24), at('💬', 70, 32, 14)],
+        base: [at('🧒', 36, 56, 22), at('📕', 68, 55, 16)],
         cards: [
-          { icon: '🎓', label: 'It learns the words' },
-          { icon: '🦜', label: 'The words are born' },
-          { icon: '🚫', label: 'Born and learned are the same' },
+          { icon: '🎓', label: 'The child learns reading' },
+          { icon: '🥚', label: 'The child is born reading' },
+          { icon: '📕', label: 'Books are born in a child' },
+        ],
+      },
+      {
+        ask: 'The parrot says words. What caused the words?',
+        bg: 'room',
+        base: [at('🦜', 40, 52, 24), at('💬', 70, 32, 14)],
+        cards: [
+          { icon: '🎓', label: 'The parrot learned the words' },
+          { icon: '🥚', label: 'The words were born in it' },
+          { icon: '👉', label: 'It chose the words at birth' },
+        ],
+      },
+      {
+        ask: 'Which part of this puppy is born?',
+        bg: 'day',
+        base: [at('🐶', 50, 58, 28), ground()],
+        cards: [
+          { icon: '🐕', label: 'Looking like a dog' },
+          { icon: '⭕', label: 'Knowing a hoop trick' },
+          { icon: '👉', label: 'A look it picks later' },
         ],
       },
     ]),
