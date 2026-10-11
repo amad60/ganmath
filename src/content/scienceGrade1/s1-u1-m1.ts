@@ -110,13 +110,13 @@ export const whatLivingThingsNeed: ContentModule = {
         ],
       },
       {
-        ask: 'The dog has an empty bowl. What was missing?',
+        ask: 'The dog has an empty dish. What was missing?',
         bg: 'room',
-        base: [at('🐶', 36, 60, 26), at('🥣', 72, 74, 16)],
+        base: [at('🐶', 36, 60, 26), at('🦴', 72, 74, 16, { dim: true })],
         cards: [
           { icon: '🍖', label: 'Food' },
-          { icon: '🥛', label: 'Water' },
           { icon: '💨', label: 'Air' },
+          { icon: '⛱️', label: 'Shade' },
         ],
       },
       {
@@ -130,13 +130,18 @@ export const whatLivingThingsNeed: ContentModule = {
         ],
       },
       {
-        ask: 'The goat looks thirsty. What does it need?',
+        ask: 'The goat stands by an empty dish. What does it need?',
         bg: 'day',
-        base: [at('🐐', 46, 62, 28), ground('yellow')],
+        base: [
+          at('🐐', 36, 58, 28),
+          bar(74, 80, 24, 10, 'white'),
+          bar(74, 78, 16, 5, 'blue', { dim: true }),
+          ground('yellow'),
+        ],
         cards: [
           { icon: '💧', label: 'Water' },
           { icon: '🌾', label: 'Grass' },
-          { icon: '🥛', label: 'Milk' },
+          { icon: '⛱️', label: 'Shade' },
         ],
       },
       {
@@ -155,8 +160,8 @@ export const whatLivingThingsNeed: ContentModule = {
         base: [at('🧒', 46, 58, 26), at('🫧', 70, 36, 12)],
         cards: [
           { icon: '💨', label: 'Air' },
-          { icon: '🍪', label: 'A snack' },
-          { icon: '🥛', label: 'Milk' },
+          { icon: '🍖', label: 'Food' },
+          { icon: '⛱️', label: 'Shade' },
         ],
       },
       {

@@ -92,83 +92,83 @@ export const howAnimalsMove: ContentModule = {
   rules: [
     whatHappensNext('sci-move', [
       {
-        ask: 'What helps this bird reach its nest?',
+        ask: 'A nest is in the tree. What move fits here?',
         bg: 'day',
-        base: [at('🪺', 70, 28, 16), bar(24, 72, 36, 6, 'brown'), at('🐦', 28, 58, 18)],
+        base: [at('🌳', 50, 58, 42), at('🪺', 66, 32, 14)],
         cards: [
-          { icon: '🪽', label: 'It flies' },
-          { icon: '🏊', label: 'It swims' },
-          { icon: '🐌', label: 'It crawls' },
+          { icon: '🪽', label: 'Flying' },
+          { icon: '🏊', label: 'Swimming' },
+          { icon: '🐌', label: 'Crawling' },
         ],
       },
       {
-        ask: 'This fish is on land. What does it need?',
-        bg: 'day',
-        base: [at('🐟', 50, 74, 20, { rotate: 12 }), ground()],
-        cards: [
-          { icon: '💧', label: 'Water' },
-          { icon: '🪽', label: 'Wings' },
-          { icon: '🦵', label: 'Legs' },
-        ],
-      },
-      {
-        ask: 'What helps a frog move on land?',
-        bg: 'day',
-        base: [at('🐸', 46, 70, 24), ground()],
-        cards: [
-          { icon: '🦘', label: 'It hops' },
-          { icon: '🐦', label: 'It flies' },
-          { icon: '🐠', label: 'It swims' },
-        ],
-      },
-      {
-        ask: 'What helps this worm move on soil?',
-        bg: 'day',
-        base: [at('🐛', 50, 76, 18), ground('brown')],
-        cards: [
-          { icon: '🐌', label: 'It crawls' },
-          { icon: '🪽', label: 'It flies' },
-          { icon: '🦘', label: 'It hops' },
-        ],
-      },
-      {
-        ask: 'What helps the goat move on rocks?',
-        bg: 'day',
-        base: [at('🐐', 42, 62, 26), at('🪨', 72, 74, 16), ground('gray')],
-        cards: [
-          { icon: '🧗', label: 'It climbs' },
-          { icon: '🐌', label: 'It crawls' },
-          { icon: '🐸', label: 'It hops' },
-        ],
-      },
-      {
-        ask: 'The duck is in water. What helps it move?',
+        ask: 'This place is water. What move fits here?',
         bg: 'water',
-        base: [at('🦆', 50, 58, 28)],
+        base: [at('🫧', 28, 36, 12), at('🫧', 70, 58, 10)],
         cards: [
-          { icon: '🏊', label: 'It swims' },
-          { icon: '🪽', label: 'Wings' },
-          { icon: '🏃', label: 'It runs' },
+          { icon: '🏊', label: 'Swimming' },
+          { icon: '🪽', label: 'Flying' },
+          { icon: '🦘', label: 'Hopping' },
         ],
       },
       {
-        ask: 'What helps the fish move in the jar?',
-        bg: 'room',
-        base: [at('🫙', 50, 56, 32), at('🐟', 50, 58, 14)],
-        cards: [
-          { icon: '🏊', label: 'It swims' },
-          { icon: '🧗', label: 'It climbs' },
-          { icon: '🏃', label: 'It runs' },
-        ],
-      },
-      {
-        ask: 'What helps the bee move in the air?',
+        ask: 'This place is soil. What move fits here?',
         bg: 'day',
-        base: [at('🐝', 48, 42, 22), at('🌸', 74, 68, 16)],
+        base: [ground('brown'), bar(50, 74, 36, 12, 'brown')],
         cards: [
-          { icon: '🪽', label: 'It flies' },
-          { icon: '🧗', label: 'It climbs' },
-          { icon: '🦵', label: 'Legs' },
+          { icon: '🐌', label: 'Crawling' },
+          { icon: '🪽', label: 'Flying' },
+          { icon: '🏊', label: 'Swimming' },
+        ],
+      },
+      {
+        ask: 'Air and a flower are here. What move fits here?',
+        bg: 'day',
+        base: [at('☁️', 22, 20, 18), at('🌸', 62, 36, 22)],
+        cards: [
+          { icon: '🪽', label: 'Flying' },
+          { icon: '🐌', label: 'Crawling' },
+          { icon: '🏊', label: 'Swimming' },
+        ],
+      },
+      {
+        ask: 'A leaf is on the pond. What move fits here?',
+        bg: 'day',
+        base: [bar(50, 82, 100, 28, 'blue'), at('🍀', 48, 64, 22)],
+        cards: [
+          { icon: '🦘', label: 'Hopping' },
+          { icon: '🪽', label: 'Flying' },
+          { icon: '🐌', label: 'Crawling' },
+        ],
+      },
+      {
+        ask: 'This fish is on the land. What does it need?',
+        bg: 'day',
+        base: [at('🐟', 50, 72, 22, { rotate: 12 }), ground()],
+        cards: [
+          { icon: '💧', label: 'Needs water' },
+          { icon: '🪽', label: 'Flying' },
+          { icon: '🐌', label: 'Crawling' },
+        ],
+      },
+      {
+        ask: 'The pond is full of water. What move fits here?',
+        bg: 'day',
+        base: [bar(50, 68, 88, 40, 'blue')],
+        cards: [
+          { icon: '🏊', label: 'Swimming' },
+          { icon: '🦘', label: 'Hopping' },
+          { icon: '🐌', label: 'Crawling' },
+        ],
+      },
+      {
+        ask: 'A hole is in the soil. What move fits here?',
+        bg: 'day',
+        base: [ground('brown'), bar(50, 68, 16, 20, 'gray')],
+        cards: [
+          { icon: '🐌', label: 'Crawling' },
+          { icon: '🦘', label: 'Hopping' },
+          { icon: '🪽', label: 'Flying' },
         ],
       },
     ]),
