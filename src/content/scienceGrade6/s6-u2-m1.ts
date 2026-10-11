@@ -88,7 +88,7 @@ export const springBack: ContentModule = {
         bg: 'room',
         base: [at('🌀', 50, 55, 26), at('↩️', 78, 34, 14)],
         cards: [
-          { icon: '🌀', label: 'You pressed a spring' },
+          { icon: '✋', label: 'You pressed it' },
           { icon: '🟤', label: 'It is clay' },
           { icon: '🚫', label: 'Pressing does nothing' },
         ],
@@ -108,7 +108,7 @@ export const springBack: ContentModule = {
         bg: 'room',
         base: [at('🧽', 50, 55, 24), at('↩️', 78, 34, 14)],
         cards: [
-          { icon: '🌀', label: 'It is like a spring' },
+          { icon: '🌀', label: 'Like a spring' },
           { icon: '🟤', label: 'It is like clay' },
           { icon: '⏹️', label: 'It stays flat' },
         ],
@@ -128,7 +128,7 @@ export const springBack: ContentModule = {
         bg: 'day',
         base: [at('🏖️', 50, 64, 24), at('⏹️', 78, 40, 14)],
         cards: [
-          { icon: '🌀', label: 'It is not a spring' },
+          { icon: '🌀', label: 'Not a spring' },
           { icon: '🟤', label: 'Sand is a spring' },
           { icon: '🚫', label: 'Pressing does nothing' },
         ],
@@ -146,17 +146,17 @@ export const springBack: ContentModule = {
       {
         ask: 'What keeps pressed clay flat?',
         bg: 'room',
-        base: [at('🟤', 50, 66, 20), at('⏹️', 78, 44, 14)],
+        base: [at('⏹️', 50, 62, 22)],
         cards: [
           { icon: '🟤', label: 'It is clay' },
           { icon: '🌀', label: 'A spring stays flat' },
-          { icon: '↩️', label: 'A press brings it back' },
+          { icon: '↩️', label: 'Press brings it back' },
         ],
       },
       {
         ask: 'Which part comes back?',
         bg: 'room',
-        base: [at('🌀', 32, 52, 22), at('↩️', 32, 28, 12), at('🟤', 70, 66, 18), at('⏹️', 84, 48, 12)],
+        base: [at('➰', 32, 52, 22), at('↩️', 32, 28, 12), at('🟤', 70, 66, 18), at('⏹️', 84, 48, 12)],
         cards: [
           { icon: '🌀', label: 'The spring' },
           { icon: '🟤', label: 'The clay' },

@@ -108,8 +108,8 @@ export const beakFitsFood: ContentModule = {
         bg: 'day',
         base: [at('🦢', 62, 48, 24), at('🌺', 34, 56, 22), ground('green')],
         cards: [
-          { icon: '🌺', label: 'The flower is deep' },
-          { icon: '🌰', label: 'The food is a seed' },
+          { icon: '🌷', label: 'Flower is deep' },
+          { icon: '🌰', label: 'Food is a seed' },
           { icon: '🚫', label: 'Beak shape does nothing' },
         ],
       },
@@ -118,7 +118,7 @@ export const beakFitsFood: ContentModule = {
         bg: 'day',
         base: [at('🐤', 60, 52, 22), at('🌾', 34, 64, 20), ground('green')],
         cards: [
-          { icon: '🌾', label: 'The food is a seed' },
+          { icon: '🌰', label: 'Food is a seed' },
           { icon: '🌺', label: 'The food is deep' },
           { icon: '🚫', label: 'Shape does not matter' },
         ],
@@ -129,7 +129,7 @@ export const beakFitsFood: ContentModule = {
         base: [at('🌺', 40, 55, 24), at('🦜', 72, 50, 20), ground('green')],
         cards: [
           { icon: '🦢', label: 'A long beak' },
-          { icon: '😋', label: 'The short beak can eat it' },
+          { icon: '😋', label: 'Short beak eats it' },
           { icon: '🚫', label: 'Beaks are the same' },
         ],
       },
@@ -148,7 +148,7 @@ export const beakFitsFood: ContentModule = {
         bg: 'day',
         base: [at('🦢', 58, 46, 24), at('🌺', 30, 54, 20), at('🌺', 42, 68, 16), ground('green')],
         cards: [
-          { icon: '🌺', label: 'A deep flower' },
+          { icon: '🌷', label: 'A deep flower' },
           { icon: '🌰', label: 'Only a seed' },
           { icon: '🚫', label: 'Food shape does nothing' },
         ],
@@ -158,9 +158,9 @@ export const beakFitsFood: ContentModule = {
         bg: 'day',
         base: [at('🦜', 58, 50, 22), at('🌰', 32, 66, 16), ground('brown')],
         cards: [
-          { icon: '🌰', label: 'The food is a seed' },
-          { icon: '🌺', label: 'The food is a deep flower' },
-          { icon: '🦢', label: 'Only long beaks fit seeds' },
+          { icon: '🌾', label: 'Food is a seed' },
+          { icon: '🌺', label: 'A deep flower' },
+          { icon: '🦢', label: 'Long beaks fit seeds' },
         ],
       },
     ]),

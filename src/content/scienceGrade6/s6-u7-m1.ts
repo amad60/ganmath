@@ -90,7 +90,7 @@ export const downToTheGround: ContentModule = {
         cards: [
           { icon: '✋', label: 'You let it go' },
           { icon: '✊', label: 'You held it' },
-          { icon: '🛑', label: 'Letting go keeps it up' },
+          { icon: '🛑', label: 'Letting go holds it' },
         ],
       },
       {
@@ -108,7 +108,7 @@ export const downToTheGround: ContentModule = {
         bg: 'day',
         base: [at('✊', 50, 30, 16), at('⚽', 50, 46, 14), ground('green')],
         cards: [
-          { icon: '✊', label: 'Your hand holds it' },
+          { icon: '🤚', label: 'Hand holds it' },
           { icon: '⬇️', label: 'You let it go' },
           { icon: '🚫', label: 'Hold does nothing' },
         ],
@@ -118,9 +118,9 @@ export const downToTheGround: ContentModule = {
         bg: 'day',
         base: [at('🪶', 34, 72, 14), at('🪨', 66, 74, 16), ground('green')],
         cards: [
-          { icon: '🪶', label: 'It fell to the ground' },
-          { icon: '🪨', label: 'Only the heavy one fell' },
-          { icon: '🛑', label: 'The light one stayed up' },
+          { icon: '⬇️', label: 'It fell down' },
+          { icon: '🪨', label: 'Only the rock fell' },
+          { icon: '🛑', label: 'Light one stayed up' },
         ],
       },
       {
@@ -130,13 +130,13 @@ export const downToTheGround: ContentModule = {
         cards: [
           { icon: '✋', label: 'You let it go' },
           { icon: '✊', label: 'You held it up' },
-          { icon: '🛑', label: 'Letting go keeps it up' },
+          { icon: '🛑', label: 'Letting go holds it' },
         ],
       },
       {
         ask: 'What helps the coat stay up?',
         bg: 'room',
-        base: [at('🪝', 50, 22, 14), at('🧥', 50, 42, 18)],
+        base: [at('🧥', 50, 36, 20)],
         cards: [
           { icon: '🪝', label: 'The hook holds it' },
           { icon: '⬇️', label: 'Letting go did this' },
@@ -149,7 +149,7 @@ export const downToTheGround: ContentModule = {
         base: [at('✋', 50, 28, 16), at('🍎', 50, 74, 14), ground('green')],
         cards: [
           { icon: '✊', label: 'The hold' },
-          { icon: '✋', label: 'Your hand still holds it' },
+          { icon: '✋', label: 'Hand still holds it' },
           { icon: '🛑', label: 'It stayed up' },
         ],
       },
@@ -159,8 +159,8 @@ export const downToTheGround: ContentModule = {
         base: [at('🪶', 36, 70, 14), at('🪨', 64, 72, 16), ground('green')],
         cards: [
           { icon: '⬇️', label: 'Neither one stays up' },
-          { icon: '🪶', label: 'The light one stays up' },
-          { icon: '🪨', label: 'Only the heavy one falls' },
+          { icon: '🪶', label: 'Light one stays up' },
+          { icon: '🪨', label: 'Only the rock falls' },
         ],
       },
     ]),

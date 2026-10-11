@@ -140,7 +140,7 @@ export const foodIsFuel: ContentModule = {
         cards: [
           { icon: '🍽️', label: 'No food' },
           { icon: '🍎', label: 'A big meal' },
-          { icon: '⚡', label: 'A meal makes you slow' },
+          { icon: '⚡', label: 'Meal slows you' },
         ],
       },
       {
@@ -148,7 +148,7 @@ export const foodIsFuel: ContentModule = {
         bg: 'room',
         base: [at('🧒', 46, 54, 22), at('⚡', 76, 32, 16)],
         cards: [
-          { icon: '⚡', label: 'It let you run' },
+          { icon: '🏃', label: 'Let you run' },
           { icon: '🐢', label: 'It made you slow' },
           { icon: '🚫', label: 'It changed nothing' },
         ],

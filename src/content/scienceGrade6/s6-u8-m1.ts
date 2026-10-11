@@ -88,7 +88,7 @@ export const warmAndWetRots: ContentModule = {
         bg: 'room',
         base: [at('☀️', 80, 16, 14), at('💧', 26, 36, 12), at('🍂', 50, 58, 24)],
         cards: [
-          { icon: '💧', label: 'Warm and wet' },
+          { icon: '💦', label: 'Warm and wet' },
           { icon: '❄️', label: 'Cold and dry' },
           { icon: '☀️', label: 'Warm alone is enough' },
         ],
@@ -98,8 +98,8 @@ export const warmAndWetRots: ContentModule = {
         bg: 'room',
         base: [at('❄️', 80, 16, 14), at('🍎', 50, 58, 24)],
         cards: [
-          { icon: '❄️', label: 'It is cold and dry' },
-          { icon: '🍂', label: 'It is warm and wet' },
+          { icon: '🧊', label: 'Cold and dry' },
+          { icon: '🍂', label: 'Warm and wet' },
           { icon: '🚫', label: 'Cold makes it rot' },
         ],
       },
@@ -108,7 +108,7 @@ export const warmAndWetRots: ContentModule = {
         bg: 'room',
         base: [at('☀️', 78, 16, 12), at('💧', 24, 34, 12), at('🍂', 50, 58, 22)],
         cards: [
-          { icon: '💧', label: 'Warm and wet' },
+          { icon: '💦', label: 'Warm and wet' },
           { icon: '❄️', label: 'Cold and dry' },
           { icon: '☀️', label: 'Only the warmth' },
         ],
@@ -118,7 +118,7 @@ export const warmAndWetRots: ContentModule = {
         bg: 'room',
         base: [at('❄️', 78, 16, 14), at('🍞', 50, 58, 22)],
         cards: [
-          { icon: '❄️', label: 'Cold and dry' },
+          { icon: '🧊', label: 'Cold and dry' },
           { icon: '🍂', label: 'Warm and wet' },
           { icon: '🚫', label: 'Only cold rots it' },
         ],
@@ -128,7 +128,7 @@ export const warmAndWetRots: ContentModule = {
         bg: 'day',
         base: [at('☀️', 80, 16, 12), at('💧', 28, 40, 10), at('🍂', 50, 60, 20), ground('brown')],
         cards: [
-          { icon: '💧', label: 'Warm and wet together' },
+          { icon: '💦', label: 'Both warm and wet' },
           { icon: '✅', label: 'Cold and dry air' },
           { icon: '☀️', label: 'Warmth with no water' },
         ],
@@ -138,9 +138,9 @@ export const warmAndWetRots: ContentModule = {
         bg: 'room',
         base: [at('❄️', 78, 18, 14), at('🍃', 50, 58, 22)],
         cards: [
-          { icon: '✅', label: 'It let the leaf stay' },
-          { icon: '🍂', label: 'It made the leaf rot' },
-          { icon: '❄️', label: 'Cold is all it needs' },
+          { icon: '✅', label: 'Let the leaf stay' },
+          { icon: '🍂', label: 'Made the leaf rot' },
+          { icon: '❄️', label: 'Only the cold' },
         ],
       },
       {

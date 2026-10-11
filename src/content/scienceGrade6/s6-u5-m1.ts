@@ -88,7 +88,7 @@ export const tooManyEaters: ContentModule = {
         bg: 'day',
         base: [at('🐇', 28, 56, 14), at('🐇', 48, 60, 14), at('🐇', 68, 56, 14), at('🏜️', 50, 76, 16), ground('brown')],
         cards: [
-          { icon: '🐇', label: 'Many rabbits ate' },
+          { icon: '🐰', label: 'Many rabbits ate' },
           { icon: '🌿', label: 'Too few rabbits' },
           { icon: '🚫', label: 'Eaters make more grass' },
         ],
@@ -98,7 +98,7 @@ export const tooManyEaters: ContentModule = {
         bg: 'day',
         base: [at('🐇', 64, 58, 16), at('🌿', 34, 64, 18), ground('green')],
         cards: [
-          { icon: '🐇', label: 'Only a few ate' },
+          { icon: '🐰', label: 'Only a few ate' },
           { icon: '🏜️', label: 'Many rabbits ate it' },
           { icon: '🌾', label: 'Eaters grow grass' },
         ],
@@ -108,7 +108,7 @@ export const tooManyEaters: ContentModule = {
         bg: 'day',
         base: [at('🐐', 26, 56, 14), at('🐐', 48, 60, 14), at('🐐', 70, 56, 14), at('🏜️', 50, 78, 14), ground('brown')],
         cards: [
-          { icon: '🐐', label: 'Many goats ate' },
+          { icon: '🐏', label: 'Many goats ate' },
           { icon: '🌱', label: 'Too few goats' },
           { icon: '🚫', label: 'Eaters make more grass' },
         ],
@@ -118,7 +118,7 @@ export const tooManyEaters: ContentModule = {
         bg: 'day',
         base: [at('🐐', 64, 56, 18), at('🌿', 32, 66, 16), ground('green')],
         cards: [
-          { icon: '🐐', label: 'Only one goat' },
+          { icon: '🐏', label: 'Only one goat' },
           { icon: '🏜️', label: 'Many goats ate it' },
           { icon: '🌾', label: 'Eating grows grass' },
         ],
@@ -128,7 +128,7 @@ export const tooManyEaters: ContentModule = {
         bg: 'water',
         base: [at('🐟', 28, 48, 12), at('🐟', 50, 56, 12), at('🐟', 72, 46, 12), at('🏜️', 50, 74, 14)],
         cards: [
-          { icon: '🐟', label: 'Many fish ate' },
+          { icon: '🐠', label: 'Many fish ate' },
           { icon: '🌿', label: 'Too few fish' },
           { icon: '🌱', label: 'Fish make more plants' },
         ],
@@ -148,7 +148,7 @@ export const tooManyEaters: ContentModule = {
         bg: 'day',
         base: [at('🐑', 24, 56, 14), at('🐑', 46, 60, 14), at('🐑', 68, 56, 14), at('🏜️', 50, 78, 14), ground('brown')],
         cards: [
-          { icon: '🏜️', label: 'They ate the grass' },
+          { icon: '🍽️', label: 'They ate the grass' },
           { icon: '🌿', label: 'They left the grass' },
           { icon: '🌾', label: 'They made more grass' },
         ],

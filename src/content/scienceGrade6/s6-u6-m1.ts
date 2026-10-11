@@ -86,7 +86,7 @@ export const wrapKeepsWarm: ContentModule = {
       {
         ask: 'What keeps this cup warm?',
         bg: 'room',
-        base: [at('☕', 48, 58, 24), at('🧣', 58, 52, 18), at('🔥', 80, 30, 14)],
+        base: [at('☕', 48, 58, 24), at('🔥', 80, 30, 14)],
         cards: [
           { icon: '🧣', label: 'The wrap' },
           { icon: '❄️', label: 'No wrap' },
@@ -99,14 +99,14 @@ export const wrapKeepsWarm: ContentModule = {
         base: [at('☕', 50, 58, 24), at('🌬️', 80, 24, 14), at('❄️', 28, 30, 14)],
         cards: [
           { icon: '💨', label: 'It has no wrap' },
-          { icon: '🧣', label: 'A wrap is on it' },
+          { icon: '🧣', label: 'Wrap is on it' },
           { icon: '🔥', label: 'It stays warm anyway' },
         ],
       },
       {
         ask: 'What helps you stay warm?',
         bg: 'cloudy',
-        base: [at('🧒', 46, 56, 22), at('🧥', 58, 48, 18), at('😊', 78, 30, 14)],
+        base: [at('🧒', 46, 56, 22), at('😊', 78, 30, 14)],
         cards: [
           { icon: '🧥', label: 'The coat' },
           { icon: '❄️', label: 'No coat' },
@@ -126,7 +126,7 @@ export const wrapKeepsWarm: ContentModule = {
       {
         ask: 'What made the bottle stay warm?',
         bg: 'room',
-        base: [at('🍼', 46, 58, 20), at('🧣', 60, 50, 18), at('🔥', 80, 30, 12)],
+        base: [at('🍼', 46, 58, 20), at('🔥', 80, 30, 12)],
         cards: [
           { icon: '🧣', label: 'The wrap on it' },
           { icon: '❄️', label: 'No wrap on it' },
@@ -139,14 +139,14 @@ export const wrapKeepsWarm: ContentModule = {
         base: [at('🍼', 50, 58, 22), at('❄️', 80, 22, 14)],
         cards: [
           { icon: '💨', label: 'No wrap' },
-          { icon: '🔥', label: 'A wrap kept it warm' },
+          { icon: '🔥', label: 'Wrap kept it warm' },
           { icon: '🚫', label: 'Wrapping does nothing' },
         ],
       },
       {
         ask: 'What did the feathers do?',
         bg: 'cloudy',
-        base: [at('🐦', 48, 55, 22), at('🪶', 68, 40, 12), at('😊', 80, 28, 12)],
+        base: [at('🐦', 48, 55, 22), at('😊', 80, 28, 12)],
         cards: [
           { icon: '🪶', label: 'They kept it warm' },
           { icon: '🥶', label: 'They left it cold' },

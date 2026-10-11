@@ -88,7 +88,7 @@ export const pickTheIronOut: ContentModule = {
         bg: 'room',
         base: [at('🧲', 50, 24, 16), at('⚙️', 50, 42, 14), at('🏖️', 50, 74, 22)],
         cards: [
-          { icon: '⚙️', label: 'The iron' },
+          { icon: '🔩', label: 'The iron' },
           { icon: '🏖️', label: 'The sand' },
           { icon: '🚫', label: 'Every object' },
         ],
@@ -118,7 +118,7 @@ export const pickTheIronOut: ContentModule = {
         bg: 'plain',
         base: [at('🧲', 50, 26, 18), at('🔩', 50, 48, 14)],
         cards: [
-          { icon: '🔩', label: 'The iron' },
+          { icon: '⚙️', label: 'The iron' },
           { icon: '🏖️', label: 'Sand would come up' },
           { icon: '🚫', label: 'It pulls every object' },
         ],
@@ -128,7 +128,7 @@ export const pickTheIronOut: ContentModule = {
         bg: 'room',
         base: [at('🧲', 50, 22, 16), at('🏖️', 50, 70, 26)],
         cards: [
-          { icon: '🏖️', label: 'It is not iron' },
+          { icon: '🚫', label: 'It is not iron' },
           { icon: '⚙️', label: 'The sand is iron' },
           { icon: '🧲', label: 'The magnet takes it' },
         ],
@@ -136,7 +136,7 @@ export const pickTheIronOut: ContentModule = {
       {
         ask: 'What made the iron come out?',
         bg: 'room',
-        base: [at('🧲', 50, 22, 16), at('⚙️', 50, 40, 12), at('🍚', 50, 70, 18)],
+        base: [at('⚙️', 50, 40, 14), at('🍚', 50, 70, 18)],
         cards: [
           { icon: '🧲', label: 'The magnet' },
           { icon: '🍚', label: 'The rice pulled it' },
@@ -148,9 +148,9 @@ export const pickTheIronOut: ContentModule = {
         bg: 'plain',
         base: [at('🧲', 50, 24, 16), at('🧸', 50, 64, 20)],
         cards: [
-          { icon: '🧸', label: 'It is not iron' },
+          { icon: '🚫', label: 'It is not iron' },
           { icon: '⚙️', label: 'The toy is iron' },
-          { icon: '🧲', label: 'A magnet pulls all toys' },
+          { icon: '🧲', label: 'Magnet pulls all toys' },
         ],
       },
       {
@@ -158,7 +158,7 @@ export const pickTheIronOut: ContentModule = {
         bg: 'room',
         base: [at('🧲', 36, 26, 16), at('⚙️', 36, 42, 12), at('🏖️', 66, 72, 18), at('📄', 44, 70, 12)],
         cards: [
-          { icon: '⚙️', label: 'Only the iron' },
+          { icon: '🔩', label: 'Only the iron' },
           { icon: '🏖️', label: 'The sand' },
           { icon: '📄', label: 'The paper' },
         ],

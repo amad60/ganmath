@@ -86,7 +86,7 @@ export const afterYouRun: ContentModule = {
       {
         ask: 'Why are breaths fast?',
         bg: 'day',
-        base: [at('🏃', 48, 55, 26), at('🌬️', 76, 32, 16), ground('green')],
+        base: [at('😓', 48, 55, 26), at('🌬️', 76, 32, 16), ground('green')],
         cards: [
           { icon: '🏃', label: 'You were running' },
           { icon: '🪑', label: 'You were sitting' },
@@ -96,7 +96,7 @@ export const afterYouRun: ContentModule = {
       {
         ask: 'What keeps breaths slow?',
         bg: 'room',
-        base: [at('🪑', 48, 64, 18), at('🧒', 50, 46, 20), at('😴', 78, 30, 14)],
+        base: [at('🧒', 50, 50, 22), at('😴', 78, 30, 14)],
         cards: [
           { icon: '🪑', label: 'You are sitting' },
           { icon: '🏃', label: 'You were running' },
@@ -108,7 +108,7 @@ export const afterYouRun: ContentModule = {
         bg: 'day',
         base: [at('🐕', 46, 58, 24), at('🌬️', 76, 36, 14), ground('green')],
         cards: [
-          { icon: '🐕', label: 'It was running' },
+          { icon: '🏃', label: 'It was running' },
           { icon: '😴', label: 'It was resting' },
           { icon: '🚫', label: 'Running changes nothing' },
         ],
@@ -118,7 +118,7 @@ export const afterYouRun: ContentModule = {
         bg: 'night',
         base: [at('🐕', 50, 62, 24), at('😴', 78, 32, 14), ground('green')],
         cards: [
-          { icon: '🐕', label: 'It is resting' },
+          { icon: '🪑', label: 'It is resting' },
           { icon: '🏃', label: 'It was running' },
           { icon: '🌬️', label: 'Rest makes breaths fast' },
         ],
@@ -128,7 +128,7 @@ export const afterYouRun: ContentModule = {
         bg: 'day',
         base: [at('😓', 42, 52, 22), at('🌬️', 72, 32, 14), at('🏅', 78, 48, 12), ground('green')],
         cards: [
-          { icon: '🌬️', label: 'It made breaths fast' },
+          { icon: '💨', label: 'Made breaths fast' },
           { icon: '😴', label: 'It made breaths slow' },
           { icon: '🚫', label: 'A race changes nothing' },
         ],
@@ -136,7 +136,7 @@ export const afterYouRun: ContentModule = {
       {
         ask: 'What helps breaths stay slow?',
         bg: 'room',
-        base: [at('📕', 30, 58, 14), at('🪑', 58, 64, 16), at('🧒', 58, 46, 18), at('😴', 80, 30, 12)],
+        base: [at('📕', 32, 58, 14), at('🧒', 56, 52, 20), at('😴', 80, 30, 12)],
         cards: [
           { icon: '🪑', label: 'Sitting still' },
           { icon: '🏃', label: 'Running instead' },
@@ -149,14 +149,14 @@ export const afterYouRun: ContentModule = {
         base: [at('🧒', 40, 54, 20), at('⚽', 68, 60, 14), at('🌬️', 78, 32, 12), ground('green')],
         cards: [
           { icon: '🪑', label: 'Sitting' },
-          { icon: '🏃', label: 'You sat the whole time' },
+          { icon: '🏃', label: 'Sat the whole time' },
           { icon: '🚫', label: 'Play changes nothing' },
         ],
       },
       {
         ask: 'What do slow breaths need?',
         bg: 'room',
-        base: [at('🪑', 50, 66, 20), at('🧒', 50, 46, 20), at('😴', 78, 28, 14)],
+        base: [at('🧒', 50, 52, 22), at('😴', 78, 28, 14)],
         cards: [
           { icon: '🪑', label: 'Sitting' },
           { icon: '🏃', label: 'A hard run' },
