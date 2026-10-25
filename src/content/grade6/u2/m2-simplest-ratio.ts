@@ -48,7 +48,7 @@ export const simplestRatio: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-text', 'choose-number', 'missing-number'],
   visuals: ['counter-objects', 'bar-model', 'number-bond'],
-  vocab: [],
+  vocab: ['fits'],
 
   learn: [
     {
@@ -78,12 +78,20 @@ export const simplestRatio: ContentModule = {
       prompt: 'Divide both parts by two.',
       visual: { kind: 'number-bond', whole: 5, parts: [2, 3] },
       action: 'watch',
+      caption: '4 : 6 = 2 : 3',
     },
     {
       stage: 'abstract',
       prompt: '2 : 3 is the simplest ratio.',
       visual: { kind: 'bars', lengths: [0.4, 0.6], labels: ['2', '3'] },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Divide by the biggest number that fits both.',
+      visual: { kind: 'bars', lengths: [0.4, 0.6], labels: ['12', '18'] },
+      action: 'watch',
+      caption: '12 : 18 → divide by 6 → 2 : 3',
     },
   ],
 

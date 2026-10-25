@@ -59,6 +59,7 @@ export const timesAWholeNumber: ContentModule = {
       prompt: 'Multiply, then put the point back.',
       visual: { kind: 'array', rows: 4, cols: 3 , still: true },
       action: 'watch',
+      caption: '0.3 × 4 = 1.2   0.12 × 3 = 0.36',
     },
   ],
 

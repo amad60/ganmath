@@ -24,7 +24,7 @@ export const equalParts: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap three equal parts.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🍕' },
+      visual: { kind: 'fraction', parts: 3, shaded: 0, tap: true },
       action: 'tap-count',
       target: 3,
       hint: 'Three equal parts make thirds.',

@@ -29,7 +29,7 @@ export const arrays: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Three rows of four.',
+      prompt: 'Three rows of four is twelve.',
       visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0, still: true },
       action: 'watch',
     },

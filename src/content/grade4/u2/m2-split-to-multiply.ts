@@ -39,6 +39,14 @@ export const splitToMultiply: ContentModule = {
       prompt: 'Times each part, then add them.',
       visual: { kind: 'base10', tens: 2, ones: 4 },
       action: 'watch',
+      caption: '20 × 3 = 60, 4 × 3 = 12',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'So 24 × 3 = 72.',
+      visual: { kind: 'base10', tens: 7, ones: 2 },
+      action: 'watch',
+      caption: '60 + 12 = 72',
     },
   ],
 

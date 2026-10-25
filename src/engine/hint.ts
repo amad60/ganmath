@@ -66,9 +66,13 @@ function lineFor(start: number, end: number): LearnVisual {
  */
 export function operandsOf(
   q: Question,
-): { left: number; right: number; op: '+' | '−' | '×' } | null {
-  // Jangan menyeberangi `/` (1/4 + 5/8 ≠ 4+5). Minus U+2212 ikut (−6 + 9).
-  const re = /(?<!\/)(−|-)?(\d+)\s*([+−\-×x*])\s*(−|-)?(\d+)(?!\/)/g;
+): { left: number; right: number; op: '+' | '−' | '×' | '÷' } | null {
+  // Jangan menyeberangi `/` (1/4 + 5/8 ≠ 4+5) atau titik desimal (0.11 × 2 ≠ 11 × 2).
+  // Minus U+2212 ikut (−6 + 9). Hitungannya harus YANG DITANYAKAN: sesudahnya
+  // `= ?`, `?`, titik, atau akhir kalimat. `3 × 2 × ? = 36` dulu terbaca 3 × 2,
+  // karena jawabannya kebetulan 6.
+  const re =
+    /(?<![\d.\/]|[+−\-×÷*]\s?)(−|-)?(\d+)(?![\d.\/])\s*([+−\-×x*÷])\s*(−|-)?(\d+)(?![\d.\/])(?=\s*(?:=\s*\?|\?|\.|$))/g;
   for (const m of q.text.matchAll(re)) {
     const left = readSigned(m[1], m[2]!);
     const right = readSigned(m[4], m[5]!);
@@ -80,27 +84,284 @@ export function operandsOf(
     if ((raw === '×' || raw === 'x' || raw === '*') && q.answer === left * right) {
       return { left, right, op: '×' };
     }
+    if (raw === '÷' && right !== 0 && q.answer === left / right) {
+      return { left, right, op: '÷' };
+    }
   }
 
-  // Soal cerita tanpa lambang. Pecahan punya `/` — jangan merangkai pembilangnya.
-  if (q.text.includes('/')) return null;
-  const nums = [...q.text.matchAll(/(−|-)?\d+/g)].map((x) =>
-    x[0]!.startsWith(MINUS) || x[0]!.startsWith('-') ? -Number(x[0]!.slice(1)) : Number(x[0]),
-  );
-  if (nums.length >= 2) {
-    const left = nums[0]!;
-    const right = nums[1]!;
-    if (q.answer === left + right) return { left, right, op: '+' };
-    if (q.answer === left - right) return { left, right, op: '−' };
-    if (q.answer === left * right) return { left, right, op: '×' };
+  // Soal cerita tanpa lambang — HANYA aturan `story`. Dulu setiap teks dicoba: dua
+  // angka pertama yang kebetulan cocok dengan jawabannya jadi "operasi", dan
+  // `1 ? 1` lahir sebagai "Take 1", `Which is more: 2 or 1?` sebagai "2 rows of 1".
+  if (!q.story && !q.text.includes('Rp')) return null;
+  // Pecahan, desimal, persen, rasio, pangkat: angkanya bukan suku hitungan.
+  if (/\/|\d\.\d|%|:|²|√/.test(q.text.replace(/Rp[\d.]+/g, 'Rp'))) return null;
+  // Tepat dua angka. "2 cakes cost 4 coins. What do 3 cakes cost?" dulu jadi
+  // "2 and 4" — karena jawabannya kebetulan 6.
+  const nums = numbersIn(q.text);
+  if (nums.length !== 2) return null;
+  const left = nums[0]!;
+  const right = nums[1]!;
+  // "3 eggs in each basket": kata `each` menandai kelompok sama besar. 2 × 2 = 2 + 2,
+  // jadi tanpa ini "2 baskets. 2 apples in each" tergambar sebagai ikatan 2 dan 2.
+  if (/\beach\b|\bevery\b|\brows? of\b/i.test(q.text)) {
+    return q.answer === left * right ? { left, right, op: '×' } : null;
+  }
+  if (q.answer === left + right) return { left, right, op: '+' };
+  if (q.answer === left - right) return { left, right, op: '−' };
+  return null;
+}
+
+/** Angka di kalimat, dengan `Rp20.000` dibaca 20000. */
+function numbersIn(text: string): number[] {
+  return [...text.matchAll(/Rp(\d{1,3}(?:\.\d{3})+|\d+)|(−|-)?\d+/g)].map((x) => {
+    if (x[1] != null) return Number(x[1].replace(/\./g, ''));
+    const raw = x[0]!;
+    return raw.startsWith(MINUS) || raw.startsWith('-') ? -Number(raw.slice(1)) : Number(raw);
+  });
+}
+
+function rupiah(n: number): string {
+  return `Rp${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+}
+
+function rowsOf(rows: number, cols: number): string {
+  return `${rows} ${rows === 1 ? 'row' : 'rows'} of ${cols}.`;
+}
+
+/**
+ * Perkalian yang SEDANG ditanyakan, digambar utuh.
+ *
+ * Gambarnya harus sama dengan kalimatnya. Dulu baris terakhir sengaja disembunyikan
+ * (supaya jawabannya tidak terbaca), jadi `3 × 6` tertulis "3 rows of 6" di atas
+ * DUA baris — anak yang menghitung titiknya mendapat 12 dan dinilai salah.
+ * Jumlah akhirnya tetap tidak ditulis: anak yang menghitung barisnya.
+ *
+ * Faktor di atas 6 dulu jatuh ke ikatan bilangan (gambar PENJUMLAHAN 7 dan 8).
+ */
+function timesHint(left: number, right: number, story = false): HintContent | null {
+  if (left >= 1 && right >= 1 && left <= 10 && right <= 10) {
+    // Baris lebih dari 6 terlalu tinggi untuk panel Hint; diputar, dan sifat
+    // tukar sudah diajarkan (Turn Around Facts). Soal cerita tidak punya lambang
+    // untuk diputar, jadi cukup barisnya.
+    if (left > 6 && right <= 6) {
+      return {
+        prompt: story ? rowsOf(right, left) : `Turn it: ${rowsOf(right, left)}`,
+        visual: { kind: 'array', rows: right, cols: left },
+        doneValue: 0,
+      };
+    }
+    return {
+      prompt: rowsOf(left, right),
+      visual: { kind: 'array', rows: left, cols: right },
+      doneValue: 0,
+    };
+  }
+  if (left < 1 || right < 1) return null;
+  // Faktor besar dipecah menurut nilai tempat: 12 × 5 = 10 × 5 dan 2 × 5,
+  // seperti 26 + 37 dipecah jadi satuan dan puluhan.
+  const big = Math.max(left, right);
+  const other = big === left ? right : left;
+  const place = 10 ** (String(big).length - 1);
+  const head = Math.floor(big / place) * place;
+  const rest = big - head;
+  if (rest === 0) {
+    // 2 × 100: dua lompatan 100.
+    if (big === place && other <= 10) {
+      return {
+        prompt: `${other} ${other === 1 ? 'jump' : 'jumps'} of ${big}.`,
+        visual: { kind: 'number-line', min: 0, max: big * Math.max(other, 2), value: null, marks: jumps(big, other) },
+        doneValue: 0,
+      };
+    }
+    // 20 × 3: fakta dasarnya, lalu nilai tempatnya.
+    const digit = big / place;
+    const fact = timesHint(digit, other);
+    if (!fact || other > 10) return null;
+    return { ...fact, prompt: `Think ${digit} × ${other}. Then times ${place}.` };
+  }
+  return {
+    prompt: `${head} × ${other} and ${rest} × ${other}.`,
+    visual: { kind: 'number-bond', whole: null, parts: [head * other, rest * other], ask: 'whole' },
+    doneValue: 0,
+  };
+}
+
+/**
+ * Pembagian: berbagi rata ("between 3", "÷ 3") = 3 baris, cari isi satu baris;
+ * mengelompokkan ("bags of 2") = baris berisi 2, cari banyak barisnya.
+ */
+function divideHint(total: number, by: number, grouping: boolean): HintContent | null {
+  if (by <= 0 || total % by !== 0) return null;
+  const each = total / by;
+  if (grouping) {
+    if (each > 10 || by > 12) return null;
+    return {
+      prompt: `Make rows of ${by}. How many rows?`,
+      visual: { kind: 'array', rows: each, cols: by },
+      doneValue: 0,
+    };
+  }
+  if (by > 10 || each > 12) return null;
+  return {
+    prompt: `${total} in ${by} equal rows. How many in one row?`,
+    visual: { kind: 'array', rows: by, cols: each },
+    doneValue: 0,
+  };
+}
+
+const GROUPING = /\b(?:groups?|bags?|boxes?|rows?|packs?|teams?|plates?) of \d|How many \d+s\b/i;
+const SHARING = /÷|\bshare|\bbetween\b|\bequal(?:ly)?\b|\bon \d+ plates\b/i;
+
+/**
+ * Bagi bersisa: benda disusun per baris berisi `by` — satu baris = satu putaran
+ * membagi, atau satu kantong. Baris penuh = bagian masing-masing, baris terakhir = sisa.
+ * Dulu semua soal memakai contoh 13 ÷ 4 yang digambar 12 titik — sisanya tidak ada.
+ */
+function fromRemainder(q: Question): HintContent | null {
+  if (!GROUPING.test(q.text) && !SHARING.test(q.text)) return null;
+  if (/\/|\d\.\d|%|:|÷/.test(q.text)) return null;
+  const nums = numbersIn(q.text);
+  if (nums.length !== 2) return null;
+  const total = Math.max(nums[0]!, nums[1]!);
+  const by = Math.min(nums[0]!, nums[1]!);
+  // Lebih dari 10 kolom tidak muat selebar HP.
+  if (by <= 1 || by > 10 || total % by === 0 || total > 60) return null;
+  const leftOver = /left|over|remain/i.test(q.text);
+  if (q.answer !== (leftOver ? total % by : Math.floor(total / by))) return null;
+  return {
+    prompt: leftOver ? `Rows of ${by}. Look at the last row.` : `Rows of ${by}. Count the full rows.`,
+    visual: { kind: 'counter-objects', count: total, columns: by },
+    doneValue: 0,
+  };
+}
+
+/** `2/3 of 12` dan "12 books. 2/3 are red." — 12 dalam 3 baris, ambil 2 baris. */
+function fromFractionOf(q: Question): HintContent | null {
+  const m =
+    q.text.match(/(\d+)\/(\d+) of (\d+)/) ??
+    (() => {
+      const story = q.text.match(/(\d+)\b[^/]*?(\d+)\/(\d+) (?:of them|are|is)/);
+      return story ? [story[0], story[2], story[3], story[1]] : null;
+    })();
+  if (!m) return null;
+  const top = intOf(m[1]!);
+  const bottom = intOf(m[2]!);
+  const whole = intOf(m[3]!);
+  if (bottom <= 0 || whole % bottom !== 0 || q.answer !== (whole / bottom) * top) return null;
+  const each = whole / bottom;
+  if (bottom > 10 || each > 12) return null;
+  return {
+    prompt: `${whole} in ${bottom} equal rows. Take ${top} ${top === 1 ? 'row' : 'rows'}.`,
+    visual: { kind: 'array', rows: bottom, cols: each, highlightRow: 0 },
+    doneValue: 0,
+  };
+}
+
+/** "A garden is 5 metres by 3 metres. What is the perimeter?" / "3 cm by 2 cm. Area?" */
+function fromRectangle(q: Question): HintContent | null {
+  const m = q.text.match(/(\d+) ?(cm|m|metres?)? by (\d+) ?(cm|m|metres?)?/);
+  if (!m) return null;
+  const w = intOf(m[1]!);
+  const h = intOf(m[3]!);
+  const unit = m[2] ?? m[4];
+  const short = unit == null ? undefined : unit.startsWith('metre') ? 'm' : unit;
+  if (/perimeter/i.test(q.text) && q.answer === 2 * (w + h)) {
+    return {
+      prompt: `${w} + ${h} + ${w} + ${h}.`,
+      visual: { kind: 'rect', w, h, ...(short ? { unit: short } : {}) },
+      doneValue: 0,
+    };
+  }
+  if (/area/i.test(q.text) && q.answer === w * h && w <= 12 && h <= 10) {
+    return {
+      prompt: `${rowsOf(h, w).slice(0, -1)} squares.`,
+      visual: { kind: 'array', rows: h, cols: w, square: true, still: true },
+      doneValue: 0,
+    };
   }
   return null;
 }
 
+/** `12 ÷ 3`, "Share 12 between 3", "12 eggs in boxes of 4", "How many 2s make 8?". */
+function fromDivision(q: Question): HintContent | null {
+  const ops = operandsOf(q);
+  if (ops?.op === '÷') return divideHint(ops.left, ops.right, false);
+  const grouping = GROUPING.test(q.text);
+  if (!grouping && !SHARING.test(q.text)) return null;
+  if (/\/|\d\.\d|%|:|²|√|\?\s*=|÷ \?|\bn\b/.test(q.text)) return null;
+  const nums = numbersIn(q.text);
+  if (nums.length !== 2) return null;
+  const total = Math.max(nums[0]!, nums[1]!);
+  const by = Math.min(nums[0]!, nums[1]!);
+  if (by <= 0 || q.answer !== total / by) return null;
+  return divideHint(total, by, grouping);
+}
+
+function digitAt(n: number, place: number): number {
+  return Math.floor(n / place) % 10;
+}
+
+/** Kolom pertama yang menyimpan, bukan cuma satuan: 110 + 90 menyimpan di puluhan. */
+function addPrompt(left: number, right: number): string {
+  if (digitAt(left, 1) + digitAt(right, 1) >= 10) {
+    return `Ones first. ${digitAt(left, 1)} + ${digitAt(right, 1)}.`;
+  }
+  if (digitAt(left, 10) + digitAt(right, 10) >= 10) {
+    return `Add the ones. Then tens: ${digitAt(left, 10)} + ${digitAt(right, 10)}.`;
+  }
+  return Math.max(left, right) >= 100
+    ? 'Add the ones, then tens, then hundreds.'
+    : 'Add the ones, then the tens.';
+}
+
+/** 300 − 11 harus membuka satu ratusan dulu: puluhannya kosong. */
+function subtractPrompt(left: number, right: number): string {
+  const openTen = digitAt(left, 1) < digitAt(right, 1);
+  if (openTen && digitAt(left, 10) === 0 && left >= 100) {
+    return 'Open one hundred. Then open one ten.';
+  }
+  if (openTen) return `Open one ten. Then take ${right}.`;
+  if (left >= 100 && digitAt(left, 10) < digitAt(right, 10)) {
+    return 'Take the ones. Then open one hundred.';
+  }
+  return left >= 100 ? 'Take the ones, then tens, then hundreds.' : 'Take the ones, then the tens.';
+}
+
+/** Soal belanja: uangnya sendiri, bukan ikatan "20 groups of 0". */
+function moneyHint(left: number, right: number, op: '+' | '−' | '×'): HintContent | null {
+  if (op === '×') {
+    const count = Math.min(left, right);
+    const price = Math.max(left, right);
+    if (count < 1 || count > 6) return null;
+    return {
+      prompt: `${count} × ${rupiah(price)}.`,
+      visual: { kind: 'money', items: Array.from({ length: count }, () => price) },
+      doneValue: 0,
+    };
+  }
+  if (op === '+') {
+    return {
+      prompt: `${rupiah(left)} and ${rupiah(right)}.`,
+      visual: { kind: 'money', items: [left, right] },
+      doneValue: 0,
+    };
+  }
+  return {
+    prompt: `Start with ${rupiah(left)}. Take ${rupiah(right)}.`,
+    visual: { kind: 'money', items: [left] },
+    doneValue: 0,
+  };
+}
+
 function fromArithmetic(q: Question): HintContent | null {
   const ops = operandsOf(q);
-  if (!ops) return null;
+  if (!ops || ops.op === '÷') return null;
   const { left, right, op } = ops;
+
+  if (q.text.includes('Rp')) {
+    const money = moneyHint(left, right, op);
+    if (money) return money;
+  }
 
   if (op === '+') {
     if (left < 0 || right < 0 || left + right < 0) {
@@ -118,11 +379,8 @@ function fromArithmetic(q: Question): HintContent | null {
       };
     }
     if (left < 1000 && right < 1000) {
-      const regroup = (left % 10) + (right % 10) >= 10;
       return {
-        prompt: regroup
-          ? `Ones first. ${left % 10} + ${right % 10}.`
-          : 'Add the ones, then the tens.',
+        prompt: addPrompt(left, right),
         visual: column(left, right, '+'),
         doneValue: 0,
       };
@@ -150,9 +408,8 @@ function fromArithmetic(q: Question): HintContent | null {
       };
     }
     if (left < 1000 && right < 1000) {
-      const needOpen = left % 10 < right % 10;
       return {
-        prompt: needOpen ? `Open one ten. Then take ${right}.` : 'Take the ones, then the tens.',
+        prompt: subtractPrompt(left, right),
         visual: column(left, right, '−'),
         doneValue: 0,
       };
@@ -164,19 +421,7 @@ function fromArithmetic(q: Question): HintContent | null {
     };
   }
 
-  // ×
-  if (left >= 1 && right >= 1 && left <= 6 && right <= 10) {
-    return {
-      prompt: `${left} rows of ${right}.`,
-      visual: { kind: 'array', rows: left, cols: right },
-      doneValue: 0,
-    };
-  }
-  return {
-    prompt: `${left} groups of ${right}.`,
-    visual: { kind: 'number-bond', whole: null, parts: [left, right], ask: 'whole' },
-    doneValue: 0,
-  };
+  return timesHint(left, right, q.story === true);
 }
 
 const PLACE: Record<string, number> = {
@@ -302,6 +547,10 @@ function showAmount(n: number): LearnVisual {
   return { kind: 'number-line', min: 0, max: top, value: Math.max(n, 0) };
 }
 
+function jumps(unit: number, count: number): number[] {
+  return Array.from({ length: count }, (_, i) => unit * (i + 1));
+}
+
 /** `8 thousands = ?` dan `? tens = 400`. */
 function fromPlace(q: Question): HintContent | null {
   const named = q.text.match(new RegExp(`^(\\d+) (${PLACE_NAME}) = \\?$`));
@@ -310,8 +559,14 @@ function fromPlace(q: Question): HintContent | null {
     const unit = PLACE[named[2]!]!;
     if (q.answer !== count * unit) return null;
     return {
-      prompt: `${count} groups of ${unit}.`,
-      visual: { kind: 'number-line', min: 0, max: Math.max(unit * 2, count * unit), value: null, marks: [unit] },
+      prompt: `${count} ${count === 1 ? 'group' : 'groups'} of ${unit}.`,
+      visual: {
+        kind: 'number-line',
+        min: 0,
+        max: Math.max(unit * 2, count * unit),
+        value: null,
+        marks: count <= 10 ? jumps(unit, count) : [unit],
+      },
       doneValue: 0,
     };
   }
@@ -321,9 +576,14 @@ function fromPlace(q: Question): HintContent | null {
     const unit = PLACE[missing[1]!]!;
     const total = intOf(missing[2]!);
     if (unit === 0 || total % unit !== 0 || q.answer !== total / unit) return null;
+    const count = total / unit;
     return {
       prompt: `How many ${missing[1]} in ${total}?`,
-      visual: showAmount(total),
+      // Di atas 999 blok puluhan tidak muat; garisnya diberi lompatan sebesar satuannya.
+      visual:
+        total < 1000 || count > 20
+          ? showAmount(total)
+          : { kind: 'number-line', min: 0, max: total, value: null, marks: jumps(unit, count) },
       doneValue: 0,
     };
   }
@@ -375,11 +635,102 @@ function fromFactor(q: Question): HintContent | null {
   };
 }
 
+/** "What comes after 21?", "Ten more than 15 = ?", "Hundred less than 300 = ?". */
+function fromNeighbor(q: Question): HintContent | null {
+  const next = q.text.match(/^What comes (after|before) (\d+)\?$/);
+  if (next) {
+    const n = intOf(next[2]!);
+    const end = next[1] === 'after' ? n + 1 : n - 1;
+    if (q.answer !== end || end < 0) return null;
+    return {
+      prompt: next[1] === 'after' ? `Start at ${n}. One more.` : `Start at ${n}. One less.`,
+      visual: {
+        kind: 'number-line',
+        min: Math.max(0, n - 3),
+        max: n + 3,
+        value: n,
+        step: 1,
+        hopTo: end,
+      },
+      doneValue: 0,
+    };
+  }
+  const ten = q.text.match(/^(Ten|Hundred) (more|less) than (\d+) = \?$/);
+  if (!ten) return null;
+  const n = intOf(ten[3]!);
+  const unit = ten[1] === 'Ten' ? 10 : 100;
+  const more = ten[2] === 'more';
+  if (q.answer !== (more ? n + unit : n - unit) || n >= 1000) return null;
+  const name = unit === 10 ? 'ten' : 'hundred';
+  const keep = unit === 10 ? 'Same ones.' : 'Same tens and ones.';
+  return {
+    prompt: `${more ? 'Add' : 'Take'} one ${name}. ${keep}`,
+    visual: showAmount(n),
+    doneValue: 0,
+  };
+}
+
+/** "Put 410 on the line." — garis soal itu, dengan dua tetangga bulatnya. */
+function fromLinePlace(q: Question): HintContent | null {
+  const m = q.text.match(/^Put (\d+) on the line\.$/);
+  if (!m || !q.range) return null;
+  const n = intOf(m[1]!);
+  const [min, max] = q.range;
+  if (q.answer !== n || n < min || n > max) return null;
+  // Satuan bulat yang dikenal anak (1, 10, 100, …), bukan rentang/10: garis 40–80
+  // dulu memberi "45 is between 44 and 48".
+  let unit = 1;
+  while ((max - min) / (unit * 10) >= 2) unit *= 10;
+  const lower = min + Math.floor((n - min) / unit) * unit;
+  if (lower === n || unit === 1) {
+    return {
+      prompt: unit === 1 ? `Count on from ${min}.` : `Count by ${unit}s from ${min}.`,
+      visual: { kind: 'number-line', min, max, value: null },
+      doneValue: 0,
+    };
+  }
+  return {
+    prompt: `${n} is between ${lower} and ${lower + unit}.`,
+    visual: { kind: 'number-line', min, max, value: null, marks: [lower, lower + unit] },
+    doneValue: 0,
+  };
+}
+
+/** "Double 7 = ?", "Budi has the same", "Two plates. 4 on each." */
+function fromDouble(q: Question): HintContent | null {
+  const sym = q.text.match(/^Double (\d+) = \?$/);
+  const story =
+    q.story && /\bthe same\b|\btwice\b|\bTwo\b|\bdouble\b/i.test(q.text) ? numbersIn(q.text) : [];
+  const n = sym ? intOf(sym[1]!) : story.length === 1 ? story[0]! : NaN;
+  if (!Number.isInteger(n) || q.answer !== n * 2) return null;
+  if (/\beach\b/i.test(q.text) && n <= 10) return timesHint(2, n);
+  if (n <= 10) {
+    return {
+      prompt: `${n} and ${n}.`,
+      visual: { kind: 'number-bond', whole: null, parts: [n, n], ask: 'whole' },
+      doneValue: 0,
+    };
+  }
+  return { prompt: addPrompt(n, n), visual: column(n, n, '+'), doneValue: 0 };
+}
+
+/** `7² = ?` adalah 7 × 7. */
+function fromSquare(q: Question): HintContent | null {
+  const m = q.text.match(/^(\d+)² = \?$/);
+  if (!m) return null;
+  const n = intOf(m[1]!);
+  if (q.answer !== n * n) return null;
+  const built = timesHint(n, n);
+  return built ? { ...built, prompt: `${n}² means ${n} × ${n}. ${built.prompt}` } : null;
+}
+
 function fromCount(q: Question): HintContent | null {
-  // Hanya kalau `n` memang BANYAKNYA yang dilihat — bukan satu suku dari 6+7.
+  // Hanya kalau `n` memang BANYAKNYA yang ditanyakan. `Double 2`, `2 m = ? cm`, dan
+  // `Find 10% of 11` dulu jadi "Count one by one" di atas 2 atau 11 titik.
   // Soal yang sudah punya gambar (uang, jam) tidak diganti ten-frame asing.
-  if (q.params.n == null || q.visual) return null;
+  if (q.params.n == null || q.visual || q.type === 'choose-text') return null;
   const n = q.params.n;
+  if (q.answer !== n) return null;
   if (n < 0 || n > 20) return null;
   return {
     prompt: 'Count one by one.',
@@ -436,9 +787,18 @@ export function hintFor(learn: LearnStep[] | undefined, question: Question): Hin
     const pictured = learnStep(learn, undefined);
     return pictured ? fromStep(pictured) : null;
   }
+  // Perbandingan lebih dulu: `20 ? 20` bukan 20 − 20.
   const built =
-    fromArithmetic(question) ??
     fromCompare(question) ??
+    fromDivision(question) ??
+    fromRemainder(question) ??
+    fromFractionOf(question) ??
+    fromRectangle(question) ??
+    fromArithmetic(question) ??
+    fromDouble(question) ??
+    fromSquare(question) ??
+    fromNeighbor(question) ??
+    fromLinePlace(question) ??
     fromRound(question) ??
     fromPlace(question) ??
     fromFraction(question) ??

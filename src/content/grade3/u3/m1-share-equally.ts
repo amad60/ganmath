@@ -12,12 +12,12 @@ export const shareEqually: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['array-grid'],
-  vocab: ['share', 'shared', 'divide', 'equally', 'between'],
+  vocab: ['share', 'shared', 'divide', 'equally', 'between', 'cookie'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap twelve dots.',
+      prompt: 'Tap twelve cookies.',
       visual: { kind: 'counter-objects', count: 12, icon: '🍪' },
       action: 'tap-count',
       target: 12,

@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const tallyMarks: ContentModule = {
@@ -53,7 +54,10 @@ export const tallyMarks: ContentModule = {
       skill: 'tally',
       params: { g: [1, 4], r: [0, 4] },
       answer: (p) => (p.g as number) * 5 + (p.r as number),
-      text: (p) => `${p.g} groups of five and ${p.r} more. How many?`,
+      text: (p) =>
+        (p.r as number) === 0
+          ? `${pl(p.g as number, 'group')} of five. How many?`
+          : `${pl(p.g as number, 'group')} of five and ${p.r} more. How many?`,
     },
   ],
 };

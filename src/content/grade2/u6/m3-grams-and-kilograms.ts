@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const gramsAndKilograms: ContentModule = {
@@ -11,7 +12,7 @@ export const gramsAndKilograms: ContentModule = {
   kind: 'concept',
   fluencyTracked: false,
   questionTypes: ['choose-text', 'choose-number'],
-  visuals: ['bar-model'],
+  visuals: ['bar-model', 'pictogram', 'base10-blocks'],
   vocab: ['gram', 'grams', 'kilogram', 'kilograms', 'mass'],
 
   learn: [
@@ -25,14 +26,23 @@ export const gramsAndKilograms: ContentModule = {
     },
     {
       stage: 'pictorial',
+      // Berat = banyak balok, bukan batang panjang.
       prompt: 'This one is heavier.',
-      visual: { kind: 'bars', lengths: [0.8, 0.3], labels: ['A', 'B'] },
+      visual: {
+        kind: 'pictogram',
+        rows: [
+          { label: 'A', icon: '🪨', count: 5 },
+          { label: 'B', icon: '🪨', count: 2 },
+        ],
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
+      // Sepuluh lempeng ratusan = 1000; batang 1 : 0,1 dulu berkata sepuluh kali, bukan seribu.
       prompt: 'One kilogram is a thousand grams.',
-      visual: { kind: 'bars', lengths: [1, 0.1], labels: ['A', 'B'] },
+      visual: { kind: 'base10', hundreds: 10, tens: 0, ones: 0 },
+      caption: '1 kilogram = 1000 grams',
       action: 'watch',
     },
   ],
@@ -44,7 +54,7 @@ export const gramsAndKilograms: ContentModule = {
       params: { i: [0, 3] },
       answer: (p) => ((p.i as number) < 2 ? 0 : 1),
       text: (p) =>
-        `Is ${(['an apple', 'a pencil', 'a bag of rice', 'a big dog'] as const)[p.i as number]} grams or kilograms?`,
+        `Do we weigh ${(['an apple', 'a pencil', 'a bag of rice', 'a big dog'] as const)[p.i as number]} in grams or kilograms?`,
       options: () => ['grams', 'kilograms', 'both', 'neither'],
     },
     {
@@ -53,7 +63,7 @@ export const gramsAndKilograms: ContentModule = {
       skill: 'measure-mass',
       params: { k: [1, 9] },
       answer: (p) => (p.k as number) * 1000,
-      text: (p) => `${p.k} kilograms = ? grams`,
+      text: (p) => `${pl(p.k as number, 'kilogram')} = ? grams`,
       distractors: 'near',
       misconception: (p) => (p.k as number) * 100,
     },

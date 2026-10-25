@@ -67,6 +67,13 @@ export const meetAngles: ContentModule = {
       visual: { kind: 'angle', degrees: 90, rotate: 30, showValue: true },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Two right angles make 180 degrees.',
+      visual: { kind: 'angle', degrees: 180, showValue: true },
+      action: 'watch',
+      caption: '90 + 90 = 180',
+    },
   ],
 
   rules: [

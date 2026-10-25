@@ -33,7 +33,7 @@ export const primeOrNot: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['array-grid', 'counter-objects'],
-  vocab: ['prime'],
+  vocab: ['prime', 'smallest'],
 
   learn: [
     {
@@ -61,6 +61,21 @@ export const primeOrNot: ContentModule = {
       prompt: 'Prime numbers have only two factors.',
       visual: { kind: 'array', rows: 1, cols: 7 },
       action: 'watch',
+      caption: '7 = 1 × 7',
+    },
+    {
+      stage: 'abstract',
+      prompt: '12 has 6 factors.',
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
+      action: 'watch',
+      caption: '1, 2, 3, 4, 6, 12',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'The smallest factor of 9 above 1 is 3.',
+      visual: { kind: 'array', rows: 3, cols: 3, still: true },
+      action: 'watch',
+      caption: '9 = 3 × 3',
     },
   ],
 
@@ -70,7 +85,7 @@ export const primeOrNot: ContentModule = {
       skill: 'prime',
       params: { n: [2, 30] },
       answer: (p) => factorCount(p.n as number),
-      text: (p) => `How many factors has ${p.n}?`,
+      text: (p) => `How many factors does ${p.n} have?`,
       distractors: 'near',
       // Miskonsepsi khas: setiap bilangan dianggap punya dua faktor saja.
       misconception: () => 2,

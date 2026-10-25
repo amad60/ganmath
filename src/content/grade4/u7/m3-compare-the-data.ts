@@ -35,16 +35,16 @@ export const compareTheData: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-text'],
   visuals: ['pictogram', 'bar-chart', 'counter-objects'],
-  vocab: ['data', 'red', 'blue', 'tallest'],
+  vocab: ['data', 'red', 'blue', 'tallest', 'second'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap three blocks.',
-      visual: { kind: 'counter-objects', count: 7, icon: '🟥' },
+      prompt: 'Tap six red blocks.',
+      visual: { kind: 'counter-objects', count: 6, icon: '🟥' },
       action: 'tap-count',
-      target: 3,
-      hint: 'Red has three more than blue.',
+      target: 6,
+      hint: 'Red has 6 blocks.',
     },
     {
       stage: 'pictorial',
@@ -60,13 +60,13 @@ export const compareTheData: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The tallest bar has the most.',
+      prompt: 'Find the tallest, then the second tallest.',
       visual: { kind: 'bars', lengths: [0.5, 0.9, 0.2, 0.7], labels: LABELS },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Take away to find how many more.',
+      prompt: 'Each block is 2. 12 − 8 = 4 more.',
       visual: {
         kind: 'pictogram',
         rows: [
@@ -75,6 +75,7 @@ export const compareTheData: ContentModule = {
         ],
       },
       action: 'watch',
+      caption: '(6 − 4) × 2 = 4',
     },
   ],
 

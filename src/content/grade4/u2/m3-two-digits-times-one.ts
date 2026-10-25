@@ -37,12 +37,14 @@ export const twoDigitsTimesOne: ContentModule = {
       prompt: 'Sixteen times three makes forty eight.',
       visual: { kind: 'base10', tens: 4, ones: 8 },
       action: 'watch',
+      caption: '10 × 3 = 30, 6 × 3 = 18',
     },
     {
       stage: 'abstract',
       prompt: 'Ones first, then tens. Carry the ten.',
       visual: { kind: 'base10', tens: 4, ones: 8 },
       action: 'watch',
+      caption: '16 × 3 = 30 + 18 = 48',
     },
   ],
 

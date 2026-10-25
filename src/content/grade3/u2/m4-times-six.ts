@@ -31,9 +31,10 @@ export const timesSix: ContentModule = {
     {
       stage: 'abstract',
       // Lima baris, lalu satu baris lagi yang disorot.
-      prompt: 'Times six is times five, add one more.',
-      visual: { kind: 'array', rows: 6, cols: 3, still: true, highlightRow: 5 },
+      prompt: 'Times six is times five, plus one row.',
+      visual: { kind: 'array', rows: 6, cols: 3, still: true, highlightRow: 5, gapAfter: 4 },
       action: 'watch',
+      caption: '6 × 3 = 15 + 3 = 18',
     },
   ],
 

@@ -112,7 +112,21 @@ berikutnya kalau benar-benar menguasai** — bukan sekadar lulus sekali.
      Bukan ten-frame dari parameter `n` (`6 + 7` dulu jadi
      enam titik), dan bukan langkah Learn 47+38=85. Langkah Learn hanya dipakai
      untuk modul bergagasan banyak (`QuestionRule.hint`, dijaga lint `hint-step`).
-     Angka terakhir tidak ditulis: `26 + 37` berhenti di **13** dan **50**, anak yang menjumlahkannya. Hint hanya ada di Practice, **tanpa jatah** (sejak 2026-10-05; dulu 2 kali). Speed Round, ulangan, dan ujian tidak punya tombol Hint.
+     Angka terakhir tidak ditulis: `26 + 37` berhenti di **13** dan **50**, anak yang menjumlahkannya.
+     **Gambar hint harus sama dengan kalimatnya** (audit 2026-10-25): "3 rows of 6" digambar
+     TIGA baris utuh — dulu baris terakhir disembunyikan, jadi anak yang menghitung titiknya
+     mendapat 12. Perkalian 7–10 memakai array (bukan ikatan bilangan = gambar penjumlahan);
+     faktor besar dipecah nilai tempat (`12 × 5` → 50 dan 10). Pembagian punya gambarnya
+     sendiri (berbagi = N baris, mengelompokkan = baris berisi N), bagi bersisa memakai
+     `counter-objects` berkolom pembagi (baris terakhir = sisa), `2/3 of 6`, keliling/luas,
+     uang Rupiah, `Double 7`, `What comes after`, `Put 410 on the line` juga dibangun dari
+     angka soal. Tebakan soal cerita (`operandsOf`) hanya untuk aturan `story` dengan tepat
+     dua angka, dan `20 ? 20` dibaca sebagai perbandingan lebih dulu — dulu dua angka mana
+     pun yang kebetulan cocok dengan jawaban jadi "operasi" (`1 ? 1` → "Take 1",
+     `0.11 × 2` → "0 groups of 11"). `fromCount` hanya kalau `n` ADALAH jawabannya. Test
+     sapuan di `hint.test.ts` memeriksa setiap hint bangunan di semua modul terhadap
+     jawabannya. Panel Hint menyembunyikan maskot dan menggulung ulang tiap kali gambarnya
+     tumbuh, supaya baris terakhir tidak jatuh di bawah keypad. Hint hanya ada di Practice, **tanpa jatah** (sejak 2026-10-05; dulu 2 kali). Speed Round, ulangan, dan ujian tidak punya tombol Hint.
    - **Salah jawab di Practice = pelajaran mini.** Panel bantuan soal itu terbuka sendiri ("Let's look again.") dan soal berikutnya menunggu Next — tidak lagi "Not quite" 1,6 detik lalu lanjut. Jawaban benar tetap tidak ditandai. Soal pilihan/baca yang salah diganti **soal kembaran** dari aturan yang sama (`freshSibling` di `engine/session.ts`), bukan soal yang sama. Hint kini juga berlaku untuk Read dan Science (dulu layar soal hanya mencari modul Math, jadi keduanya tidak pernah punya Hint).
      Langkah aksi tampil sebagai contoh yang SUDAH dikerjakan, dan gambar di panel
      Hint digambar ringkas (`compact`) supaya gambar soalnya tidak terdorong keluar layar.
@@ -596,3 +610,6 @@ Aturan: **tidak ada file proyek ini yang ditaruh di luar folder `learn math`.**
 - Update "Status" di atas dan `docs/ROADMAP.md` setiap fase selesai.
 - Semua teks yang dilihat anak ditulis dalam **English sederhana**; dokumen internal boleh
   Bahasa Indonesia.
+- **Jangan pernah membuat Artifact** (halaman claude.ai, dokumen Claude Docs, dsb.) untuk
+  proyek ini — keputusan user. Laporan, audit, dan rencana ditulis di percakapan atau
+  sebagai file di `docs/`.

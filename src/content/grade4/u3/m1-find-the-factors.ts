@@ -40,8 +40,9 @@ export const findTheFactors: ContentModule = {
     {
       stage: 'abstract',
       prompt: '3 and 4 are factors of 12.',
-      visual: { kind: 'number-bond', whole: 12, parts: [3, 4] },
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
+      caption: '3 × 4 = 12',
     },
   ],
 

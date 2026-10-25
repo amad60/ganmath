@@ -26,13 +26,25 @@ export const addAndRegroup: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Ten tens make one hundred.',
-      visual: { kind: 'base10', hundreds: 2, tens: 6, ones: 0 },
+      visual: { kind: 'base10', hundreds: 1, tens: 10, ones: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: '180 + 80 = 260.',
       visual: { kind: 'base10', hundreds: 2, tens: 6, ones: 0 },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'This bar is 80 more: 120 + 80 = 200.',
+      visual: { kind: 'bars', values: [120, 200], labels: ['Ana', 'Budi'], showValues: true },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Both bars together: 120 + 200 = 320.',
+      visual: { kind: 'bars', values: [120, 200], labels: ['Ana', 'Budi'], showValues: true },
       action: 'watch',
     },
   ],

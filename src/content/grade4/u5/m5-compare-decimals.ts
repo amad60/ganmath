@@ -47,14 +47,14 @@ export const compareDecimals: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: '0.7 is longer than 0.4.',
-      visual: { kind: 'bars', lengths: [0.7, 0.4] },
+      prompt: 'The 0.7 bar is longer than 0.4.',
+      visual: { kind: 'bars', lengths: [0.7, 0.4], labels: ['0.7', '0.4'] },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: '0.7 is more than 0.45.',
-      visual: { kind: 'bars', lengths: [0.7, 0.45] },
+      visual: { kind: 'bars', lengths: [0.7, 0.45], labels: ['0.7', '0.45'] },
       action: 'watch',
     },
     {
@@ -62,6 +62,14 @@ export const compareDecimals: ContentModule = {
       prompt: 'Compare tenths first, then hundredths.',
       visual: { kind: 'fraction', parts: 10, shaded: 7, shape: 'square' },
       action: 'watch',
+      caption: '0.70 > 0.45',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'We write 1/4 as 0.25.',
+      visual: { kind: 'fraction', parts: 4, shaded: 1, shape: 'square' },
+      action: 'watch',
+      caption: '1/4 = 25/100 = 0.25',
     },
   ],
 

@@ -54,7 +54,7 @@ export const facesEdgesCorners: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad', 'choose-text', 'compare-symbol'],
   visuals: ['shape-net', 'shape-3d', 'counter-objects'],
-  vocab: ['edge', 'edges', 'corner', 'corners', 'net', 'fold', 'cube', 'cylinder', 'solid'],
+  vocab: ['edge', 'edges', 'corner', 'corners', 'net', 'fold', 'cube', 'cylinder', 'solid', 'meet', 'rectangular'],
 
   learn: [
     {
@@ -63,7 +63,7 @@ export const facesEdgesCorners: ContentModule = {
       visual: { kind: 'counter-objects', count: SOLID_EDGES.cube, icon: '📏' },
       action: 'tap-count',
       target: SOLID_EDGES.cube,
-      hint: 'Edges are the lines you fold.',
+      hint: 'Edges are where two faces meet.',
     },
     {
       stage: 'pictorial',
@@ -84,11 +84,25 @@ export const facesEdgesCorners: ContentModule = {
       prompt: `A ${SOLID_NAMES.cylinder} has ${SOLID_VERTICES.cylinder} corners.`,
       visual: { kind: 'net', solid: 'cylinder', showName: true },
       action: 'watch',
+      caption: `${SOLID_EDGES.cylinder} edges, ${SOLID_VERTICES.cylinder} corners`,
     },
     {
       stage: 'abstract',
       prompt: `Cube: ${SOLID_FACES.cube} faces, ${SOLID_EDGES.cube} edges, ${SOLID_VERTICES.cube} corners.`,
       visual: { kind: 'net', solid: 'cube', showName: true },
+      action: 'watch',
+      caption: `${SOLID_NAMES['rectangular-prism']}: the same`,
+    },
+    {
+      stage: 'abstract',
+      prompt: `Pyramid: ${SOLID_FACES['square-pyramid']} faces, ${SOLID_EDGES['square-pyramid']} edges, ${SOLID_VERTICES['square-pyramid']} corners.`,
+      visual: { kind: 'net', solid: 'square-pyramid', showName: true },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: `Prism: ${SOLID_FACES['triangular-prism']} faces, ${SOLID_EDGES['triangular-prism']} edges, ${SOLID_VERTICES['triangular-prism']} corners.`,
+      visual: { kind: 'net', solid: 'triangular-prism', showName: true },
       action: 'watch',
     },
   ],

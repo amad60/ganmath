@@ -57,6 +57,13 @@ export const commonMultiples: ContentModule = {
       visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'The next common multiple is 24.',
+      visual: { kind: 'array', rows: 4, cols: 6, still: true, gapAfter: 1 },
+      action: 'watch',
+      caption: '12 + 12 = 24',
+    },
   ],
 
   rules: [
@@ -79,7 +86,7 @@ export const commonMultiples: ContentModule = {
       params: { a: [2, 6], b: [2, 9] },
       answer: (p) => 2 * lcm(p.a as number, p.b as number),
       text: (p) =>
-        `${p.a} and ${p.b} both go into ${lcm(p.a as number, p.b as number)}. What comes next?`,
+        `${lcm(p.a as number, p.b as number)} is a common multiple of ${p.a} and ${p.b}. What is the next one?`,
       exclude: (p) => (p.a as number) >= (p.b as number),
     },
   ],

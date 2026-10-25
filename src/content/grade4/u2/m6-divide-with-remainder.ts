@@ -18,7 +18,7 @@ export const divideWithRemainder: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['array-grid', 'counter-objects'],
-  vocab: ['remainder'],
+  vocab: ['remainder', 'bag'],
 
   learn: [
     {
@@ -32,13 +32,20 @@ export const divideWithRemainder: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Share 19 between 5. Four left over.',
-      visual: { kind: 'array', rows: 5, cols: 3, still: true },
+      visual: { kind: 'counter-objects', count: 19, icon: '🍬', columns: 5 },
       action: 'watch',
+      hint: 'Three full rows. Four left over.',
     },
     {
       stage: 'abstract',
       prompt: 'We write 19 ÷ 5 = 3 remainder 4.',
-      visual: { kind: 'array', rows: 5, cols: 3, still: true },
+      visual: { kind: 'counter-objects', count: 19, icon: '🍬', columns: 5 },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'In bags of 5, 3 bags are full.',
+      visual: { kind: 'counter-objects', count: 19, icon: '🍬', columns: 5 },
       action: 'watch',
     },
   ],

@@ -54,6 +54,13 @@ export const areaOfARectangle: ContentModule = {
       visual: { kind: 'rect', w: 4, h: 3 },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Area 12, long side 4: short side 3.',
+      visual: { kind: 'rect', w: 4, h: 3 },
+      action: 'watch',
+      caption: '12 ÷ 4 = 3',
+    },
   ],
 
   rules: [

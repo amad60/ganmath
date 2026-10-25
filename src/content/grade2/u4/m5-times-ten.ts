@@ -31,9 +31,10 @@ export const timesTen: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Tens become the tens place.',
+      prompt: 'We write it as 6 × 10 = 60.',
       visual: { kind: 'base10', tens: 6, ones: 0 },
       action: 'watch',
+      caption: '6 × 10 = 60',
     },
   ],
 

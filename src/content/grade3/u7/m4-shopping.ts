@@ -37,6 +37,13 @@ export const shopping: ContentModule = {
       visual: { kind: 'money', items: [10000, 5000] },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'You have 20.000. 15.000 is enough.',
+      visual: { kind: 'money', items: [10000, 10000] },
+      action: 'watch',
+      caption: '15.000 < 20.000',
+    },
   ],
 
   rules: [
@@ -57,7 +64,7 @@ export const shopping: ContentModule = {
       answer: (p) =>
         (p.n as number) * (p.c as number) <= (p.pay as number) * 10 ? 0 : 1,
       text: (p) =>
-        `You have ${rp((p.pay as number) * 10000)}. ${p.n} things at ${rp((p.c as number) * 1000)}. Enough?`,
+        `You have ${rp((p.pay as number) * 10000)}. ${p.n} things at ${rp((p.c as number) * 1000)} each. Enough?`,
       options: () => ['yes', 'no', 'there is no money'],
     },
     {

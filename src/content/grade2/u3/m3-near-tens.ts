@@ -25,18 +25,21 @@ export const nearTens: ContentModule = {
       action: 'drop-on-line',
       target: 47,
       hint: 'Nineteen is almost twenty.',
+      caption: '47 + 19'
     },
     {
       stage: 'pictorial',
       prompt: 'Add twenty, then step back one.',
       visual: { kind: 'number-line', min: 40, max: 70, value: 67, marks: [47] },
       action: 'watch',
+      caption: '47 + 20 = 67',
     },
     {
       stage: 'abstract',
       prompt: 'Round numbers are easier.',
       visual: { kind: 'number-line', min: 40, max: 70, value: 66, marks: [47, 67] },
       action: 'watch',
+      caption: '67 − 1 = 66',
     },
   ],
 

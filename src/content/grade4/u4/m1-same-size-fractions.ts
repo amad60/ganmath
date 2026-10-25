@@ -40,7 +40,7 @@ export const sameSizeFractions: ContentModule = {
     {
       stage: 'pictorial',
       prompt: '2/4 covers the same as 1/2.',
-      visual: { kind: 'bars', lengths: [0.5, 0.5] },
+      visual: { kind: 'bars', lengths: [0.5, 0.5], labels: ['2/4', '1/2'] },
       action: 'watch',
     },
     {
@@ -48,6 +48,7 @@ export const sameSizeFractions: ContentModule = {
       prompt: 'So 2/4 and 1/2 are equal.',
       visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
       action: 'watch',
+      caption: '2/4 = 1/2',
     },
   ],
 
@@ -58,7 +59,7 @@ export const sameSizeFractions: ContentModule = {
       skill: 'equivalent-fraction-model',
       params: { s: [1, 4], p: [2, 5], k: [2, 3] },
       answer: () => 0,
-      text: () => 'Which one is the same?',
+      text: () => 'Which fraction is shaded?',
       visual: (p) => ({
         kind: 'fraction',
         parts: (p.p as number) * (p.k as number),

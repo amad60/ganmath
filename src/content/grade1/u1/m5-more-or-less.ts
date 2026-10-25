@@ -36,6 +36,21 @@ export const moreOrLess: ContentModule = {
       action: 'watch',
       caption: '6 > 4',
     },
+    {
+      // Soal compare-symbol juga berjawaban < dan =.
+      stage: 'abstract',
+      prompt: 'Four is less than six: 4 < 6.',
+      visual: { kind: 'ten-frame', value: 10, split: 4 },
+      action: 'watch',
+      caption: '4 < 6',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Five and five are the same: 5 = 5.',
+      visual: { kind: 'ten-frame', value: 10, split: 5 },
+      action: 'watch',
+      caption: '5 = 5',
+    },
   ],
 
   rules: [

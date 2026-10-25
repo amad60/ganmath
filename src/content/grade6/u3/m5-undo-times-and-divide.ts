@@ -63,7 +63,7 @@ export const undoTimesAndDivide: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: '4 × n = 12. Share 12 by 4.',
+      prompt: '4 × n = 12. Divide 12 by 4.',
       visual: { kind: 'array', rows: 4, cols: 3 , still: true },
       action: 'watch',
     },
@@ -72,6 +72,20 @@ export const undoTimesAndDivide: ContentModule = {
       prompt: 'Divide undoes times. n is 3.',
       visual: { kind: 'array', rows: 4, cols: 3, highlightRow: 0 , still: true },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Times undoes divide.',
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
+      action: 'watch',
+      caption: 'n ÷ 3 = 4 → n = 4 × 3 = 12',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Divide the start by the answer.',
+      visual: { kind: 'array', rows: 4, cols: 3, still: true },
+      action: 'watch',
+      caption: '12 ÷ n = 4 → n = 12 ÷ 4 = 3',
     },
   ],
 

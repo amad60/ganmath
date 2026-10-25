@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 export const thousands: ContentModule = {
   id: 'g3-u1-m1',
@@ -27,7 +28,7 @@ export const thousands: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Ten hundreds make one thousand.',
-      visual: { kind: 'base10', hundreds: 4, tens: 0, ones: 0 },
+      visual: { kind: 'base10', hundreds: 10, tens: 0, ones: 0 },
       action: 'watch',
     },
     {
@@ -35,6 +36,13 @@ export const thousands: ContentModule = {
       prompt: 'We write it as 1000.',
       visual: { kind: 'number-line', min: 0, max: 1000, value: 1000 },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Two thousand is 20 hundreds.',
+      visual: { kind: 'base10', hundreds: 20, tens: 0, ones: 0 },
+      action: 'watch',
+      caption: '2000 = 20 hundreds',
     },
   ],
 
@@ -45,7 +53,7 @@ export const thousands: ContentModule = {
       skill: 'thousands',
       params: { t: [1, 9] },
       answer: (p) => (p.t as number) * 1000,
-      text: (p) => `${p.t} thousands = ?`,
+      text: (p) => `${pl(p.t as number, 'thousand')} = ?`,
       distractors: 'near',
       misconception: (p) => (p.t as number) * 100,
     },

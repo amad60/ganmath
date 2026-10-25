@@ -53,7 +53,7 @@ export const writeWithALetter: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'missing-number', 'choose-number'],
   visuals: ['counter-objects', 'bar-model', 'number-bond'],
-  vocab: [],
+  vocab: ['if'],
 
   learn: [
     {
@@ -93,6 +93,18 @@ export const writeWithALetter: ContentModule = {
       visual: { kind: 'bars', lengths: [0.3, 0.3, 0.3], labels: ['n', 'n', 'n'] },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Take 3 from n: n − 3.',
+      visual: { kind: 'bars', lengths: [0.6, 0.4], labels: ['n', 'n − 3'] },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'If n is 5, n + 3 is 8.',
+      visual: { kind: 'number-bond', whole: 8, parts: [5, 3] },
+      action: 'watch',
+    },
   ],
 
   rules: [
@@ -103,7 +115,7 @@ export const writeWithALetter: ContentModule = {
       skill: 'write-expression',
       params: { b: [2, 9] },
       answer: () => 0,
-      text: (p) => `Ann has n pens. She gets ${p.b} more.`,
+      text: (p) => `Ann has n pens. She gets ${p.b} more. Which shows this?`,
       options: (p) => addOptions(p.b as number),
       exclude: (p) => !allUnique(addOptions(p.b as number)),
     },
@@ -115,7 +127,7 @@ export const writeWithALetter: ContentModule = {
       skill: 'write-expression',
       params: { b: [2, 9] },
       answer: () => 0,
-      text: (p) => `${p.b} boxes. Each box holds n balls.`,
+      text: (p) => `${p.b} boxes. Each box holds n balls. Which shows this?`,
       options: (p) => timesOptions(p.b as number),
       exclude: (p) => !allUnique(timesOptions(p.b as number)),
     },

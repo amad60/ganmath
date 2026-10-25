@@ -145,7 +145,7 @@ export const fillOrCover: ContentModule = {
       text: (p) =>
         (p.job as number) === FILL
           ? `Sand fills a ${p.l} × ${p.w} × ${p.h} cm box. How much sand?`
-          : `Paint covers a ${p.l} × ${p.w} × ${p.h} cm box. How much paint?`,
+          : `Paint covers a ${p.l} × ${p.w} × ${p.h} cm box. What area does it cover?`,
       distractors: 'near',
       misconception: (p) =>
         (p.job as number) === FILL

@@ -34,6 +34,7 @@ export const nameTheFraction: ContentModule = {
       prompt: 'Top counts shaded. Bottom counts parts.',
       visual: { kind: 'fraction', parts: 4, shaded: 3, shape: 'square' },
       action: 'watch',
+      caption: '3/4',
     },
   ],
 

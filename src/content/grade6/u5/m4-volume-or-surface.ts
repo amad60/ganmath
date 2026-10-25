@@ -105,7 +105,7 @@ export const volumeOrSurface: ContentModule = {
       // kubus yang volumenya sama dengan luas permukaannya, dan anak yang pernah
       // melihatnya tidak akan menyangka soalnya rusak saat ia muncul di kuis.
       stage: 'abstract',
-      prompt: `Edge 6: both are ${volumeOf(6, 6, 6)}.`,
+      prompt: `Edge 6: both numbers are ${volumeOf(6, 6, 6)}.`,
       visual: {
         kind: 'solid',
         l: 6,
@@ -182,7 +182,7 @@ export const volumeOrSurface: ContentModule = {
           volumeOf(p.l as number, p.w as number, p.h as number) -
             surfaceAreaOf(p.l as number, p.w as number, p.h as number),
         ),
-      text: (p) => `Box ${p.l} × ${p.w} × ${p.h} cm. Volume ? surface area`,
+      text: (p) => `Box ${p.l} × ${p.w} × ${p.h} cm. Volume number ? surface area number`,
       visual: (p) => ({
         kind: 'solid',
         l: p.l as number,

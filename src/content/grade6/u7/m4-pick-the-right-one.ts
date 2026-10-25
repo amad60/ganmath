@@ -108,6 +108,7 @@ export const pickTheRightOne: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'One list gives three answers.',
+      caption: '4, 4, 4, 8, 9: mean 5.8, median 4, mode 4',
       visual: {
         kind: 'pictogram',
         rows: [
@@ -157,7 +158,7 @@ export const pickTheRightOne: ContentModule = {
       answer: (p) => p.t as number,
       text: (p) => {
         const t = p.t as number;
-        if (t === 0) return `They shared ${p.s} sweets equally. Which one is that?`;
+        if (t === 0) return `Shared equally, each kid gets ${p.s} sweets. Which one is that?`;
         if (t === 1) return `Half the class scored above ${p.s}. Which one is that?`;
         return `Size ${p.s} was sold most often. Which one is that?`;
       },

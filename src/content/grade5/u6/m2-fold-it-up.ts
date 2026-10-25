@@ -65,7 +65,7 @@ export const foldItUp: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'compare-symbol'],
   visuals: ['shape-net', 'counter-objects'],
-  vocab: ['net', 'nets', 'fold', 'folds', 'pyramid', 'prism', 'triangular', 'cylinder', 'solid', 'name'],
+  vocab: ['net', 'nets', 'fold', 'folds', 'pyramid', 'prism', 'triangular', 'cylinder', 'solid', 'name', 'rectangular'],
 
   learn: [
     {
@@ -89,6 +89,13 @@ export const foldItUp: ContentModule = {
       prompt: `A ${SOLID_NAMES.cylinder} net has ${SOLID_FACES.cylinder} faces.`,
       visual: { kind: 'net', solid: 'cylinder', showName: true },
       action: 'watch',
+    },
+    {
+      stage: 'pictorial',
+      prompt: 'Not all squares? It is a box.',
+      visual: { kind: 'net', solid: 'rectangular-prism', l: 3, w: 2, h: 1, showName: true },
+      action: 'watch',
+      caption: `all squares: ${SOLID_NAMES.cube}   not all squares: ${SOLID_NAMES['rectangular-prism']}`,
     },
     {
       stage: 'abstract',

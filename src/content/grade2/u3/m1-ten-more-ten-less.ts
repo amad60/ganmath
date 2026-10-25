@@ -26,14 +26,23 @@ export const tenMoreLess100: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'One more ten, same ones.',
-      visual: { kind: 'base10', tens: 7, ones: 4 },
+      visual: { kind: 'base10-pair', left: { tens: 6, ones: 4 }, right: { tens: 1, ones: 0 }, op: '+' },
       action: 'watch',
+      caption: '64 + 10 = 74',
     },
     {
       stage: 'abstract',
       prompt: 'Do it in your head.',
       visual: { kind: 'base10', tens: 7, ones: 4 },
       action: 'watch',
+    },
+    {
+      // Soal juga menanyakan "ten less".
+      stage: 'abstract',
+      prompt: 'Ten less: take away one ten.',
+      visual: { kind: 'base10-pair', left: { tens: 7, ones: 4 }, right: { tens: 1, ones: 0 }, op: '−' },
+      action: 'watch',
+      caption: '74 − 10 = 64',
     },
   ],
 

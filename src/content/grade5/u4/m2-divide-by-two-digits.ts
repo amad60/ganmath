@@ -33,7 +33,7 @@ export const divideByTwoDigits: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad', 'missing-number'],
   visuals: ['counter-objects', 'array-grid', 'base10-blocks'],
-  vocab: ['twelve', 'fifteen', 'group', 'groups', 'try', 'round', 'guess'],
+  vocab: ['twelve', 'fifteen', 'group', 'groups', 'try', 'round', 'guess', 'too'],
 
   learn: [
     {
@@ -68,6 +68,14 @@ export const divideByTwoDigits: ContentModule = {
       prompt: 'Round 24 to 20. Guess 8. Try it.',
       visual: { kind: 'base10', hundreds: 1, tens: 6, ones: 8 },
       action: 'watch',
+      caption: '24 × 8 = 192',
+    },
+    {
+      stage: 'abstract',
+      prompt: '8 is too big. The answer is 7.',
+      visual: { kind: 'base10', hundreds: 1, tens: 6, ones: 8 },
+      action: 'watch',
+      caption: '24 × 7 = 168',
     },
   ],
 

@@ -91,6 +91,7 @@ export const readTheData: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Read the chart, then find the speed.',
+      caption: '4 blocks × 10 km = 40 km in 2 hours: 20 km each hour',
       visual: {
         kind: 'pictogram',
         rows: [{ label: 'red', icon: '🟥', count: 4 }],
@@ -108,7 +109,7 @@ export const readTheData: ContentModule = {
       skill: 'read-data',
       params: { k: [2, 9], a: [2, 8], b: [1, 8], c: [1, 8] },
       answer: (p) => ((p.a as number) + (p.b as number) + (p.c as number)) * (p.k as number),
-      text: (p) => `Each block is ${p.k} km. How far in all?`,
+      text: (p) => `Each block is ${p.k} km. What is the total of all rows?`,
       visual: (p) => ({
         kind: 'pictogram',
         rows: ROWS.map((r, i) => ({ ...r, count: threeRows(p)[i] as number })),
@@ -121,7 +122,7 @@ export const readTheData: ContentModule = {
       skill: 'compare-data',
       params: { k: [2, 9], a: [3, 8], b: [1, 7] },
       answer: (p) => ((p.a as number) - (p.b as number)) * (p.k as number),
-      text: (p) => `Each block is ${p.k} km. How much more is red?`,
+      text: (p) => `Each block is ${p.k} km. How many km more is red than blue?`,
       visual: (p) => ({
         kind: 'pictogram',
         rows: [
@@ -142,7 +143,7 @@ export const readTheData: ContentModule = {
       skill: 'find-speed',
       params: { k: [2, 8], a: [2, 8] },
       answer: (p) => ((p.a as number) * (p.k as number)) / 2,
-      text: (p) => `Each block is ${p.k} km. How fast in 2 hours?`,
+      text: (p) => `Red went this far in 2 hours. Each block is ${p.k} km. How many km each hour?`,
       visual: (p) => ({
         kind: 'pictogram',
         rows: [{ label: 'red', icon: '🟥', count: p.a as number }],

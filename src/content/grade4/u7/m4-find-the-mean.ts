@@ -77,6 +77,7 @@ export const findTheMean: ContentModule = {
       prompt: 'Add them all, then share equally.',
       visual: { kind: 'bars', lengths: [0.6, 0.6, 0.6], labels: ['A', 'B', 'C'] },
       action: 'watch',
+      caption: '9 + 3 + 6 = 18, 18 ÷ 3 = 6',
     },
     {
       stage: 'abstract',
@@ -127,7 +128,7 @@ export const findTheMean: ContentModule = {
       params: { n: [3, 6], m: [2, 12] },
       answer: (p) => p.m as number,
       text: (p) =>
-        `${(p.n as number) * (p.m as number)} votes shared equally by ${p.n}. How many each?`,
+        `${(p.n as number) * (p.m as number)} stickers shared equally by ${p.n} kids. How many each?`,
     },
     {
       type: 'keypad',

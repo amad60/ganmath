@@ -62,7 +62,7 @@ export const longerOrShorter: ContentModule = {
       skill: 'compare-length',
       params: { a: [3, 9], b: [2, 8] },
       answer: (p) => Math.max(p.a as number, p.b as number),
-      text: (p) => `One bar is ${p.a}. One is ${p.b}. Which is longer?`,
+      text: (p) => `Bar A is ${p.a} blocks long. Bar B is ${p.b} blocks long. Which is longer?`,
       exclude: (p) => p.a === p.b,
       distractors: 'near',
       misconception: (p) => Math.min(p.a as number, p.b as number),

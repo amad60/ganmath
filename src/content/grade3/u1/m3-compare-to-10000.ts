@@ -26,14 +26,16 @@ export const compareTo10000: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Compare the biggest place first.',
-      visual: { kind: 'base10', hundreds: 4, tens: 2, ones: 0 },
+      visual: { kind: 'number-line', min: 0, max: 10000, marks: [3800, 5200] },
       action: 'watch',
+      caption: '5200 > 3800',
     },
     {
       stage: 'abstract',
       prompt: 'Same thousands? Compare hundreds.',
-      visual: { kind: 'base10', hundreds: 4, tens: 7, ones: 0 },
+      visual: { kind: 'number-line', min: 4000, max: 5000, marks: [4200, 4700] },
       action: 'watch',
+      caption: '4200 < 4700',
     },
   ],
 

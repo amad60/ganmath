@@ -77,6 +77,13 @@ export const howFarFromZero: ContentModule = {
       visual: { kind: 'number-line', min: -10, max: 10, value: 0, marks: [-4, 4], step: 1 },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Count the steps between two numbers.',
+      visual: { kind: 'number-line', min: -10, max: 10, value: 3, marks: [-2], step: 1 },
+      action: 'watch',
+      caption: '−2 to 3 is 5 steps',
+    },
   ],
 
   rules: [

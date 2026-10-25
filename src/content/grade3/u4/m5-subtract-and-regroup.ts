@@ -55,7 +55,7 @@ export const subtractAndRegroup: ContentModule = {
       skill: 'sub-regroup-1000',
       params: { a: [31, 99], b: [5, 29] },
       answer: (p) => ((p.a as number) - (p.b as number)) * 10,
-      text: (p) => `Take ${(p.b as number) * 10} from ${(p.a as number) * 10}.`,
+      text: (p) => `Take ${(p.b as number) * 10} from ${(p.a as number) * 10}. How many left?`,
       exclude: (p) => (p.a as number) % 10 >= (p.b as number) % 10,
     },
     {

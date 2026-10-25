@@ -12,12 +12,12 @@ export const makeGroups: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['array-grid'],
-  vocab: [],
+  vocab: ['carrot'],
 
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap fifteen dots.',
+      prompt: 'Tap fifteen carrots.',
       visual: { kind: 'counter-objects', count: 15, icon: '🥕' },
       action: 'tap-count',
       target: 15,

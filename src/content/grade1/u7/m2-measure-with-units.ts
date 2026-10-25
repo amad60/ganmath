@@ -25,8 +25,9 @@ export const measureWithUnits: ContentModule = {
     },
     {
       stage: 'pictorial',
+      // Satuannya harus terlihat supaya "six units" bisa dihitung.
       prompt: 'This bar is six units long.',
-      visual: { kind: 'bars', lengths: [0.6], labels: ['A'] },
+      visual: { kind: 'counter-objects', count: 6, icon: '🟦', columns: 6 },
       action: 'watch',
     },
     {

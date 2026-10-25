@@ -107,6 +107,12 @@ export const allFourQuadrants: ContentModule = {
       },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'A point on an axis has no quadrant.',
+      visual: { kind: 'coordinate-grid', quadrants: 4, range: 6, points: [{ x: 3, y: 0, label: 'A' }], showCoords: true },
+      action: 'watch',
+    },
   ],
 
   rules: [

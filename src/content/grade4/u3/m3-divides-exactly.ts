@@ -28,8 +28,8 @@ export const dividesExactly: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Make two rows of ten.',
-      visual: { kind: 'array', rows: 2, cols: 10 },
+      prompt: 'Make three rows of ten.',
+      visual: { kind: 'array', rows: 3, cols: 10 },
       action: 'watch',
       hint: 'Ten in each row.',
     },
@@ -44,12 +44,35 @@ export const dividesExactly: ContentModule = {
       prompt: 'Ten divides thirty exactly.',
       visual: { kind: 'base10', tens: 3, ones: 0 },
       action: 'watch',
+      caption: '30 ÷ 10 = 3',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Ends in 0 or 5? Then 5 divides it.',
+      visual: { kind: 'base10', tens: 3, ones: 5 },
+      action: 'watch',
+      caption: '35 ÷ 5 = 7',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Ends in 0, 2, 4, 6 or 8? Then 2 divides it.',
+      visual: { kind: 'base10', tens: 3, ones: 4 },
+      action: 'watch',
+      caption: '34 ÷ 2 = 17',
     },
     {
       stage: 'abstract',
       prompt: 'Digits of 156 add to 12.',
       visual: { kind: 'base10', hundreds: 1, tens: 5, ones: 6 },
       action: 'watch',
+      caption: '1 + 5 + 6 = 12',
+    },
+    {
+      stage: 'abstract',
+      prompt: '3 divides 12, so 3 divides 156.',
+      visual: { kind: 'base10', hundreds: 1, tens: 5, ones: 6 },
+      action: 'watch',
+      caption: '156 ÷ 3 = 52',
     },
   ],
 
@@ -61,7 +84,7 @@ export const dividesExactly: ContentModule = {
       skill: 'divides-exactly',
       params: { d: [0, 2], a: [11, 60] },
       answer: () => 0,
-      text: (p) => `Which number divides exactly by ${DIVISORS[p.d as number]}?`,
+      text: (p) => `Which number can be divided exactly by ${DIVISORS[p.d as number]}?`,
       options: (p) => {
         const dv = DIVISORS[p.d as number] as number;
         const n = dv * (p.a as number);

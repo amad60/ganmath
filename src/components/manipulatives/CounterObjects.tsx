@@ -9,6 +9,8 @@ export type CounterObjectsProps = {
   counted?: number;
   onTap?: (index: number) => void;
   columns?: number;
+  /** Panel Hint: tidak bisa disentuh, jadi boleh di bawah 44px supaya muat di atas keypad. */
+  compact?: boolean;
 };
 
 /**
@@ -23,12 +25,13 @@ export function CounterObjects({
   counted = 0,
   onTap,
   columns = 5,
+  compact = false,
 }: CounterObjectsProps) {
   const reduced = useReducedMotion();
   const rowCount = Math.ceil(count / columns);
   // 56px × 6 kolom atau 6 baris sudah melewati lebar/tinggi iPhone. 44px tetap sasaran tap.
   const tight = columns > 5 || rowCount > 4;
-  const box = tight ? 44 : 56;
+  const box = compact && !onTap ? 32 : tight ? 44 : 56;
   return (
     <div
       className="grid justify-items-center gap-2"
@@ -53,7 +56,15 @@ export function CounterObjects({
               transition: `transform ${teachingDuration(200, reduced)}ms var(--ease-std), background ${teachingDuration(200, reduced)}ms linear`,
             }}
           >
-            <span className={tight ? 'text-[26px] leading-none' : 'text-[34px] leading-none'}>
+            <span
+              className={
+                compact && !onTap
+                  ? 'text-[22px] leading-none'
+                  : tight
+                    ? 'text-[26px] leading-none'
+                    : 'text-[34px] leading-none'
+              }
+            >
               {icons?.[i] ?? icon}
             </span>
             {done ? (

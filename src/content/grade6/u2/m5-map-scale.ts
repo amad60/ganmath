@@ -3,7 +3,12 @@ import type { ContentModule } from '../../types';
 const allUnique = (o: string[]) => new Set(o).size === o.length;
 
 /** Pilihan "tulis skalanya", dipakai bersama oleh `options` dan `exclude`. */
-const scaleOptions = (s: number) => [`1 : ${s}`, `${s} : 1`, `1 : ${s * 1000}`, `${s} : ${s}`];
+const scaleOptions = (s: number) => [
+  `1 cm : ${s} km`,
+  `${s} cm : 1 km`,
+  `1 cm : ${s * 1000} km`,
+  `${s} cm : ${s} km`,
+];
 
 /**
  * Rasio yang keluar dari halaman: **skala.** Peta, denah rumah, gambar mainan —
@@ -40,7 +45,7 @@ export const mapScale: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'missing-number', 'choose-number', 'choose-text'],
   visuals: ['counter-objects', 'number-line', 'bar-model'],
-  vocab: ['map', 'real'],
+  vocab: ['map', 'real', "Ana's"],
 
   learn: [
     {
@@ -71,12 +76,14 @@ export const mapScale: ContentModule = {
       prompt: '1 cm on the map is 5 km.',
       visual: { kind: 'bars', lengths: [0.2, 1], labels: ['1', '5'] },
       action: 'watch',
+      caption: 'scale 1 cm : 5 km',
     },
     {
       stage: 'abstract',
       prompt: 'Times the map length by five.',
       visual: { kind: 'bars', lengths: [0.2, 1], labels: ['1', '5'] },
       action: 'watch',
+      caption: '3 cm → 3 × 5 = 15 km   15 km → 15 ÷ 5 = 3 cm',
     },
   ],
 
@@ -124,7 +131,7 @@ export const mapScale: ContentModule = {
       skill: 'map-scale',
       params: { s: [2, 9] },
       answer: () => 0,
-      text: (p) => `1 cm stands for ${p.s} km. Write the ratio.`,
+      text: (p) => `1 cm stands for ${p.s} km. Which shows the scale?`,
       options: (p) => scaleOptions(p.s as number),
       exclude: (p) => !allUnique(scaleOptions(p.s as number)),
     },
@@ -134,7 +141,7 @@ export const mapScale: ContentModule = {
       story: true,
       params: { s: [2, 9], d: [1, 9] },
       answer: (p) => (p.s as number) * (p.d as number),
-      text: (p) => `On a map 1 cm is ${p.s} km. Ana walks ${p.d} cm on the map. How far in km?`,
+      text: (p) => `On a map 1 cm is ${p.s} km. Ana's walk is ${p.d} cm on the map. How far in km?`,
       exclude: (p) => (p.d as number) === 1,
     },
     {

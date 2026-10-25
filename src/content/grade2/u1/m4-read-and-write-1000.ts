@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const readAndWrite1000: ContentModule = {
@@ -55,7 +56,8 @@ export const readAndWrite1000: ContentModule = {
       skill: 'read-write-1000',
       params: { h: [1, 9], t: [1, 9], o: [1, 9] },
       answer: (p) => (p.h as number) * 100 + (p.t as number) * 10 + (p.o as number),
-      text: (p) => `${p.h} hundreds ${p.t} tens ${p.o} ones = ?`,
+      text: (p) =>
+        `${pl(p.h as number, 'hundred')} ${pl(p.t as number, 'ten')} ${pl(p.o as number, 'one')} = ?`,
     },
   ],
 };

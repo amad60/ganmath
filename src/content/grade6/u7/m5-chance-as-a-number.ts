@@ -41,7 +41,7 @@ export const chanceAsANumber: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'keypad'],
   visuals: ['pictogram', 'number-line', 'counter-objects'],
-  vocab: ['chance', 'ball', 'balls', 'bag', 'pick', 'looking', 'red', 'blue'],
+  vocab: ['chance', 'ball', 'balls', 'bag', 'pick', 'looking', 'red', 'blue', 'impossible', 'certain'],
 
   learn: [
     {
@@ -103,6 +103,13 @@ export const chanceAsANumber: ContentModule = {
       visual: { kind: 'number-line', min: 0, max: 1, value: 0.4, step: 0.1 },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: '0 is impossible. 1 is certain.',
+      visual: { kind: 'number-line', min: 0, max: 1, value: 0.5, marks: [0, 1], step: 0.1 },
+      action: 'watch',
+      caption: '0.5 is an even chance',
+    },
   ],
 
   rules: [
@@ -138,7 +145,7 @@ export const chanceAsANumber: ContentModule = {
       params: { tk: [0, 1], k: [1, 9] },
       answer: (p) => (p.k as number) / trialsOf(p),
       text: (p) =>
-        `A bag has ${trialsOf(p)} balls. ${p.k} are red. Chance of red as a decimal?`,
+        `A bag has ${trialsOf(p)} balls. ${p.k} ${(p.k as number) === 1 ? 'is' : 'are'} red. Chance of red as a decimal?`,
     },
     {
       // Nol dan satu. Dua ujung skala itu tidak bisa ditemukan dengan membagi —

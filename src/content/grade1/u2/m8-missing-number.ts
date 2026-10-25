@@ -32,9 +32,10 @@ export const missingNumber: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Both sides of equals are same.',
+      prompt: 'Both sides of = are the same.',
       visual: { kind: 'number-bond', whole: 8, parts: [5, 3] },
       action: 'watch',
+      caption: '5 + 3 = 8',
     },
   ],
 

@@ -70,12 +70,14 @@ export const twoDigitsTimesTwo: ContentModule = {
       prompt: 'Split 23 × 14 into four parts.',
       visual: { kind: 'array', rows: 10, cols: 10, still: true },
       action: 'watch',
+      caption: '20 × 10   20 × 4   3 × 10   3 × 4',
     },
     {
       stage: 'abstract',
       prompt: 'Add the four parts together.',
       visual: { kind: 'base10', hundreds: 3, tens: 2, ones: 2 },
       action: 'watch',
+      caption: '200 + 80 + 30 + 12 = 322',
     },
   ],
 

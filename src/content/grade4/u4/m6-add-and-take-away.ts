@@ -25,11 +25,11 @@ export const addAndTakeAway: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap two parts.',
+      prompt: 'Tap two parts, then three more.',
       visual: { kind: 'counter-objects', count: 8, icon: '🍕' },
       action: 'tap-count',
-      target: 2,
-      hint: 'Then tap three more parts.',
+      target: 5,
+      hint: 'Two and three make five.',
     },
     {
       stage: 'pictorial',
@@ -48,6 +48,14 @@ export const addAndTakeAway: ContentModule = {
       prompt: 'Add the tops. Keep the same bottom.',
       visual: { kind: 'fraction', parts: 8, shaded: 5, shape: 'square' },
       action: 'watch',
+      caption: '2/8 + 3/8 = 5/8',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Take away two parts: 3/8.',
+      visual: { kind: 'fraction', parts: 8, shaded: 3, shape: 'square' },
+      action: 'watch',
+      caption: '5/8 − 2/8 = 3/8',
     },
   ],
 

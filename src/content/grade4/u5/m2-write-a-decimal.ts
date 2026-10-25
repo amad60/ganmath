@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 /**
@@ -71,10 +72,10 @@ export const writeADecimal: ContentModule = {
       answer: () => 0,
       text: (p) => `Read 0.${p.s}.`,
       options: (p) => [
-        `${p.s} tenths`,
-        `${p.s} ones`,
-        `${p.s} hundredths`,
-        `${p.s} tens`,
+        pl(p.s as number, 'tenth'),
+        pl(p.s as number, 'one'),
+        pl(p.s as number, 'hundredth'),
+        pl(p.s as number, 'ten'),
       ],
     },
     {

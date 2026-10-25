@@ -21,7 +21,7 @@ export const fractionOfANumber: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap twelve dots.',
+      prompt: 'Tap twelve apples.',
       visual: { kind: 'counter-objects', count: 12, icon: '🍎' },
       action: 'tap-count',
       target: 12,
@@ -37,6 +37,12 @@ export const fractionOfANumber: ContentModule = {
       stage: 'abstract',
       prompt: 'One third of 12 is 12 ÷ 3.',
       visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 0, still: true },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Two thirds of 12 is 4 + 4 = 8.',
+      visual: { kind: 'array', rows: 3, cols: 4, ghostRow: 2, still: true },
       action: 'watch',
     },
   ],

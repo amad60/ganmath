@@ -26,13 +26,13 @@ export const skipCount100: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Fives land on five or zero.',
-      visual: { kind: 'number-line', min: 0, max: 50, value: 25, marks: [5, 15] },
+      visual: { kind: 'number-line', min: 0, max: 50, value: 25, marks: [5, 10, 15, 20] },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Skip counting is faster counting.',
-      visual: { kind: 'number-line', min: 0, max: 100, value: 60, marks: [20, 40] },
+      visual: { kind: 'number-line', min: 0, max: 100, value: 60, marks: [10, 20, 30, 40, 50] },
       action: 'watch',
     },
   ],
@@ -53,7 +53,7 @@ export const skipCount100: ContentModule = {
       skill: 'skip-100',
       params: { s: [0, 2], n: [3, 10] },
       answer: (p) => [2, 5, 10][p.s as number]! * (p.n as number),
-      text: (p) => `Count by ${[2, 5, 10][p.s as number]}, ${p.n} times. How far?`,
+      text: (p) => `Start at 0. Count by ${[2, 5, 10][p.s as number]}s, ${p.n} jumps. Where do you land?`,
     },
   ],
 };

@@ -35,6 +35,13 @@ export const equalFractions: ContentModule = {
       visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Top and bottom both times 2.',
+      visual: { kind: 'fraction', parts: 4, shaded: 2, shape: 'square' },
+      action: 'watch',
+      caption: '1/2 = 2/4',
+    },
   ],
 
   rules: [

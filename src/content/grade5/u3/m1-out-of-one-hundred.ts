@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 /**
  * Gerbang unit persen. Satu kalimat isinya: **persen adalah perseratusan yang
@@ -43,7 +44,7 @@ export const outOfOneHundred: ContentModule = {
       visual: { kind: 'counter-objects', count: 10, icon: '🟩' },
       action: 'tap-count',
       target: 10,
-      hint: 'Ten of one hundred parts.',
+      hint: 'Next, we use one hundred parts.',
     },
     {
       // Kisi yang sama dengan g4-u5-m3. Anak sudah tahu ini seratus bagian;
@@ -64,12 +65,14 @@ export const outOfOneHundred: ContentModule = {
       prompt: 'Percent means out of one hundred.',
       visual: { kind: 'bars', lengths: [1, 0.25], labels: ['1', '%'] },
       action: 'watch',
+      caption: '25% = 25/100',
     },
     {
       stage: 'abstract',
-      prompt: '25 percent and 75 percent make 100.',
+      prompt: '25 percent and 75 percent make 100 percent.',
       visual: { kind: 'bars', lengths: [1, 0.25, 0.75], labels: ['1', 'a', 'b'] },
       action: 'watch',
+      caption: '25% + 75% = 100%',
     },
   ],
 
@@ -112,7 +115,7 @@ export const outOfOneHundred: ContentModule = {
       skill: 'percent-meaning',
       params: { r: [1, 9] },
       answer: (p) => (p.r as number) * 10,
-      text: (p) => `A 10 by 10 grid has ${p.r} rows shaded. What percent?`,
+      text: (p) => `A 10 by 10 grid has ${pl(p.r as number, 'row')} shaded. What percent?`,
       distractors: 'near',
       distractorUnit: 10,
       misconception: (p) => p.r as number,

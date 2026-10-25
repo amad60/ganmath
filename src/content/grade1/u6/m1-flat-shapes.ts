@@ -40,6 +40,8 @@ export const flatShapes: ContentModule = {
     'corner',
     'corners',
     'round',
+    'too',
+    'no',
   ],
 
   learn: [
@@ -63,6 +65,19 @@ export const flatShapes: ContentModule = {
       stage: 'abstract',
       prompt: 'A square has four sides.',
       visual: { kind: 'shape2d', name: 'square', showCorners: true },
+      action: 'watch',
+    },
+    {
+      // Soal juga menanyakan persegi panjang dan lingkaran — keduanya harus pernah tampil.
+      stage: 'abstract',
+      prompt: 'A rectangle has four sides too.',
+      visual: { kind: 'shape2d', name: 'rectangle', showCorners: true },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'A circle is round. No corners.',
+      visual: { kind: 'shape2d', name: 'circle' },
       action: 'watch',
     },
   ],

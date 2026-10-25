@@ -30,6 +30,13 @@ export const skipCount: ContentModule = {
       action: 'watch',
     },
     {
+      // Soal memakai lompatan 2, 5, dan 10 — lima juga harus pernah ditunjukkan.
+      stage: 'pictorial',
+      prompt: 'Skip by fives: 5, 10, 15.',
+      visual: { kind: 'number-line', min: 0, max: 50, value: 15, marks: [5, 10] },
+      action: 'watch',
+    },
+    {
       stage: 'abstract',
       prompt: 'Skip counting is faster counting.',
       visual: { kind: 'number-line', min: 0, max: 50, value: 30, marks: [10, 20] },
@@ -53,7 +60,7 @@ export const skipCount: ContentModule = {
       skill: 'skip-count',
       params: { step: [2, 10], n: [2, 9] },
       answer: (p) => (p.step as number) * (p.n as number),
-      text: (p) => `Skip by ${p.step}, ${p.n} times. How many?`,
+      text: (p) => `Start at 0. Skip by ${p.step}s, ${p.n} jumps. Where do you land?`,
       exclude: (p) => ![2, 5, 10].includes(p.step as number),
     },
     {

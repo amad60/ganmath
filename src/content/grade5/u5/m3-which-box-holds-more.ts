@@ -40,7 +40,7 @@ export const whichBoxHoldsMore: ContentModule = {
       visual: { kind: 'counter-objects', count: 16, icon: '🧊' },
       action: 'tap-count',
       target: 16,
-      hint: 'Sixteen cubes fill two boxes.',
+      hint: 'Count cubes to compare boxes.',
     },
     {
       stage: 'pictorial',

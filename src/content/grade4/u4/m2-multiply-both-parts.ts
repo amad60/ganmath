@@ -28,7 +28,7 @@ export const multiplyBothParts: ContentModule = {
       visual: { kind: 'counter-objects', count: 6, icon: '🔵' },
       action: 'tap-count',
       target: 6,
-      hint: 'Cut each part in two.',
+      hint: 'Six small parts in all.',
     },
     {
       stage: 'pictorial',
@@ -47,6 +47,7 @@ export const multiplyBothParts: ContentModule = {
       prompt: 'Times top and bottom by 2.',
       visual: { kind: 'fraction', parts: 6, shaded: 2, shape: 'square' },
       action: 'watch',
+      caption: '1/3 = 2/6',
     },
   ],
 

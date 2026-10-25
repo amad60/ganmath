@@ -43,7 +43,7 @@ export const countOnAndBack: ContentModule = {
       skill: 'count-on-back',
       params: { a: [21, 79], j: [2, 4] },
       answer: (p) => (p.a as number) + (p.j as number) * 10,
-      text: (p) => `${p.a}, jump ${p.j} tens. Where are you?`,
+      text: (p) => `Start at ${p.a}. Jump ${p.j} tens. Where are you?`,
       distractors: 'near',
       misconception: (p) => (p.a as number) + (p.j as number),
     },

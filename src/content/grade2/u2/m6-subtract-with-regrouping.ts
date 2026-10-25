@@ -12,7 +12,7 @@ export const subtractWithRegrouping: ContentModule = {
   fluencyTracked: true,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['base10-blocks'],
-  vocab: ['borrow', 'open', 'opened'],
+  vocab: ['borrow', 'open', 'opened', 'ana', 'budi', 'does'],
   masteryOverride: { accuracy: 0.9 },
 
   learn: [
@@ -43,6 +43,14 @@ export const subtractWithRegrouping: ContentModule = {
       visual: { kind: 'column-sum', a: 52, b: 27, op: '−' },
       action: 'watch',
       caption: '25',
+    },
+    {
+      // Soal "How many more does Ana have?" — selisih dua batang.
+      stage: 'abstract',
+      prompt: 'Ana has 25 more than Budi.',
+      visual: { kind: 'bars', values: [52, 27], labels: ['Ana', 'Budi'], showValues: true },
+      action: 'watch',
+      caption: '52 − 27 = 25',
     },
   ],
 
@@ -98,7 +106,7 @@ export const subtractWithRegrouping: ContentModule = {
       params: { a: [35, 85], b: [18, 59] },
       answer: (p) => (p.a as number) - (p.b as number),
       text: (p) =>
-        `Ana has ${p.a} apples. Budi has ${p.b}. How many more has Ana?`,
+        `Ana has ${p.a} apples. Budi has ${p.b}. How many more does Ana have?`,
       exclude: (p) =>
         (p.b as number) >= (p.a as number) || ((p.a as number) % 10) >= ((p.b as number) % 10),
       visual: (p) => ({

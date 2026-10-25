@@ -45,7 +45,7 @@ export const howFastIsIt: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'compare-symbol'],
   visuals: ['counter-objects', 'number-line'],
-  vocab: ['speed', 'distance', 'car', 'hour', 'km', 'time', 'share', 'shared'],
+  vocab: ['speed', 'distance', 'car', 'hour', 'km', 'time', 'share', 'shared', 'divided'],
 
   learn: [
     {
@@ -70,15 +70,16 @@ export const howFastIsIt: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: '80 km in 2 hours is 40 each hour.',
+      prompt: '80 km in 2 hours is 40 km each hour.',
       visual: { kind: 'number-line', min: 0, max: 200, value: 80 },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Speed is distance shared by the time.',
+      prompt: 'Speed is distance divided by time.',
       visual: { kind: 'number-line', min: 0, max: 200, value: 80 },
       action: 'watch',
+      caption: '80 ÷ 2 = 40 km each hour',
     },
   ],
 
@@ -116,8 +117,8 @@ export const howFastIsIt: ContentModule = {
       params: { a: [1, 9], b: [1, 9], t1: [2, 4], t2: [2, 4] },
       answer: (p) => Math.sign((p.a as number) - (p.b as number)),
       text: (p) =>
-        `${(p.a as number) * 10 * (p.t1 as number)} km in ${p.t1} h ? ` +
-        `${(p.b as number) * 10 * (p.t2 as number)} km in ${p.t2} h`,
+        `Speed: ${(p.a as number) * 10 * (p.t1 as number)} km in ${p.t1} hours ? ` +
+        `${(p.b as number) * 10 * (p.t2 as number)} km in ${p.t2} hours`,
       // Dua sisi yang identik tidak menguji apa pun — jawabannya terbaca dari
       // bentuknya, bukan dari kecepatannya.
       exclude: (p) => (p.a as number) === (p.b as number) && (p.t1 as number) === (p.t2 as number),

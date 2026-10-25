@@ -74,6 +74,13 @@ export const addAcrossZero: ContentModule = {
       visual: { kind: 'number-line', min: -10, max: 10, value: 2, marks: [0], step: 1 },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Plus a minus number jumps left.',
+      visual: { kind: 'number-line', min: -10, max: 10, value: -2, marks: [3], step: 1 },
+      action: 'watch',
+      caption: '3 + (−5) = −2',
+    },
   ],
 
   rules: [

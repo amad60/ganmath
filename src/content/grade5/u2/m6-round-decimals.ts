@@ -60,6 +60,12 @@ export const roundDecimals: ContentModule = {
       action: 'watch',
     },
     {
+      stage: 'pictorial',
+      prompt: '2.6 is nearer to the whole 3.',
+      visual: { kind: 'number-line', min: 2, max: 3, value: 2.6, marks: [2, 3], step: 0.1 },
+      action: 'watch',
+    },
+    {
       stage: 'abstract',
       prompt: 'Look at the next digit.',
       visual: { kind: 'number-line', min: 0, max: 1, value: 0.6, marks: [0.6], step: 0.1 },

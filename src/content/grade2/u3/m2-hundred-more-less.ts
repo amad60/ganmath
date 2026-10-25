@@ -34,6 +34,15 @@ export const hundredMoreLess: ContentModule = {
       prompt: 'Only the hundreds change.',
       visual: { kind: 'base10', hundreds: 5, tens: 3, ones: 0 },
       action: 'watch',
+      caption: '430 + 100 = 530',
+    },
+    {
+      // Soal juga menanyakan "one hundred less".
+      stage: 'abstract',
+      prompt: 'One hundred less: take one hundred away.',
+      visual: { kind: 'base10', hundreds: 4, tens: 3, ones: 0 },
+      action: 'watch',
+      caption: '530 − 100 = 430',
     },
   ],
 
@@ -44,7 +53,7 @@ export const hundredMoreLess: ContentModule = {
       skill: 'mental-hundred',
       params: { h: [1, 8], t: [0, 9] },
       answer: (p) => ((p.h as number) + 1) * 100 + (p.t as number) * 10,
-      text: (p) => `Hundred more than ${(p.h as number) * 100 + (p.t as number) * 10} = ?`,
+      text: (p) => `One hundred more than ${(p.h as number) * 100 + (p.t as number) * 10} = ?`,
       distractors: 'near',
       misconception: (p) => (p.h as number) * 100 + (p.t as number) * 10 + 10,
     },
@@ -53,7 +62,7 @@ export const hundredMoreLess: ContentModule = {
       skill: 'mental-hundred',
       params: { h: [2, 9], t: [0, 9] },
       answer: (p) => ((p.h as number) - 1) * 100 + (p.t as number) * 10,
-      text: (p) => `Hundred less than ${(p.h as number) * 100 + (p.t as number) * 10} = ?`,
+      text: (p) => `One hundred less than ${(p.h as number) * 100 + (p.t as number) * 10} = ?`,
     },
   ],
 };

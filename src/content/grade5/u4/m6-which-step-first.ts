@@ -40,7 +40,7 @@ export const whichStepFirst: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad', 'choose-text'],
   visuals: ['counter-objects', 'array-grid'],
-  vocab: ['fourteen', 'multiply', 'brackets', 'order'],
+  vocab: ['fourteen', 'multiply', 'brackets', 'order', 'sharing'],
 
   learn: [
     {
@@ -54,20 +54,28 @@ export const whichStepFirst: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Four rows of three, and two more.',
-      visual: { kind: 'array', rows: 4, cols: 3, still: true },
+      visual: { kind: 'counter-objects', count: 14, icon: '🟣', columns: 3 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Multiply first, then add.',
-      visual: { kind: 'array', rows: 4, cols: 3, still: true },
+      visual: { kind: 'counter-objects', count: 14, icon: '🟣', columns: 3 },
       action: 'watch',
+      caption: '4 × 3 + 2 = 12 + 2 = 14',
     },
     {
       stage: 'abstract',
       prompt: 'Brackets first: (2 + 4) × 3 = 18.',
       visual: { kind: 'array', rows: 6, cols: 3, still: true },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Equal groups: multiply. Sharing: divide.',
+      visual: { kind: 'array', rows: 3, cols: 4, still: true },
+      action: 'watch',
+      caption: '3 rows of 4: 3 × 4   12 shared by 3: 12 ÷ 3',
     },
   ],
 

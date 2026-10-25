@@ -38,7 +38,7 @@ export const meetPi: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number'],
   visuals: ['circle', 'counter-objects'],
-  vocab: ['pi', 'circumference', 'string'],
+  vocab: ['pi', 'circumference', 'string', 'C', 'd'],
 
   learn: [
     {
@@ -65,7 +65,7 @@ export const meetPi: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: `Circumference ÷ diameter is always ${PI}.`,
+      prompt: `Circumference ÷ diameter is always about ${PI}.`,
       visual: { kind: 'circle', d: 10, showCircumference: true },
       action: 'watch',
     },
@@ -76,6 +76,7 @@ export const meetPi: ContentModule = {
       prompt: 'That answer is always pi.',
       visual: { kind: 'circle', d: 20, showCircumference: true },
       action: 'watch',
+      caption: `π ≈ ${PI}   C = π × d`,
     },
   ],
 

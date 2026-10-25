@@ -39,6 +39,21 @@ export const timesTenAndHundred: ContentModule = {
       prompt: 'Times ten adds one zero.',
       visual: { kind: 'array', rows: 3, cols: 10, still: true },
       action: 'watch',
+      caption: '3 × 10 = 30',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Times a hundred adds two zeros.',
+      visual: { kind: 'base10', hundreds: 3, tens: 0, ones: 0 },
+      action: 'watch',
+      caption: '3 × 100 = 300',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'So 40 × 6 = 240.',
+      visual: { kind: 'base10', hundreds: 2, tens: 4, ones: 0 },
+      action: 'watch',
+      caption: '4 × 6 = 24, so 240',
     },
   ],
 

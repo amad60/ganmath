@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 export const tenThousands: ContentModule = {
   id: 'g4-u1-m1',
@@ -26,9 +27,10 @@ export const tenThousands: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Ten thousands make 10000.',
+      prompt: 'Ten groups of 1000 make 10000.',
       visual: { kind: 'number-line', min: 0, max: 10000, value: 10000, marks: [5000] },
       action: 'watch',
+      caption: '10 × 1000 = 10000',
     },
     {
       stage: 'abstract',
@@ -45,7 +47,7 @@ export const tenThousands: ContentModule = {
       skill: 'ten-thousands',
       params: { t: [1, 9] },
       answer: (p) => (p.t as number) * 10000,
-      text: (p) => `${p.t} ten thousands = ?`,
+      text: (p) => `${pl(p.t as number, 'ten thousand')} = ?`,
       distractors: 'near',
       // Miskonsepsi khas: "ten thousand" dibaca sebagai seribu — satu nol hilang.
       misconception: (p) => (p.t as number) * 1000,

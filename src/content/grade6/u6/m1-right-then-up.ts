@@ -105,6 +105,7 @@ export const rightThenUp: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'y tells how far up.',
+      caption: 'x-axis: across   y-axis: up',
       visual: {
         kind: 'coordinate-grid',
         quadrants: 1,

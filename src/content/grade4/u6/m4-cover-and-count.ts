@@ -33,11 +33,11 @@ export const coverAndCount: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap six squares.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🟦' },
+      prompt: 'Tap twelve squares.',
+      visual: { kind: 'counter-objects', count: 12, icon: '🟦', columns: 4 },
       action: 'tap-count',
-      target: 6,
-      hint: 'Six squares cover this box.',
+      target: 12,
+      hint: 'Three rows of four squares.',
     },
     {
       stage: 'pictorial',
@@ -54,8 +54,9 @@ export const coverAndCount: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Area is 12 square cm.',
-      visual: { kind: 'rect', w: 4, h: 3 },
+      visual: { kind: 'rect', w: 4, h: 3, unit: 'cm' },
       action: 'watch',
+      caption: '3 × 4 = 12',
     },
   ],
 

@@ -45,6 +45,7 @@ export const divideBothParts: ContentModule = {
       prompt: 'Divide top and bottom by 2.',
       visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
       action: 'watch',
+      caption: '2/4 = 1/2',
     },
   ],
 

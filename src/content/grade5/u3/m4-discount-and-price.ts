@@ -67,12 +67,14 @@ export const discountAndPrice: ContentModule = {
       prompt: '25 percent off leaves 75 percent.',
       visual: { kind: 'bars', lengths: [1, 0.25, 0.75], labels: ['1', 'a', 'b'] },
       action: 'watch',
+      caption: '25% of 20.000 = 5.000',
     },
     {
       stage: 'abstract',
       prompt: 'Take the discount from the price.',
-      visual: { kind: 'money', items: [20000, 5000] },
+      visual: { kind: 'money', items: [10000, 5000] },
       action: 'watch',
+      caption: '20.000 − 5.000 = 15.000',
     },
     {
       stage: 'abstract',
@@ -91,7 +93,7 @@ export const discountAndPrice: ContentModule = {
       skill: 'discount',
       params: { i: [0, 3], k: [1, 9] },
       answer: (p) => (p.k as number) * 100 * (OFF[p.i as number] as number),
-      text: (p) => `${rp((p.k as number) * 10000)} bag, ${OFF[p.i as number]}% off. Discount?`,
+      text: (p) => `${rp((p.k as number) * 10000)} bag, ${OFF[p.i as number]}% off. How much is the discount?`,
     },
     {
       // Harga akhir. Batangnya menunjukkan bagian yang DIBAYAR, bukan yang
@@ -100,7 +102,7 @@ export const discountAndPrice: ContentModule = {
       skill: 'sale-price',
       params: { i: [0, 3], k: [1, 9] },
       answer: (p) => (p.k as number) * 100 * (100 - (OFF[p.i as number] as number)),
-      text: (p) => `${rp((p.k as number) * 10000)} shoes, ${OFF[p.i as number]}% off. New price?`,
+      text: (p) => `${rp((p.k as number) * 10000)} shoes, ${OFF[p.i as number]}% off. What is the new price?`,
       visual: (p) => ({
         kind: 'bars',
         lengths: [1, (100 - (OFF[p.i as number] as number)) / 100],
@@ -115,7 +117,7 @@ export const discountAndPrice: ContentModule = {
       skill: 'sale-price',
       params: { i: [0, 3], k: [1, 9] },
       answer: (p) => (p.k as number) * 100 * (100 - (OFF[p.i as number] as number)),
-      text: (p) => `${rp((p.k as number) * 10000)} cake, ${OFF[p.i as number]}% off. Pay how much?`,
+      text: (p) => `${rp((p.k as number) * 10000)} cake, ${OFF[p.i as number]}% off. How much do you pay?`,
       distractors: 'near',
       distractorUnit: 1000,
       misconception: (p) => (p.k as number) * 100 * (OFF[p.i as number] as number),
@@ -133,7 +135,7 @@ export const discountAndPrice: ContentModule = {
         return a < b ? 0 : a > b ? 1 : 2;
       },
       text: (p) =>
-        `Shop A: ${rp((p.k as number) * 10000)}, ${OFF[p.i as number]}% off. Shop B: ${rp((p.m as number) * 10000)}. Cheaper?`,
+        `Shop A: ${rp((p.k as number) * 10000)}, ${OFF[p.i as number]}% off. Shop B: ${rp((p.m as number) * 10000)}. Which is cheaper?`,
       options: () => ['shop A', 'shop B', 'both the same'],
     },
   ],

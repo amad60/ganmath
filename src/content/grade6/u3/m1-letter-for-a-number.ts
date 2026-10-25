@@ -45,7 +45,7 @@ export const letterForANumber: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap five dots you can see.',
-      visual: { kind: 'counter-objects', count: 9, icon: '🔵' },
+      visual: { kind: 'counter-objects', count: 5, icon: '🔵' },
       action: 'tap-count',
       target: 5,
       hint: 'Some dots are hidden in a bag.',
@@ -106,7 +106,7 @@ export const letterForANumber: ContentModule = {
       skill: 'letter-unknown',
       params: { a: [1, 9], c: [2, 18] },
       answer: (p) => (p.c as number) - (p.a as number),
-      text: (p) => `A bag has n balls. ${p.a} more makes ${p.c}.`,
+      text: (p) => `A bag has n balls. ${p.a} more makes ${p.c}. What is n?`,
       exclude: (p) => (p.a as number) >= (p.c as number),
       distractors: 'near',
       misconception: (p) => (p.a as number) + (p.c as number),

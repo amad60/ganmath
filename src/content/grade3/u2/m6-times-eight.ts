@@ -31,8 +31,9 @@ export const timesEight: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Double, double, double.',
-      visual: { kind: 'array', rows: 8, cols: 3, still: true },
+      visual: { kind: 'array', rows: 8, cols: 3, still: true, gapAfter: 3 },
       action: 'watch',
+      caption: '3 → 6 → 12 → 24',
     },
   ],
 

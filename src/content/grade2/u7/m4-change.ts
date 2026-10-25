@@ -34,9 +34,10 @@ export const change: ContentModule = {
     {
       stage: 'abstract',
       // Kembalian = pengurangan dalam konteks nyata; itulah gunanya meminjam.
-      prompt: 'Change is what is left.',
+      prompt: 'It costs 3000. Change is 7000.',
       visual: { kind: 'money', items: [5000, 2000] },
       action: 'watch',
+      caption: '10000 − 3000 = 7000',
     },
   ],
 

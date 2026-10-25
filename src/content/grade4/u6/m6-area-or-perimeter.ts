@@ -82,7 +82,7 @@ export const areaOrPerimeter: ContentModule = {
       params: { w: [3, 9], h: [2, 8], q: [0, 1] },
       answer: (p) => ((p.q as number) === 1 ? 1 : 0),
       text: (p) =>
-        `This ${p.w} by ${p.h} rectangle. Which is the ${(p.q as number) === 1 ? 'perimeter' : 'area'}?`,
+        `A ${p.w} by ${p.h} rectangle. Which number is its ${(p.q as number) === 1 ? 'perimeter' : 'area'}?`,
       visual: (p) => ({ kind: 'rect', w: p.w as number, h: p.h as number }),
       exclude: badPair,
       options: OPTIONS,

@@ -27,7 +27,7 @@ export const centimetres: ContentModule = {
       stage: 'pictorial',
       // Satuan baku: yang berubah dari Grade 1 hanyalah namanya menjadi resmi.
       prompt: 'This bar is six centimetres.',
-      visual: { kind: 'bars', lengths: [0.6], labels: ['A'] },
+      visual: { kind: 'bars', values: [6], max: 10, labels: ['A'] },
       action: 'watch',
     },
     {

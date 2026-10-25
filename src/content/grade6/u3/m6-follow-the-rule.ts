@@ -49,7 +49,7 @@ export const followTheRule: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-text', 'missing-number', 'choose-number'],
   visuals: ['counter-objects', 'bar-model', 'array-grid'],
-  vocab: [],
+  vocab: ['instead'],
 
   learn: [
     {
@@ -68,9 +68,10 @@ export const followTheRule: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'The rule is times 4.',
+      prompt: 'The rule is number times 4.',
       visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 2, still: true },
       action: 'watch',
+      caption: 'number 1: 4   number 2: 8   number 3: 12',
     },
     {
       // Rumusnya. Nomor ke-5 langsung, tanpa menulis empat bilangan sebelumnya —
@@ -85,6 +86,14 @@ export const followTheRule: ContentModule = {
       prompt: 'The rule tells every number.',
       visual: { kind: 'bars', lengths: [0.25, 0.5, 0.75, 1], labels: ['4', '8', '12', '16'] },
       action: 'watch',
+      caption: '4, 8, 12, 16: add 4 each time',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Going back? Divide instead.',
+      visual: { kind: 'bars', lengths: [0.8, 0.4, 0.2], labels: ['8', '4', '2'] },
+      action: 'watch',
+      caption: '8, 4, 2: divide by 2',
     },
   ],
 

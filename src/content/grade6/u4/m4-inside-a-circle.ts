@@ -44,7 +44,7 @@ export const insideACircle: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'compare-symbol'],
   visuals: ['circle', 'counter-objects'],
-  vocab: [],
+  vocab: ['halve', 'd'],
 
   learn: [
     {
@@ -72,6 +72,7 @@ export const insideACircle: ContentModule = {
       prompt: 'Area is pi times r times r.',
       visual: { kind: 'circle', r: 5, showArea: true },
       action: 'watch',
+      caption: 'A = π × r × r = π r r',
     },
     {
       // Jari-jari dua kali lipat, luasnya EMPAT kali — sesuatu yang hanya
@@ -81,6 +82,13 @@ export const insideACircle: ContentModule = {
       prompt: `${PI} times 10 times 10 is ${areaOf(10)}.`,
       visual: { kind: 'circle', r: 10, showArea: true },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Know the diameter? Halve it first.',
+      visual: { kind: 'circle', d: 20, mark: 'both' },
+      action: 'watch',
+      caption: `d = 20 → r = ${radiusFromDiameter(20)}`,
     },
   ],
 

@@ -31,9 +31,10 @@ export const factFamily: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Take three away. Four comes back.',
+      prompt: 'Take away three. Four are left.',
       visual: { kind: 'number-bond', whole: 7, parts: [3, 4] },
       action: 'watch',
+      caption: '7 - 3 = 4',
     },
   ],
 

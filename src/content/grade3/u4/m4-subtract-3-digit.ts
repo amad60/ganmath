@@ -26,7 +26,12 @@ export const subtract3Digit: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Take away hundreds, then tens.',
-      visual: { kind: 'base10', hundreds: 2, tens: 3, ones: 0 },
+      visual: {
+        kind: 'base10-pair',
+        left: { hundreds: 4, tens: 6, ones: 0 },
+        right: { hundreds: 2, tens: 3, ones: 0 },
+        op: '−',
+      },
       action: 'watch',
     },
     {
@@ -45,7 +50,8 @@ export const subtract3Digit: ContentModule = {
       params: { a: [30, 99], b: [11, 60] },
       answer: (p) => ((p.a as number) - (p.b as number)) * 10,
       text: (p) => `${(p.a as number) * 10} - ${(p.b as number) * 10} = ?`,
-      exclude: (p) => (p.b as number) >= (p.a as number),
+      // Tanpa meminjam: meminjam baru diajarkan di modul berikutnya (g3-u4-m5).
+      exclude: (p) => (p.b as number) >= (p.a as number) || (p.a as number) % 10 < (p.b as number) % 10,
       distractors: 'near',
       misconception: (p) => ((p.a as number) + (p.b as number)) * 10, // menjumlah, bukan mengurang
     },
@@ -55,7 +61,11 @@ export const subtract3Digit: ContentModule = {
       params: { a: [30, 99], b: [11, 60] },
       answer: (p) => (p.a as number) * 10 - (p.b as number),
       text: (p) => `${(p.a as number) * 10} - ${p.b} = ?`,
-      exclude: (p) => (p.b as number) >= (p.a as number),
+      // Tanpa meminjam: 300 − 11 meminjam dari satuan, dan itu belum diajarkan.
+      exclude: (p) =>
+        (p.b as number) >= (p.a as number) ||
+        (p.b as number) % 10 !== 0 ||
+        (p.a as number) % 10 < Math.floor((p.b as number) / 10),
     },
     {
       type: 'keypad',
@@ -64,7 +74,11 @@ export const subtract3Digit: ContentModule = {
       params: { a: [30, 99], b: [11, 60] },
       answer: (p) => (p.a as number) * 10 - (p.b as number),
       text: (p) => `Ana has ${(p.a as number) * 10} stickers. She gives ${p.b} away. How many left?`,
-      exclude: (p) => (p.b as number) >= (p.a as number),
+      // Tanpa meminjam: 300 − 11 meminjam dari satuan, dan itu belum diajarkan.
+      exclude: (p) =>
+        (p.b as number) >= (p.a as number) ||
+        (p.b as number) % 10 !== 0 ||
+        (p.a as number) % 10 < Math.floor((p.b as number) / 10),
     },
     {
       type: 'keypad',
@@ -73,7 +87,11 @@ export const subtract3Digit: ContentModule = {
       params: { a: [30, 99], b: [11, 60] },
       answer: (p) => (p.a as number) * 10 - (p.b as number),
       text: (p) => `${(p.a as number) * 10} eggs in a shop. Budi buys ${p.b}. How many left?`,
-      exclude: (p) => (p.b as number) >= (p.a as number),
+      // Tanpa meminjam: 300 − 11 meminjam dari satuan, dan itu belum diajarkan.
+      exclude: (p) =>
+        (p.b as number) >= (p.a as number) ||
+        (p.b as number) % 10 !== 0 ||
+        (p.a as number) % 10 < Math.floor((p.b as number) / 10),
     },
   ],
 };

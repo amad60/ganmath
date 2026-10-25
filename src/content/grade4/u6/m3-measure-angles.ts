@@ -56,6 +56,7 @@ export const measureAngles: ContentModule = {
       prompt: 'This side stops at 60.',
       visual: { kind: 'angle', degrees: 60, showScale: true, showValue: true },
       action: 'watch',
+      hint: 'Start at 0. Count up to the side.',
     },
     {
       stage: 'abstract',

@@ -28,14 +28,14 @@ export const readBigNumbers: ContentModule = {
       prompt: 'Read the big part first.',
       visual: { kind: 'number-line', min: 0, max: 300000, value: 240000, marks: [200000] },
       action: 'watch',
-      caption: '240000',
+      caption: '200000 + 40000',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 240000.',
       visual: { kind: 'number-line', min: 0, max: 300000, value: 240000, marks: [200000] },
       action: 'watch',
-      caption: '240000',
+      caption: '200000 + 40000 = 240000',
     },
   ],
 

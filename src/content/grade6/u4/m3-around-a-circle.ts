@@ -41,7 +41,7 @@ export const aroundACircle: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'compare-symbol'],
   visuals: ['circle', 'counter-objects'],
-  vocab: ['r'],
+  vocab: ['r', 'C', 'd', 'get'],
 
   learn: [
     {
@@ -71,12 +71,20 @@ export const aroundACircle: ContentModule = {
       prompt: 'Circumference is 2 times pi times r.',
       visual: { kind: 'circle', r: 5, mark: 'both', showCircumference: true },
       action: 'watch',
+      caption: 'C = 2 × π × r = 2 π r',
     },
     {
       stage: 'abstract',
       prompt: `2 times ${PI} times 5 is ${circumferenceOf(5)}.`,
       visual: { kind: 'circle', r: 5, mark: 'both', showCircumference: true },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Know C? Divide by pi to get d.',
+      visual: { kind: 'circle', d: 10, showCircumference: true },
+      action: 'watch',
+      caption: `${circumferenceFromDiameter(10)} ÷ ${PI} = 10`,
     },
   ],
 

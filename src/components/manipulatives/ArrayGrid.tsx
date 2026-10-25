@@ -20,11 +20,15 @@ export type ArrayGridProps = {
    */
   square?: boolean;
   size?: number;
+  /**
+   * Panel Hint: titik dan jarak lebih rapat. Di atas keypad hanya tersisa ±280px,
+   * dan 10 baris ukuran biasa terpotong — baris yang hilang mengubah hitungan anak.
+   */
+  compact?: boolean;
   /** Berapa baris yang sudah dibuka. Kosong = semua, kecuali `play` mengatur sendiri. */
   visibleRows?: number;
-  /** Munculkan baris satu per satu. Baris terakhir tetap tersembunyi kalau `omitLast`. */
+  /** Munculkan baris satu per satu, sampai semua baris tampil. */
   play?: boolean;
-  omitLast?: boolean;
 };
 
 /**
@@ -43,14 +47,14 @@ export function ArrayGrid({
   ghostRow,
   gapAfter,
   square,
-  size = 22,
+  size,
+  compact = false,
   visibleRows,
   play = false,
-  omitLast = false,
 }: ArrayGridProps) {
   const reduced = useReducedMotion();
-  const dot = Math.max(10, Math.min(size, 200 / Math.max(rows, cols)));
-  const cap = omitLast ? Math.max(1, rows - 1) : rows;
+  const dot = Math.max(10, Math.min(size ?? (compact ? 15 : 22), 200 / Math.max(rows, cols)));
+  const gap = square ? '' : compact ? 'gap-1' : 'gap-1.5';
   const [played, setPlayed] = useState(play ? 1 : rows);
 
   useEffect(() => {
@@ -60,15 +64,15 @@ export function ArrayGrid({
       return;
     }
     setPlayed(1);
-    if (cap <= 1) return;
+    if (rows <= 1) return;
     let n = 1;
     const id = window.setInterval(() => {
       n += 1;
-      setPlayed(Math.min(n, cap));
-      if (n >= cap) window.clearInterval(id);
+      setPlayed(Math.min(n, rows));
+      if (n >= rows) window.clearInterval(id);
     }, teachingDuration(ROW_MS, reduced));
     return () => window.clearInterval(id);
-  }, [play, rows, cap, reduced, visibleRows]);
+  }, [play, rows, reduced, visibleRows]);
 
   const shown = Math.max(1, Math.min(visibleRows ?? (play ? played : rows), rows));
   const taken = ghostRow != null && ghostRow >= 0 && ghostRow < rows;
@@ -83,14 +87,14 @@ export function ArrayGrid({
 
   return (
     <div
-      className={square ? 'flex flex-col' : 'flex flex-col gap-1.5'}
+      className={`flex flex-col ${gap}`}
       aria-label={label}
       style={{ alignItems: 'center' }}
     >
       {Array.from({ length: shown }, (_, r) => (
         <div
           key={r}
-          className={square ? 'flex' : 'flex gap-1.5'}
+          className={`flex ${gap}`}
           style={{
             position: 'relative',
             marginBottom: gapAfter === r ? 16 : undefined,

@@ -65,6 +65,7 @@ export const decimalTimesDecimal: ContentModule = {
       prompt: 'Count the digits after the point.',
       visual: { kind: 'array', rows: 3, cols: 4 , still: true },
       action: 'watch',
+      caption: '1.2 × 0.3 = 0.36',
     },
   ],
 

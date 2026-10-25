@@ -94,7 +94,7 @@ export const howFarDidItGo: ContentModule = {
       skill: 'find-distance',
       params: { u: [1, 4], t: [2, 5] },
       answer: (p) => (p.u as number) * 10 * (p.t as number),
-      text: (p) => `${(p.u as number) * 10} km each hour. Where after ${p.t} h?`,
+      text: (p) => `${(p.u as number) * 10} km each hour. Where is it after ${p.t} hours?`,
       range: [0, 200],
       step: 10,
     },

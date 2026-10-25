@@ -129,7 +129,7 @@ export const colderOrWarmer: ContentModule = {
       story: true,
       params: { a: [-9, 9], b: [-9, 9] },
       answer: (p) => Math.min(p.a as number, p.b as number),
-      text: (p) => `One day is ${deg(p.a as number)}. The next day is ${deg(p.b as number)}. Write the colder one.`,
+      text: (p) => `One day it is ${deg(p.a as number)}. The next day it is ${deg(p.b as number)}. Write the colder one.`,
       exclude: (p) => (p.a as number) === (p.b as number),
     },
     {

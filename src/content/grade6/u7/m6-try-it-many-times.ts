@@ -55,12 +55,12 @@ export const tryItManyTimes: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Ten spins, five reds.',
+      prompt: 'Ten spins, seven reds.',
       visual: {
         kind: 'pictogram',
         rows: [
-          { label: 'red', icon: '🔴', count: 5 },
-          { label: 'blue', icon: '🔵', count: 5 },
+          { label: 'red', icon: '🔴', count: 7 },
+          { label: 'blue', icon: '🔵', count: 3 },
         ],
       },
       action: 'watch',
@@ -112,7 +112,7 @@ export const tryItManyTimes: ContentModule = {
       params: { parts: [2, 5], fav: [1, 4], mult: [3, 9] },
       answer: (p) => (p.fav as number) * (p.mult as number),
       text: (p) =>
-        `A spinner has ${p.parts} equal parts. ${p.fav} are red. ` +
+        `A spinner has ${p.parts} equal parts. ${p.fav} ${(p.fav as number) === 1 ? 'is' : 'are'} red. ` +
         `Spin ${spinsOf(p)} times. About how many reds?`,
       exclude: (p) => (p.fav as number) >= (p.parts as number),
     },
@@ -123,7 +123,7 @@ export const tryItManyTimes: ContentModule = {
       skill: 'experiment-chance',
       params: { tt: [0, 1], k: [1, 19] },
       answer: (p) => (p.k as number) / triesOf(p),
-      text: (p) => `Out of ${triesOf(p)} spins, ${p.k} were red. Chance of red as a decimal?`,
+      text: (p) => `Out of ${triesOf(p)} spins, ${p.k} ${(p.k as number) === 1 ? 'was' : 'were'} red. Chance of red as a decimal?`,
     },
     {
       // Pembilang saja tidak cukup: 9 dari 20 kalah oleh 5 dari 10. Kasus seri
@@ -136,7 +136,7 @@ export const tryItManyTimes: ContentModule = {
         const right = p.b as number;
         return left > right ? 0 : left < right ? 1 : 2;
       },
-      text: (p) => `Bag A: ${p.a} red of 10. Bag B: ${p.b} red of 20. Which is more likely?`,
+      text: (p) => `Bag A: ${p.a} red of 10. Bag B: ${p.b} red of 20. Which bag is more likely to give red?`,
       options: () => [...BAGS],
     },
   ],

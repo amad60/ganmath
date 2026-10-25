@@ -55,7 +55,7 @@ export const whatIsARatio: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap two red dots.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🔴' },
+      visual: { kind: 'counter-objects', count: 5, icons: ['🔴', '🔴', '🔵', '🔵', '🔵'] },
       action: 'tap-count',
       target: 2,
       hint: 'Two red dots for three blue.',

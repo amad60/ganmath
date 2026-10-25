@@ -21,7 +21,7 @@ export const timeToTheMinute: ContentModule = {
       visual: { kind: 'counter-objects', count: 12, icon: '⏱️' },
       action: 'tap-count',
       target: 5,
-      hint: 'One mark is one minute.',
+      hint: 'One tap is one minute.',
     },
     {
       stage: 'pictorial',
@@ -55,6 +55,8 @@ export const timeToTheMinute: ContentModule = {
       answer: () => 0,
       text: () => 'What time is it?',
       visual: (p) => ({ kind: 'clock', hour: p.h as number, minute: p.m as number }),
+      // h = m membuat pilihan "m:h" sama dengan jawabannya (5:05 dan 5:05).
+      exclude: (p) => p.h === p.m,
       options: (p) => {
         const h = p.h as number;
         const m = p.m as number;

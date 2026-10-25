@@ -22,7 +22,7 @@ export const mixedNumberSums: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number'],
   visuals: ['fraction-shape', 'counter-objects'],
-  vocab: [],
+  vocab: ['break'],
 
   learn: [
     {
@@ -50,12 +50,20 @@ export const mixedNumberSums: ContentModule = {
       prompt: 'So 5/4 is 1 and 1/4.',
       visual: { kind: 'fraction', parts: 4, shaded: 1, shape: 'square' },
       action: 'watch',
+      caption: '1 and 1/4 = 4/4 + 1/4 = 5/4',
     },
     {
       stage: 'abstract',
       prompt: 'Add the wholes, then add the tops.',
       visual: { kind: 'fraction', parts: 4, shaded: 3, shape: 'square' },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Not enough tops? Break one whole.',
+      visual: { kind: 'fraction', parts: 4, shaded: 2, shape: 'square' },
+      action: 'watch',
+      caption: '2 and 1/4 − 3/4 = 1 and 5/4 − 3/4 = 1 and 2/4',
     },
   ],
 
@@ -90,7 +98,7 @@ export const mixedNumberSums: ContentModule = {
       params: { d: [3, 6], w: [1, 3], x: [1, 3], r: [1, 5], s: [1, 5] },
       answer: (p) => (p.w as number) + (p.x as number) + 1,
       text: (p) =>
-        `${p.w} and ${p.r}/${p.d} + ${p.x} and ${p.s}/${p.d}. How many wholes?`,
+        `${p.w} and ${p.r}/${p.d} + ${p.x} and ${p.s}/${p.d}. How many wholes in the answer?`,
       exclude: (p) => {
         const d = p.d as number;
         const r = p.r as number;

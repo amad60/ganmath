@@ -38,6 +38,7 @@ export const threeDigitsTimesOne: ContentModule = {
       prompt: 'Times each place, then add them.',
       visual: { kind: 'base10', hundreds: 2, tens: 4, ones: 6 },
       action: 'watch',
+      caption: '246 × 2 = 400 + 80 + 12 = 492',
     },
   ],
 

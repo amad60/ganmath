@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const hundredsTensOnes: ContentModule = {
@@ -59,7 +60,7 @@ export const hundredsTensOnes: ContentModule = {
       skill: 'place-value-1000',
       params: { h: [1, 9], t: [1, 9] },
       answer: (p) => p.t as number,
-      text: (p) => `${p.h} hundreds and ? tens = ${(p.h as number) * 100 + (p.t as number) * 10}`,
+      text: (p) => `${pl(p.h as number, 'hundred')} and ? tens = ${(p.h as number) * 100 + (p.t as number) * 10}`,
     },
   ],
 };

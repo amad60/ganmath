@@ -28,7 +28,7 @@ export const gramsAndMillilitres: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'compare-symbol'],
   visuals: ['counter-objects', 'bar-model'],
-  vocab: ['millilitre', 'millilitres', 'ml', 'litre', 'litres', 'bottle', 'bottles', 'kg'],
+  vocab: ['millilitre', 'millilitres', 'ml', 'litre', 'litres', 'bottle', 'bottles', 'kg', 'g', 'L'],
 
   learn: [
     {
@@ -50,12 +50,14 @@ export const gramsAndMillilitres: ContentModule = {
       prompt: '1000 grams make one kilogram.',
       visual: { kind: 'bars', lengths: [1, 0.001], labels: ['kg', 'g'] },
       action: 'watch',
+      caption: '500 g = 0.5 kg',
     },
     {
       stage: 'abstract',
       prompt: '1000 millilitres make one litre.',
       visual: { kind: 'bars', lengths: [1, 0.001], labels: ['litre', 'ml'] },
       action: 'watch',
+      caption: '1000 ml = 1 L   300 ml = 0.3 L',
     },
     {
       stage: 'abstract',

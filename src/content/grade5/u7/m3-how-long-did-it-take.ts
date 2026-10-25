@@ -31,7 +31,7 @@ export const howLongDidItTake: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'missing-number'],
   visuals: ['counter-objects', 'number-line'],
-  vocab: ['speed', 'distance', 'car', 'hour', 'km', 'time', 'went', 'trip'],
+  vocab: ['speed', 'distance', 'car', 'hour', 'km', 'time', 'went', 'trip', 'divided'],
 
   learn: [
     {
@@ -56,13 +56,13 @@ export const howLongDidItTake: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: '150 km shared by 50 km is 3 hours.',
+      prompt: '150 ÷ 50 is 3 hours.',
       visual: { kind: 'number-line', min: 0, max: 200, value: 150, step: 50 },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Time is distance shared by the speed.',
+      prompt: 'Time is distance divided by speed.',
       visual: { kind: 'number-line', min: 0, max: 200, value: 150, step: 50 },
       action: 'watch',
     },
@@ -74,7 +74,7 @@ export const howLongDidItTake: ContentModule = {
       skill: 'find-time',
       params: { u: [2, 18], t: [2, 8] },
       answer: (p) => p.t as number,
-      text: (p) => `${distanceOf(p)} km at ${speedOf(p)} km each hour. Hours?`,
+      text: (p) => `${distanceOf(p)} km at ${speedOf(p)} km each hour. How many hours?`,
     },
     {
       // Pengecohnya adalah kecepatannya sendiri. Anak yang membaca soal ini sebagai
@@ -84,7 +84,7 @@ export const howLongDidItTake: ContentModule = {
       skill: 'find-time',
       params: { s: [2, 9], t: [2, 9] },
       answer: (p) => p.t as number,
-      text: (p) => `${(p.s as number) * (p.t as number)} m at ${p.s} m each second. Seconds?`,
+      text: (p) => `${(p.s as number) * (p.t as number)} m at ${p.s} m each second. How many seconds?`,
       exclude: (p) => (p.s as number) * (p.t as number) > 36,
       distractors: 'near',
       misconception: (p) => p.s as number,

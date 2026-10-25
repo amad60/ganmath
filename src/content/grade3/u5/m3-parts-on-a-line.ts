@@ -46,11 +46,12 @@ export const partsOnALine: ContentModule = {
     {
       type: 'number-line-drop',
       skill: 'fraction-line',
-      params: { p: [2, 8], s: [1, 7] },
+      // Garisnya selalu [0, 8], jadi kalimatnya harus menyebut 8 bagian — dulu
+      // "The line has 3 parts" tampil di atas garis delapan bagian.
+      params: { s: [1, 7] },
       range: [0, 8],
       answer: (p) => p.s as number,
-      text: (p) => `The line has ${p.p} parts. Show ${p.s}.`,
-      exclude: (p) => (p.s as number) >= (p.p as number),
+      text: (p) => `The line has 8 parts. Show ${p.s}/8.`,
     },
     {
       type: 'choose-number',

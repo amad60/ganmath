@@ -45,13 +45,13 @@ export const divideByAFraction: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'How many halves are in 3?',
-      visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
+      visual: { kind: 'counter-objects', count: 6, icon: '🍕', columns: 2 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'So 3 ÷ 1/2 is 6.',
-      visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
+      visual: { kind: 'counter-objects', count: 6, icon: '🍕', columns: 2 },
       action: 'watch',
     },
     {
@@ -59,6 +59,7 @@ export const divideByAFraction: ContentModule = {
       prompt: 'Flip it over, then multiply.',
       visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
       action: 'watch',
+      caption: '1/2 ÷ 1/4 = 1/2 × 4/1 = 4/2',
     },
   ],
 

@@ -50,7 +50,7 @@ describe('Science Level 1 di layar', () => {
       vi.advanceTimersByTime(1000);
     });
     fireEvent.click(screen.getByRole('button', { name: /next/i }));
-    fireEvent.click(screen.getByRole('button', { name: 'It can fly' }));
+    fireEvent.click(screen.getByRole('button', { name: 'It needs food' }));
     expect(screen.getByText("Let's see!")).toBeTruthy();
     act(() => {
       vi.advanceTimersByTime(1000);

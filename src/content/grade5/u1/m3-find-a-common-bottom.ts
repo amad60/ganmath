@@ -50,7 +50,7 @@ export const findACommonBottom: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Put 1/3 on the line.',
+      prompt: 'Show 1/3 of 12 on the line.',
       visual: { kind: 'number-line', min: 0, max: 12, value: null, step: 1 },
       action: 'drop-on-line',
       target: 4,
@@ -70,9 +70,10 @@ export const findACommonBottom: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: '12 is a common multiple of 3 and 4.',
+      prompt: '12 is the smallest bottom for both.',
       visual: { kind: 'fraction', parts: 12, shaded: 7, shape: 'square' },
       action: 'watch',
+      caption: '1/3 + 1/4 = 4/12 + 3/12 = 7/12',
     },
   ],
 
@@ -82,7 +83,7 @@ export const findACommonBottom: ContentModule = {
       skill: 'common-denominator-lcm',
       params: { b: [2, 6], d: [3, 9] },
       answer: (p) => lcm(p.b as number, p.d as number),
-      text: (p) => `What bottom fits ${p.b} and ${p.d}?`,
+      text: (p) => `What is the smallest bottom for ${p.b} and ${p.d}?`,
       // Penyebut yang berkelipatan sudah dikerjakan di m2.
       exclude: (p) =>
         (p.b as number) >= (p.d as number) || (p.d as number) % (p.b as number) === 0,
@@ -131,7 +132,7 @@ export const findACommonBottom: ContentModule = {
       range: [0, 12],
       step: 1,
       answer: (p) => (p.a as number) * (12 / (p.b as number)),
-      text: (p) => `The line has 12 parts. Show ${p.a}/${p.b}.`,
+      text: (p) => `The line has 12 parts. Show ${p.a}/${p.b} of 12.`,
       exclude: (p) => 12 % (p.b as number) !== 0 || (p.a as number) >= (p.b as number),
     },
   ],

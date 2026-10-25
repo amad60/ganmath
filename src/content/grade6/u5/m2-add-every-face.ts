@@ -88,6 +88,7 @@ export const addEveryFace: ContentModule = {
       prompt: `Add the six faces: ${surfaceAreaOf(3, 2, 4)} square cm.`,
       visual: { kind: 'solid', l: 3, w: 2, h: 4, cubes: false, showDimensions: true, unit: 'cm' },
       action: 'watch',
+      caption: `2 × 6 + 2 × 12 + 2 × 8 = ${surfaceAreaOf(3, 2, 4)}`,
     },
     {
       stage: 'abstract',

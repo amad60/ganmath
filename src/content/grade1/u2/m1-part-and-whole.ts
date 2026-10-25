@@ -53,7 +53,8 @@ export const partAndWhole: ContentModule = {
       skill: 'part-whole',
       params: { whole: [4, 6], a: [1, 5] },
       answer: (p) => (p.whole as number) - (p.a as number),
-      text: (p) => `${p.a} + ? = ${p.whole}`,
+      // Tanpa "+": lambang itu baru diperkenalkan di modul berikutnya (Add to 5).
+      text: (p) => `${p.a} and ? make ${p.whole}`,
       exclude: (p) => (p.a as number) >= (p.whole as number),
     },
     {

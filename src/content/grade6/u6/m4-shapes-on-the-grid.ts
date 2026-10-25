@@ -201,7 +201,7 @@ export const shapesOnTheGrid: ContentModule = {
         const [a, b] = (p.which as number) === 0 ? [c[0], c[1]] : [c[1], c[2]];
         return (
           `A rectangle has corners ${formatPoint((a as Coord).x, (a as Coord).y)} and ` +
-          `${formatPoint((b as Coord).x, (b as Coord).y)}. How long is that side?`
+          `${formatPoint((b as Coord).x, (b as Coord).y)}. How long is the side between them?`
         );
       },
       distractors: 'near',

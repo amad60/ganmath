@@ -66,7 +66,7 @@ export const shareByRatio: ContentModule = {
       // satu-satunya sumber jawaban.
       stage: 'pictorial',
       prompt: 'Ten dots split as 2 : 3.',
-      visual: { kind: 'bars', lengths: [1, 0.4, 0.6], labels: ['1', '4', '6'] },
+      visual: { kind: 'bars', lengths: [1, 0.4, 0.6], labels: ['10', '4', '6'] },
       action: 'watch',
     },
     {
@@ -78,14 +78,16 @@ export const shareByRatio: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Five parts in all. Each part is two.',
-      visual: { kind: 'bars', lengths: [1, 0.4, 0.6], labels: ['1', '2', '3'] },
+      visual: { kind: 'bars', lengths: [1, 0.4, 0.6], labels: ['10', '4', '6'] },
       action: 'watch',
+      caption: '10 ÷ 5 = 2',
     },
     {
       stage: 'abstract',
       prompt: 'Divide by five parts, then times each.',
-      visual: { kind: 'bars', lengths: [1, 0.4, 0.6], labels: ['1', '2', '3'] },
+      visual: { kind: 'bars', lengths: [1, 0.4, 0.6], labels: ['10', '4', '6'] },
       action: 'watch',
+      caption: '2 × 2 = 4   3 × 2 = 6',
     },
   ],
 

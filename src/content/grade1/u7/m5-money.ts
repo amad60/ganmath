@@ -6,6 +6,9 @@ import type { ContentModule } from '../../types';
  */
 const NOTES = [500, 1000, 2000, 5000, 10000];
 
+/** Yang digambar sebagai lembaran kertas (lihat `Money.tsx`), bukan koin. */
+const PAPER = [2000, 5000, 10000];
+
 const rp = (v: number) => `Rp${v.toLocaleString('id-ID')}`;
 
 /**
@@ -59,7 +62,7 @@ export const money: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Two notes make more money.',
+      prompt: '2000 and 5000 make 7000.',
       visual: { kind: 'money', items: [2000, 5000] },
       action: 'watch',
       caption: '7000',
@@ -104,9 +107,11 @@ export const money: ContentModule = {
       params: { n: [2, 6] },
       answer: (p) => p.n as number,
       text: () => 'How many notes?',
+      // Hanya lembaran: Rp500 dan Rp1.000 digambar sebagai KOIN, jadi dulu
+      // "How many notes?" bisa tampil di atas dua koin dengan jawaban 2.
       visual: (p) => ({
         kind: 'money',
-        items: Array.from({ length: p.n as number }, (_, i) => NOTES[i % NOTES.length] ?? 1000),
+        items: Array.from({ length: p.n as number }, (_, i) => PAPER[i % PAPER.length] ?? 2000),
       }),
       distractors: 'near',
     },

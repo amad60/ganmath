@@ -69,6 +69,7 @@ export const divideDecimals: ContentModule = {
       prompt: 'Share 3 into 4 parts: 0.75.',
       visual: { kind: 'number-line', min: 0, max: 1, value: 0.75, marks: [0.75], step: 0.25 },
       action: 'watch',
+      caption: '3 ÷ 4 = 3.00 ÷ 4 = 0.75',
     },
   ],
 

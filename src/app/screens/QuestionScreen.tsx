@@ -404,7 +404,14 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
     // Ditunda satu frame: manipulatif punya animasi masuk, dan menggulung sebelum
     // tingginya final membuat browser menghitung dari tinggi yang salah — hasilnya
     // bantuan justru terlempar ke luar area gulung. Terukur di Chrome sungguhan.
-    const t = setTimeout(() => {
+    //
+    // Satu kali tidak cukup: array perkalian TUMBUH baris demi baris selama ~2 detik,
+    // jadi gulungan 120ms mengejar gambar satu baris, lalu baris berikutnya tumbuh di
+    // bawah lipatan. `4 × 8` tampil dua setengah baris dan anak menghitung 20.
+    // Panelnya diamati, dan setiap kali tingginya berubah ia digulung lagi. Juga
+    // setiap soal baru: bantuan latihan terbimbing tetap terbuka antar soal, jadi
+    // `hintOpen` tidak pernah berubah dan efek ini dulu tidak jalan lagi.
+    const scroll = () => {
       const el = hintRef.current;
       // jsdom tidak punya scrollIntoView; app tidak boleh jatuh karenanya.
       if (typeof el?.scrollIntoView !== 'function') return;
@@ -425,9 +432,17 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
       const scroller = el.closest('main');
       const tooTall = scroller != null && el.getBoundingClientRect().height > scroller.clientHeight;
       el.scrollIntoView({ block: tooTall ? 'start' : 'nearest' });
-    }, 120);
-    return () => clearTimeout(t);
-  }, [hintOpen]);
+    };
+    const t = setTimeout(scroll, 120);
+    const el = hintRef.current;
+    const watch =
+      el && typeof ResizeObserver === 'function' ? new ResizeObserver(() => scroll()) : null;
+    if (el) watch?.observe(el);
+    return () => {
+      clearTimeout(t);
+      watch?.disconnect();
+    };
+  }, [hintOpen, question?.id]);
 
   const shownAt = useRef(0);
   const firstInputAt = useRef<number | null>(null);
@@ -586,7 +601,10 @@ export function QuestionScreen({ session, onSession, onFinish, onExit }: Questio
             tadinya kosong melompong dan terlihat seperti halaman gagal dimuat.
             `my-auto` menaruh Gan tepat di tengah ruang sisa: ruangnya jadi terpakai,
             dan reaksi wajahnya memberi umpan balik yang tidak bisa diberikan angka. */}
-        {!activeVisual ? (
+        {/* ...kecuali bantuan sedang terbuka: di HP pendek Gan setinggi 190px
+            mendorong gambar bantuan ke bawah keypad, dan bantuan yang terpotong
+            mengajarkan hitungan yang salah. */}
+        {!activeVisual && !(hintOpen && hasHint && !noHint) ? (
           <Mascot mood={mood} size={190} className="question-mascot my-auto opacity-90" />
         ) : null}
 

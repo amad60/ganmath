@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const metres: ContentModule = {
@@ -44,7 +45,7 @@ export const metres: ContentModule = {
       skill: 'measure-m',
       params: { m: [1, 9] },
       answer: (p) => (p.m as number) * 100,
-      text: (p) => `${p.m} metres = ? centimetres`,
+      text: (p) => `${pl(p.m as number, 'metre')} = ? centimetres`,
       distractors: 'near',
       misconception: (p) => (p.m as number) * 10,
     },

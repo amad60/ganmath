@@ -30,9 +30,10 @@ export const timesSeven: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Times seven is times six, add one more.',
-      visual: { kind: 'array', rows: 7, cols: 3, still: true, highlightRow: 6 },
+      prompt: 'Times seven is times six, plus one row.',
+      visual: { kind: 'array', rows: 7, cols: 3, still: true, highlightRow: 6, gapAfter: 5 },
       action: 'watch',
+      caption: '7 × 3 = 18 + 3 = 21',
     },
   ],
 

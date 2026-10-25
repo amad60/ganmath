@@ -24,7 +24,7 @@ export const compareFractions: ContentModule = {
     {
       stage: 'concrete',
       prompt: 'Tap two equal parts.',
-      visual: { kind: 'counter-objects', count: 8, icon: '🍰' },
+      visual: { kind: 'fraction', parts: 2, shaded: 0, tap: true },
       action: 'tap-count',
       target: 2,
       hint: 'Two parts make halves.',
@@ -32,7 +32,7 @@ export const compareFractions: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Half is big. One eighth is small.',
-      visual: { kind: 'fraction', parts: 8, shaded: 1 },
+      visual: { kind: 'bars', lengths: [0.5, 0.125], labels: ['1/2', '1/8'] },
       action: 'watch',
     },
     {
@@ -57,9 +57,15 @@ export const compareFractions: ContentModule = {
       skill: 'compare-fraction',
       params: { p: [3, 8], s: [1, 6] },
       answer: () => 0,
-      text: () => 'Which one is shaded?',
+      text: () => 'How much is shaded?',
       visual: (p) => ({ kind: 'fraction', parts: p.p as number, shaded: p.s as number }),
-      exclude: (p) => (p.s as number) >= (p.p as number),
+      // Pilihan tidak boleh kembar: 1/p = s/p saat s = 1, (p−s)/p = s/p saat p = 2s,
+      // dan 1/p = (p−s)/p saat s = p − 1.
+      exclude: (p) => {
+        const s = p.s as number;
+        const n = p.p as number;
+        return s >= n || s === 1 || n === 2 * s || s === n - 1;
+      },
       options: (p) => [
         `${p.s}/${p.p}`,
         `${p.p}/${p.s}`,

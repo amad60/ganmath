@@ -49,7 +49,7 @@ export const meanAgain: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number'],
   visuals: ['bar-chart', 'counter-objects'],
-  vocab: ['mean', 'data', 'move', 'stacks', 'total', 'value'],
+  vocab: ['mean', 'data', 'move', 'stacks', 'total', 'value', 'others', 'last'],
 
   learn: [
     {
@@ -63,28 +63,37 @@ export const meanAgain: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'These stacks are not equal.',
-      visual: { kind: 'bars', lengths: [0.9, 0.35, 0.6], labels: ['A', 'B', 'C'] },
+      visual: { kind: 'bars', values: [9, 3, 6], labels: ['A', 'B', 'C'] },
       action: 'watch',
     },
     {
       stage: 'pictorial',
       prompt: 'Move blocks to make them equal.',
-      visual: { kind: 'bars', lengths: [0.62, 0.62, 0.62], labels: ['A', 'B', 'C'] },
+      visual: { kind: 'bars', values: [6, 6, 6], max: 9, labels: ['A', 'B', 'C'] },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Add them all, then share equally.',
-      visual: { kind: 'bars', lengths: [0.62, 0.62, 0.62], labels: ['A', 'B', 'C'] },
+      visual: { kind: 'bars', values: [6, 6, 6], max: 9, labels: ['A', 'B', 'C'] },
       action: 'watch',
+      caption: '9 + 3 + 6 = 18   18 ÷ 3 = 6',
     },
     {
       // Pembalikannya, dan ini yang baru: rata-rata tidak membuang totalnya,
       // ia menyimpannya. Kalimatnya sengaja dibuat cermin dari langkah di atas.
       stage: 'abstract',
       prompt: 'Mean times how many gives the total.',
-      visual: { kind: 'bars', lengths: [0.62, 0.62, 0.62], labels: ['A', 'B', 'C'] },
+      visual: { kind: 'bars', values: [6, 6, 6], max: 9, labels: ['A', 'B', 'C'] },
       action: 'watch',
+      caption: '6 × 3 = 18',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Total minus the others gives the last one.',
+      visual: { kind: 'bars', values: [9, 3, 6], labels: ['A', 'B', 'C'] },
+      action: 'watch',
+      caption: '18 − 9 − 3 = 6',
     },
   ],
 
@@ -152,7 +161,7 @@ export const meanAgain: ContentModule = {
       story: true,
       params: { m: [12, 25], d: [1, 6], e: [1, 7] },
       answer: (p) => p.m as number,
-      text: (p) => `Ana reads ${fourValues(p).join(', ')} books in four weeks. What is the mean?`,
+      text: (p) => `Ana reads books for four weeks: ${fourValues(p).join(', ')}. What is the mean?`,
       exclude: (p) => (p.d as number) === (p.e as number),
     },
   ],

@@ -62,7 +62,7 @@ export const isItANet: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-number', 'keypad', 'choose-text'],
   visuals: ['shape-net', 'counter-objects'],
-  vocab: ['net', 'nets', 'fold', 'folds', 'cube', 'face', 'minus', 'need', 'needs', 'wrong'],
+  vocab: ['net', 'nets', 'fold', 'folds', 'cube', 'face', 'minus', 'need', 'needs', 'wrong', 'too', 'few'],
 
   learn: [
     {
@@ -87,9 +87,10 @@ export const isItANet: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Wrong number of faces? Not a net.',
+      prompt: `A pyramid net needs ${SOLID_FACES['square-pyramid']} faces.`,
       visual: { kind: 'net', solid: 'square-pyramid', showName: true },
       action: 'watch',
+      caption: 'too few or too many: not a net',
     },
   ],
 

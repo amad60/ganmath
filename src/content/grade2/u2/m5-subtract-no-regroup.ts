@@ -21,7 +21,7 @@ export const subtractNoRegroup: ContentModule = {
       visual: { kind: 'number-line', min: 0, max: 100, value: null },
       action: 'drop-on-line',
       target: 70,
-      hint: 'Almost seventy.',
+      hint: 'Seven tens.',
     },
     {
       stage: 'pictorial',

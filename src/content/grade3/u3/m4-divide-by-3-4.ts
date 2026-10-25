@@ -25,15 +25,17 @@ export const divideBy34: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Twelve in three rows is four.',
+      prompt: 'Twelve in three rows: four in each.',
       visual: { kind: 'array', rows: 3, cols: 4, still: true },
       action: 'watch',
+      caption: '12 ÷ 3 = 4',
     },
     {
       stage: 'abstract',
       prompt: 'Use the times table you know.',
       visual: { kind: 'array', rows: 4, cols: 3, still: true },
       action: 'watch',
+      caption: '4 × 3 = 12, so 12 ÷ 4 = 3',
     },
   ],
 
@@ -52,7 +54,7 @@ export const divideBy34: ContentModule = {
       skill: 'divide-3-4',
       params: { d: [3, 4], n: [2, 10] },
       answer: (p) => p.n as number,
-      text: (p) => `Share ${(p.n as number) * (p.d as number)} between ${p.d}.`,
+      text: (p) => `Share ${(p.n as number) * (p.d as number)} between ${p.d}. How many each?`,
     },
     {
       type: 'keypad',

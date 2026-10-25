@@ -26,14 +26,24 @@ export const tenMoreTenLess: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'One more ten makes sixty.',
-      visual: { kind: 'base10', tens: 6, ones: 0 },
+      visual: { kind: 'base10-pair', left: { tens: 5, ones: 0 }, right: { tens: 1, ones: 0 }, op: '+' },
       action: 'watch',
+      caption: '50 + 10 = 60',
     },
     {
       stage: 'abstract',
       prompt: 'Only the tens change.',
-      visual: { kind: 'base10', tens: 6, ones: 4 },
+      visual: { kind: 'base10-pair', left: { tens: 6, ones: 4 }, right: { tens: 1, ones: 0 }, op: '+' },
       action: 'watch',
+      caption: '64 + 10 = 74',
+    },
+    {
+      // Soal juga menanyakan "ten less".
+      stage: 'abstract',
+      prompt: 'Ten less: take away one ten.',
+      visual: { kind: 'base10-pair', left: { tens: 6, ones: 4 }, right: { tens: 1, ones: 0 }, op: '−' },
+      action: 'watch',
+      caption: '64 - 10 = 54',
     },
   ],
 

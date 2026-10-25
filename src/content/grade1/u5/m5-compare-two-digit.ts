@@ -26,14 +26,29 @@ export const compareTwoDigit: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Look at the tens first.',
-      visual: { kind: 'base10', tens: 6, ones: 2 },
+      visual: { kind: 'bars', values: [62, 58], labels: ['62', '58'], showValues: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 62 > 58.',
-      visual: { kind: 'base10', tens: 5, ones: 8 },
+      visual: { kind: 'bars', values: [62, 58], labels: ['62', '58'], showValues: true },
       action: 'watch',
+    },
+    {
+      // Soal compare-symbol juga berjawaban < dan =.
+      stage: 'abstract',
+      prompt: 'Five tens is less: 58 < 62.',
+      visual: { kind: 'bars', values: [58, 62], labels: ['58', '62'], showValues: true },
+      action: 'watch',
+      caption: '58 < 62',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Same tens, same ones: 47 = 47.',
+      visual: { kind: 'bars', values: [47, 47], labels: ['47', '47'], showValues: true },
+      action: 'watch',
+      caption: '47 = 47',
     },
   ],
 

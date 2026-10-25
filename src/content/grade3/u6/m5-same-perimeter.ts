@@ -22,11 +22,11 @@ export const samePerimeter: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap six sides.',
-      visual: { kind: 'counter-objects', count: 8, icon: '📏' },
+      prompt: 'Tap four sides.',
+      visual: { kind: 'counter-objects', count: 4, icon: '📏' },
       action: 'tap-count',
-      target: 6,
-      hint: 'Two shapes, but count only six.',
+      target: 4,
+      hint: 'One tap for each side.',
     },
     {
       stage: 'pictorial',

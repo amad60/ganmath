@@ -26,7 +26,12 @@ export const add3Digit: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Add hundreds, then tens, then ones.',
-      visual: { kind: 'base10', hundreds: 3, tens: 6, ones: 4 },
+      visual: {
+        kind: 'base10-pair',
+        left: { hundreds: 2, tens: 4, ones: 0 },
+        right: { hundreds: 1, tens: 2, ones: 4 },
+        op: '+',
+      },
       action: 'watch',
     },
     {
@@ -46,7 +51,9 @@ export const add3Digit: ContentModule = {
       params: { a: [11, 49], b: [11, 40] },
       answer: (p) => ((p.a as number) + (p.b as number)) * 10,
       text: (p) => `${(p.a as number) * 10} + ${(p.b as number) * 10} = ?`,
-      exclude: (p) => (p.a as number) + (p.b as number) > 99,
+      // Tanpa menyimpan: menyimpan baru diajarkan di modul berikutnya (g3-u4-m3).
+      exclude: (p) =>
+        (p.a as number) + (p.b as number) > 99 || ((p.a as number) % 10) + ((p.b as number) % 10) >= 10,
       distractors: 'near',
       misconception: (p) => ((p.a as number) + (p.b as number)) * 10 - 100,
     },
@@ -56,6 +63,7 @@ export const add3Digit: ContentModule = {
       params: { a: [11, 49], b: [11, 40] },
       answer: (p) => (p.a as number) * 10 + (p.b as number),
       text: (p) => `${(p.a as number) * 10} + ${p.b} = ?`,
+      exclude: (p) => ((p.a as number) % 10) + Math.floor((p.b as number) / 10) >= 10,
     },
     {
       type: 'keypad',
@@ -64,6 +72,7 @@ export const add3Digit: ContentModule = {
       params: { a: [11, 49], b: [11, 40] },
       answer: (p) => (p.a as number) * 10 + (p.b as number),
       text: (p) => `Ana has ${(p.a as number) * 10} stickers. Budi gives her ${p.b}. How many now?`,
+      exclude: (p) => ((p.a as number) % 10) + Math.floor((p.b as number) / 10) >= 10,
     },
     {
       type: 'keypad',
@@ -72,6 +81,7 @@ export const add3Digit: ContentModule = {
       params: { a: [11, 49], b: [11, 40] },
       answer: (p) => (p.a as number) * 10 + (p.b as number),
       text: (p) => `A shop has ${(p.a as number) * 10} pens. Siti brings ${p.b} more. How many pens?`,
+      exclude: (p) => ((p.a as number) % 10) + Math.floor((p.b as number) / 10) >= 10,
     },
   ],
 };

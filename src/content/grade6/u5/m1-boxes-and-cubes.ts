@@ -83,6 +83,13 @@ export const boxesAndCubes: ContentModule = {
       },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Missing edge? Divide the volume.',
+      visual: { kind: 'solid', l: 4, w: 3, h: 2, cubes: false, showDimensions: true, unit: 'cm' },
+      action: 'watch',
+      caption: `4 × ? × 2 = ${volumeOf(4, 3, 2)} → ${volumeOf(4, 3, 2)} ÷ 8 = 3`,
+    },
   ],
 
   rules: [

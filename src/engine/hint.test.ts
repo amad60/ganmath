@@ -1,7 +1,8 @@
 import { scienceModulesList } from '../content/scienceIndex';
 import { describe, expect, it } from 'vitest';
 import { hintFor, operandsOf } from './hint';
-import { moduleById } from '../content';
+import { all, moduleById } from '../content';
+import { enumerate } from './generator';
 import type { Question } from './types';
 
 function q(patch: Partial<Question> & Pick<Question, 'text' | 'answer' | 'params'>): Question {
@@ -189,5 +190,92 @@ describe('hintFor — bantuan harus tentang soal INI', () => {
     const q2 = q({ text: 'Which sentence states the MAIN IDEA of the story?', params: {}, answer: 0, type: 'clue-tap' });
     const h2 = hintFor(moduleById('r2-u1-m1').learn, q2);
     expect(h2?.visual.kind).toBe('evidence-text');
+  });
+
+  it('3 × 6 adalah tiga baris berisi enam, utuh', () => {
+    const h = hintFor(moduleById('g3-u2-m1').learn, q({ text: '3 × 6 = ?', params: { n: 6 }, answer: 18 }));
+    expect(h?.prompt).toBe('3 rows of 6.');
+    expect(h?.visual).toEqual({ kind: 'array', rows: 3, cols: 6 });
+  });
+
+  it('7 × 8 tetap array, bukan ikatan bilangan 7 dan 8', () => {
+    const h = hintFor(moduleById('g3-u2-m6').learn, q({ text: '7 × 8 = ?', params: { n: 7 }, answer: 56 }));
+    expect(h?.visual).toEqual({ kind: 'array', rows: 7, cols: 8 });
+  });
+
+  it('12 ÷ 3 dibagi ke 3 baris, bukan "Take 3" atau ten-frame', () => {
+    const h = hintFor(moduleById('g3-u3-m4').learn, q({ text: '12 ÷ 3 = ?', params: { n: 4 }, answer: 4 }));
+    expect(h?.visual).toEqual({ kind: 'array', rows: 3, cols: 4 });
+  });
+
+  it('20 ? 20 adalah perbandingan, bukan 20 − 20', () => {
+    const h = hintFor(moduleById('g1-u5-m5').learn, q({ text: '20 ? 20', params: { a: 20, b: 20 }, answer: 0 }));
+    expect(h?.prompt).toBe('Look at both.');
+  });
+
+  it('soal bersisa menggambar SEMUA bendanya, sisanya di baris terakhir', () => {
+    const h = hintFor(
+      moduleById('g3-u3-m6').learn,
+      q({ text: 'Share 13 between 4. How many left over?', params: { n: 13, d: 4 }, answer: 1 }),
+    );
+    expect(h?.visual).toEqual({ kind: 'counter-objects', count: 13, columns: 4 });
+  });
+
+  it('angka kebetulan di soal cerita tidak jadi operasi', () => {
+    const question = q({
+      text: '2 cakes cost 4 coins. What do 3 cakes cost?',
+      params: { a: 2, b: 4, c: 3 },
+      answer: 6,
+      story: true,
+    });
+    expect(operandsOf(question)).toBeNull();
+  });
+
+  it('setiap hint yang dibangun dari angka soal cocok dengan jawabannya, di semua modul', () => {
+    const bad: string[] = [];
+    for (const m of all) {
+      for (const rule of m.rules) {
+        const combos = enumerate(rule);
+        const step = Math.max(1, Math.floor(combos.length / 12));
+        for (let i = 0; i < combos.length; i += step) {
+          const params = combos[i]!;
+          const visual = rule.visual?.(params);
+          const question = q({
+            type: rule.type,
+            skill: rule.skill,
+            text: rule.text(params),
+            answer: rule.answer(params) as number,
+            params,
+            ...(visual ? { visual } : {}),
+            ...(rule.story ? { story: true as const } : {}),
+            ...(rule.range ? { range: rule.range } : {}),
+            ...(rule.hint ? { hint: rule.hint(params) } : {}),
+          });
+          const h = hintFor(m.learn, question);
+          if (!h || m.learn.some((l) => l.visual === h.visual)) continue;
+          const v = h.visual;
+          const ans = question.answer;
+          const where = `${m.id} "${question.text}" → ${h.prompt}`;
+          if (v.kind === 'number-bond' && v.ask === 'whole' && v.parts[0] != null && v.parts[1] != null) {
+            if (v.parts[0] + v.parts[1] !== ans) bad.push(where);
+          }
+          if (v.kind === 'ten-frame' && h.prompt === 'Count one by one.' && v.value !== ans) bad.push(where);
+          const take = h.prompt.match(/^Start with (\d+)\. Take (\d+)\.$/);
+          if (take && Number(take[1]) - Number(take[2]) !== ans) bad.push(where);
+          if (v.kind === 'column-sum' && (v.op === '−' ? v.a - v.b : v.a + v.b) !== ans) bad.push(where);
+          if (v.kind === 'array' && !v.square) {
+            const rows = h.prompt.match(/(\d+) rows? of (\d+)/);
+            if (rows && (Number(rows[1]) !== v.rows || Number(rows[2]) !== v.cols)) bad.push(where);
+            const took = h.prompt.match(/Take (\d+) rows?/);
+            const ok = took
+              ? Number(took[1]) * v.cols === ans
+              : [v.rows * v.cols, v.rows, v.cols].includes(ans) ||
+                /Then times/.test(h.prompt);
+            if (!ok) bad.push(where);
+          }
+        }
+      }
+    }
+    expect(bad).toEqual([]);
   });
 });

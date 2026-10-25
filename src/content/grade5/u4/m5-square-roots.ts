@@ -67,6 +67,7 @@ export const squareRoots: ContentModule = {
       prompt: 'The root takes a square back.',
       visual: { kind: 'array', rows: 8, cols: 8, still: true },
       action: 'watch',
+      caption: '√64 = 8   √900 = 30',
     },
   ],
 

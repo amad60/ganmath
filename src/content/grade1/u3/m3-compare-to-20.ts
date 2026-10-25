@@ -25,15 +25,31 @@ export const compareTo20: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'More tens means a bigger number.',
-      visual: { kind: 'base10', tens: 1, ones: 5 },
+      // 15 dan 12 sama-sama satu puluhan — yang membedakan satuannya.
+      prompt: 'Same tens. More ones is bigger.',
+      visual: { kind: 'bars', values: [15, 12], labels: ['15', '12'], showValues: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'We write it as 15 > 12.',
-      visual: { kind: 'base10', tens: 1, ones: 2 },
+      visual: { kind: 'bars', values: [15, 12], labels: ['15', '12'], showValues: true },
       action: 'watch',
+    },
+    {
+      // Soal compare-symbol juga berjawaban < dan =.
+      stage: 'abstract',
+      prompt: 'Twelve is less than fifteen: 12 < 15.',
+      visual: { kind: 'bars', values: [12, 15], labels: ['12', '15'], showValues: true },
+      action: 'watch',
+      caption: '12 < 15',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Same tens, same ones: 14 = 14.',
+      visual: { kind: 'bars', values: [14, 14], labels: ['14', '14'], showValues: true },
+      action: 'watch',
+      caption: '14 = 14',
     },
   ],
 

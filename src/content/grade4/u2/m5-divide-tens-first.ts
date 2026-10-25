@@ -30,15 +30,23 @@ export const divideTensFirst: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Split 69 into 60 and 9.',
-      visual: { kind: 'base10', tens: 6, ones: 9 },
+      prompt: 'Split 72 into 60 and 12.',
+      visual: { kind: 'base10', tens: 7, ones: 2 },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Divide the tens, then the ones.',
-      visual: { kind: 'base10', tens: 6, ones: 9 },
+      prompt: 'Divide each part, then add them.',
+      visual: { kind: 'base10', tens: 7, ones: 2 },
       action: 'watch',
+      caption: '60 ÷ 3 = 20, 12 ÷ 3 = 4',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'So 72 ÷ 3 = 24.',
+      visual: { kind: 'base10', tens: 2, ones: 4 },
+      action: 'watch',
+      caption: '20 + 4 = 24',
     },
   ],
 

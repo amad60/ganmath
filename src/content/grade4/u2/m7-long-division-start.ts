@@ -40,6 +40,21 @@ export const longDivisionStart: ContentModule = {
       prompt: 'Divide the hundreds, then tens, then ones.',
       visual: { kind: 'base10', hundreds: 4, tens: 6, ones: 8 },
       action: 'watch',
+      caption: '468 ÷ 2 = 200 + 30 + 4 = 234',
+    },
+    {
+      stage: 'abstract',
+      prompt: '156 ÷ 3? Share 15 tens first.',
+      visual: { kind: 'base10', hundreds: 1, tens: 5, ones: 6 },
+      action: 'watch',
+      caption: '15 tens ÷ 3 = 5 tens',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'So 156 ÷ 3 = 52.',
+      visual: { kind: 'base10', tens: 5, ones: 2 },
+      action: 'watch',
+      caption: '50 + 2 = 52',
     },
   ],
 
@@ -65,7 +80,7 @@ export const longDivisionStart: ContentModule = {
       skill: 'long-division',
       params: { q: [102, 249], d: [2, 4] },
       answer: (p) => p.q as number,
-      text: (p) => `Share ${(p.q as number) * (p.d as number)} between ${p.d}.`,
+      text: (p) => `Share ${(p.q as number) * (p.d as number)} between ${p.d}. How many each?`,
     },
   ],
 };

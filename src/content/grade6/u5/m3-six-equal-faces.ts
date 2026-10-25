@@ -84,6 +84,13 @@ export const sixEqualFaces: ContentModule = {
       visual: { kind: 'solid', l: 5, w: 5, h: 5, cubes: false, showDimensions: true, unit: 'cm' },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Going back? Divide by 6 first.',
+      visual: { kind: 'solid', l: 3, w: 3, h: 3, cubes: false, showDimensions: true, unit: 'cm' },
+      action: 'watch',
+      caption: `${surfaceAreaOf(3, 3, 3)} ÷ 6 = 9 = 3 × 3`,
+    },
   ],
 
   rules: [

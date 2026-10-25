@@ -26,13 +26,24 @@ export const addHundreds: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Three flats and two flats.',
-      visual: { kind: 'base10', hundreds: 5, tens: 0, ones: 0 },
+      visual: {
+        kind: 'base10-pair',
+        left: { hundreds: 3, tens: 0, ones: 0 },
+        right: { hundreds: 2, tens: 0, ones: 0 },
+        op: '+',
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: '300 + 200 = 500.',
       visual: { kind: 'base10', hundreds: 5, tens: 0, ones: 0 },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Take two flats away: 500 − 200 = 300.',
+      visual: { kind: 'base10', hundreds: 3, tens: 0, ones: 0 },
       action: 'watch',
     },
   ],

@@ -26,9 +26,11 @@ export const timesCheck: ContentModule = {
     },
     {
       stage: 'pictorial',
+      // Dua baris lima: dibaca sebagai lima-an (baris), dua-an (kolom), dan sepuluh.
       prompt: 'Twos, fives and tens together.',
-      visual: { kind: 'array', rows: 5, cols: 5, still: true },
+      visual: { kind: 'array', rows: 2, cols: 5, still: true },
       action: 'watch',
+      caption: '2 × 5 = 10',
     },
     {
       stage: 'abstract',

@@ -51,6 +51,7 @@ export const tenths: ContentModule = {
       prompt: 'Seven tenths is 7/10.',
       visual: { kind: 'fraction', parts: 10, shaded: 7, shape: 'square' },
       action: 'watch',
+      caption: '7/10 shaded. 3/10 not shaded.',
     },
   ],
 
@@ -88,7 +89,7 @@ export const tenths: ContentModule = {
       skill: 'tenths-fraction',
       params: { s: [1, 9] },
       answer: (p) => 10 - (p.s as number),
-      text: (p) => `${p.s}/10 is shaded. How many tenths are left?`,
+      text: (p) => `${p.s}/10 is shaded. How many tenths are not shaded?`,
     },
   ],
 };

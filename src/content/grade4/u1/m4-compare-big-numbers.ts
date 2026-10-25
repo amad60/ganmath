@@ -26,14 +26,16 @@ export const compareBigNumbers: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Compare the biggest place first.',
-      visual: { kind: 'base10', hundreds: 4, tens: 2, ones: 0 },
+      visual: { kind: 'number-line', min: 0, max: 1000000, marks: [420000, 610000] },
       action: 'watch',
+      caption: '610000 > 420000',
     },
     {
       stage: 'abstract',
-      prompt: 'Same ten thousands? Compare thousands.',
-      visual: { kind: 'base10', hundreds: 4, tens: 7, ones: 0 },
+      prompt: 'Same hundred thousands? Compare ten thousands.',
+      visual: { kind: 'number-line', min: 400000, max: 500000, marks: [420000, 470000] },
       action: 'watch',
+      caption: '470000 > 420000',
     },
   ],
 

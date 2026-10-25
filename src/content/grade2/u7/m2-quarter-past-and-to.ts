@@ -17,16 +17,17 @@ export const quarterPastAndTo: ContentModule = {
   learn: [
     {
       stage: 'concrete',
+      // Dulu enam emoji pizza — mengetuk empat pizza mana saja lolos.
       prompt: 'Tap four equal parts.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🍕' },
+      visual: { kind: 'fraction', parts: 4, shaded: 0, tap: true },
       action: 'tap-count',
       target: 4,
       hint: 'A quarter is one of four.',
     },
     {
       stage: 'pictorial',
-      prompt: 'A quarter of the clock.',
-      visual: { kind: 'fraction', parts: 4, shaded: 1 },
+      prompt: 'Long hand on 3 is quarter past.',
+      visual: { kind: 'clock', hour: 3, minute: 15 },
       action: 'watch',
     },
     {
@@ -34,6 +35,14 @@ export const quarterPastAndTo: ContentModule = {
       prompt: 'Quarter past three is 3:15.',
       visual: { kind: 'clock', hour: 3, minute: 15 },
       action: 'watch',
+    },
+    {
+      // Soal juga berjawaban "quarter to" — dulu tidak pernah ditunjukkan.
+      stage: 'abstract',
+      prompt: 'Long hand on 9 is quarter to.',
+      visual: { kind: 'clock', hour: 3, minute: 45 },
+      action: 'watch',
+      caption: 'quarter to 4',
     },
   ],
 

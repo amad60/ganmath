@@ -29,15 +29,17 @@ export const checkYourAnswer: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Adding backwards gives the start.',
+      prompt: 'Take away 3, then add 3 back.',
       visual: { kind: 'number-bond', whole: 7, parts: [3, 4] },
       action: 'watch',
+      caption: '7 − 3 = 4, 4 + 3 = 7',
     },
     {
       stage: 'abstract',
       prompt: 'Check subtraction by adding.',
       visual: { kind: 'number-bond', whole: 52, parts: [27, 25] },
       action: 'watch',
+      caption: '52 − 27 = 25, 25 + 27 = 52',
     },
   ],
 

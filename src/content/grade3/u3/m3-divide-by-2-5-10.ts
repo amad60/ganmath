@@ -24,13 +24,26 @@ export const divideBy2510: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Twenty in two rows is ten.',
+      prompt: 'Twenty in two rows: ten in each.',
+      visual: { kind: 'array', rows: 2, cols: 10, still: true },
+      action: 'watch',
+      caption: '20 ÷ 2 = 10',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Halving is dividing by two.',
       visual: { kind: 'array', rows: 2, cols: 10, still: true },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Halving is dividing by two.',
+      prompt: 'Groups of five: 20 ÷ 5 = 4.',
+      visual: { kind: 'array', rows: 4, cols: 5, still: true },
+      action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Groups of ten: 20 ÷ 10 = 2.',
       visual: { kind: 'array', rows: 2, cols: 10, still: true },
       action: 'watch',
     },
@@ -56,7 +69,7 @@ export const divideBy2510: ContentModule = {
       answer: (p) => p.n as number,
       text: (p) => {
         const d = [2, 5, 10][(p.d as number) - 1] as number;
-        return `Share ${(p.n as number) * d} between ${d}.`;
+        return `Share ${(p.n as number) * d} between ${d}. How many each?`;
       },
     },
   ],

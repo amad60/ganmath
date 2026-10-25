@@ -31,8 +31,8 @@ export const numberLine10000: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Big jumps first, then small.',
-      visual: { kind: 'number-line', min: 0, max: 10000, value: 6000, marks: [5000] },
+      prompt: 'One jump of 1000: 5000 + 1000 = 6000.',
+      visual: { kind: 'number-line', min: 0, max: 10000, value: 5000, hopTo: 6000, marks: [5000] },
       action: 'watch',
     },
   ],

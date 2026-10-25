@@ -12,7 +12,7 @@ export const timesTwo: ContentModule = {
   fluencyTracked: true,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['array-grid'],
-  vocab: ['times', 'multiply'],
+  vocab: ['times', 'multiply', 'does'],
 
   learn: [
     {
@@ -68,7 +68,7 @@ export const timesTwo: ContentModule = {
       story: true,
       params: { n: [2, 10] },
       answer: (p) => (p.n as number) * 2,
-      text: (p) => `Ana has ${p.n} books. Budi has twice as many. How many?`,
+      text: (p) => `Ana has ${p.n} books. Budi has 2 times as many. How many does Budi have?`,
     },
   ],
 };

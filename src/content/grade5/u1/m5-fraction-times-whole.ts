@@ -20,7 +20,7 @@ export const fractionTimesWhole: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number'],
   visuals: ['array-grid', 'counter-objects', 'fraction-shape'],
-  vocab: [],
+  vocab: ['does', 'eat'],
 
   learn: [
     {
@@ -46,7 +46,7 @@ export const fractionTimesWhole: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'So 2/3 of 12 is 8.',
-      visual: { kind: 'array', rows: 3, cols: 4, highlightRow: 1 , still: true },
+      visual: { kind: 'array', rows: 3, cols: 4, ghostRow: 2, still: true },
       action: 'watch',
     },
     {
@@ -54,6 +54,13 @@ export const fractionTimesWhole: ContentModule = {
       prompt: 'Divide by the bottom, times the top.',
       visual: { kind: 'fraction', parts: 3, shaded: 2, shape: 'square' },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Times a whole? Multiply only the top.',
+      visual: { kind: 'fraction', parts: 3, shaded: 2, shape: 'square' },
+      action: 'watch',
+      caption: '2/3 × 4 = 8/3',
     },
   ],
 
@@ -95,7 +102,7 @@ export const fractionTimesWhole: ContentModule = {
       story: true,
       params: { b: [2, 6], m: [2, 8], a: [1, 5] },
       answer: (p) => (p.a as number) * (p.m as number),
-      text: (p) => `Ana has ${(p.b as number) * (p.m as number)} sweets. She eats ${p.a}/${p.b} of them. How many?`,
+      text: (p) => `Ana has ${(p.b as number) * (p.m as number)} sweets. She eats ${p.a}/${p.b} of them. How many does she eat?`,
       exclude: (p) => (p.a as number) >= (p.b as number),
     },
     {

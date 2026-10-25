@@ -31,9 +31,10 @@ export const subtractWithin20: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Take from the ten first.',
-      visual: { kind: 'number-line', min: 0, max: 20, value: 8 },
+      prompt: 'Jump back to ten, then two more.',
+      visual: { kind: 'number-line', min: 0, max: 20, value: 14, hopTo: 8, marks: [10] },
       action: 'watch',
+      caption: '14 - 6 = 8',
     },
   ],
 

@@ -76,6 +76,20 @@ export const undoPlusAndMinus: ContentModule = {
       visual: { kind: 'bars', lengths: [1, 0.36, 0.64], labels: ['11', '4', '7'] },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: 'Plus undoes minus.',
+      visual: { kind: 'number-bond', whole: 8, parts: [3, 5] },
+      action: 'watch',
+      caption: 'n − 3 = 5 → n = 5 + 3 = 8',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Take the answer from the start.',
+      visual: { kind: 'number-bond', whole: 12, parts: [5, 7] },
+      action: 'watch',
+      caption: '12 − n = 5 → n = 12 − 5 = 7',
+    },
   ],
 
   rules: [
@@ -87,6 +101,8 @@ export const undoPlusAndMinus: ContentModule = {
       params: { b: [2, 9], c: [1, 14] },
       answer: (p) => (p.c as number) - (p.b as number),
       text: (p) => `n + ${p.b} = ${p.c}. n = ?`,
+      // Jawaban harus bilangan cacah: modul ini belum mengajarkan bilangan negatif.
+      exclude: (p) => (p.c as number) < (p.b as number),
     },
     {
       // n dikurangi sesuatu → n lebih besar dari hasilnya. Anak yang mengurangi

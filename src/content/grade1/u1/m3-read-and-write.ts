@@ -38,6 +38,14 @@ export const readAndWrite: ContentModule = {
       action: 'watch',
       caption: '3',
     },
+    {
+      // Soal "Which one is zero?" — nol harus pernah ditunjukkan.
+      stage: 'abstract',
+      prompt: 'No dots is zero. We write 0.',
+      visual: { kind: 'ten-frame', value: 0 },
+      action: 'watch',
+      caption: '0',
+    },
   ],
 
   rules: [

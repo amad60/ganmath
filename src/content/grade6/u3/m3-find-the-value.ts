@@ -70,6 +70,7 @@ export const findTheValue: ContentModule = {
       prompt: 'Change n to the value. Then count.',
       visual: { kind: 'bars', lengths: [0.4, 0.4, 0.4], labels: ['4', '4', '4'] },
       action: 'watch',
+      caption: 'n is 4: n − 3 = 4 − 3 = 1',
     },
   ],
 
@@ -98,6 +99,8 @@ export const findTheValue: ContentModule = {
       params: { v: [2, 12], b: [2, 9] },
       answer: (p) => (p.v as number) - (p.b as number),
       text: (p) => `n is ${p.v}. n ${MINUS} ${p.b} = ?`,
+      // Modul ini belum mengajarkan bilangan negatif.
+      exclude: (p) => (p.v as number) < (p.b as number),
     },
     {
       // "Dua n" bukan "n kali n". Pengecoh miskonsepsinya persis kesalahan itu.

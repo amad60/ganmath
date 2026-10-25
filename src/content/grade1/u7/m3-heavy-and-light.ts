@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const heavyAndLight: ContentModule = {
@@ -11,7 +12,7 @@ export const heavyAndLight: ContentModule = {
   kind: 'concept',
   fluencyTracked: false,
   questionTypes: ['choose-text', 'choose-number'],
-  visuals: ['counter-objects'],
+  visuals: ['counter-objects', 'pictogram'],
   vocab: ['heavy', 'heavier', 'light', 'lighter', 'weight', 'full', 'empty', 'opposites'],
 
   learn: [
@@ -25,14 +26,28 @@ export const heavyAndLight: ContentModule = {
     },
     {
       stage: 'pictorial',
+      // Berat digambar sebagai banyak balok, bukan batang panjang:
+      // batang mengajarkan "lebih panjang = lebih berat".
       prompt: 'More blocks means heavier.',
-      visual: { kind: 'bars', lengths: [0.8, 0.4], labels: ['A', 'B'] },
+      visual: {
+        kind: 'pictogram',
+        rows: [
+          { label: 'A', icon: '🪨', count: 5 },
+          { label: 'B', icon: '🪨', count: 2 },
+        ],
+      },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Heavy and light are opposites.',
-      visual: { kind: 'bars', lengths: [0.9, 0.3], labels: ['A', 'B'] },
+      visual: {
+        kind: 'pictogram',
+        rows: [
+          { label: 'A', icon: '🪨', count: 6 },
+          { label: 'B', icon: '🪨', count: 1 },
+        ],
+      },
       action: 'watch',
     },
   ],
@@ -48,9 +63,12 @@ export const heavyAndLight: ContentModule = {
       },
       text: () => 'Which one is heaviest?',
       visual: (p) => ({
-        kind: 'bars',
-        lengths: [(p.a as number) / 10, (p.b as number) / 10, (p.c as number) / 10],
-        labels: ['A', 'B', 'C'],
+        kind: 'pictogram',
+        rows: (['A', 'B', 'C'] as const).map((label, i) => ({
+          label,
+          icon: '🪨',
+          count: [p.a as number, p.b as number, p.c as number][i] ?? 1,
+        })),
       }),
       exclude: (p) => new Set([p.a as number, p.b as number, p.c as number]).size < 3,
       options: () => ['A', 'B', 'C'],
@@ -59,11 +77,13 @@ export const heavyAndLight: ContentModule = {
       type: 'choose-number',
       skill: 'compare-weight',
       params: { a: [4, 9], b: [1, 5] },
-      answer: (p) => (p.a as number) - (p.b as number),
-      text: (p) => `${p.a} blocks take away ${p.b}. How many?`,
-      exclude: (p) => (p.b as number) >= (p.a as number),
+      // Dulu "7 blocks take away 3" — pengurangan, bukan membandingkan berat.
+      answer: (p) => Math.max(p.a as number, p.b as number),
+      text: (p) =>
+        `Box A weighs ${pl(p.a as number, 'block')}. Box B weighs ${pl(p.b as number, 'block')}. Tap the heavier weight.`,
+      exclude: (p) => p.a === p.b,
       distractors: 'near',
-      misconception: (p) => (p.a as number) + (p.b as number),
+      misconception: (p) => Math.min(p.a as number, p.b as number),
     },
   ],
 };

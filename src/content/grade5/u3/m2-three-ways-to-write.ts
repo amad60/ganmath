@@ -52,6 +52,7 @@ export const threeWaysToWrite: ContentModule = {
       prompt: 'Half is 50 percent.',
       visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
       action: 'watch',
+      caption: '50% = 50/100 = 1/2',
     },
     {
       // Garis bilangan 0–1 dengan langkah 0.1: penanda anak benar-benar mendarat
@@ -68,12 +69,20 @@ export const threeWaysToWrite: ContentModule = {
       prompt: 'Percent to decimal: divide by 100.',
       visual: { kind: 'bars', lengths: [1, 0.35], labels: ['1', '%'] },
       action: 'watch',
+      caption: '35% = 35 ÷ 100 = 0.35',
     },
     {
       stage: 'abstract',
       prompt: 'Decimal to percent: times 100.',
       visual: { kind: 'number-line', min: 0, max: 1, value: 0.35, marks: [0.35], step: 0.1 },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: '40 percent is 40/100. That is 2/5.',
+      visual: { kind: 'fraction', parts: 5, shaded: 2, shape: 'square' },
+      action: 'watch',
+      caption: '40% = 40/100 = 2/5',
     },
   ],
 

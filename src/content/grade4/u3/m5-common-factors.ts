@@ -52,8 +52,9 @@ export const commonFactors: ContentModule = {
     {
       stage: 'abstract',
       prompt: '6 is the biggest common factor.',
-      visual: { kind: 'number-bond', whole: 18, parts: [3, 6] },
+      visual: { kind: 'array', rows: 5, cols: 6, still: true, gapAfter: 1 },
       action: 'watch',
+      caption: '12 = 2 × 6, 18 = 3 × 6',
     },
   ],
 

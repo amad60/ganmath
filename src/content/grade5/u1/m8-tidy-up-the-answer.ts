@@ -125,7 +125,8 @@ export const tidyUpTheAnswer: ContentModule = {
         const d = p.d as number;
         const a = p.a as number;
         const b = p.b as number;
-        return a >= d || b >= d || a + b <= d;
+        // Modul bentuk paling sederhana: sisa pecahannya juga harus sudah sederhana.
+        return a >= d || b >= d || a + b <= d || gcd(a + b - d, d) !== 1;
       },
     },
   ],

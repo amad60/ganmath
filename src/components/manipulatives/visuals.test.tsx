@@ -1437,16 +1437,17 @@ describe('ArrayGrid — penanda bulat untuk benda, petak persegi untuk luas', ()
     expect(bands[1]?.getAttribute('style') ?? '').toContain('margin-bottom');
   });
 
-  it('bantuan perkalian menumbuhkan baris dan menyembunyikan baris terakhir', () => {
+  it('bantuan perkalian menumbuhkan baris sampai SEMUA baris tampil', () => {
+    // "3 rows of 4" di atas dua baris membuat anak yang menghitung mendapat 8.
     vi.useFakeTimers();
-    const { container } = render(<ArrayGrid rows={3} cols={4} play omitLast />);
+    const { container } = render(<ArrayGrid rows={3} cols={4} play />);
     expect(container.querySelector('[aria-label="1 of 3 rows, 4 in each"]')).not.toBeNull();
     expect(cells(container)).toHaveLength(4);
     act(() => {
-      vi.advanceTimersByTime(900);
+      vi.advanceTimersByTime(2000);
     });
-    expect(container.querySelector('[aria-label="2 of 3 rows, 4 in each"]')).not.toBeNull();
-    expect(cells(container)).toHaveLength(8);
+    expect(container.querySelector('[aria-label="3 rows of 4"]')).not.toBeNull();
+    expect(cells(container)).toHaveLength(12);
     vi.useRealTimers();
   });
 });

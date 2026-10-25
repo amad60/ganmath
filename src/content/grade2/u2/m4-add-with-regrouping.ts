@@ -16,7 +16,7 @@ export const addWithRegrouping: ContentModule = {
   fluencyTracked: true,
   questionTypes: ['choose-number', 'keypad'],
   visuals: ['base10-blocks'],
-  vocab: ['regroup', 'regrouping', 'carry'],
+  vocab: ['regroup', 'regrouping', 'carry', 'ana', 'budi'],
   masteryOverride: { accuracy: 0.9 },
 
   learn: [
@@ -52,6 +52,15 @@ export const addWithRegrouping: ContentModule = {
       visual: { kind: 'column-sum', a: 47, b: 38, op: '+' },
       action: 'watch',
       caption: '85',
+    },
+    {
+      // Soal cerita "Budi has k more than Ana. How many altogether?" — model batangnya
+      // harus pernah ditunjukkan dulu.
+      stage: 'abstract',
+      prompt: 'Budi has 11 more than Ana.',
+      visual: { kind: 'bars', values: [26, 37], labels: ['Ana', 'Budi'], showValues: true },
+      action: 'watch',
+      caption: '26 + 37 = 63',
     },
   ],
 

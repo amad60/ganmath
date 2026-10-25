@@ -50,8 +50,16 @@ export const tenthsOnALine: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'Seven tenths is 0.7.',
-      visual: { kind: 'number-line', min: 0, max: 10, value: 7, marks: [7] },
+      visual: { kind: 'number-line', min: 0, max: 1, step: 0.1, value: 0.7, marks: [0.7] },
       action: 'watch',
+      caption: '7 tenths = 0.7',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Ten tenths make 1.',
+      visual: { kind: 'fraction', parts: 10, shaded: 10, shape: 'square' },
+      action: 'watch',
+      caption: '10/10 = 1, so 30 tenths = 3',
     },
   ],
 

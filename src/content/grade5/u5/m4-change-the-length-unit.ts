@@ -31,7 +31,7 @@ export const changeTheLengthUnit: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number', 'compare-symbol'],
   visuals: ['counter-objects', 'number-line', 'bar-model'],
-  vocab: ['millimetre', 'millimetres', 'mm', 'm', 'kilometre', 'kilometres', 'km'],
+  vocab: ['millimetre', 'millimetres', 'mm', 'm', 'kilometre', 'kilometres', 'km', 'rope', 'road'],
 
   learn: [
     {
@@ -59,14 +59,22 @@ export const changeTheLengthUnit: ContentModule = {
       prompt: '1000 m make one km.',
       visual: { kind: 'bars', lengths: [1, 0.001], labels: ['km', 'm'] },
       action: 'watch',
+      caption: '2300 m = 2.3 km',
     },
     {
       // Aturan yang menjaga anak dari kesalahan arah: nilai bendanya tidak berubah,
       // yang berubah hanya satuannya — maka satuan kecil butuh angka besar.
       stage: 'abstract',
       prompt: 'A smaller unit needs a bigger number.',
-      visual: { kind: 'bars', lengths: [1, 0.1], labels: ['m', 'cm'] },
+      visual: { kind: 'bars', lengths: [1, 0.01], labels: ['m', 'cm'] },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'A bigger unit needs a smaller number.',
+      visual: { kind: 'number-line', min: 0, max: 10, value: 3.7, step: 1 },
+      action: 'watch',
+      caption: '37 mm = 3.7 cm',
     },
   ],
 
@@ -141,7 +149,7 @@ export const changeTheLengthUnit: ContentModule = {
       story: true,
       params: { n: [2, 60] },
       answer: (p) => (p.n as number) * 100,
-      text: (p) => `A table is ${p.n} metres long. How long in centimetres?`,
+      text: (p) => `A rope is ${p.n} metres long. How long in centimetres?`,
     },
     {
       type: 'keypad',
@@ -149,7 +157,7 @@ export const changeTheLengthUnit: ContentModule = {
       story: true,
       params: { n: [2, 60] },
       answer: (p) => (p.n as number) * 100,
-      text: (p) => `A book shelf is ${p.n} metres long. How long in centimetres?`,
+      text: (p) => `A road is ${p.n} metres long. How long in centimetres?`,
     },
   ],
 };

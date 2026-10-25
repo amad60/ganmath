@@ -26,13 +26,13 @@ export const countTo1000: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Ten hundreds make one thousand.',
-      visual: { kind: 'base10', hundreds: 5, tens: 0, ones: 0 },
+      visual: { kind: 'base10', hundreds: 10, tens: 0, ones: 0 },
       action: 'watch',
     },
     {
       stage: 'abstract',
       prompt: 'Count by hundreds to a thousand.',
-      visual: { kind: 'number-line', min: 0, max: 1000, value: 700, marks: [100, 400] },
+      visual: { kind: 'number-line', min: 0, max: 1000, value: 700, marks: [100, 200, 300, 400, 500, 600] },
       action: 'watch',
     },
   ],

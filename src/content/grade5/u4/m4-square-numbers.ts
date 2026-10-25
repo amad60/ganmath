@@ -70,6 +70,7 @@ export const squareNumbers: ContentModule = {
       prompt: 'A number times itself is squared.',
       visual: { kind: 'array', rows: 9, cols: 9 , still: true },
       action: 'watch',
+      caption: '9² = 81   30² = 30 × 30 = 900',
     },
   ],
 

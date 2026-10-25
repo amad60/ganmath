@@ -1,4 +1,5 @@
 import type { ContentModule } from '../../types';
+import { pl } from '../../plural';
 
 export const numbersTo1000000: ContentModule = {
   id: 'g4-u1-m2',
@@ -37,6 +38,13 @@ export const numbersTo1000000: ContentModule = {
       action: 'watch',
       caption: '342000',
     },
+    {
+      stage: 'abstract',
+      prompt: 'So 342000 has 34 ten thousands.',
+      visual: { kind: 'number-line', min: 0, max: 400000, value: 342000, marks: [300000] },
+      action: 'watch',
+      caption: '300000 + 40000 + 2000',
+    },
   ],
 
   rules: [
@@ -46,7 +54,10 @@ export const numbersTo1000000: ContentModule = {
       skill: 'place-value-1000000',
       params: { ht: [1, 9], t: [0, 9] },
       answer: (p) => (p.ht as number) * 100000 + (p.t as number) * 10000,
-      text: (p) => `${p.ht} hundred thousands and ${p.t} ten thousands = ?`,
+      text: (p) =>
+        `${pl(p.ht as number, 'hundred thousand')}${
+          p.t ? ` and ${pl(p.t as number, 'ten thousand')}` : ''
+        } = ?`,
       distractors: 'digit-swap',
       // Miskonsepsi khas: tiap tempat digeser satu nol ke bawah.
       misconception: (p) => (p.ht as number) * 10000 + (p.t as number) * 1000,

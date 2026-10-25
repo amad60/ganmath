@@ -109,9 +109,9 @@ export const moreMeansLess: ContentModule = {
       params: { a: [1, 9], b: [1, 9], m: [2, 5] },
       answer: (p) => (p.a as number) * (p.m as number),
       text: (p) =>
-        `${many(p.a as number, 'tap')} ${(p.a as number) === 1 ? 'fills' : 'fill'} it in ` +
+        `${many(p.a as number, 'tap')} ${(p.a as number) === 1 ? 'fills' : 'fill'} a tank in ` +
         `${(p.b as number) * (p.m as number)} minutes. ` +
-        `? taps fill it in ${p.b} minutes.`,
+        `? taps fill it in ${many(p.b as number, 'minute')}.`,
     },
     {
       // Berbagi: jumlahnya tetap, yang berubah banyaknya anak. Pengecoh
@@ -122,8 +122,8 @@ export const moreMeansLess: ContentModule = {
       params: { q: [1, 9], n: [1, 6], m: [2, 4] },
       answer: (p) => p.q as number,
       text: (p) =>
-        `${(p.q as number) * (p.n as number) * (p.m as number)} cakes for ` +
-        `${many(p.n as number, 'kid')} is ${(p.q as number) * (p.m as number)} each. ` +
+        `${(p.q as number) * (p.n as number) * (p.m as number)} cakes shared by ` +
+        `${many(p.n as number, 'kid')} gives ${(p.q as number) * (p.m as number)} each. ` +
         `${many((p.n as number) * (p.m as number), 'kid')} get how many each?`,
       distractors: 'near',
       misconception: (p) => (p.q as number) * (p.m as number) * (p.m as number),

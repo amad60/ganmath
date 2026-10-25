@@ -37,6 +37,12 @@ export const moneyTo100000: ContentModule = {
       visual: { kind: 'money', items: [50000, 50000] },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: '20.000 and 3.000 make 23.000.',
+      visual: { kind: 'money', items: [10000, 10000, 1000, 1000, 1000] },
+      action: 'watch',
+    },
   ],
 
   rules: [
@@ -46,6 +52,8 @@ export const moneyTo100000: ContentModule = {
       params: { a: [1, 5], b: [1, 9] },
       answer: () => 0,
       text: () => 'How much money?',
+      // a = b membuat pilihan "tertukar" sama dengan jawabannya.
+      exclude: (p) => p.a === p.b,
       visual: (p) => ({
         kind: 'money',
         items: [

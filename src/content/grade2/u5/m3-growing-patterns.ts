@@ -11,7 +11,7 @@ export const growingPatterns: ContentModule = {
   kind: 'concept',
   fluencyTracked: false,
   questionTypes: ['choose-number', 'missing-number'],
-  visuals: ['array-grid', 'number-line'],
+  visuals: ['bar-chart', 'number-line'],
   vocab: ['grows', 'growing', 'rule'],
 
   learn: [
@@ -25,8 +25,9 @@ export const growingPatterns: ContentModule = {
     },
     {
       stage: 'pictorial',
-      prompt: 'Each row grows by two.',
-      visual: { kind: 'array', rows: 3, cols: 2 },
+      // Dulu array 3 × 2: tiap baris SAMA panjang, tidak ada yang tumbuh.
+      prompt: 'Each bar grows by two.',
+      visual: { kind: 'bars', values: [2, 4, 6], labels: ['1', '2', '3'], columns: true, showValues: true },
       action: 'watch',
     },
     {

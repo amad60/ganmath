@@ -38,6 +38,7 @@ export const bridgeToTen: ContentModule = {
       prompt: 'Split seven into two and five.',
       visual: { kind: 'number-bond', whole: 7, parts: [2, 5] },
       action: 'watch',
+      caption: '38 + 2 + 5 = 45',
     },
   ],
 

@@ -77,6 +77,7 @@ export const takeAwayAcrossZero: ContentModule = {
       prompt: 'Minus a minus jumps right.',
       visual: { kind: 'number-line', min: -10, max: 10, value: 5, marks: [3], step: 1 },
       action: 'watch',
+      caption: '3 − (−2) = 5',
     },
   ],
 

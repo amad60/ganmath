@@ -78,6 +78,7 @@ export const readABarChart: ContentModule = {
         rows: [{ label: 'red', icon: '🟥', count: 4 }],
       },
       action: 'watch',
+      caption: '4 × 5 = 20',
     },
   ],
 

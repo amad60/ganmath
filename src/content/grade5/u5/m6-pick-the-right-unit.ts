@@ -90,8 +90,9 @@ export const pickTheRightUnit: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'A long road uses km.',
-      visual: { kind: 'bars', lengths: [1, 0.1], labels: ['km', 'm'] },
+      visual: { kind: 'bars', lengths: [1, 0.001], labels: ['km', 'm'] },
       action: 'watch',
+      caption: '1 m = 100 cm = 1000 mm',
     },
     {
       stage: 'abstract',

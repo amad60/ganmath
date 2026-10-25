@@ -1,3 +1,4 @@
+import { pl } from '../../plural';
 import type { ContentModule } from '../../types';
 
 export const evenAndOdd: ContentModule = {
@@ -32,8 +33,10 @@ export const evenAndOdd: ContentModule = {
     },
     {
       stage: 'abstract',
+      // Dulu 2 × 3 = 6 (genap) — tidak ada yang tersisa di gambarnya.
       prompt: 'Odd numbers have one left over.',
-      visual: { kind: 'array', rows: 2, cols: 3, highlightRow: 1, still: true },
+      visual: { kind: 'counter-objects', count: 7, icon: '🔵', columns: 2 },
+      caption: '7',
       action: 'watch',
     },
   ],
@@ -53,7 +56,7 @@ export const evenAndOdd: ContentModule = {
       skill: 'even-odd',
       params: { n: [1, 20] },
       answer: (p) => (p.n as number) * 2,
-      text: (p) => `${p.n} pairs. How many altogether?`,
+      text: (p) => `${pl(p.n as number, 'pair')}. How many altogether?`,
       distractors: 'near',
       misconception: (p) => (p.n as number) + 2,
     },

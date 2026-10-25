@@ -85,6 +85,7 @@ export const compareWithPercent: ContentModule = {
       prompt: 'Change both to percent, then compare.',
       visual: { kind: 'bars', lengths: [0.75, 0.8], labels: ['a', 'b'] },
       action: 'watch',
+      caption: '3/4 = 75/100 = 75%   0.8 = 80%',
     },
     {
       stage: 'abstract',

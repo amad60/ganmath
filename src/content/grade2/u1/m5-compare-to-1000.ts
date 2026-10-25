@@ -36,6 +36,21 @@ export const compareTo1000: ContentModule = {
       action: 'watch',
       caption: '320 > 298',
     },
+    {
+      // Soal compare-symbol juga berjawaban < dan =.
+      stage: 'abstract',
+      prompt: 'Two hundreds is less: 298 < 320.',
+      visual: { kind: 'bars', values: [298, 320], showValues: true },
+      action: 'watch',
+      caption: '298 < 320',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Every place the same: 450 = 450.',
+      visual: { kind: 'bars', values: [450, 450], showValues: true },
+      action: 'watch',
+      caption: '450 = 450',
+    },
   ],
 
   rules: [

@@ -23,7 +23,7 @@ export const addUnlikeBottoms: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['keypad', 'choose-number'],
   visuals: ['fraction-shape', 'counter-objects'],
-  vocab: [],
+  vocab: ['works', 'way'],
 
   learn: [
     {
@@ -32,7 +32,7 @@ export const addUnlikeBottoms: ContentModule = {
       visual: { kind: 'counter-objects', count: 8, icon: '🍕' },
       action: 'tap-count',
       target: 2,
-      hint: 'Then tap two more parts.',
+      hint: 'Two of eight parts.',
     },
     {
       stage: 'pictorial',
@@ -57,6 +57,13 @@ export const addUnlikeBottoms: ContentModule = {
       prompt: 'Make the bottoms equal, then add tops.',
       visual: { kind: 'fraction', parts: 8, shaded: 5, shape: 'square' },
       action: 'watch',
+    },
+    {
+      stage: 'abstract',
+      prompt: 'Take away works the same way.',
+      visual: { kind: 'fraction', parts: 8, shaded: 5, shape: 'square' },
+      action: 'watch',
+      caption: '3/4 − 1/8 = 6/8 − 1/8 = 5/8',
     },
   ],
 

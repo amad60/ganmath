@@ -26,7 +26,7 @@ export const doublesTo100: ContentModule = {
     {
       stage: 'pictorial',
       prompt: 'Double the tens, double the ones.',
-      visual: { kind: 'base10', tens: 5, ones: 0 },
+      visual: { kind: 'base10-pair', left: { tens: 2, ones: 5 }, right: { tens: 2, ones: 5 }, op: '+' },
       action: 'watch',
     },
     {

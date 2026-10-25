@@ -41,6 +41,12 @@ export const howLong: ContentModule = {
       visual: { kind: 'clock', hour: 2, minute: 40 },
       action: 'watch',
     },
+    {
+      stage: 'abstract',
+      prompt: '2:40 to 3:10 is 20 + 10 = 30 minutes.',
+      visual: { kind: 'clock', hour: 3, minute: 10 },
+      action: 'watch',
+    },
   ],
 
   rules: [
@@ -67,7 +73,8 @@ export const howLong: ContentModule = {
       skill: 'duration',
       params: { m: [1, 11], d: [1, 11] },
       answer: (p) => ((p.m as number) * 5 + (p.d as number) * 5) % 60,
-      text: (p) => `${(p.d as number) * 5} minutes after ${(p.m as number) * 5} past?`,
+      text: (p) =>
+        `It is ${(p.m as number) * 5} minutes past. ${(p.d as number) * 5} minutes later, how many minutes past?`,
       exclude: (p) => (p.m as number) * 5 + (p.d as number) * 5 < 60,
     },
   ],

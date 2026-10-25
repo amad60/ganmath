@@ -34,7 +34,7 @@ export const compareTwoFractions: ContentModule = {
     {
       stage: 'pictorial',
       prompt: '1/2 is smaller than 3/4.',
-      visual: { kind: 'bars', lengths: [0.5, 0.75] },
+      visual: { kind: 'bars', lengths: [0.5, 0.75], labels: ['1/2', '3/4'] },
       action: 'watch',
     },
     {
@@ -48,6 +48,7 @@ export const compareTwoFractions: ContentModule = {
       prompt: 'Make bottoms equal, then compare tops.',
       visual: { kind: 'fraction', parts: 4, shaded: 3, shape: 'square' },
       action: 'watch',
+      caption: '1/2 = 2/4, and 2/4 < 3/4',
     },
   ],
 

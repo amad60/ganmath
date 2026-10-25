@@ -22,11 +22,11 @@ export const mixedNumbers: ContentModule = {
   learn: [
     {
       stage: 'concrete',
-      prompt: 'Tap five parts.',
-      visual: { kind: 'counter-objects', count: 5, icon: '🍕' },
+      prompt: 'Tap three halves.',
+      visual: { kind: 'counter-objects', count: 3, icon: '🍕' },
       action: 'tap-count',
-      target: 5,
-      hint: 'Five halves is more than two.',
+      target: 3,
+      hint: 'Three halves is more than one.',
     },
     {
       stage: 'pictorial',
@@ -43,13 +43,14 @@ export const mixedNumbers: ContentModule = {
     {
       stage: 'abstract',
       prompt: 'So 3/2 is 1 and 1/2.',
-      visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
+      visual: { kind: 'number-line', min: 0, max: 3, step: 0.5, value: 1.5, marks: [1.5] },
       action: 'watch',
+      caption: '2/2 + 1/2 = 1 and 1/2',
     },
     {
       stage: 'abstract',
       prompt: '1 and 1/2 is a mixed number.',
-      visual: { kind: 'number-line', min: 0, max: 3, value: 1, marks: [1] },
+      visual: { kind: 'number-line', min: 0, max: 3, step: 0.5, value: 1.5, marks: [1.5] },
       action: 'watch',
     },
   ],

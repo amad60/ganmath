@@ -59,7 +59,7 @@ export const lineUpThePoints: ContentModule = {
       // satu kubus kecil adalah satu perseratusan.
       stage: 'pictorial',
       prompt: 'Four tenths and three hundredths.',
-      visual: { kind: 'base10', tens: 4, ones: 3 },
+      visual: { kind: 'number-line', min: 0, max: 1, value: 0.43, marks: [0.4], step: 0.1 },
       action: 'watch',
     },
     {
@@ -75,12 +75,14 @@ export const lineUpThePoints: ContentModule = {
       prompt: 'Line up the points, then add.',
       visual: { kind: 'number-line', min: 0, max: 1, value: 0.7, marks: [0.7], step: 0.1 },
       action: 'watch',
+      caption: '0.4 + 0.3 = 0.7',
     },
     {
       stage: 'abstract',
       prompt: 'Fill empty places with zero.',
-      visual: { kind: 'base10', tens: 7, ones: 0 },
+      visual: { kind: 'number-line', min: 0, max: 1, value: 0.73, marks: [0.7], step: 0.1 },
       action: 'watch',
+      caption: '0.70 + 0.03 = 0.73',
     },
   ],
 

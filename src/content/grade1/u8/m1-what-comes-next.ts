@@ -14,27 +14,28 @@ export const whatComesNext: ContentModule = {
   fluencyTracked: false,
   questionTypes: ['choose-text', 'choose-number'],
   visuals: ['shape-2d', 'counter-objects'],
-  vocab: ['pattern', 'repeat', 'repeats', 'times'],
+  vocab: ['pattern', 'repeat', 'repeats', 'times', 'red', 'blue', 'next'],
 
   learn: [
     {
       stage: 'concrete',
       prompt: 'Tap four in a row.',
-      visual: { kind: 'counter-objects', count: 6, icon: '🔴' },
+      visual: { kind: 'counter-objects', count: 6, icons: ['🔴', '🔵', '🔴', '🔵', '🔴', '🔵'] },
       action: 'tap-count',
       target: 4,
       hint: 'A pattern repeats.',
     },
     {
       stage: 'pictorial',
+      // Dulu satu lingkaran saja — tidak ada pola yang bisa dilihat berulang.
       prompt: 'This pattern repeats again and again.',
-      visual: { kind: 'shape2d', name: 'circle' },
+      visual: { kind: 'counter-objects', count: 6, icons: ['🔴', '🔵', '🔴', '🔵', '🔴', '🔵'] },
       action: 'watch',
     },
     {
       stage: 'abstract',
-      prompt: 'Say what comes next.',
-      visual: { kind: 'shape2d', name: 'square' },
+      prompt: 'Red, blue, red, blue. Next is red.',
+      visual: { kind: 'counter-objects', count: 4, icons: ['🔴', '🔵', '🔴', '🔵'] },
       action: 'watch',
     },
   ],
@@ -56,7 +57,7 @@ export const whatComesNext: ContentModule = {
       skill: 'pattern-ab',
       params: { n: [2, 5] },
       answer: (p) => (p.n as number) * 2,
-      text: (p) => `A pattern of 2 repeats ${p.n} times. How many?`,
+      text: (p) => `🔴🔵 repeats ${p.n} times. How many dots?`,
       distractors: 'near',
     },
   ],

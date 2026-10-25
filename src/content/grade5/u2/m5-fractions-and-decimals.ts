@@ -51,6 +51,7 @@ export const fractionsAndDecimals: ContentModule = {
       prompt: 'Half is five tenths: 0.5.',
       visual: { kind: 'fraction', parts: 2, shaded: 1, shape: 'square' },
       action: 'watch',
+      caption: '0.5 = 5/10 = 50/100',
     },
     {
       stage: 'pictorial',
@@ -63,6 +64,7 @@ export const fractionsAndDecimals: ContentModule = {
       prompt: 'Divide the top by the bottom.',
       visual: { kind: 'fraction', parts: 4, shaded: 3, shape: 'square' },
       action: 'watch',
+      caption: '3/4 = 3 ÷ 4 = 0.75',
     },
     {
       stage: 'abstract',

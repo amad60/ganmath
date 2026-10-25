@@ -53,7 +53,7 @@ export const frequencyTable: ContentModule = {
     },
     {
       stage: 'abstract',
-      prompt: 'Add the rows to find the total.',
+      prompt: 'Each block is 1 vote. Add the rows.',
       visual: {
         kind: 'pictogram',
         rows: [
@@ -63,6 +63,7 @@ export const frequencyTable: ContentModule = {
         ],
       },
       action: 'watch',
+      caption: '4 + 6 + 3 = 13',
     },
   ],
 
@@ -82,7 +83,7 @@ export const frequencyTable: ContentModule = {
       skill: 'frequency-table',
       params: { a: [1, 7], b: [1, 7], c: [1, 7] },
       answer: (p) => (p.a as number) + (p.b as number) + (p.c as number),
-      text: () => 'How many votes in all?',
+      text: () => 'Each block is 1 vote. How many votes in all?',
       visual: (p) => ({
         kind: 'pictogram',
         rows: ROWS.map((r, i) => ({
